@@ -383,3 +383,48 @@ SDK 56" — a decision that would have cost days in week 1 and constrained
 everything after it. The actual fix is one word. The difference between those
 two outcomes was reproducing the failure in isolation before acting on the
 first plausible theory.
+
+---
+
+## 2026-08-11 — Phase 1: blank form sources
+
+Form list received (`tools/forms/SOURCES.md`): SAR 7, SAR 7 Addendum, SAR 7A,
+NA 960X SAR, NA 960Y SAR, CF 377.6, MC 210.
+
+### Blocked: the agent cannot download California state forms
+
+Not a sandbox problem — verified with sandboxing disabled. Two different blocks:
+
+- **`cdss.ca.gov`** — DNS resolves to 162.2.15.178, but TCP 443 never completes
+  the handshake. Connection times out. A network-layer drop, not a WAF and not
+  a 403.
+- **`dhcs.ca.gov`** — returns HTTP 200 with an Imperva/Incapsula challenge page
+  instead of the PDF. Its response echoed the client IP it saw,
+  `104.28.157.117`, a Cloudflare range, which explains both: agent traffic
+  egresses through a proxy whose address range the state sites refuse.
+
+**Resolution.** Downloading the forms is a manual step for Devansh, in a
+browser. `tools/forms/fetch-forms.sh` tries anyway, verifies each file actually
+begins with the bytes `%PDF` — which catches the failure mode where a WAF
+returns 200 with an HTML challenge page saved under a `.pdf` name, a silently
+corrupt corpus input — and prints the exact filenames and URLs to fetch by hand
+when it cannot.
+
+### Decided: Spanish comes from the state, not from us
+
+CDSS publishes official Spanish translations of these same forms. Two
+consequences, both already committed to on Day 0 and both cheaper now than in
+Week 7:
+
+1. Spanish **field labels and standard notice phrasing** are lifted from the
+   state's own translations rather than translated by us. Explanation content
+   still has to be written, but the vocabulary is authoritative and free.
+2. **Layer 0 fingerprints are bilingual from the first template.** Real notices
+   are frequently printed in English and Spanish on the same page, and Vision
+   runs with `recognitionLanguages = ["en-US", "es-ES"]` from the first spike.
+
+### Open
+
+Revision codes (e.g. `SAR 7 (5/25)`) still to be recorded once the PDFs land.
+Template IDs get pinned to the revision they were built against, because a
+fingerprint written for one revision may not match the next.
