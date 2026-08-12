@@ -1,0 +1,63 @@
+{
+  // ------------------------------------------------------------------------
+  // The extraction island.
+  //
+  // CLAUDE.md: "Extraction logic lives in /src/extraction and must be pure and
+  // platform-free — no React, no native modules — so it can be unit-tested
+  // against the golden corpus in plain Node."
+  //
+  // That rule is enforced here by the compiler rather than by discipline. The
+  // two lines that do the work are "lib" and "types":
+  //
+  //   lib: ["ES2022"]   — no DOM. `fetch`, `XMLHttpRequest`, `WebSocket`,
+  //                       `navigator` and `document` are not declared, so
+  //                       reaching for the network here is a compile error
+  //                       (TS2304: Cannot find name 'fetch'). SPEC §0 rule 1
+  //                       expressed as a type-system constraint.
+  //
+  //                       Caveat worth knowing, found by probing rather than
+  //                       assuming: importing `react-native` pulls in its
+  //                       global type declarations, which re-declare `fetch`
+  //                       and make that error disappear. This setting is only
+  //                       airtight while the ESLint rule banning platform
+  //                       imports also holds. The two work as a pair.
+  //
+  //   types: []         — no ambient @types. No `require`, no `process`, no
+  //                       `Buffer`, no JSX. Extraction cannot reach for a Node
+  //                       built-in or a React import even accidentally.
+  //
+  // Everything extraction needs arrives as a plain argument: OCR text, boxes,
+  // a template, a clock. That is what makes it testable in plain Node, and it
+  // is also why the golden-corpus harness can run the whole cascade without a
+  // simulator.
+  // ------------------------------------------------------------------------
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": [],
+
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "**/*.ts",
+    // Notice templates are data, not code (CLAUDE.md), but they are typed
+    // against the interfaces in this directory, so they are checked under the
+    // same rules — a template cannot reach the network either.
+    "../../content/templates/**/*.ts"
+  ]
+}

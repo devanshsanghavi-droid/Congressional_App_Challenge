@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "Carta",
+    "slug": "carta",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "carta",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/icon.png",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "com.devanshsanghavi.carta",
+      "icon": "./assets/expo.icon",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Carta uses the camera to photograph your benefit notices. Photos stay on this phone and are never uploaded."
+      }
+    },
+    "android": {
+      "package": "com.devanshsanghavi.carta",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.CAMERA", "android.permission.POST_NOTIFICATIONS"],
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-mlkit-ocr",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#208AEF",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Carta uses the camera to photograph your benefit notices. Photos stay on this phone and are never uploaded.",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#208AEF"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

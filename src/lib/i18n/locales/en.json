@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "Carta",
+    "tagline": "Never lose a benefit to paperwork."
+  },
+  "home": {
+    "title": "Your notices",
+    "emptyTitle": "No notices yet",
+    "emptyBody": "Take a photo of a letter about your benefits. Carta reads it and reminds you before the deadline.",
+    "emptyAction": "Photograph a notice"
+  },
+  "disclaimer": {
+    "notLegalAdvice": "Carta is not legal advice and never contacts any agency."
+  },
+  "dev": {
+    "title": "Build check",
+    "subtitle": "Phase 1 scaffold. This screen is replaced by the Home screen in Phase 3.",
+    "platform": "Platform",
+    "appVersion": "App version",
+    "locale": "Device language"
+  }
+}

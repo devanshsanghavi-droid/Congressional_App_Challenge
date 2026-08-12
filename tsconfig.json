@@ -1,0 +1,43 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+
+    // Indexing an array or record gives `T | undefined` rather than `T`. This
+    // matters more than usual here: almost everything downstream of OCR is
+    // "look up the Nth line" or "read this field by name" on data that may
+    // simply not be there. Without this flag those become silent `undefined`
+    // reads at runtime on a user's benefit deadline.
+    "noUncheckedIndexedAccess": true,
+
+    // `{ deadline?: number }` and `{ deadline: number | undefined }` stop being
+    // interchangeable. An absent deadline and a deadline we failed to read are
+    // different facts and the type system should keep them apart.
+    "exactOptionalPropertyTypes": true,
+
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+
+    // Needed for the Jest suites and the Node scripts under /tests and /tools.
+    // Note this is the *app* config — the extraction island deliberately sets
+    // "types": [] so none of these globals exist in there.
+    "types": ["node", "jest"],
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/assets/*": ["./assets/*"],
+      "@/content/*": ["./content/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "exclude": [
+    "node_modules",
+    // These are typechecked by their own tsconfig with a deliberately smaller
+    // set of globals. See src/extraction/tsconfig.json — the point is that
+    // `fetch` does not exist in there, and that is enforced by the compiler,
+    // not by a code review. Excluding them here keeps one authority per file.
+    "src/extraction",
+    "content/templates",
+    "tools"
+  ]
+}

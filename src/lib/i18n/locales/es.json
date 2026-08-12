@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "Carta",
+    "tagline": "Nunca pierda un beneficio por un trámite."
+  },
+  "home": {
+    "title": "Sus avisos",
+    "emptyTitle": "Aún no hay avisos",
+    "emptyBody": "Tome una foto de una carta sobre sus beneficios. Carta la lee y le recuerda antes de la fecha límite.",
+    "emptyAction": "Fotografiar un aviso"
+  },
+  "disclaimer": {
+    "notLegalAdvice": "Carta no es asesoría legal y nunca se comunica con ninguna agencia."
+  },
+  "dev": {
+    "title": "Verificación de compilación",
+    "subtitle": "Andamiaje de la Fase 1. Esta pantalla se reemplaza por la pantalla de inicio en la Fase 3.",
+    "platform": "Plataforma",
+    "appVersion": "Versión de la app",
+    "locale": "Idioma del dispositivo"
+  }
+}
