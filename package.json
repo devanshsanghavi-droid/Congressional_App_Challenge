@@ -21,7 +21,6 @@
     "react-dom": "19.2.3"
   },
   "dependencies": {
-    "@op-engineering/op-sqlite": "^17.2.0",
     "expo": "~57.0.12",
     "expo-camera": "~57.0.3",
     "expo-constants": "~57.0.10",
@@ -36,10 +35,12 @@
     "expo-router": "~57.0.12",
     "expo-secure-store": "~57.0.1",
     "expo-splash-screen": "~57.0.6",
+    "expo-sqlite": "~57.0.1",
     "expo-status-bar": "~57.0.1",
     "expo-symbols": "~57.0.2",
     "expo-system-ui": "~57.0.2",
     "i18next": "^26.3.6",
+    "llama.rn": "^0.12.9",
     "react": "19.2.3",
     "react-i18next": "^17.0.11",
     "react-native": "0.86.2",

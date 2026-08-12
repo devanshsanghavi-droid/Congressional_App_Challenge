@@ -4,8 +4,11 @@ Every third-party library in Carta, what it is for, and its licence. The
 Congressional App Challenge rules require documenting external tools, so this
 file is a submission deliverable, not just housekeeping.
 
-Versions are as installed on **2026-08-11** (Phase 1, Day 1). Runtime target is
-Expo SDK 57 / React Native 0.86.2 / React 19.2.3.
+Versions are as installed on **2026-08-11**. Runtime target is Expo SDK 57 /
+React Native 0.86.2 / React 19.2.3.
+
+*Revised 2026-08-11 for the v2 local-LLM-first re-scope: `@op-engineering/op-sqlite`
+removed, `expo-sqlite` and `llama.rn` added, the custom Apple Vision module cut.*
 
 **There are no paid services, no API keys, no backend, and no hosted inference
 anywhere in this list** — that is a product decision (SPEC.md §0), and it is why
@@ -42,22 +45,32 @@ library.
 |---|---|---|---|
 | `expo-camera` | 57.0.3 | MIT | Photographing notices. |
 | `expo-image-manipulator` | 57.0.9 | MIT | Resize and EXIF-rotate before OCR. Note: it cannot grayscale, adjust contrast, or deskew — see NOTES.md, 2026-08-11. |
-| `expo-mlkit-ocr` | 0.2.7 | MIT | Google ML Kit Text Recognition v2. Used as the **Android** OCR engine and as the **comparison arm** in the OCR bake-off. On iOS the app uses its own Apple Vision module instead (see below). |
+| `expo-mlkit-ocr` | 0.2.7 | MIT | Google ML Kit Text Recognition v2. **The OCR engine on both platforms.** Returns text with blocks, lines, words and bounding boxes. Used off the shelf: the user confirms every field, so its geometry is good enough. |
 
-**Not a dependency — written for this project:** the iOS OCR engine is a custom
-Expo module wrapping Apple's `VNRecognizeTextRequest` (Vision framework, part of
-iOS). It is written in Swift by the student, lives in `/modules`, and exists
-because none of the available OCR packages expose per-observation confidence,
-alternate candidates, custom vocabulary, or multi-language recognition — all of
-which the extraction cascade depends on. Reasoning and evidence in NOTES.md.
+*A custom Apple Vision native module was designed and then cut in the v2
+re-scope — see NOTES.md, 2026-08-11. It would have bought per-observation
+confidence, alternate candidates and custom vocabulary, none of which survive
+contact with a pipeline where a language model reads the text and the user
+confirms every field.*
 
 ## Storage and privacy
 
 | Package | Version | Licence | What it does here |
 |---|---|---|---|
-| `@op-engineering/op-sqlite` | 17.2.0 | MIT | SQLite with SQLCipher as a compilation target — the encrypted local database. All notice data lives here and nowhere else. |
+| `expo-sqlite` | 57.0.1 | MIT | The local database. All notice data lives here and nowhere else. Sensitive columns are encrypted at the field level with a key from `expo-secure-store` — SQLCipher was cut as unnecessary complexity for an equivalent privacy guarantee. |
 | `expo-secure-store` | 57.0.1 | MIT | Holds the database encryption key in the iOS Keychain / Android Keystore. |
 | `expo-file-system` | 57.0.2 | MIT | Reads and writes captured images inside the app sandbox. Never the camera roll. |
+
+## On-device inference
+
+| Package | Version | Licence | What it does here |
+|---|---|---|---|
+| `llama.rn` | 0.12.9 | MIT | React Native binding for llama.cpp. Runs Qwen2.5-1.5B-Instruct entirely on the phone with Metal acceleration. Supports **hand-written GBNF grammars**, which make schema-invalid JSON structurally impossible, and per-token streaming callbacks, which is what lets the explanation appear as it is generated. Pinned to the **stable** line: npm's `latest` tag points at a release candidate. |
+
+**Model (not an npm dependency):** Qwen2.5-1.5B-Instruct GGUF, Q4_K_M, ~1 GB,
+**Apache 2.0** — chosen partly because the licence is unambiguous, unlike Llama's.
+Downloaded on demand over wifi with a clear size warning, never bundled. Falls
+back to Qwen2.5-0.5B on devices where 1.5B is too slow.
 
 ## Product features
 
@@ -87,12 +100,9 @@ which the extraction cascade depends on. Reasoning and evidence in NOTES.md.
 
 ## Planned, not yet installed
 
-| Package | Phase | Why |
+| Package | Week | Why |
 |---|---|---|
-| `pdf-lib` | 1 (corpus generator) | Fills blank CDSS form PDFs with fictional data. Note it cannot rasterise — see NOTES.md. |
-| `pdfjs-dist` + `@napi-rs/canvas` | 1 (corpus generator) | Renders the filled PDF to PNG in pure Node, no system dependencies. |
-| `sharp` | 1 (corpus generator) | Image I/O and the non-projective distortions. The perspective warp is hand-written, because sharp does affine but not projective transforms. |
-| `llama.rn` | 4 (optional) | On-device llama.cpp for the optional Layer 3, with GBNF grammar-constrained JSON output. **Cut if not reliable by Oct 1.** Currently at a release candidate (`0.13.0-rc.0`), which is one reason it is not allowed to influence the SDK version choice. |
+| `pdf-lib` | 8 (test corpus) | Fills blank CDSS form PDFs with fictional data, which then get printed and photographed. **No rasteriser needed any more** — the v2 corpus is printed and photographed rather than synthetically distorted, so `pdfjs-dist`, `@napi-rs/canvas` and `sharp` are all no longer required. That is three dependencies removed by choosing the simpler method. |
 
 ## Deliberately not used
 
@@ -101,6 +111,8 @@ which the extraction cascade depends on. Reasoning and evidence in NOTES.md.
 | Any cloud OCR (Google Cloud Vision, AWS Textract, Azure) | SPEC §0 rule 1: notice content never touches the network. |
 | Any hosted LLM API (OpenAI, Anthropic, Google) | SPEC §0 rule 2. Optional local inference only. |
 | `react-native-mlkit-ocr` | Unmaintained (SPEC §3). |
-| `expo-ocr-kit` | Returns block-level bounding boxes only — no lines, no words — which makes Layer 1 spatial anchoring impossible. See NOTES.md, 2026-08-11. |
+| `expo-ocr-kit` | Returns block-level bounding boxes only — no lines, no words. See NOTES.md, 2026-08-11. |
+| `@op-engineering/op-sqlite` / SQLCipher | Cut in the v2 re-scope. `expo-sqlite` plus field-level encryption gives the same privacy guarantee where it matters, with far less build complexity. |
+| `pdfjs-dist`, `@napi-rs/canvas`, `sharp` | Cut with the synthetic-distortion corpus generator. The corpus is now printed and photographed. |
 | `react-native-web`, `react-dom` as a shipping target | SPEC §10 forbids a web version. `react-dom` is pinned via `overrides` purely because expo-router's dev tooling pulls it in transitively. |
 | Any analytics or crash-reporting SDK | SPEC §5 item 7. Events go to a local table for a user-visible debug screen. |

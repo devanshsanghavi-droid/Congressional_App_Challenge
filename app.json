@@ -25,7 +25,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "permissions": ["android.permission.CAMERA", "android.permission.POST_NOTIFICATIONS"],
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
       "blockedPermissions": [
         "android.permission.READ_MEDIA_IMAGES",
         "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -55,6 +58,14 @@
         "expo-notifications",
         {
           "color": "#208AEF"
+        }
+      ],
+      "expo-sqlite",
+      [
+        "llama.rn",
+        {
+          "enableEntitlements": true,
+          "entitlementsProfile": ["development", "preview", "production"]
         }
       ]
     ],

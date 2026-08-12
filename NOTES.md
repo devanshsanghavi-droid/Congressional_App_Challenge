@@ -428,3 +428,104 @@ Week 7:
 Revision codes (e.g. `SAR 7 (5/25)`) still to be recorded once the PDFs land.
 Template IDs get pinned to the revision they were built against, because a
 fingerprint written for one revision may not match the next.
+
+---
+
+## 2026-08-11 — v2 re-scope: local-LLM-first
+
+Direction change, decided by Devansh. SPEC.md and CLAUDE.md rewritten to match.
+
+### Why
+
+The original spec optimised for engineering rigor that no judge will see. The
+Congressional App Challenge is judged on a 1–3 minute video and six written
+answers, by a congressional office, on three criteria: quality of the idea, user
+experience and design, and coding skill. Nobody scores coordinate-space handling.
+From here, hours go into the app being **complete, polished, and moving to
+watch**.
+
+### Cut
+
+Custom Swift Vision module · the four-layer cascade · the Layer 0 template
+registry for six CDSS forms · the ML Kit vs Vision bake-off · the
+customWords × usesLanguageCorrection ablation · quad geometry and provenance /
+OS-build recording · SQLCipher · the homography perspective-warp corpus
+generator.
+
+Nothing had been built for any of these except the SQLCipher dependency, so the
+code cost of the reversal was one `npm uninstall`. The design work is recorded
+above and is not wasted — the Vision investigation is why we know ML Kit's
+geometry is adequate for a pipeline where the user confirms every field.
+
+### New architecture
+
+`photo → expo-mlkit-ocr → redact → deterministic pre-fill + region select →
+local LLM with GBNF-constrained JSON → sanity pass → user confirms → schedule`
+
+Working on any letter from any agency beats working on six specific California
+forms, as a product and as a demo.
+
+### Correction to the Day 1 note on llama.rn
+
+Day 1 recorded llama.rn as "only at a release candidate" and used that to keep
+it from influencing the SDK choice. **That was wrong.** npm's `latest` dist-tag
+points at `0.13.0-rc.0`, but a stable line ships alongside it: `0.12.9`,
+published 2026-08-04, with releases every 2–4 weeks and 82k downloads/month.
+Reading `dist-tags.latest` and concluding "this package is pre-release" is a
+mistake worth remembering — check the version list, not the tag.
+
+Pinned to `0.12.9` explicitly so `npm install` cannot pull the RC.
+
+### Verified before committing to the architecture
+
+From the published type definitions of `llama.rn@0.12.9`:
+
+- `grammar?: string` — raw **GBNF** accepted. Also `response_format:
+  { type: 'json_schema' }`, but a hand-written grammar is preferred: a JSON
+  schema cannot constrain a date to `\d{2}/\d{2}/\d{4}` at the token level, and
+  a grammar can. That makes a malformed date structurally impossible rather
+  than caught afterward, and it is unambiguously the student's own work.
+- `completion(params, callback)` with a per-token callback — streaming is real,
+  so "watch the model generate on-device" is an API, not a hope.
+- Ships an Expo config plugin.
+
+### Trap found in the llama.rn config plugin
+
+The plugin adds `com.apple.developer.kernel.increased-memory-limit` and
+`extended-virtual-addressing` **only when `EAS_BUILD_PROFILE` is `production`**
+(or `NODE_ENV=production`). Those entitlements are what allow an iOS app past
+the default per-process memory cap. A ~1 GB Q4_K_M model in a development build
+without them can be OOM-killed by the OS — and the obvious misdiagnosis is
+"the model is too big for the phone, downgrade to 0.5B."
+
+Configured `entitlementsProfile: ["development", "preview", "production"]` so
+development builds get them too. Recorded because if the week 1 latency gate had
+been run without this, it would have produced a wrong answer to the most
+important decision in the project.
+
+### Storage simplified
+
+`@op-engineering/op-sqlite` + SQLCipher → `expo-sqlite` + field-level encryption
+with a key in `expo-secure-store`. The privacy claim changes from "the database
+is encrypted" to "sensitive fields are encrypted", which is weaker but still
+true — and the README and video must say the accurate version.
+
+### Corpus simplified, three dependencies removed
+
+Printed-and-photographed (~20 images) instead of synthetic perspective warps.
+`pdf-lib` still fills the forms, but printing a filled PDF needs no rasteriser,
+so `pdfjs-dist`, `@napi-rs/canvas` and `sharp` are all no longer needed.
+
+### Kept, deliberately
+
+The extraction island rule, `no-network.test.ts`, and the authorship rules.
+They are cheap and they matter. Note the island still has real content under
+the new architecture: the GBNF grammar, the extraction schema, prompt
+construction, the redaction matcher, region selection, pre-fill heuristics and
+the sanity pass are all pure TypeScript and all the student's.
+
+### Open
+
+`TODO(verify)`: printer available for the corpus photographs? Asked twice, not
+yet answered. The README has to state whether the corpus was printed or
+photographed off a screen.
