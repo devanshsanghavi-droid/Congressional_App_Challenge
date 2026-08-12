@@ -29,6 +29,8 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" options={{ title: t('app.name') }} />
+        {/* Developer tool for the week 1 latency gate. Deleted before freeze. */}
+        <Stack.Screen name="bench" options={{ title: t('bench.title') }} />
       </Stack>
     </SafeAreaProvider>
   );

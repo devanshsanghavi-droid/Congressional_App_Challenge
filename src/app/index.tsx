@@ -1,5 +1,6 @@
-import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Constants from 'expo-constants';
+import { Link } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -44,6 +45,13 @@ export default function BuildCheckScreen() {
         ))}
       </View>
 
+      {/* Developer entry point for the week 1 latency gate. Removed before freeze. */}
+      <Link href="/bench" asChild>
+        <Pressable style={styles.devLink} accessibilityRole="button">
+          <Text style={styles.devLinkText}>{t('bench.title')}</Text>
+        </Pressable>
+      </Link>
+
       <Text style={styles.disclaimer}>{t('disclaimer.notLegalAdvice')}</Text>
     </ScrollView>
   );
@@ -59,4 +67,12 @@ const styles = StyleSheet.create({
   rowLabel: { fontSize: 16, flexShrink: 1 },
   rowValue: { fontSize: 16, fontVariant: ['tabular-nums'], flexShrink: 1, textAlign: 'right' },
   disclaimer: { fontSize: 16, lineHeight: 22, fontStyle: 'italic' },
+  devLink: {
+    minHeight: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#208AEF',
+  },
+  devLinkText: { fontSize: 16, fontWeight: '600', color: '#FFFFFF' },
 });

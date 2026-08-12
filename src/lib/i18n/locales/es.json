@@ -18,5 +18,22 @@
     "platform": "Plataforma",
     "appVersion": "Versión de la app",
     "locale": "Idioma del dispositivo"
+  },
+  "bench": {
+    "title": "Prueba del modelo",
+    "subtitle": "Medición de la semana 1. Descarga el modelo, ejecuta cuatro casos y genera una tabla para NOTES.md.",
+    "notDownloaded": "No descargado",
+    "downloaded": "Listo ({{size}})",
+    "download": "Descargar modelo",
+    "downloading": "Descargando… {{percent}}%",
+    "delete": "Eliminar modelo",
+    "run": "Ejecutar prueba",
+    "running": "Ejecutando…",
+    "copy": "Copiar resultados",
+    "copied": "Copiado",
+    "results": "Resultados",
+    "stream": "Salida en vivo",
+    "wifiWarning": "Esto descarga unos {{size}} por internet. Use Wi-Fi. Es la única vez que Carta usa la red — leer sus cartas nunca lo hace.",
+    "error": "Algo salió mal"
   }
 }
