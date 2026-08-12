@@ -14,6 +14,33 @@ Read `SPEC.md` before doing anything. This file is the short version of the rule
 6. **The user confirms every extraction before anything is scheduled.** No silent action on a machine reading of a legal document.
 7. **Never write captured images to the camera roll.** App sandbox only.
 
+## Carta is a deadline tracker, not a document explainer
+
+The defensible claim is that Carta **remembers and acts** — the reminder ladder,
+the checklist, months of persistence. Comprehension is commoditised; a chat
+session will explain a letter but will not wake someone at 9am five weeks later.
+
+Design consequence: **the countdown is the dominant element on Home and at the
+top of Notice Detail.** The plain-language explanation is the *trust mechanism*
+— it is how a user checks that the app read the letter correctly before
+believing the number — not the headline. Do not let the explanation take visual
+priority over the deadline anywhere.
+
+## "Worth checking" is a cross-reference, never a determination
+
+SPEC §2.1 shows adjacent programs after a notice is confirmed. Three rules,
+non-negotiable, because this feature sits next to the eligibility screening that
+§10 forbids:
+
+1. Population-level phrasing only — "people receiving X are often also eligible
+   for Y", never "you may qualify".
+2. Keyed on **program and county only**. Never household size, income, or age.
+   Filtering on an eligibility input turns a cross-reference into a
+   determination. If a feature needs to ask the user an eligibility question, it
+   has crossed the line.
+3. The public-charge myth-buster renders inline with the list, never behind a
+   link.
+
 ## The model does not invent legal rules
 
 Deadlines, appeal windows, and required documents come from what is printed on the letter plus the bundled content pack. If the model cannot find a value, **the field is empty and the user fills it in. Never fabricate a date.**

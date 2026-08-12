@@ -39,16 +39,58 @@ Maria, 34, San Jose. Two kids, two part-time jobs. CalFresh and Medi-Cal. Primar
 
 ## 2. What Carta does
 
+**Carta is a deadline tracker for government paperwork.** It is not a document
+explainer. That distinction drives every design decision below, and it is the
+answer to the only hard question this product faces — *"why not just paste the
+letter into ChatGPT?"*
+
+ChatGPT will explain a letter. It will not know, five weeks later, at 9am, that
+your SAR 7 is due on Thursday and you still have not attached a pay stub. **The
+defensible claim is that Carta remembers and acts.** Comprehension is
+commoditised; persistence is not.
+
 | # | Capability | Description |
 |---|---|---|
-| **1** | **Capture & Understand** | Photograph **any** government letter. On-device OCR plus a local language model extract program, agency, action type, dates, deadline, and required documents. |
-| **2** | **Decode** | A plain-language explanation at ~5th-grade reading level, English or Spanish, generated on-device and streamed as it is written: *What this says / What you must do / By when / How to appeal.* |
-| **3** | **Guard** | Escalating local reminders (T-30/14/7/3/1/day-of), a per-notice document checklist, and an encrypted local vault of recurring proof documents. |
-| **4** | **Deliver** | A small offline directory of where to submit, hours, languages, and what to bring. |
+| **1** | **Guard — the product** | Escalating local reminders (T-30/14/7/3/1/day-of), a separate urgent clock for the appeal window, a per-notice document checklist, and an encrypted vault of recurring proof documents. Months of memory, on a phone, offline. |
+| **2** | **Capture** | Photograph **any** government letter. On-device OCR plus a local language model find the program, agency, action type, dates, deadline, and required documents — so the user never types a date. |
+| **3** | **Decode — the trust mechanism** | A plain-language explanation at ~5th-grade reading level, English or Spanish, generated on-device and streamed as it is written. **Supporting, not headline.** A countdown saying "12 days" is only worth anything if the user believes the app read the letter correctly; the explanation is how they check. That is a smaller role than "AI explains your letter" but it is load-bearing. |
+| **4** | **Deliver** | Where to submit, and what else is worth checking (§2.1). |
 
 ### Why "any letter" and not "six California forms"
 
 The original spec built a template registry for six specific CDSS forms. That approach only ever works on documents someone anticipated. A local model working from OCR text handles an SSA letter, a HUD notice, a county letter, or a form revised last month — with no new code. **"Point it at any government letter" is both a better product and a better demo than "point it at a SAR 7."**
+
+### 2.1 Worth checking — the access half
+
+Carta is a retention product. The district's brief is about helping residents
+**access** benefits and services, and retention alone is silent on that. This
+closes the gap for a few days of work, without becoming the eligibility-screener
+that §10 forbids and that every other entry will build.
+
+After a notice is confirmed, Carta knows the **program** and the **county**. It
+shows a short curated list from bundled static JSON: *"People receiving CalFresh
+in Santa Clara County are often also eligible for WIC."* Each entry carries a
+plain-language note, a source, a `verifiedOn` date, and a link to the real
+application.
+
+**Three constraints keep this on the right side of §10. They are not optional.**
+
+1. **It is a statement about a population, never about this user.** "People
+   receiving CalFresh are often also eligible for…" — never "You may qualify."
+   Carta does not know whether this household qualifies and must never imply it
+   does.
+2. **Keyed on program and county only. Never household size, income, or age.**
+   The moment the list is filtered on an eligibility input, it stops being a
+   cross-reference and becomes a determination — which is screening, which is
+   forbidden. This constraint is the whole reason the feature is safe, and it
+   costs nothing: program plus county is enough to be useful.
+3. **The public-charge myth-buster renders inline with the list, not behind a
+   link.** Suggesting additional programs to a mixed-status household is exactly
+   where fear does its damage (§5.9). If the list is on screen, the reassurance
+   is on screen.
+
+Every entry is sourced and dated like the office directory (§11). Never invent a
+program, an eligibility rule, or an application URL.
 
 ### The three things that will win it
 
@@ -77,7 +119,7 @@ The original spec built a template registry for six specific CDSS forms. That ap
 | State | Zustand | Keep it boring. |
 | Testing | Jest + `@testing-library/react-native` | Two projects: bare Node and jest-expo. Plus the gates in §8. |
 
-**Static bundled data (no server):** program metadata, explanation content, document types, office directory — versioned JSON in `/content`.
+**Static bundled data (no server):** program metadata, explanation content, document types, office directory, and the "worth checking" program cross-reference (§2.1) — versioned JSON in `/content`, every record sourced and carrying a `verifiedOn` date.
 
 ---
 
@@ -226,10 +268,10 @@ On confirmation, schedule from `deadline_date`: **T-30, T-14, T-7, T-3, T-1, day
 
 | Priority | Screen | Purpose |
 |---|---|---|
-| **Core** | **Home** | One card per tracked benefit. Largest element is the countdown to the nearest deadline. Green >14d, amber 3–14d, red <3d. The video opens here — make it good. |
+| **Core** | **Home** | **The countdown is the screen.** One card per tracked benefit, and the dominant visual element by a wide margin is the days remaining on the nearest deadline — not the program name, not the notice text. Green >14d, amber 3–14d, red <3d. If a stranger sees this screen for two seconds they should come away with a number and a colour. The video opens here. |
 | **Core** | **Capture** | Camera with framing guide, torch, multi-page, and a live "text detected ✓" indicator so the user knows the shot is good before leaving the screen. |
 | **Core** | **Review** | Every field editable, confidence shown, AI-read fields distinct. Tap a field to highlight where it came from on the photo. Low-confidence fields pre-focused. |
-| **Core** | **Notice Detail** | Four sections — **What this says · What you must do · By when · How to appeal** — streamed from the local model. Language toggle. Original photo and original text one tap away. |
+| **Core** | **Notice Detail** | **Opens with the deadline and the action**, not with prose. Order is: the countdown and what must be done, then the checklist state, then the explanation — **What this says · What you must do · By when · How to appeal** — streamed from the local model. Then "worth checking" (§2.1) at the bottom. Language toggle. Original photo and original text one tap away, always. |
 | 5 | Checklist | Required documents. Attach from vault, capture new, or mark N/A. Progress ring. "You're ready" state. |
 | 6 | Settings | Language, reminder timing, model download/delete, privacy explainer, **Delete everything**. *If cut back: language + model + delete only.* |
 | 7 | Vault | Recurring documents grouped by type, with staleness warnings ("this pay stub is 47 days old"). |
@@ -247,7 +289,7 @@ On confirmation, schedule from `deadline_date`: **T-30, T-14, T-7, T-3, T-1, day
 ### 8.1 Test corpus — ~20 photographs
 Fill blank public forms with **fictional** data, render, print, and photograph ~20 under varied lighting and angles with the demo phone. Commit the images plus expected-extraction JSON. **Never use a real person's notice.**
 
-`TODO(verify): printer available? If not, photographing a screen is acceptable but the README must say which was done — screen capture has glare and moiré that print does not.`
+Confirmed 2026-08-11: **printing** on a school/library printer, ~20 pages. The README states the corpus was printed and photographed, not captured off a screen.
 
 ### 8.2 Extraction metrics
 Per field: precision/recall against the corpus, for both the deterministic-only path and the model path. Print a table in CI and put it in the README. Quantified self-evaluation is rare in high-school submissions and reads as real engineering.
@@ -277,7 +319,7 @@ Solo. Sequenced so the app is end-to-end early and every later week makes it **b
 | **2** | Aug 18–24 | Thin spine, ugly but real: photo → OCR → redact → pre-fill → extract → confirm → save → one reminder fires. | End-to-end works once |
 | **3** | Aug 25–31 | Home + Notice Detail with **streamed** explanation. | Looks like a product |
 | **4** | Sep 1–7 | Checklist + Vault. Full reminder ladder + appeal urgent tier. | **Demoable end-to-end** |
-| **5** | Sep 8–14 | Where to Go + Settings + Delete Everything + onboarding. | All screens exist |
+| **5** | Sep 8–14 | "Worth checking" (§2.1) as a **section on Notice Detail**, not a screen. Settings + Delete Everything + onboarding. Where to Go if time allows. | All screens exist |
 | **6** | Sep 15–21 | **Design pass.** One visual language; every empty/loading/error state real. | **🎬 Film a full rehearsal video and watch it** |
 | **7** | Sep 22–28 | Spanish QA, accessibility pass, readability gate in CI. | Both languages complete |
 | **8** | Sep 29–Oct 5 | Corpus photographs, measure, fix the worst failures. | Metrics table real |
@@ -295,7 +337,7 @@ Solo. Sequenced so the app is end-to-end early and every later week makes it **b
 
 - ❌ Any backend, account system, or cloud sync
 - ❌ Auto-filling or auto-submitting government forms
-- ❌ Eligibility screening — a different app, and what everyone else is building
+- ❌ **Eligibility screening** — a different app, and what everyone else is building. The line against §2.1: a curated list keyed on *program and county* is a cross-reference. The same list filtered on *household size, income, or age* is a determination. Cross-references are allowed; determinations are not. If a feature ever needs to ask the user an eligibility question, it has crossed the line.
 - ❌ A chatbot interface
 - ❌ Multi-user / household sharing
 - ❌ Languages beyond English and Spanish
@@ -318,6 +360,9 @@ Solo. Sequenced so the app is end-to-end early and every later week makes it **b
 | **Explanation states something untrue** | Five guardrails in §4, including the date self-check, all visible in the UI. |
 | Aid-paid-pending window stated incorrectly | The highest-stakes number in the app. Source it, cite it, pair every instance with "confirm with your county — this is not legal advice." |
 | Where-to-Go data wrong or stale | ~10 records, each with a `verifiedOn` date and a "call to confirm" line in the UI. Never invented. |
+| **"Why not just use ChatGPT?"** | The honest answer is that comprehension is commoditised and persistence is not. The product is reframed around the deadline, the reminder ladder, and months of memory — the things a chat session cannot do. Explanation is demoted to the trust mechanism (§2). |
+| **§2.1 drifts into eligibility screening** | Hard constraints in §2.1: population-level phrasing only, keyed on program and county only, never an eligibility input. Reviewed against §10 before shipping. |
+| **§2.1 causes harm to a mixed-status household** | Public-charge myth-buster renders inline with the list, never behind a link (§5.9). |
 | Scope overrun | Cut order in §7 is decided in advance. |
 
 **Ethical guardrails:** a persistent, non-dismissible disclaimer that Carta is not legal advice and never contacts any agency; always show the original document alongside any interpretation; never tell a user they are ineligible; when confidence is low, say so plainly rather than guessing.
@@ -336,7 +381,7 @@ Required by the rules: participant name, app name, purpose in **one sentence**, 
 |---|---|
 | 0:00–0:15 | Name, app name. *"Carta reads government benefit letters and makes sure you never lose your benefits to a missed deadline."* Audience. |
 | 0:15–0:35 | The problem: most people who lose these benefits are **still eligible** — they got dropped for paperwork. Show a real form and let the density speak. |
-| 0:35–1:45 | Live demo on the iPhone, **airplane mode visible in the status bar throughout**: photograph → fields extracted → confirm → tap Explain → **watch the model generate on-device** → Spanish toggle → checklist → reminder scheduled. |
+| 0:35–1:45 | Live demo on the iPhone, **airplane mode visible in the status bar throughout**. Open on Home with a red countdown already running — the app has been remembering for weeks. Then: photograph a new letter → fields fill instantly from the regex pass and **visibly sharpen** as the model refines them → confirm → **the new countdown appears and the reminder ladder is scheduled** → tap Explain and watch the model generate on-device (the trust beat) → Spanish toggle → checklist. |
 | 1:45–2:10 | Architecture. Say "React Native, TypeScript, llama.cpp, Qwen2.5, GBNF grammar-constrained decoding" out loud. Show `no-network.test.ts` going green. "Zero servers, zero cost, zero data collected." |
 | 2:10–2:30 | Metrics table. Close: *"The problem was never eligibility. It was the mail."* |
 
@@ -376,7 +421,6 @@ Using Claude Code is allowed. Handing it the whole build is not.
 
 ## 14. Open items
 
-- `TODO(verify)`: printer available for the corpus photographs? (§8.1)
 - `TODO(verify)`: current CDSS guidance for the appeal window and the aid-paid-pending deadline. Never ship a number without an opened source.
 - Blank forms to be downloaded into `/tools/forms/` — see `tools/forms/SOURCES.md`. The agent cannot reach `cdss.ca.gov` or `dhcs.ca.gov`; this is a manual step.
 - Where-to-Go records to be collected and dated (~10, an afternoon).
