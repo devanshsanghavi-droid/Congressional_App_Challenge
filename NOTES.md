@@ -55,16 +55,29 @@ Three findings, in order of how much they changed the plan:
    cannot express "this label sits to the left of this value". Layer 1 would
    have been dead on arrival. The spec has been corrected.
 
-2. **No package on the list gives you Apple Vision on an actual iPhone.**
-   `expo-mlkit-ocr` advertises a Vision fallback, but reading
-   `ios/ExpoMlkitOcrModule.swift` shows it is a *compile-time* switch —
-   `#if canImport(MLKitTextRecognition) … #else` Vision `#endif`. Vision only
-   runs when ML Kit cannot be linked, i.e. on the arm64 iOS Simulator. So the
-   simulator would run Vision and the phone would run ML Kit: two different
-   engines, different line segmentation, different text. Every accuracy number
-   we measured would have been measured against an engine we do not ship. For a
-   project whose headline artifact is an extraction metrics table, that is a
-   hole in the methodology, not just an inconvenience.
+2. **Which engine `expo-mlkit-ocr` runs on iOS is decided at compile time by a
+   config flag, and it is easy to be wrong about which one you are measuring.**
+   Reading `ios/ExpoMlkitOcrModule.swift`, the engine choice is
+   `#if canImport(MLKitTextRecognition) … #else` Vision `#endif` — a
+   *compile-time* switch, not a runtime fallback, because Google's ML Kit
+   CocoaPods ship no arm64 iOS Simulator slices.
+
+   *Refined after actually running `expo prebuild` on Day 1:* the package's
+   config plugin defaults to `iosEngine: "auto"`, which resolves to **ML Kit
+   disabled**. `Podfile.lock` confirms it — zero ML Kit pods in the project.
+   So out of the box on iOS this package is Apple Vision on both simulator and
+   device, and you only get ML Kit by explicitly setting `iosEngine: "mlkit"`,
+   which then will not link on an arm64 simulator at all.
+
+   Either way the methodology problem is real: which recogniser produced a
+   given accuracy number depends on a plugin flag, and on the Vision branch the
+   package collapses every line into a **single block** (it unions all the line
+   rectangles), so block-level structure is meaningless there. For a project
+   whose headline artifact is an extraction metrics table, that is a hole in
+   the methodology, not an inconvenience.
+
+   Consequence for the bake-off: a genuine Vision-vs-ML-Kit comparison has to
+   run ML Kit on the physical iPhone or on Android, never on the simulator.
 
 3. **All three wrappers discard signal the OS hands them for free.** ML Kit
    exposes `cornerPoints` and `recognizedLanguage`; Vision exposes per-
@@ -175,7 +188,7 @@ matcher; Claude writes the adversarial test suite and the disk-inspection
 harness independently, so the tests are not written by the author of the code
 they are testing.
 
-### Open — carried into Day 1
+### Open — carried into Day 1 *(originally logged Day 0)*
 
 - Blank CDSS/DHCS forms to be downloaded into `/tools/forms/` with the revision
   code printed on each one recorded here (`cdss.ca.gov` is not reachable from
@@ -184,3 +197,189 @@ they are testing.
   values at measured coordinates instead of filling fields — which is the
   better outcome, because it yields exact pixel-level ground truth for every
   value and lets Layer 1 be scored geometrically rather than by string match.
+
+---
+
+## 2026-08-11 — Phase 1, Day 1: scaffold
+
+Expo SDK 57.0.12 / React Native 0.86.2 / React 19.2.3, TypeScript strict,
+expo-router, expo-dev-client. Not Expo Go — the app links native modules Expo
+Go does not contain.
+
+### Decision: SDK 57 confirmed, no fallback to 56 needed
+
+The fallback was gated on `@op-engineering/op-sqlite` only. It installed and
+its pod resolved on SDK 57 without complaint, so we stay on 57. `llama.rn` was
+deliberately excluded from this decision: it is Phase 4, explicitly cuttable by
+the Oct 1 decision point, and currently only a release candidate. A dependency
+that may never ship does not get to pick the SDK for the whole app.
+
+### Decision: web target dropped
+
+SPEC §10 forbids a web version, so `react-native-web` and `react-dom` are not
+shipping dependencies. This turned out to have a small cost: expo-router's dev
+tooling pulls `react-dom` in transitively, and left alone npm resolves it to a
+version demanding a newer React than RN 0.86.2 ships with. Resolved with an
+`overrides` pin rather than by re-adding the web target.
+
+Also dropped from the default template: `@expo/ui` and `expo-glass-effect`
+(experimental, heavy, unused) and `expo-font` (system fonts are the right
+choice anyway, because Dynamic Type support is an accessibility requirement).
+
+### Native modules installed up front, on purpose
+
+Every native module for Phases 1–3 was installed in one pass — camera, image
+manipulator, file system, secure store, notifications, localization, op-sqlite,
+expo-mlkit-ocr — even though most are not used yet. Reason: with a dev client,
+adding a native module later means a new native build. One build now beats four
+builds spread across September. `llama.rn` is the deliberate exception.
+
+**SQLCipher is intentionally not enabled yet.** Flipping op-sqlite to its
+SQLCipher compilation target changes the native build, and the Day 1 deliverable
+is a working dev client on the phone. Enabling it belongs inside the two-day
+SQLCipher timebox (Phase 1d), where its rebuild risk is budgeted for.
+
+### The extraction island, and what actually enforces it
+
+CLAUDE.md requires `/src/extraction` to be pure TypeScript that runs in plain
+Node. Three mechanisms now enforce that:
+
+1. `src/extraction/tsconfig.json` — `"lib": ["ES2022"]`, `"types": []`
+2. `eslint.config.js` — bans platform and Node imports in that directory
+3. `tests/node/extraction-island.test.ts` — reads the bytes on disk
+
+**These were probed rather than assumed, and the probe changed the design.**
+Writing a deliberate violation into the directory and running all three
+revealed:
+
+- **The tsconfig alone does not block the network.** A bare `fetch` correctly
+  fails with `TS2304: Cannot find name 'fetch'` — but add
+  `import type { ViewProps } from 'react-native'` to the same file and the
+  error *disappears*, because React Native's type definitions re-declare `fetch`
+  globally. So mechanism 1 only holds while mechanism 2 does. They are a pair,
+  not redundant copies.
+- **The guard test had a bug that made it useless for imports.** It blanked
+  string literals before scanning for import specifiers, which turned
+  `from 'react-native'` into `from ''` — so it passed a file that plainly
+  imported React Native. The import scan and the global scan need different
+  preprocessing; they are separate functions now.
+
+Both are recorded because "we wrote three checks" is worth nothing next to "we
+tested the three checks and two of them were wrong."
+
+### i18n on day one, not week seven
+
+English and Spanish wired before any screen was written, per the Day 0 decision
+to build bilingual from the start. Strings are statically imported and bundled,
+with no i18next HTTP backend — the app is fully translated in airplane mode
+because the translations were never remote.
+
+### Camera roll blocked at the manifest level
+
+CLAUDE.md rule 6 says captured images must never reach the camera roll. Rather
+than relying on never calling MediaLibrary, `app.json` adds Android
+`blockedPermissions` for `READ_MEDIA_IMAGES`, `READ_EXTERNAL_STORAGE` and
+`WRITE_EXTERNAL_STORAGE`, so a transitive dependency cannot request them either.
+On iOS the equivalent is simply never declaring an `NSPhotoLibrary*` usage
+string, which the OS treats as a hard denial.
+
+Also removed `ITSAppUsesNonExemptEncryption: false` from the template config.
+We bundle SQLCipher, i.e. AES, so asserting "no non-exempt encryption" is a
+claim we have not verified. It only matters for App Store submission, which is
+not a goal (SPEC §12), so the honest move is to not assert it. Revisit with a
+`TODO(verify)` if TestFlight ever becomes relevant.
+
+### Broke and fixed: iOS build
+
+First build attempt was run with its output piped to `tail`, which killed
+`xcodebuild` with SIGPIPE partway through the "Build ExpoModulesJSI xcframework"
+step. That left a 174 MB corrupted build cache at
+`node_modules/expo-modules-jsi/apple/.DerivedData`, and every subsequent build
+failed inside Expo's own Swift source:
+
+```
+JavaScriptCodable+Date.swift:53:50
+  guard milliseconds.isFinite, abs(milliseconds) <= maxJavaScriptDateMilliseconds
+  type of expression is ambiguous without a type annotation
+```
+
+That reads like an Xcode 26.2 / Swift 6.2.3 incompatibility with SDK 57, which
+would have been a serious problem — it would have meant downgrading Xcode or
+the SDK in week 1. Before acting on that theory it was tested directly: the
+exact function was extracted into a standalone file and `swiftc -typecheck`
+compiled it without complaint. So the compiler was fine and the cache was not.
+Deleting the two DerivedData directories fixed it.
+
+Lesson, recorded because it will happen again: **never pipe a native build
+through `tail` or `head`.** The pipe closes, the builder dies mid-write, and the
+resulting corruption surfaces later as an error message that points at somebody
+else's source code. Redirect to a file and read the file.
+
+### Broke and fixed: Expo SDK 57 does not compile under Xcode 26.2
+
+The real Day 1 blocker, and the first entry here that is a genuine upstream bug
+rather than our own mistake.
+
+**Symptom.** Every iOS build failed inside Expo's own Swift source:
+
+```
+node_modules/expo-modules-jsi/apple/Sources/ExpoModulesJSI/Coding/JavaScriptCodable+Date.swift:53:50
+  guard milliseconds.isFinite, abs(milliseconds) <= maxJavaScriptDateMilliseconds
+  error: type of expression is ambiguous without a type annotation
+```
+
+Both operands are `Double`. That should be trivially inferable, which is what
+made it worth investigating instead of guessing.
+
+**How it was narrowed down.** Four steps, each one ruling out a hypothesis:
+
+1. Extracted the function into a standalone file and ran `swiftc -typecheck`.
+   It compiled. So the compiler was not simply broken, and it was not the code
+   in isolation.
+2. Suspected a corrupted build cache — an earlier build had been killed by
+   SIGPIPE mid-xcframework-build, leaving 174 MB in
+   `node_modules/expo-modules-jsi/apple/.DerivedData`. Deleted it and every
+   other DerivedData directory. **Still failed.** Hypothesis wrong; recorded
+   because a wrong-but-plausible theory is worth the same as a right one when
+   the next person reads this.
+3. Checked npm for a fixed release. `expo-modules-jsi` is at 57.0.4, which is
+   what was installed. No upstream fix exists.
+4. Ran the failing build step directly
+   (`expo-modules-jsi/apple/scripts/build-xcframework.sh`) to get the exact
+   `swift-frontend` invocation, and read the flags. The one that matters:
+
+   ```
+   -swift-version 6  -cxx-interoperability-mode=default
+   ```
+
+**Root cause.** ExpoModulesJSI compiles with C++ interop enabled, because it
+bridges to JSI. C++ interop makes C's `abs` family (`abs(Int32)`, `fabs`, …)
+visible to Swift alongside Swift's own generic `abs<T: SignedNumeric>`. Under
+Swift 6 language mode the resulting overload set is ambiguous for a `Double`
+argument. Confirmed with an 8-line reproduction: the same expression compiles
+under `-swift-version 6` alone and fails the moment
+`-cxx-interoperability-mode=default` is added.
+
+**Fix.** `abs(milliseconds)` → `milliseconds.magnitude`. For a `Double` these
+are exactly equivalent (`magnitude` is `Double`'s own `Numeric` requirement),
+and it is a property lookup rather than a free-function call, so there is no
+overload set to be ambiguous about. Verified in the reproduction first, then in
+the real xcframework build, which then succeeded in 19s.
+
+**Made durable.** A one-line edit inside `node_modules` survives exactly until
+the next `npm install`, so it is checked in as
+`patches/expo-modules-jsi+57.0.4.patch` and reapplied by `patch-package` from a
+`postinstall` hook. The first generated patch was 15 MB because the build script
+writes its intermediates *inside* `node_modules`; the generated directories were
+deleted and the patch regenerated at 1.4 KB containing only the source change.
+
+**When to remove this.** The moment `expo-modules-jsi` ships a version that
+fixes it upstream. `patch-package` fails loudly if the target file has changed,
+so an SDK bump cannot silently drop the fix — it will stop the install instead.
+
+**Why this is worth writing down at length.** It is the first thing in this
+project that looked like "the toolchain is broken, downgrade Xcode or drop to
+SDK 56" — a decision that would have cost days in week 1 and constrained
+everything after it. The actual fix is one word. The difference between those
+two outcomes was reproducing the failure in isolation before acting on the
+first plausible theory.
