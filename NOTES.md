@@ -529,3 +529,57 @@ the sanity pass are all pure TypeScript and all the student's.
 `TODO(verify)`: printer available for the corpus photographs? Asked twice, not
 yet answered. The README has to state whether the corpus was printed or
 photographed off a screen.
+
+### Week 1 — benchmark harness built and verified; numbers still pending
+
+Harness is in and proven to build and bundle. The measurements themselves need
+the physical iPhone: the simulator runs on the Mac's CPU and would say nothing
+about Metal performance on a phone.
+
+Verified on the simulator build:
+
+- `llama-rn (0.12.9)` links and compiles — **0 errors**, `Build Succeeded`.
+- The app bundle resolves the whole benchmark path (`initLlama`, the fixtures,
+  the GBNF grammar all present in a 5.9 MB dev bundle), so nothing is broken on
+  the JS side either.
+
+**Second finding on the memory entitlements — the first fix did not work.**
+Day 1's note recorded configuring `entitlementsProfile` to cover development
+builds. Checking the *generated* `ios/Carta/Carta.entitlements` after prebuild
+showed the entitlements were **absent**: the plugin gates on
+`process.env.EAS_BUILD_PROFILE`, which local `expo prebuild` never sets, so no
+value of that option can help a local build.
+
+Now declared directly in `app.json` under `ios.entitlements`, and verified
+present in the generated file:
+
+```
+com.apple.developer.kernel.increased-memory-limit      true
+com.apple.developer.kernel.extended-virtual-addressing true
+```
+
+Worth recording as a general lesson: **configuring a thing is not the same as
+verifying the thing happened.** The config looked right and was wrong, and only
+reading the generated artifact caught it. Same failure shape as the Day 1
+extraction-island probe.
+
+### What the four benchmark cases are for
+
+Designed so the *differences between them* are the answers, not the absolute
+numbers:
+
+| Case | Reads on its own | What its delta answers |
+|---|---|---|
+| `extraction-grammar` | The real extraction call | Decides 1.5B vs 0.5B |
+| `extraction-free` | Same prompt, no grammar | vs grammar: cost of constrained decoding, and whether free output is even valid JSON |
+| `explanation-stream` | 400-token generation | How the streamed explanation feels; this is the video shot |
+| `extraction-short` | Quarter of the page | vs full page: prices region-selection **before** it is built |
+
+Timings come from llama.cpp's own `timings` field rather than wall-clock timers
+around the call, so prefill and generation are separated instead of smeared
+together. Prefill is the number region-selection attacks; generation is the one
+that governs how the demo feels.
+
+The fixture is a full fictional one-page CalFresh notice rather than a toy
+prompt, because prompt tokens dominate cost and a three-line prompt would
+produce a flattering number that predicts nothing.
