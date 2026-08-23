@@ -45,7 +45,7 @@ library.
 |---|---|---|---|
 | `expo-camera` | 57.0.3 | MIT | Photographing notices. |
 | `expo-image-manipulator` | 57.0.9 | MIT | Resize and EXIF-rotate before OCR. Note: it cannot grayscale, adjust contrast, or deskew — see NOTES.md, 2026-08-11. |
-| `expo-mlkit-ocr` | 0.2.7 | MIT | Google ML Kit Text Recognition v2. **The OCR engine on both platforms.** Returns text with blocks, lines, words and bounding boxes. Used off the shelf: the user confirms every field, so its geometry is good enough. |
+| `expo-mlkit-ocr` | 0.2.7 | MIT | The OCR module. Returns text with blocks, lines, words and bounding boxes; used off the shelf, since the user confirms every field. **The name is not the engine.** On Android it is Google ML Kit Text Recognition v2 (`com.google.mlkit:text-recognition:16.0.1`). On iOS, at the plugin's default `iosEngine: "auto"`, it installs no ML Kit pod and compiles Apple Vision instead — verified in `ios/Podfile.lock`, the podspec's `EXPO_MLKIT_OCR_DISABLE_MLKIT` switch, `plugins/withMlkitSimulatorArm64Fix.js`, and the `#if canImport` in the module source. Since iOS is the primary target, **the shipping recogniser on the demo phone is Apple Vision.** |
 
 *A custom Apple Vision native module was designed and then cut in the v2
 re-scope — see NOTES.md, 2026-08-11. It would have bought per-observation
@@ -59,6 +59,8 @@ confirms every field.*
 |---|---|---|---|
 | `expo-sqlite` | 57.0.1 | MIT | The local database. All notice data lives here and nowhere else. Sensitive columns are encrypted at the field level with a key from `expo-secure-store` — SQLCipher was cut as unnecessary complexity for an equivalent privacy guarantee. |
 | `expo-secure-store` | 57.0.1 | MIT | Holds the database encryption key in the iOS Keychain / Android Keystore. |
+| `expo-crypto` | 57.0.1 | MIT | CSPRNG and SHA-256. Generates the AES key and the per-install case-number salt, and hashes case numbers so the number itself is never stored (CLAUDE.md §3 rule 5). Digest and random only — it has no cipher. |
+| `@noble/ciphers` | 2.3.0 | MIT | AES-256-GCM for field-level encryption of notice text. Audited, zero dependencies, pure JS, so it runs under Hermes with no native module. Authenticated: a tampered ciphertext throws rather than decrypting to plausible garbage. Chosen over hand-rolling AES, and over SQLCipher which was cut in the v2 re-scope. |
 | `expo-file-system` | 57.0.2 | MIT | Reads and writes captured images inside the app sandbox. Never the camera roll. |
 
 ## On-device inference
@@ -98,6 +100,14 @@ back to Qwen2.5-0.5B on devices where 1.5B is too slow.
 | `@babel/preset-typescript` | 7.x | MIT | Strips types for the bare-Node Jest project. Used instead of `babel-preset-expo` there because none of that code is React Native. |
 | `@babel/plugin-transform-modules-commonjs` | 7.x | MIT | ESM to CommonJS for the same project. |
 
+## Not npm packages, but part of the build
+
+| Tool | Where | Why |
+|---|---|---|
+| **Apple Vision** (`swiftc`, macOS SDK) | `tools/metrics/ocr/vision-ocr.swift` | Produces the corpus OCR text layer so the metrics harness can run in bare Node. **This turns out to be the same engine family the iOS app uses** — `expo-mlkit-ocr` installs no ML Kit pod at its default `iosEngine: "auto"` and compiles the Vision path instead (verified in `Podfile.lock`, the podspec, the config plugin and the module source). It ships in no build, touches no notice data, and its output is a committed cache, so a machine without Xcode can still run `npm run metrics`. See `tools/metrics/README.md`. |
+| **Node 24 type stripping** | `tools/metrics/*.ts` | The harness is TypeScript run directly by Node, with no transpiler and no new dependency. `tools/tsconfig.json` sets `erasableSyntaxOnly` so a construct Node cannot strip becomes a compile error rather than a runtime one. |
+| `numpy`, `Pillow`, `reportlab` (Python) | `tools/corpus/tools/*.py` | Generated the corpus PDFs and the synthetic degradations. Run once, by hand, off the build path — the outputs are committed, so nobody needs these installed to build or test Carta. |
+
 ## Planned, not yet installed
 
 | Package | Week | Why |
@@ -116,3 +126,5 @@ back to Qwen2.5-0.5B on devices where 1.5B is too slow.
 | `pdfjs-dist`, `@napi-rs/canvas`, `sharp` | Cut with the synthetic-distortion corpus generator. The corpus is now printed and photographed. |
 | `react-native-web`, `react-dom` as a shipping target | SPEC §10 forbids a web version. `react-dom` is pinned via `overrides` purely because expo-router's dev tooling pulls it in transitively. |
 | Any analytics or crash-reporting SDK | SPEC §5 item 7. Events go to a local table for a user-visible debug screen. |
+| A JS OCR engine (`tesseract.js`) for the harness | Would give the harness a portable text layer, but a different and markedly worse recogniser than either shipping engine — the numbers would measure Tesseract, not Carta. Apple Vision at least sits in the same class as ML Kit, and the cache keeps the harness portable anyway. |
+| `ts-node` / `tsx` for the harness | Node 24 runs TypeScript directly. A transpiler dependency to run four scripts is not worth it. |

@@ -1,0 +1,248 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7es-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1686,
+        "x": 0.0814,
+        "y": 0.0436
+      },
+      "confidence": 0.5,
+      "text": "STATE OF CALIFORNA"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.32364,
+        "x": 0.0814,
+        "y": 0.05814
+      },
+      "confidence": 1,
+      "text": "AGENCIA DE SALVO Y SERVICIOS HUMANOS"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.17054,
+        "x": 0.0814,
+        "y": 0.07105
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.45543,
+        "x": 0.0814,
+        "y": 0.11192
+      },
+      "confidence": 1,
+      "text": "INFORME SEMESTRAL DE ELEGIBILIDAD"
+    },
+    {
+      "box": {
+        "h": 0.01606,
+        "w": 0.17636,
+        "x": 0.0814,
+        "y": 0.13663
+      },
+      "confidence": 0.3,
+      "text": "Caffresh / CarNoRka"
+    },
+    {
+      "box": {
+        "h": 0.01458,
+        "w": 0.15891,
+        "x": 0.0814,
+        "y": 0.17873
+      },
+      "confidence": 1,
+      "text": "CARMEN DELGADO"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.23062,
+        "x": 0.0814,
+        "y": 0.19329
+      },
+      "confidence": 0.5,
+      "text": "1902 ALUM ROCK AVE APT 7"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.16667,
+        "x": 0.0814,
+        "y": 0.20918
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95116"
+    },
+    {
+      "box": {
+        "h": 0.01901,
+        "w": 0.55426,
+        "x": 0.0814,
+        "y": 0.24709
+      },
+      "confidence": 1,
+      "text": "DEBE COMPLETAR, FIRMAR Y DEVOLVER ESTE FORMULARIO"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.43798,
+        "x": 0.09884,
+        "y": 0.28906
+      },
+      "confidence": 1,
+      "text": "FECHA LIMITE: S DE SEPTIEMBRE DE 2026"
+    },
+    {
+      "box": {
+        "h": 0.01905,
+        "w": 0.51744,
+        "x": 0.09884,
+        "y": 0.31105
+      },
+      "confidence": 0.5,
+      "text": "Mes des atorme AGOSTO 2008 Mes de beneficos OCTUBRE 200N"
+    },
+    {
+      "box": {
+        "h": 0.01458,
+        "w": 0.20736,
+        "x": 0.62209,
+        "y": 0.17873
+      },
+      "confidence": 0.5,
+      "text": "Case Number 81-4838-7740"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.14535,
+        "x": 0.62597,
+        "y": 0.19186
+      },
+      "confidence": 0.3,
+      "text": "a 0 80-4071"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.16279,
+        "x": 0.62791,
+        "y": 0.20785
+      },
+      "confidence": 0.5,
+      "text": "Pone (408) 738-3401"
+    },
+    {
+      "box": {
+        "h": 0.01457,
+        "w": 0.20349,
+        "x": 0.08527,
+        "y": 0.4113
+      },
+      "confidence": 1,
+      "text": "SECCION 1 - INGRESOS"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.16279,
+        "x": 0.08915,
+        "y": 0.44477
+      },
+      "confidence": 0.5,
+      "text": "entre de angleado"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.15504,
+        "x": 0.08721,
+        "y": 0.4722
+      },
+      "confidence": 0.3,
+      "text": "agos todo recie"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.31977,
+        "x": 0.08527,
+        "y": 0.50132
+      },
+      "confidence": 1,
+      "text": "SECCION 2 - CAMBIOS EN EL HOGAR"
+    },
+    {
+      "box": {
+        "h": 0.03634,
+        "w": 0.36822,
+        "x": 0.08527,
+        "y": 0.5189
+      },
+      "confidence": 0.5,
+      "text": "SECCION 3 - PRUEBAS CUTE DERE BANAN"
+    },
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.10271,
+        "x": 0.08333,
+        "y": 0.55814
+      },
+      "confidence": 0.5,
+      "text": "O Todos los"
+    },
+    {
+      "box": {
+        "h": 0.0146,
+        "w": 0.22868,
+        "x": 0.4031,
+        "y": 0.44616
+      },
+      "confidence": 1,
+      "text": "PANADERA LA ESPERANZA"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.07171,
+        "x": 0.40116,
+        "y": 0.47529
+      },
+      "confidence": 0.5,
+      "text": "81,382.10"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.04651,
+        "x": 0.08527,
+        "y": 0.65262
+      },
+      "confidence": 0.5,
+      "text": "Fecha"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

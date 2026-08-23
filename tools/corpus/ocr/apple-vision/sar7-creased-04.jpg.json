@@ -1,0 +1,378 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7-creased-04.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01027,
+        "w": 0.16473,
+        "x": 0.08721,
+        "y": 0.0406
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.29845,
+        "x": 0.08527,
+        "y": 0.05516
+      },
+      "confidence": 1,
+      "text": "HEALTH AND HUMAN SERVICES AGENCY"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1686,
+        "x": 0.08527,
+        "y": 0.06831
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.12597,
+        "x": 0.82364,
+        "y": 0.07267
+      },
+      "confidence": 1,
+      "text": "SAR 7 (Rev. 5/25)"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.4845,
+        "x": 0.08527,
+        "y": 0.11033
+      },
+      "confidence": 1,
+      "text": "SEMI-ANNUAL ELIGIBILITY STATUS REPORT"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.17248,
+        "x": 0.08527,
+        "y": 0.13372
+      },
+      "confidence": 1,
+      "text": "CalFresh / CalWORKs"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.1124,
+        "x": 0.08527,
+        "y": 0.17432
+      },
+      "confidence": 1,
+      "text": "MARIA REYES"
+    },
+    {
+      "box": {
+        "h": 0.01329,
+        "w": 0.2093,
+        "x": 0.08333,
+        "y": 0.1902
+      },
+      "confidence": 1,
+      "text": "1428 STORY ROAD APT 12"
+    },
+    {
+      "box": {
+        "h": 0.01326,
+        "w": 0.16473,
+        "x": 0.08333,
+        "y": 0.20477
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95122"
+    },
+    {
+      "box": {
+        "h": 0.01326,
+        "w": 0.20543,
+        "x": 0.61822,
+        "y": 0.18005
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-4472-9931"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.14341,
+        "x": 0.61822,
+        "y": 0.19462
+      },
+      "confidence": 1,
+      "text": "Worker ID: SC-2214"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.16279,
+        "x": 0.61822,
+        "y": 0.21076
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 758-3401"
+    },
+    {
+      "box": {
+        "h": 0.0267,
+        "w": 0.49514,
+        "x": 0.08092,
+        "y": 0.23943
+      },
+      "confidence": 1,
+      "text": "YOU MUST COMPLETE, SIGN, AND RETURN THIS FORM."
+    },
+    {
+      "box": {
+        "h": 0.02547,
+        "w": 0.34024,
+        "x": 0.09443,
+        "y": 0.27835
+      },
+      "confidence": 1,
+      "text": "SUBMIT BY: SEPTEMBER 5, 2026"
+    },
+    {
+      "box": {
+        "h": 0.02366,
+        "w": 0.48336,
+        "x": 0.09456,
+        "y": 0.3014
+      },
+      "confidence": 1,
+      "text": "Report Month: AUGUST 2026 Benefit Month: OCTOBER 2026"
+    },
+    {
+      "box": {
+        "h": 0.02511,
+        "w": 0.83763,
+        "x": 0.07726,
+        "y": 0.33999
+      },
+      "confidence": 1,
+      "text": "If your completed report is not received by the submit date shown above, your benefits may be delayed, reduced, or"
+    },
+    {
+      "box": {
+        "h": 0.02383,
+        "w": 0.68272,
+        "x": 0.08112,
+        "y": 0.35604
+      },
+      "confidence": 1,
+      "text": "discontinued. If you cannot return the form on time, contact your worker before the submit date."
+    },
+    {
+      "box": {
+        "h": 0.01614,
+        "w": 0.18476,
+        "x": 0.08106,
+        "y": 0.39995
+      },
+      "confidence": 1,
+      "text": "SECTION 1 - INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01783,
+        "w": 0.43652,
+        "x": 0.08309,
+        "y": 0.41844
+      },
+      "confidence": 1,
+      "text": "X Did anyone in the home receive income last month? YES"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.02519,
+        "x": 0.34302,
+        "y": 0.44041
+      },
+      "confidence": 1,
+      "text": "NO"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.11434,
+        "x": 0.08527,
+        "y": 0.45631
+      },
+      "confidence": 1,
+      "text": "Employer name"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.16473,
+        "x": 0.08527,
+        "y": 0.48102
+      },
+      "confidence": 1,
+      "text": "Gross income received"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.19574,
+        "x": 0.37984,
+        "y": 0.4593
+      },
+      "confidence": 1,
+      "text": "VALLEY FRESH MARKET"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.07371,
+        "x": 0.37981,
+        "y": 0.4839
+      },
+      "confidence": 1,
+      "text": "$1,847.20"
+    },
+    {
+      "box": {
+        "h": 0.01693,
+        "w": 0.31047,
+        "x": 0.08311,
+        "y": 0.50807
+      },
+      "confidence": 1,
+      "text": "SECTION 2 - HOUSEHOLD CHANGES"
+    },
+    {
+      "box": {
+        "h": 0.01731,
+        "w": 0.35306,
+        "x": 0.08315,
+        "y": 0.52605
+      },
+      "confidence": 1,
+      "text": "X Did anyone move in or out of your home? NO"
+    },
+    {
+      "box": {
+        "h": 0.01619,
+        "w": 0.2465,
+        "x": 0.08121,
+        "y": 0.54402
+      },
+      "confidence": 1,
+      "text": "X Did your address change? NO"
+    },
+    {
+      "box": {
+        "h": 0.01463,
+        "w": 0.31977,
+        "x": 0.07946,
+        "y": 0.56531
+      },
+      "confidence": 1,
+      "text": "SECTION 3 -- PROOF YOU MUST SEND"
+    },
+    {
+      "box": {
+        "h": 0.01771,
+        "w": 0.25069,
+        "x": 0.07914,
+        "y": 0.58203
+      },
+      "confidence": 1,
+      "text": "Attach copies. Do not send originals."
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.30814,
+        "x": 0.07364,
+        "y": 0.60018
+      },
+      "confidence": 1,
+      "text": "• All paycheck stubs received last month"
+    },
+    {
+      "box": {
+        "h": 0.01759,
+        "w": 0.31256,
+        "x": 0.07528,
+        "y": 0.61725
+      },
+      "confidence": 1,
+      "text": "• Current rent receipt or lease agreement"
+    },
+    {
+      "box": {
+        "h": 0.02103,
+        "w": 0.1794,
+        "x": 0.07309,
+        "y": 0.63265
+      },
+      "confidence": 1,
+      "text": "• Most recent utility bill"
+    },
+    {
+      "box": {
+        "h": 0.01402,
+        "w": 0.072,
+        "x": 0.07931,
+        "y": 0.68122
+      },
+      "confidence": 1,
+      "text": "Signature"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.03682,
+        "x": 0.08333,
+        "y": 0.7064
+      },
+      "confidence": 1,
+      "text": "Date"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.32558,
+        "x": 0.08721,
+        "y": 0.73547
+      },
+      "confidence": 1,
+      "text": "Questions? Call (408) 758-3401. Se habla espanol."
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.38372,
+        "x": 0.08721,
+        "y": 0.74846
+      },
+      "confidence": 1,
+      "text": "SAR 7 (Rev. 5/25) REQUIRED FORM - SUBSTITUTES PERMITTED"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2666,
+  "sourceWidth": 2000
+}

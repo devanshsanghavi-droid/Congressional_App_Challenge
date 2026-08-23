@@ -1,0 +1,328 @@
+{
+  "engine": "apple-vision",
+  "file": "mc210-synth-motionblur.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.18023,
+        "x": 0.04264,
+        "y": 0.03045
+      },
+      "confidence": 0.5,
+      "text": "STATTE OF ALFORNA"
+    },
+    {
+      "box": {
+        "h": 0.01326,
+        "w": 0.3314,
+        "x": 0.04264,
+        "y": 0.04634
+      },
+      "confidence": 0.3,
+      "text": "LE PIAFTTMBTT COFF HEJALTHI CAARE SERAIES"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.18411,
+        "x": 0.04264,
+        "y": 0.05958
+      },
+      "confidence": 0.3,
+      "text": "SHATTA COLAFI COOUNATH"
+    },
+    {
+      "box": {
+        "h": 0.02046,
+        "w": 0.44767,
+        "x": 0.05233,
+        "y": 0.10018
+      },
+      "confidence": 0.5,
+      "text": "VEDI-CAL ANNUAL REDETERVINATION"
+    },
+    {
+      "box": {
+        "h": 0.01605,
+        "w": 0.35853,
+        "x": 0.04264,
+        "y": 0.1293
+      },
+      "confidence": 0.5,
+      "text": "heep your health average - action repuiret"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.09109,
+        "x": 0.04264,
+        "y": 0.1699
+      },
+      "confidence": 0.5,
+      "text": "ARNH TRAN"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.23643,
+        "x": 0.04264,
+        "y": 0.18605
+      },
+      "confidence": 0.5,
+      "text": "2055 LANDESS AWE /APT 217"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.1686,
+        "x": 0.0407,
+        "y": 0.20203
+      },
+      "confidence": 0.5,
+      "text": "WILPTAS, CA 95135"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.09496,
+        "x": 0.0407,
+        "y": 0.22093
+      },
+      "confidence": 0.5,
+      "text": "Nottice Tatte"
+    },
+    {
+      "box": {
+        "h": 0.01463,
+        "w": 0.23256,
+        "x": 0.0407,
+        "y": 0.24846
+      },
+      "confidence": 0.5,
+      "text": "Coverage Endis Withunu: Action"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.1686,
+        "x": 0.31202,
+        "y": 0.22374
+      },
+      "confidence": 0.5,
+      "text": "SEPTEMBER 1L26"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.16279,
+        "x": 0.41667,
+        "y": 0.25
+      },
+      "confidence": 0.5,
+      "text": "OCTOBER 31, 2025"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.17248,
+        "x": 0.77713,
+        "y": 0.06531
+      },
+      "confidence": 0.5,
+      "text": "VC:2100 FRA/ (FFes. 100/724"
+    },
+    {
+      "box": {
+        "h": 0.01464,
+        "w": 0.21512,
+        "x": 0.60659,
+        "y": 0.17432
+      },
+      "confidence": 0.5,
+      "text": "Trane Number: 440-2251-77734"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.15698,
+        "x": 0.60465,
+        "y": 0.1902
+      },
+      "confidence": 0.3,
+      "text": "Maoricer DD: NMC-24M22"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.17636,
+        "x": 0.60271,
+        "y": 0.20477
+      },
+      "confidence": 0.5,
+      "text": "Phone: (4083) 7525-77010"
+    },
+    {
+      "box": {
+        "h": 0.02109,
+        "w": 0.46942,
+        "x": 0.05988,
+        "y": 0.2981
+      },
+      "confidence": 1,
+      "text": "RETURN THIS FORM BY: OCTOBER 15, 2126"
+    },
+    {
+      "box": {
+        "h": 0.02294,
+        "w": 0.88794,
+        "x": 0.04635,
+        "y": 0.35155
+      },
+      "confidence": 0.5,
+      "text": "thies tine tto renew your Westi-Caal. We meed to died whesther you still qualifiy. ff ve dio nud tear ffwm you/by Cottideer 165)"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.44961,
+        "x": 0.04457,
+        "y": 0.37064
+      },
+      "confidence": 1,
+      "text": "226, your Weti-Cal coverage will end an Cottiber 31, 2126"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.2345,
+        "x": 0.04457,
+        "y": 0.3939
+      },
+      "confidence": 0.5,
+      "text": "SECTONA - HOUSEHOLI"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.2345,
+        "x": 0.04651,
+        "y": 0.41424
+      },
+      "confidence": 0.3,
+      "text": "Wumter of preple im funestste"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.22287,
+        "x": 0.04457,
+        "y": 0.44041
+      },
+      "confidence": 1,
+      "text": "Any charges since lasst yerar?"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.03488,
+        "x": 0.44767,
+        "y": 0.44186
+      },
+      "confidence": 1,
+      "text": "NO"
+    },
+    {
+      "box": {
+        "h": 0.01464,
+        "w": 0.1938,
+        "x": 0.04457,
+        "y": 0.46948
+      },
+      "confidence": 0.5,
+      "text": "SECTION B -INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01326,
+        "w": 0.21705,
+        "x": 0.04457,
+        "y": 0.48983
+      },
+      "confidence": 0.3,
+      "text": "Worny muane tétore tae"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.07946,
+        "x": 0.44961,
+        "y": 0.49128
+      },
+      "confidence": 0.3,
+      "text": "S2T00I"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.13178,
+        "x": 0.04457,
+        "y": 0.51453
+      },
+      "confidence": 0.5,
+      "text": "Snurze di incone"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.29845,
+        "x": 0.04457,
+        "y": 0.5436
+      },
+      "confidence": 0.5,
+      "text": "SECTIONC- PROOF TO INLUDE"
+    },
+    {
+      "box": {
+        "h": 0.01837,
+        "w": 0.26606,
+        "x": 0.04235,
+        "y": 0.56226
+      },
+      "confidence": 0.5,
+      "text": "• Pay estutes fom the ass 30 dags"
+    },
+    {
+      "box": {
+        "h": 0.01779,
+        "w": 0.23891,
+        "x": 0.04237,
+        "y": 0.58117
+      },
+      "confidence": 0.3,
+      "text": "• Prad of Caitito mias reesdesnu)"
+    },
+    {
+      "box": {
+        "h": 0.00885,
+        "w": 0.27519,
+        "x": 0.04457,
+        "y": 0.65975
+      },
+      "confidence": 0.3,
+      "text": "WG2 OFRA/ TOM24 —Méer-ae /Aamuae /Fseene:"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

@@ -1,0 +1,248 @@
+{
+  "engine": "apple-vision",
+  "file": "ssa-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.31783,
+        "x": 0.06589,
+        "y": 0.05814
+      },
+      "confidence": 1,
+      "text": "SOCIAL SECURITY ADMINISTRATION"
+    },
+    {
+      "box": {
+        "h": 0.01899,
+        "w": 0.3062,
+        "x": 0.06783,
+        "y": 0.07413
+      },
+      "confidence": 0.5,
+      "text": "Meet Beers and Daily iss"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.30426,
+        "x": 0.06395,
+        "y": 0.11474
+      },
+      "confidence": 1,
+      "text": "Supplemental Security Income"
+    },
+    {
+      "box": {
+        "h": 0.01903,
+        "w": 0.26744,
+        "x": 0.06008,
+        "y": 0.13504
+      },
+      "confidence": 1,
+      "text": "Notice of Redetermination"
+    },
+    {
+      "box": {
+        "h": 0.0179,
+        "w": 0.12831,
+        "x": 0.06375,
+        "y": 0.16183
+      },
+      "confidence": 1,
+      "text": "OLORIA HAVES"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.22287,
+        "x": 0.06395,
+        "y": 0.18005
+      },
+      "confidence": 1,
+      "text": "1180 MERCIAN AVE APT 22"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.1686,
+        "x": 0.06395,
+        "y": 0.19462
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95125"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.39922,
+        "x": 0.06395,
+        "y": 0.21801
+      },
+      "confidence": 1,
+      "text": "We are reviewing you Buglemental Security Ieame"
+    },
+    {
+      "box": {
+        "h": 0.02047,
+        "w": 0.39729,
+        "x": 0.06202,
+        "y": 0.23389
+      },
+      "confidence": 1,
+      "text": "you the right snout. This revies is caled a redeem"
+    },
+    {
+      "box": {
+        "h": 0.02045,
+        "w": 0.39922,
+        "x": 0.07946,
+        "y": 0.28052
+      },
+      "confidence": 1,
+      "text": "PLEASE REPLY BY: OCTOBER 8, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01604,
+        "w": 0.2093,
+        "x": 0.06589,
+        "y": 0.32994
+      },
+      "confidence": 1,
+      "text": "WHAT YOU NEED TO DO"
+    },
+    {
+      "box": {
+        "h": 0.0218,
+        "w": 0.37984,
+        "x": 0.06008,
+        "y": 0.34593
+      },
+      "confidence": 1,
+      "text": "Call us se 1-800-778-1213 le schedule you redee"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.11434,
+        "x": 0.06395,
+        "y": 0.3632
+      },
+      "confidence": 1,
+      "text": "blowing meady"
+    },
+    {
+      "box": {
+        "h": 0.02037,
+        "w": 0.44186,
+        "x": 0.05814,
+        "y": 0.42006
+      },
+      "confidence": 1,
+      "text": "Dianaton about where you the and whe has with you"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.48643,
+        "x": 0.06202,
+        "y": 0.44748
+      },
+      "confidence": 1,
+      "text": "IF YOU DO NOT REPLY, YOUR SSI PAYMENTS MAY STOP"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.16085,
+        "x": 0.06202,
+        "y": 0.4722
+      },
+      "confidence": 1,
+      "text": "IF YOU DISAGREE"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.18217,
+        "x": 0.2907,
+        "y": 0.49419
+      },
+      "confidence": 1,
+      "text": "we male wher this sevies"
+    },
+    {
+      "box": {
+        "h": 0.01863,
+        "w": 0.37813,
+        "x": 0.06191,
+        "y": 0.50864
+      },
+      "confidence": 1,
+      "text": "80 days of the dare you receive the decision notee"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15698,
+        "x": 0.06008,
+        "y": 0.53779
+      },
+      "confidence": 0.5,
+      "text": "for 10-00 09 200"
+    },
+    {
+      "box": {
+        "h": 0.01901,
+        "w": 0.17636,
+        "x": 0.7655,
+        "y": 0.07546
+      },
+      "confidence": 1,
+      "text": "Dare September 8. 2001"
+    },
+    {
+      "box": {
+        "h": 0.01467,
+        "w": 0.2093,
+        "x": 0.61047,
+        "y": 0.16715
+      },
+      "confidence": 1,
+      "text": "Case Number: XXE-KX-4821"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16667,
+        "x": 0.61628,
+        "y": 0.19903
+      },
+      "confidence": 0.3,
+      "text": "воли 1800-778-1213"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.22287,
+        "x": 0.6938,
+        "y": 0.22093
+      },
+      "confidence": 1,
+      "text": "sighie and that we are paying"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

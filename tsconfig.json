@@ -18,6 +18,14 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
 
+    // Imports name the .ts file explicitly. Required because some of this code
+    // is also run directly by Node — `tools/content-check.ts` drives the
+    // content parser, and bare Node ESM will not resolve an extensionless
+    // relative import. Metro resolves an explicit extension as a plain file
+    // path, so one convention works in both. Verified by bundling, not assumed.
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+
     // Needed for the Jest suites and the Node scripts under /tests and /tools.
     // Note this is the *app* config — the extraction island deliberately sets
     // "types": [] so none of these globals exist in there.
@@ -38,6 +46,12 @@
     // not by a code review. Excluding them here keeps one authority per file.
     "src/extraction",
     "content/templates",
-    "tools"
+    "tools",
+    // Same reason, from the other direction. tests/node runs in bare Node and
+    // imports the metrics harness by explicit .ts path, which only typechecks
+    // under tools/tsconfig.json's `allowImportingTsExtensions`. Checking it
+    // here as well would report the same files twice under two different sets
+    // of rules. `npm run typecheck` runs that config too.
+    "tests/node"
   ]
 }

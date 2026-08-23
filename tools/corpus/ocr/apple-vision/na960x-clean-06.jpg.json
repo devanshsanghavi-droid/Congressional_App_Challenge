@@ -1,0 +1,328 @@
+{
+  "engine": "apple-vision",
+  "file": "na960x-clean-06.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.15116,
+        "x": 0.11628,
+        "y": 0.12489
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.23643,
+        "x": 0.11822,
+        "y": 0.13808
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF SOCIAL SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01283,
+        "w": 0.14978,
+        "x": 0.11793,
+        "y": 0.15027
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01902,
+        "w": 0.2093,
+        "x": 0.11628,
+        "y": 0.18447
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.19767,
+        "x": 0.11434,
+        "y": 0.21076
+      },
+      "confidence": 1,
+      "text": "CalFresh - Discontinuance"
+    },
+    {
+      "box": {
+        "h": 0.01328,
+        "w": 0.10078,
+        "x": 0.11434,
+        "y": 0.24709
+      },
+      "confidence": 1,
+      "text": "MARIA REYES"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.19186,
+        "x": 0.1124,
+        "y": 0.26163
+      },
+      "confidence": 1,
+      "text": "1428 STORY ROAD APT 12"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.14729,
+        "x": 0.11434,
+        "y": 0.27616
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95122"
+    },
+    {
+      "box": {
+        "h": 0.01029,
+        "w": 0.07755,
+        "x": 0.11433,
+        "y": 0.29209
+      },
+      "confidence": 1,
+      "text": "Notice Date"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.09496,
+        "x": 0.1124,
+        "y": 0.31541
+      },
+      "confidence": 1,
+      "text": "Effective Date"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.17054,
+        "x": 0.73256,
+        "y": 0.15262
+      },
+      "confidence": 1,
+      "text": "NA 960X SAR (Rev. 10/24)"
+    },
+    {
+      "box": {
+        "h": 0.01169,
+        "w": 0.18992,
+        "x": 0.60271,
+        "y": 0.25
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-4472-9931"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.13566,
+        "x": 0.60078,
+        "y": 0.26302
+      },
+      "confidence": 1,
+      "text": "Worker ID: SC-2214"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.15116,
+        "x": 0.60271,
+        "y": 0.27758
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 758-3401"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.14922,
+        "x": 0.34496,
+        "y": 0.29214
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 8, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.15698,
+        "x": 0.34496,
+        "y": 0.31686
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 30, 2026"
+    },
+    {
+      "box": {
+        "h": 0.02002,
+        "w": 0.55653,
+        "x": 0.12773,
+        "y": 0.36119
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH BENEFITS WILL STOP ON SEPTEMBER 30, 2026."
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.21318,
+        "x": 0.1124,
+        "y": 0.40688
+      },
+      "confidence": 1,
+      "text": "REASON FOR THIS ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01692,
+        "w": 0.76566,
+        "x": 0.11231,
+        "y": 0.42275
+      },
+      "confidence": 1,
+      "text": "We did not receive your Semi-Annual Eligibility Status Report (SAR 7) that was due on September 5, 2026. Because"
+    },
+    {
+      "box": {
+        "h": 0.01559,
+        "w": 0.76953,
+        "x": 0.11232,
+        "y": 0.4387
+      },
+      "confidence": 1,
+      "text": "the report was not returned, we cannot determine whether your household remains eligible. Regulation: MPP 63-508."
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.15504,
+        "x": 0.11047,
+        "y": 0.45763
+      },
+      "confidence": 1,
+      "text": "WHAT YOU CAN DO"
+    },
+    {
+      "box": {
+        "h": 0.01958,
+        "w": 0.73867,
+        "x": 0.11225,
+        "y": 0.47219
+      },
+      "confidence": 1,
+      "text": "If you return the completed SAR 7 with all required proof before September 30, 2026, your benefits may continue"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.17636,
+        "x": 0.11047,
+        "y": 0.48983
+      },
+      "confidence": 1,
+      "text": "without a new application."
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.19186,
+        "x": 0.10853,
+        "y": 0.52907
+      },
+      "confidence": 1,
+      "text": "YOUR HEARING RIGHTS"
+    },
+    {
+      "box": {
+        "h": 0.01603,
+        "w": 0.78101,
+        "x": 0.11047,
+        "y": 0.54501
+      },
+      "confidence": 1,
+      "text": "If you think this action is wrong, you may ask for a state hearing. You must ask within 90 days of the date of this notice."
+    },
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.73256,
+        "x": 0.12791,
+        "y": 0.58285
+      },
+      "confidence": 1,
+      "text": "IMPORTANT: If you ask for a hearing before September 18, 2026, your benefits may continue at the same level"
+    },
+    {
+      "box": {
+        "h": 0.01325,
+        "w": 0.42636,
+        "x": 0.12791,
+        "y": 0.59884
+      },
+      "confidence": 1,
+      "text": "until the hearing decision is made. This is called aid paid pending."
+    },
+    {
+      "box": {
+        "h": 0.01329,
+        "w": 0.34496,
+        "x": 0.11434,
+        "y": 0.64078
+      },
+      "confidence": 1,
+      "text": "To ask for a hearing, call 1-800-743-8525 or write to:"
+    },
+    {
+      "box": {
+        "h": 0.01472,
+        "w": 0.42442,
+        "x": 0.11434,
+        "y": 0.65534
+      },
+      "confidence": 1,
+      "text": "California Department of Social Services, State Hearings Division"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.40504,
+        "x": 0.1124,
+        "y": 0.6699
+      },
+      "confidence": 1,
+      "text": "P.O. Box 944243, MS 09-17-37, Sacramento, CA 94244-2430"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.1124,
+        "x": 0.11628,
+        "y": 0.6875
+      },
+      "confidence": 1,
+      "text": "NA 960X SAR (10/24)"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2666,
+  "sourceWidth": 2000
+}

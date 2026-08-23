@@ -1,0 +1,11 @@
+# FEASIBILITY PROBE grammar — not the extraction grammar (that is Devansh's,
+# in /src/extraction, CLAUDE.md §15).
+#
+# The naive reading of the claim in CLAUDE.md §5: "a hand-written grammar
+# constrains a date field to \d{2}/\d{2}/\d{4} at the token level".
+#
+# It does exactly that, and that turns out not to be enough — see date-valid.gbnf.
+root   ::= "{" ws "\"deadline\":" ws date ws "}"
+date   ::= "\"" d d "/" d d "/" d d d d "\""
+d      ::= [0-9]
+ws     ::= [ \t\n]*

@@ -1,0 +1,168 @@
+{
+  "engine": "apple-vision",
+  "file": "bilingual-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15891,
+        "x": 0.05426,
+        "y": 0.05814
+      },
+      "confidence": 1,
+      "text": "STATE OF CALPORNA"
+    },
+    {
+      "box": {
+        "h": 0.01325,
+        "w": 0.28876,
+        "x": 0.0562,
+        "y": 0.07105
+      },
+      "confidence": 0.3,
+      "text": "DEPARTMENT OF SOOL SERCES /O09"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16085,
+        "x": 0.05426,
+        "y": 0.08429
+      },
+      "confidence": 1,
+      "text": "BANTA OLANA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.02282,
+        "w": 0.41728,
+        "x": 0.05202,
+        "y": 0.11936
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION / AVISO DE ACCION"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.11628,
+        "x": 0.05233,
+        "y": 0.16549
+      },
+      "confidence": 0.5,
+      "text": "JOBE RAMAEZ"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.17248,
+        "x": 0.05233,
+        "y": 0.18005
+      },
+      "confidence": 1,
+      "text": "HO E AIIAN ST APT S"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.15698,
+        "x": 0.05039,
+        "y": 0.19462
+      },
+      "confidence": 0.5,
+      "text": "BAN JOSE, CA BE11D"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.20349,
+        "x": 0.05039,
+        "y": 0.21076
+      },
+      "confidence": 0.5,
+      "text": "Setoe Dele / Fache ie Aia"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.07171,
+        "x": 0.39535,
+        "y": 0.21512
+      },
+      "confidence": 0.5,
+      "text": "OCTOBE"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.06589,
+        "x": 0.53876,
+        "y": 0.07849
+      },
+      "confidence": 0.3,
+      "text": "BOCALEN"
+    },
+    {
+      "box": {
+        "h": 0.01327,
+        "w": 0.08333,
+        "x": 0.56202,
+        "y": 0.17297
+      },
+      "confidence": 0.3,
+      "text": "Cane Smee"
+    },
+    {
+      "box": {
+        "h": 0.01981,
+        "w": 0.44231,
+        "x": 0.06565,
+        "y": 0.25802
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH WILA STOP ON NOVEMBER 1, 2021"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.4031,
+        "x": 0.06395,
+        "y": 0.31377
+      },
+      "confidence": 1,
+      "text": "SUS BENEFICIOS DE CALFRESH TERMNARAN"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.07558,
+        "x": 0.58527,
+        "y": 0.31818
+      },
+      "confidence": 1,
+      "text": "MERE DE"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.03101,
+        "x": 0.08915,
+        "y": 0.44622
+      },
+      "confidence": 1,
+      "text": "ANO"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

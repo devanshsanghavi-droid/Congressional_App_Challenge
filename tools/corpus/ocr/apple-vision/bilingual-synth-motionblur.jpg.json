@@ -1,0 +1,278 @@
+{
+  "engine": "apple-vision",
+  "file": "bilingual-synth-motionblur.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01164,
+        "w": 0.16473,
+        "x": 0.05233,
+        "y": 0.05958
+      },
+      "confidence": 0.5,
+      "text": "STATE OFF CALLINAL"
+    },
+    {
+      "box": {
+        "h": 0.02171,
+        "w": 0.55281,
+        "x": 0.0521,
+        "y": 0.06914
+      },
+      "confidence": 1,
+      "text": "DERAFTIENT OF SOCIAL SERVES IERUFTMENTTO DE SERVODS SICAES"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16667,
+        "x": 0.05039,
+        "y": 0.08429
+      },
+      "confidence": 0.5,
+      "text": "SANTIA CLARERA COUNTAN"
+    },
+    {
+      "box": {
+        "h": 0.02088,
+        "w": 0.41141,
+        "x": 0.05593,
+        "y": 0.12084
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION /ANISO DE ACCION"
+    },
+    {
+      "box": {
+        "h": 0.01329,
+        "w": 0.11822,
+        "x": 0.05039,
+        "y": 0.16549
+      },
+      "confidence": 0.5,
+      "text": "MOSE RAMIREZ"
+    },
+    {
+      "box": {
+        "h": 0.01525,
+        "w": 0.17686,
+        "x": 0.0482,
+        "y": 0.17967
+      },
+      "confidence": 1,
+      "text": "5440E. JULIAN SET AFT 3"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16085,
+        "x": 0.04845,
+        "y": 0.19462
+      },
+      "confidence": 0.5,
+      "text": "SAILOSE CA 951 2"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.20543,
+        "x": 0.04845,
+        "y": 0.21076
+      },
+      "confidence": 0.5,
+      "text": "Notice Date //Fette de/ Avis"
+    },
+    {
+      "box": {
+        "h": 0.01328,
+        "w": 0.12984,
+        "x": 0.39535,
+        "y": 0.21492
+      },
+      "confidence": 0.5,
+      "text": "DITHER 22, 2005"
+    },
+    {
+      "box": {
+        "h": 0.01368,
+        "w": 0.1479,
+        "x": 0.711,
+        "y": 0.09273
+      },
+      "confidence": 0.5,
+      "text": "39600:347 Feev.100234"
+    },
+    {
+      "box": {
+        "h": 0.01327,
+        "w": 0.19186,
+        "x": 0.55814,
+        "y": 0.17297
+      },
+      "confidence": 1,
+      "text": "Casse/Numtheer: 0011008077-23881"
+    },
+    {
+      "box": {
+        "h": 0.01329,
+        "w": 0.14147,
+        "x": 0.5562,
+        "y": 0.1875
+      },
+      "confidence": 0.5,
+      "text": "Weekleer D): 38C-5531 00"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15116,
+        "x": 0.56202,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "Phones: 4088 7556-3440"
+    },
+    {
+      "box": {
+        "h": 0.01936,
+        "w": 0.44614,
+        "x": 0.06375,
+        "y": 0.25907
+      },
+      "confidence": 1,
+      "text": "NOUR CALFRESH MILIL STOP ON NOMEWBIER 11, 2825."
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.64147,
+        "x": 0.06395,
+        "y": 0.31377
+      },
+      "confidence": 1,
+      "text": "SUS BENERICOS DE CALFRESH TERMNAFAN EL 1 DE NOMEMBRE DE 2026"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.07558,
+        "x": 0.04845,
+        "y": 0.3532
+      },
+      "confidence": 0.5,
+      "text": "BIGUSH"
+    },
+    {
+      "box": {
+        "h": 0.02353,
+        "w": 0.78719,
+        "x": 0.04632,
+        "y": 0.36665
+      },
+      "confidence": 1,
+      "text": "We did nut receive the proud we asleet tor on Septenter 14, 2026 Because of this, your CalF east deneffts will som"
+    },
+    {
+      "box": {
+        "h": 0.01603,
+        "w": 0.76744,
+        "x": 0.05039,
+        "y": 0.38658
+      },
+      "confidence": 0.5,
+      "text": "Nou may ask for a state hearing within D days di thee date of this mutie. If you easi testore Cittlier 12, 20226, yenur"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.32171,
+        "x": 0.05039,
+        "y": 0.39971
+      },
+      "confidence": 1,
+      "text": "benellts may continue until a decision is matte"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.07752,
+        "x": 0.05233,
+        "y": 0.44622
+      },
+      "confidence": 0.5,
+      "text": "ESPANCL"
+    },
+    {
+      "box": {
+        "h": 0.01907,
+        "w": 0.20543,
+        "x": 0.05039,
+        "y": 0.4593
+      },
+      "confidence": 1,
+      "text": "No reclaimus las prustes que"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.2345,
+        "x": 0.05233,
+        "y": 0.47661
+      },
+      "confidence": 1,
+      "text": "terminaren. Puette pedir une audi"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.20155,
+        "x": 0.07171,
+        "y": 0.49273
+      },
+      "confidence": 0.5,
+      "text": "utree de 281260, sus derelicors"
+    },
+    {
+      "box": {
+        "h": 0.01022,
+        "w": 0.17442,
+        "x": 0.05814,
+        "y": 0.5203
+      },
+      "confidence": 0.5,
+      "text": "9805748-6255 MAI98000 3547"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.46318,
+        "x": 0.3624,
+        "y": 0.46366
+      },
+      "confidence": 0.5,
+      "text": "4 tae septiamoe de 120226. Poor easter accom, suss deemedficuss die Caress"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.49612,
+        "x": 0.34302,
+        "y": 0.4782
+      },
+      "confidence": 0.5,
+      "text": "atta dentitco de 2910 does de da betta de caste avisso. $5 aa dite aartes del 122 fle"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

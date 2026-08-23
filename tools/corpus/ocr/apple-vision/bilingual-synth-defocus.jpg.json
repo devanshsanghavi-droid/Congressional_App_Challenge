@@ -1,0 +1,258 @@
+{
+  "engine": "apple-vision",
+  "file": "bilingual-synth-defocus.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.16085,
+        "x": 0.05426,
+        "y": 0.05814
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.02188,
+        "w": 0.55483,
+        "x": 0.05205,
+        "y": 0.06961
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF SOCIAL SERVICES / DEPARTAMENTO DE SERVICIOS SOCIALES"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16279,
+        "x": 0.05233,
+        "y": 0.08429
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.02063,
+        "w": 0.41522,
+        "x": 0.05206,
+        "y": 0.12123
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION / AVISO DE ACCION"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.12209,
+        "x": 0.04845,
+        "y": 0.16715
+      },
+      "confidence": 1,
+      "text": "JOSE RAMIREZ"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.17636,
+        "x": 0.04845,
+        "y": 0.18005
+      },
+      "confidence": 0.5,
+      "text": "540 E JULIAN ST APT 3"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.16085,
+        "x": 0.04845,
+        "y": 0.19462
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95112"
+    },
+    {
+      "box": {
+        "h": 0.01531,
+        "w": 0.20972,
+        "x": 0.04824,
+        "y": 0.21064
+      },
+      "confidence": 1,
+      "text": "Notice Date / Fecha del Aviso"
+    },
+    {
+      "box": {
+        "h": 0.01786,
+        "w": 0.17152,
+        "x": 0.69136,
+        "y": 0.09237
+      },
+      "confidence": 1,
+      "text": "NA 960X SAR (Rev. 10/24)"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.19574,
+        "x": 0.5562,
+        "y": 0.17297
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-9917-3320"
+    },
+    {
+      "box": {
+        "h": 0.01329,
+        "w": 0.13953,
+        "x": 0.55814,
+        "y": 0.1875
+      },
+      "confidence": 0.5,
+      "text": "Worker ID: SC-5510"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15891,
+        "x": 0.5562,
+        "y": 0.20203
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 758-3401"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.13566,
+        "x": 0.39341,
+        "y": 0.21492
+      },
+      "confidence": 1,
+      "text": "OCTOBER 2, 2026"
+    },
+    {
+      "box": {
+        "h": 0.02172,
+        "w": 0.45398,
+        "x": 0.0637,
+        "y": 0.2593
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH WILL STOP ON NOVEMBER 1, 2026."
+    },
+    {
+      "box": {
+        "h": 0.02101,
+        "w": 0.64577,
+        "x": 0.06376,
+        "y": 0.31278
+      },
+      "confidence": 1,
+      "text": "SUS BENEFICIOS DE CALFRESH TERMINARAN EL 1 DE NOVIEMBRE DE 2026."
+    },
+    {
+      "box": {
+        "h": 0.0134,
+        "w": 0.07761,
+        "x": 0.0484,
+        "y": 0.35304
+      },
+      "confidence": 0.5,
+      "text": "ENGLISH"
+    },
+    {
+      "box": {
+        "h": 0.01953,
+        "w": 0.78706,
+        "x": 0.04639,
+        "y": 0.36964
+      },
+      "confidence": 0.5,
+      "text": "We did not receive the proof we asked for on September 14, 2026. Because of this, your CalFresh benefits will stop"
+    },
+    {
+      "box": {
+        "h": 0.01931,
+        "w": 0.76965,
+        "x": 0.0483,
+        "y": 0.38511
+      },
+      "confidence": 0.5,
+      "text": "You may ask for a state hearing within 90 days of the date of this notice. If you ask before October 12, 2026, your"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.32364,
+        "x": 0.05233,
+        "y": 0.40115
+      },
+      "confidence": 1,
+      "text": "benefits may continue until a decision is made."
+    },
+    {
+      "box": {
+        "h": 0.01368,
+        "w": 0.08156,
+        "x": 0.0503,
+        "y": 0.44592
+      },
+      "confidence": 1,
+      "text": "ESPANOL"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.78682,
+        "x": 0.04651,
+        "y": 0.46072
+      },
+      "confidence": 1,
+      "text": "No recibimos las pruebas que le pedimos el 14 de septiembre de 2026. Por esta razon, sus beneficios de CalFresh"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.78876,
+        "x": 0.05233,
+        "y": 0.4782
+      },
+      "confidence": 1,
+      "text": "terminaran. Puede pedir una audiencia estatal dentro de 90 dias de la fecha de este aviso. Si la pide antes del 12 de"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.56589,
+        "x": 0.05039,
+        "y": 0.49419
+      },
+      "confidence": 1,
+      "text": "octubre de 2026, sus beneficios pueden continuar hasta que se tome una decision."
+    },
+    {
+      "box": {
+        "h": 0.01168,
+        "w": 0.22868,
+        "x": 0.04845,
+        "y": 0.5203
+      },
+      "confidence": 1,
+      "text": "1-800-743-8525 NA 960X SAR (10/24)"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

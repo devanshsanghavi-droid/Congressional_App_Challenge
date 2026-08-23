@@ -1,0 +1,188 @@
+{
+  "engine": "apple-vision",
+  "file": "na960x-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.18411,
+        "x": 0.76357,
+        "y": 0.09884
+      },
+      "confidence": 0.3,
+      "text": "9680к 847: (Рак, 19626)"
+    },
+    {
+      "box": {
+        "h": 0.02035,
+        "w": 0.23643,
+        "x": 0.08527,
+        "y": 0.13372
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.02179,
+        "w": 0.22184,
+        "x": 0.08481,
+        "y": 0.15789
+      },
+      "confidence": 0.3,
+      "text": "Cafresh »Дівонинаня"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.12016,
+        "x": 0.0814,
+        "y": 0.19622
+      },
+      "confidence": 0.3,
+      "text": "MARA RN"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.17248,
+        "x": 0.07946,
+        "y": 0.22816
+      },
+      "confidence": 1,
+      "text": "SAN-OSE: 04 85108"
+    },
+    {
+      "box": {
+        "h": 0.01458,
+        "w": 0.2093,
+        "x": 0.62209,
+        "y": 0.20344
+      },
+      "confidence": 1,
+      "text": "CoRe Vorise: 0014939991"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.15116,
+        "x": 0.62209,
+        "y": 0.21801
+      },
+      "confidence": 1,
+      "text": "wases/ND: 8602814"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.17248,
+        "x": 0.62209,
+        "y": 0.23256
+      },
+      "confidence": 0.3,
+      "text": "ров: (4088) 1580-34001"
+    },
+    {
+      "box": {
+        "h": 0.0209,
+        "w": 0.14386,
+        "x": 0.34086,
+        "y": 0.24609
+      },
+      "confidence": 1,
+      "text": "ARNST 24, 29056"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.17829,
+        "x": 0.33915,
+        "y": 0.27449
+      },
+      "confidence": 1,
+      "text": "SI 30. 3006"
+    },
+    {
+      "box": {
+        "h": 0.02207,
+        "w": 0.61822,
+        "x": 0.09302,
+        "y": 0.32259
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH BENEFTS WALA STOP ON SEPTEMBER 30, 2026"
+    },
+    {
+      "box": {
+        "h": 0.02169,
+        "w": 0.24117,
+        "x": 0.07709,
+        "y": 0.37075
+      },
+      "confidence": 1,
+      "text": "MENSON FOR THIS ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.21512,
+        "x": 0.07364,
+        "y": 0.51015
+      },
+      "confidence": 1,
+      "text": "MOUR MERRING RENS"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.38566,
+        "x": 0.07558,
+        "y": 0.63808
+      },
+      "confidence": 0.3,
+      "text": "ТРок 186r9е/М6еітgg, Фвеli 1 38002443-8535061 47/180"
+    },
+    {
+      "box": {
+        "h": 0.01904,
+        "w": 0.48284,
+        "x": 0.07351,
+        "y": 0.65296
+      },
+      "confidence": 0.3,
+      "text": "Calisme baselmei on Sorte Serges Seite TrenDR"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.33915,
+        "x": 0.07171,
+        "y": 0.66715
+      },
+      "confidence": 1,
+      "text": "RAD 809624 MIS 09117387 S"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.12597,
+        "x": 0.07171,
+        "y": 0.68895
+      },
+      "confidence": 1,
+      "text": "1896080/965"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

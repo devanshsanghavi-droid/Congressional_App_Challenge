@@ -1,0 +1,168 @@
+{
+  "engine": "apple-vision",
+  "file": "bilingual-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.16279,
+        "x": 0.05039,
+        "y": 0.08285
+      },
+      "confidence": 0.3,
+      "text": "SANTA SORA OUT"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.21124,
+        "x": 0.05039,
+        "y": 0.11915
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.20349,
+        "x": 0.2655,
+        "y": 0.12209
+      },
+      "confidence": 1,
+      "text": "/AVISO DE ACCION"
+    },
+    {
+      "box": {
+        "h": 0.01897,
+        "w": 0.1244,
+        "x": 0.04633,
+        "y": 0.16203
+      },
+      "confidence": 0.3,
+      "text": "VOS MANIA"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.16473,
+        "x": 0.04651,
+        "y": 0.19186
+      },
+      "confidence": 0.5,
+      "text": "SAN-ONE C4 9851R"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.10078,
+        "x": 0.65504,
+        "y": 0.17151
+      },
+      "confidence": 0.5,
+      "text": "0090173890"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.13953,
+        "x": 0.55814,
+        "y": 0.18605
+      },
+      "confidence": 0.3,
+      "text": "wуss/o:80080"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.1531,
+        "x": 0.56202,
+        "y": 0.20058
+      },
+      "confidence": 0.3,
+      "text": "ро: (409980-3400"
+    },
+    {
+      "box": {
+        "h": 0.01606,
+        "w": 0.13953,
+        "x": 0.39147,
+        "y": 0.21359
+      },
+      "confidence": 0.3,
+      "text": "000 0 305"
+    },
+    {
+      "box": {
+        "h": 0.02458,
+        "w": 0.45231,
+        "x": 0.06163,
+        "y": 0.25531
+      },
+      "confidence": 1,
+      "text": "YOUR DA FRESH VAR STOP ON NOWENRER 1, 2005"
+    },
+    {
+      "box": {
+        "h": 0.02512,
+        "w": 0.64784,
+        "x": 0.06174,
+        "y": 0.30985
+      },
+      "confidence": 1,
+      "text": "SUS BENEMORO DE CAFRESH TERMINARA 2L 1 DE NOMEARE: 00 39066"
+    },
+    {
+      "box": {
+        "h": 0.01897,
+        "w": 0.63977,
+        "x": 0.08128,
+        "y": 0.386
+      },
+      "confidence": 0.3,
+      "text": "Ta 96k 90- Site 7986/78: 09048-98199-08 11s1989. T28428909-048861"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.10465,
+        "x": 0.71705,
+        "y": 0.38791
+      },
+      "confidence": 0.3,
+      "text": "12 2806 У960"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.30039,
+        "x": 0.49806,
+        "y": 0.4782
+      },
+      "confidence": 0.5,
+      "text": "8e4 98808280318033258-3188-086"
+    },
+    {
+      "box": {
+        "h": 0.01168,
+        "w": 0.12209,
+        "x": 0.15116,
+        "y": 0.5203
+      },
+      "confidence": 0.3,
+      "text": "19850-840 105"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

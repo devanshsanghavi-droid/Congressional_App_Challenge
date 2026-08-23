@@ -1,0 +1,338 @@
+{
+  "engine": "apple-vision",
+  "file": "na960y-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16667,
+        "x": 0.06783,
+        "y": 0.05958
+      },
+      "confidence": 1,
+      "text": "STATE OF CALPONNA"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.2655,
+        "x": 0.06589,
+        "y": 0.07267
+      },
+      "confidence": 0.3,
+      "text": "ВЕРАЙТМЕНТ ОР ВОС ВЕРУСЕВ"
+    },
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.17054,
+        "x": 0.06589,
+        "y": 0.08561
+      },
+      "confidence": 1,
+      "text": "SANTA CLANA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01901,
+        "w": 0.2345,
+        "x": 0.06589,
+        "y": 0.12489
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.02051,
+        "w": 0.31202,
+        "x": 0.06202,
+        "y": 0.15116
+      },
+      "confidence": 1,
+      "text": "Caffresh - Change in Beneft Amount"
+    },
+    {
+      "box": {
+        "h": 0.01646,
+        "w": 0.18644,
+        "x": 0.06567,
+        "y": 0.19154
+      },
+      "confidence": 1,
+      "text": "ROSA MARTINEZ CRUE"
+    },
+    {
+      "box": {
+        "h": 0.01602,
+        "w": 0.20155,
+        "x": 0.06395,
+        "y": 0.2064
+      },
+      "confidence": 1,
+      "text": "S0N0 SENTER NO SPC M"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.16667,
+        "x": 0.06395,
+        "y": 0.22238
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95111"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.08721,
+        "x": 0.06395,
+        "y": 0.24128
+      },
+      "confidence": 0.5,
+      "text": "Natoe Date"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.10465,
+        "x": 0.06202,
+        "y": 0.26743
+      },
+      "confidence": 1,
+      "text": "Elective Dete"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.18605,
+        "x": 0.74612,
+        "y": 0.08429
+      },
+      "confidence": 0.3,
+      "text": "НА МОУ SAR Ner 1036"
+    },
+    {
+      "box": {
+        "h": 0.01467,
+        "w": 0.20736,
+        "x": 0.60271,
+        "y": 0.19186
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-4620-4618"
+    },
+    {
+      "box": {
+        "h": 0.0147,
+        "w": 0.14535,
+        "x": 0.60465,
+        "y": 0.2064
+      },
+      "confidence": 0.5,
+      "text": "0 80-3100"
+    },
+    {
+      "box": {
+        "h": 0.01605,
+        "w": 0.15891,
+        "x": 0.60853,
+        "y": 0.22093
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 798-3401"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1686,
+        "x": 0.32171,
+        "y": 0.24128
+      },
+      "confidence": 0.3,
+      "text": "БЕРТЕМВЕЯ 18, 2021"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.14535,
+        "x": 0.32171,
+        "y": 0.26876
+      },
+      "confidence": 0.5,
+      "text": "ОСТОВЕЙ 1, 2028"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.60853,
+        "x": 0.0814,
+        "y": 0.31818
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH BENEFITS WILL CHANGE ON OCTOBER 1, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.27713,
+        "x": 0.0814,
+        "y": 0.33848
+      },
+      "confidence": 1,
+      "text": "Cument monthly beneft: $535.00"
+    },
+    {
+      "box": {
+        "h": 0.02046,
+        "w": 0.18605,
+        "x": 0.08333,
+        "y": 0.35465
+      },
+      "confidence": 1,
+      "text": "New monthly benefi"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.06783,
+        "x": 0.29845,
+        "y": 0.35756
+      },
+      "confidence": 1,
+      "text": "$291.00"
+    },
+    {
+      "box": {
+        "h": 0.01325,
+        "w": 0.27326,
+        "x": 0.06977,
+        "y": 0.39099
+      },
+      "confidence": 1,
+      "text": "WHY YOUR BENEFITS CHANGED"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.08915,
+        "x": 0.06589,
+        "y": 0.40988
+      },
+      "confidence": 0.3,
+      "text": "To sport"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.13566,
+        "x": 0.07171,
+        "y": 0.42277
+      },
+      "confidence": 0.3,
+      "text": "at he none"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.20349,
+        "x": 0.06589,
+        "y": 0.44913
+      },
+      "confidence": 1,
+      "text": "YOUR HEARING RIGHTS"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.05814,
+        "x": 0.06783,
+        "y": 0.46948
+      },
+      "confidence": 0.5,
+      "text": "Tou the"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.34884,
+        "x": 0.5155,
+        "y": 0.40988
+      },
+      "confidence": 1,
+      "text": "SOUTH BAY HOME CARE on you SAR 7. W"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.45543,
+        "x": 0.25,
+        "y": 0.42442
+      },
+      "confidence": 1,
+      "text": "alie your householf's benell, Regulation: MPP 80-503"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.22287,
+        "x": 0.24419,
+        "y": 0.46802
+      },
+      "confidence": 1,
+      "text": "sang wite 90 days of the d"
+    },
+    {
+      "box": {
+        "h": 0.0218,
+        "w": 0.34302,
+        "x": 0.57946,
+        "y": 0.46512
+      },
+      "confidence": 1,
+      "text": "you as for a hearing before Sepenter 1%"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.05039,
+        "x": 0.55039,
+        "y": 0.48544
+      },
+      "confidence": 0.3,
+      "text": "а над"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.17442,
+        "x": 0.06589,
+        "y": 0.50706
+      },
+      "confidence": 1,
+      "text": "To ant for a hearing cal"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.11822,
+        "x": 0.24806,
+        "y": 0.50872
+      },
+      "confidence": 1,
+      "text": "1-800-140-8525"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

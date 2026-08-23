@@ -1,0 +1,15 @@
+# FEASIBILITY PROBE grammar — not the extraction grammar.
+#
+# date-valid.gbnf plus the one production that matters most for this product:
+# the model may answer `null`.
+#
+# CLAUDE.md §4: "If the model cannot find a value, the field is empty and the
+# user fills it in. Never fabricate a date." A grammar with no null production
+# makes that rule unimplementable — the sampler has no legal token sequence for
+# "not stated", so on a notice with no deadline it must emit something.
+root   ::= "{" ws "\"deadline\":" ws (date | "null") ws "}"
+date   ::= "\"" month "/" day "/" year "\""
+month  ::= ("0" [1-9]) | ("1" [0-2])
+day    ::= ("0" [1-9]) | ([12] [0-9]) | ("3" [01])
+year   ::= "20" [0-9] [0-9]
+ws     ::= [ \t\n]*

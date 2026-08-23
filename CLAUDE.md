@@ -187,7 +187,7 @@ experiment against the corpus, not an assumption.
 | Framework | Expo SDK **57.0.12**, React Native **0.86.2**, React **19.2.3** — dev client, **not** Expo Go |
 | Language | TypeScript strict + `noUncheckedIndexedAccess` + `exactOptionalPropertyTypes` |
 | Navigation | `expo-router` (file-based, routes under `src/app`) |
-| OCR | `expo-mlkit-ocr` **off the shelf**, both platforms |
+| OCR | `expo-mlkit-ocr` **off the shelf**. ⚠️ Despite the name it runs **Apple Vision on iOS** at its default `iosEngine: "auto"` — no ML Kit pod is installed. ML Kit on Android. See §13. |
 | Local LLM | `llama.rn` **0.12.9** (stable line — npm's `latest` tag points at an RC) |
 | Model | Qwen2.5-1.5B-Instruct GGUF Q4_K_M (~1.1 GB), Apache 2.0; 0.5B fallback |
 | DB | `expo-sqlite` + field-level encryption, key in `expo-secure-store` |
@@ -240,6 +240,34 @@ content/templates/       notice templates as DATA — part of the island
 
 tests/node/              bare-Node tests
   extraction-island.test.ts   reads bytes on disk, fails the build on a violation
+  corpus-integrity.test.ts    corpus map vs disk; the 01->02 chain; the approval
+  metrics-scoring.test.ts     the comparators and the P/R arithmetic
+  urgency.test.ts             countdown tiers, reminder ladder, DST boundaries
+
+src/lib/urgency.ts       countdown tier + reminder ladder (SPEC 6/7), pure
+src/lib/capture/pipeline.ts   ONE traced path: OCR -> orientation -> extract.
+                              Camera, picker and self-test all call it.
+src/lib/diagnostics/     stage trace with timings; copyable, carries no notice
+                         content. Dev only, delete before freeze.
+src/lib/content/         bundled content packs, validated on parse
+  parse.ts               pure - takes raw JSON as an argument, throws on bad data
+  validate.ts            population-level phrasing rule, enforced mechanically
+  index.ts               the only place content/*.json is imported
+
+content/cross_reference.json   "worth checking" cross-references, sourced
+content/offices.json           Where to Go directory + appeals routing
+
+tools/corpus/            THE EVALUATION CORPUS - 10 notices, 23 real captures,
+                         56 synthetic variants, ground_truth.json, generators
+tools/corpus/ocr/        committed OCR text layer, one JSON per image per engine
+tools/metrics/           the metrics harness - see its README
+  ocr/vision-ocr.swift   Apple Vision producer (harness only, NOT the app's OCR)
+  corpus.ts              machine-readable MANIFEST.md: photo -> notice/condition
+  fields.ts              field taxonomy: printed | derived | semantic
+  extractor.ts           the seam where /src/extraction plugs in
+  score.ts report.ts run.ts logic.ts
+  probe/                 FEASIBILITY PROBE - measurement only, never copy into
+                         /src/extraction. See probe/README.md.
 
 tools/forms/             blank public form PDFs + fetch script (manual download)
 
@@ -326,10 +354,61 @@ app — treat a11y regressions as build breaks.
 - **Redaction tests** — SSN in 8 formats must never reach the DB or a file.
 - **Readability gate** — Flesch–Kincaid ≤ grade 6 on bundled English
   explanation content; Fernández-Huerta for Spanish. Fails CI above that.
-- **Metrics table** — per-field precision/recall on the corpus, for *both* the
-  deterministic-only path and the model path. Goes in the README.
-- **Corpus** — ~20 printed-and-photographed pages, filled with fictional data.
+- **Metrics table** — `npm run metrics`. Per-field precision/recall by
+  condition, for *both* the deterministic-only path and the model path. Goes in
+  the README. Three rules it enforces structurally:
+  **real captures and synthetic degradations are never merged into one number**;
+  **conditions are the rows, not the average**; and every figure is reported
+  beside the **OCR ceiling** so a miss is attributable to extraction or to the
+  recogniser. See `tools/metrics/README.md`.
+- **Corpus** — built 2026-08-18. 10 fictional notices, 23 printed-and-
+  photographed captures across 5 physical conditions, 56 synthetic degradations.
   **Never use a real person's notice.**
+- **A personal Apple team cannot sign this app's full entitlement set.** Xcode
+  refuses to create a profile at all if *any* entitlement is unavailable to the
+  team. `plugins/withPersonalTeamEntitlements.js` strips the two that are:
+  `aps-environment` (removed permanently — Carta is local-notifications only and
+  never wanted it) and `extended-virtual-addressing` (**removed temporarily, and
+  it invalidates the llama.rn benchmark** — see NOTES.md 2026-08-20). Delete the
+  plugin when there is a paid account. **It must stay FIRST in the plugins
+  array**: Expo mods run in reverse registration order, and expo-notifications
+  re-adds `aps-environment` whenever it finds it missing.
+- **Developer Mode must be on for a device build.** Settings → Privacy &
+  Security → Developer Mode, then restart. `devicectl` shows the device as
+  `connected (no DDI)` until it is.
+- **A dirty DerivedData produces an app that builds and cannot launch.**
+  `Library not loaded: @rpath/React.framework/React` at dyld time, after
+  `Build Succeeded, 0 errors`. RN 0.86 ships `React.framework` and
+  `ReactNativeDependencies.framework` as prebuilt XCFrameworks, and an
+  interrupted or concurrent build leaves `[CP] Embed Pods Frameworks` having
+  skipped them. **A clean build embeds them correctly** — verified 2026-08-20 by
+  wiping DerivedData and rebuilding. Fix is `rm -rf ~/Library/Developer/Xcode/DerivedData/Carta-*`,
+  not a config change. **Do NOT set `ios.buildReactNativeFromSource`** — it
+  looks like the fix and it breaks the build with a Swift 6 concurrency error in
+  `expo-modules-core/ios/Core/Events/EventEmitter.swift`. A green build log
+  proves nothing; launch it.
+- **Without notification authorisation iOS keeps nothing.**
+  `scheduleNotificationAsync` returns an id, every layer reports success, and
+  the OS retains zero. Always check what the OS actually holds
+  (`listScheduled()`), and always tell the user when reminders were not set.
+- **`expo-mlkit-ocr` sorts lines geometrically, interleaving columns.** On a
+  real notice the right-hand column lands *inside* the address block, so
+  "N lines above X" is wrong. Anchor on a column x-position and walk within it.
+  Third time this hazard has bitten; see NOTES.md 2026-08-20.
+- **Privacy model is field-level, not whole-database.** The full column-by-column
+  list is in NOTES.md (2026-08-20). Short version: the OCR text is AES-256-GCM
+  ciphertext, the case number is a salted hash plus last 4, and **the recipient
+  name, the dates, the programme and the photo file are plaintext**. Never say
+  "the database is encrypted" — say what is actually true, which is still
+  strong because none of it leaves the phone.
+- **The harness and the iOS app run the same engine family — Apple Vision.**
+  Established from `Podfile.lock`, the podspec, the config plugin and the module
+  source (§13). The harness's extra config — pinned revision 3, `en-US,es-ES`
+  declared — measures **zero difference across all 79 images** against the app's
+  defaults. What is still unverified is macOS Vision vs iOS Vision, which are
+  separate model builds; only a device run closes that. **Android is genuinely
+  ML Kit and these figures do not describe it.** Never quote a corpus number
+  without naming the engine and the platform.
 
 ---
 
@@ -342,6 +421,81 @@ Week 2 of nine. Eight commits. `main` pushed to
 simulator; extraction island enforced and probe-verified; i18n en/es wired;
 storage/OCR/LLM dependencies installed and linking; week 1 benchmark harness
 built, committed, and verified to compile and bundle.
+
+**NEXT — the camera path has never run.** Everything proven so far is
+downstream of a file a script put on disk. `DEVICE-TEST.md` is the tap-by-tap
+script for the physical phone: camera, picker, a real inverted capture, and the
+notification banner. Every run is traced, so a failure names the stage. **The
+one number to watch is `sourcePortrait` in the `ocr` stage** — if a portrait
+photo reports `false`, EXIF rotation is not being applied and every bounding box
+is sideways. That cannot be caught in the Simulator, which has no camera.
+
+**2026-08-20 — the thin spine runs, verified in the Simulator.** Photo → OCR →
+orientation check → extract → save → reminders registered with iOS, over three
+real corpus photographs. `osHeld: 11`. Orientation anchors measured on device
+(0.207 / 0.215 upright, 0.651 inverted) match what the corpus harness predicted.
+**Four problems found doing it**, three of which would have shipped silently —
+the app could not launch at all, reminders were being scheduled into nothing,
+and the recipient name failed on every capture. All in NOTES.md; the build one
+still needs a fix applied. 134 tests.
+
+The extraction cascade is stubbed behind `src/lib/extraction-port/`; see
+`src/extraction/INTERFACE.md` for the exact shape the app calls, and delete
+`scaffold.ts` when the real one lands.
+
+**2026-08-20 — the architecture question is answered.** Deterministic
+extraction on real photographed OCR: **96.4% precision / 87.6% recall** on core
+fields, and **100% precision on every date the app schedules on**. The precision
+loss is entirely in `recipient_name` and `case_number`, from OCR character
+misreads — which is a Review-screen requirement, not a parser one: those two
+fields need to be visibly checkable against the photo. Geometry (SPEC §4 Layer
+1) is worth +4.8pp precision and is now justified by measurement.
+
+Qwen2.5-1.5B on the same text **corrupts the core** (4 wrong, 2 invented, vs 0
+and 0 for regex) and adds nothing on the long tail. So: **the model does not
+touch the core fields.** It earns its place on unseen layouts and on the
+plain-language explanation. Details and the full caveats in NOTES.md.
+
+**FROZEN 2026-08-19 — the corpus is done.** No further work on it until week 8,
+when the real extractor runs against it and produces the number that goes in the
+README. Defects found before then go in NOTES.md and wait, unless they block the
+app. It already does its job: one number in the README, one line in the video.
+The harness supports a rate claim for **flat (n=8) and creased (n=5)** only —
+everything else is an existence proof and the report refuses to print it as a
+percentage.
+
+**Done 2026-08-19 — corpus v2.** Notice 02's chronology defect fixed and the
+three na960x captures reshot. Two relabelled to their true conditions —
+`colour-cast` (magenta LED, not low light) and `inverted` (180° + skew, not
+skew) — so notice 02 now contributes flat/colour-cast/inverted and nine real
+conditions exist. The chain warning is clear. **`expo-mlkit-ocr` turns out to
+run Apple Vision on iOS, not ML Kit** (§13), so the harness and the app share an
+engine family; what is left to verify is macOS Vision vs iOS Vision on device.
+Vision reads a 180° page fine but returns boxes in the raw frame — see NOTES.md
+for why that argues for a "turn your phone around" prompt on Capture rather than
+orientation correction in code.
+
+**Done 2026-08-18 — the evaluation corpus and the metrics harness.** 10
+fictional notices, 23 real captures across 5 physical conditions, 56 synthetic
+degradations, committed with ground truth and both generators. `npm run metrics`
+scores them and writes `tools/metrics/out/METRICS.md`. The extraction cascade is
+not written yet, so the extractor is `null` and the informative number today is
+the **OCR ceiling**: 97.9% on real captures, 62.5% on synthetic. `npm test` is
+71 tests across 4 suites.
+
+Three things that came out of it and matter beyond the harness:
+
+1. **Blur is uncapturable on an iPhone** — Deep Fusion sharpens document text
+   after capture, so blur and noise had to be synthetic while skew, crease,
+   shadow and low light stayed real. This is written-answer material.
+2. **The physical conditions largely saturate.** All five captures of the same
+   SAR 7 sheet put every printed field into the text, and seven of nine
+   conditions score 100%. The claim "94% on flat, 71% on creased" is *not
+   available* from this corpus at the OCR stage — say so rather than dress a
+   flat table up as a gradient.
+3. **A corpus defect was found and fixed** (notice 02's chronology). The test
+   that reported it is now inverted into a regression guard, because
+   `make_corpus.py` was never updated and would reintroduce it.
 
 **BLOCKED — the week 1 gate is not closed.** The benchmark has never been run.
 It requires the **physical iPhone**: the simulator runs on the Mac's CPU and
@@ -402,15 +556,65 @@ Devansh (an afternoon each).
   are a manual browser step.
 - **Check `dist-tags.latest` against the version list.** `llama.rn`'s `latest`
   points at a release candidate while a healthy stable line ships alongside.
+- **`expo-mlkit-ocr` does not use ML Kit on iOS.** Its config plugin computes
+  `shouldDisableMlkit = iosEngine !== "mlkit"`, and `iosEngine` defaults to
+  `"auto"` — so the default writes `EXPO_MLKIT_OCR_DISABLE_MLKIT = '1'` into the
+  Podfile, no `GoogleMLKit` pod is installed, and the module's `#if canImport`
+  falls through to `VNRecognizeTextRequest`. On device as well as simulator. The
+  package README claims ML Kit "for both iOS and Android" and is wrong for the
+  default configuration. To actually get ML Kit on iOS you would pass
+  `{"iosEngine": "mlkit"}`, which then breaks arm64 simulator builds. **This is
+  fine — Vision is a good recogniser and it is what the corpus is scored with —
+  but the name of the package is not evidence of the engine.** Fourth instance
+  of "configuring a thing is not verifying it happened", found by reading
+  `Podfile.lock` rather than the README.
+- **GBNF guarantees the shape, not the value, and not the truth.** Measured
+  2026-08-20. `\d{2}/\d{2}/\d{4}` accepts `00/00/0001` and `20/09/2026` —
+  constrain month and day *ranges*, not just digit counts. And a grammar with no
+  `null` production forces fabrication: on a notice with no deadline the model
+  emitted the notice date instead, because no legal token sequence meant "not
+  stated". Needs all three — a null production, a prompt that names it, and the
+  sanity pass. The unconstrained model got that case right; the constrained one
+  did not.
+- **This llama.cpp build cannot parse a GBNF rule split across lines.** A
+  newline ends the rule. Long rules go on one line.
+- **Bare Node ESM will not resolve an extensionless relative import.** The repo
+  standardises on explicit `.ts` extensions with `allowImportingTsExtensions`.
+  Verified against a real Metro bundle, not assumed.
 - **Configuring a thing is not verifying it happened.** This shape has caused
-  three separate errors here. Read the generated artifact.
+  four separate errors here. Read the generated artifact.
+- **A corpus re-stage deletes the OCR cache.** It lives at `tools/corpus/ocr/`,
+  inside the directory that gets `rm -rf`'d when notices are reshot. Restore it
+  from git, then `npm run corpus:ocr -- --only <pattern>` for the images that
+  actually changed.
+- **`tools/corpus/tools/make_corpus.py` is stale.** It still hardcodes notice
+  02's pre-fix dates, so re-running it would reintroduce the chronology defect
+  and overwrite the corrected ground truth. `corpus-integrity.test.ts` catches
+  that, but do not re-run the generator expecting the current corpus back.
+- **`degrade.py` is not byte-reproducible across Pillow versions.** Re-running
+  it here changed all 56 synthetic variants, and the blur ones changed enough to
+  move OCR output by a few lines. Aggregate effect on the metrics: nil (62.5%
+  either way, ±3pp per condition). The committed images are the artifact of
+  record — the metrics are reproducible from them, which is the property that
+  matters.
+- **Millisecond arithmetic on dates is wrong twice a year.** `(a - b) / 86400000`
+  across a DST boundary gives 90.04, not 90. Both `daysUntil` and the reminder
+  ladder work in local calendar components. Caught by a failing test, not by
+  review.
+- **A committed cache must not contain a timestamp or a duration.** The first
+  OCR cache stored recognition time and was therefore never byte-identical
+  across runs, which defeats the point of committing it. Timing is measured and
+  reported, not stored.
+- **`import.meta` is a syntax error under Jest's CommonJS transform.** Anything
+  in `tools/` that Jest also imports has to find paths another way — the metrics
+  harness walks up from `process.cwd()` looking for the corpus.
 
 ---
 
 ## 14. Commands
 
 ```bash
-npm run typecheck    # app config, then the extraction island's stricter config
+npm run typecheck    # app config, the extraction island, then tools/
 npm run lint
 npm test             # both Jest projects
 npm run test:node    # extraction + tools, bare Node, fast, no simulator
@@ -419,6 +623,24 @@ npx expo run:ios     # local simulator build
 eas build --profile development --platform ios   # device build (needs Apple ID)
 eas build --profile android-compile-check --platform android   # phase-boundary check
 bash tools/forms/fetch-forms.sh                  # will fail; prints manual URLs
+
+npm run probe        # deterministic extraction on real OCR, both variants
+npm run probe:errors # every wrong value from the probe, named
+npm run probe:llm    # Qwen2.5-1.5B long-tail test (needs the GGUF in ~/models)
+npm run content:check  # ship gate: what a human still has to verify in content/
+
+npm run metrics      # score the corpus, write tools/metrics/out/METRICS.md
+npm run metrics -- --extractor src/extraction/index.ts   # once the cascade exists
+npm run metrics:check                            # non-zero exit if an assertion fails
+npm run corpus:ocr   # rebuild the OCR text layer (macOS only, needs swiftc)
+
+# End-to-end acceptance test in the Simulator (dev screen, deleted before freeze).
+# Copies corpus photos into the app sandbox and runs the real spine over them.
+npx expo run:ios --device "iPhone 17 Pro" --port 8082
+C=$(xcrun simctl get_app_container booted com.devanshsanghavi.carta data)
+mkdir -p "$C/Documents/selftest" && cp tools/corpus/photos/sar7-clean-01.jpg "$C/Documents/selftest/"
+xcrun simctl openurl booted carta://selftest
+cat "$C/Documents/selftest-report.json"
 ```
 
 ---

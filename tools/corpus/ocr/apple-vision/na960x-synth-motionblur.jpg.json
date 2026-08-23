@@ -1,0 +1,318 @@
+{
+  "engine": "apple-vision",
+  "file": "na960x-synth-motionblur.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.17054,
+        "x": 0.08915,
+        "y": 0.07105
+      },
+      "confidence": 1,
+      "text": "STATE OF CALFURNA"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.2655,
+        "x": 0.08721,
+        "y": 0.08429
+      },
+      "confidence": 1,
+      "text": "DERMFTTMENT OF SODAL BERNEES"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.17248,
+        "x": 0.08721,
+        "y": 0.09738
+      },
+      "confidence": 0.5,
+      "text": "SHANTIA CLARAN CROUNTA"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.2345,
+        "x": 0.08721,
+        "y": 0.13372
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.22093,
+        "x": 0.08333,
+        "y": 0.16134
+      },
+      "confidence": 1,
+      "text": "Calfresh - Discontinuance"
+    },
+    {
+      "box": {
+        "h": 0.01167,
+        "w": 0.18217,
+        "x": 0.76357,
+        "y": 0.10174
+      },
+      "confidence": 1,
+      "text": "MA 3H600 SER FRes. 100224"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.21512,
+        "x": 0.0814,
+        "y": 0.21492
+      },
+      "confidence": 0.5,
+      "text": "THE STORM ROAD AAPT 1122"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1686,
+        "x": 0.07946,
+        "y": 0.2311
+      },
+      "confidence": 0.5,
+      "text": "SANJOSE CAUSE"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.09109,
+        "x": 0.07946,
+        "y": 0.24846
+      },
+      "confidence": 0.5,
+      "text": "Notice Date"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.10659,
+        "x": 0.07946,
+        "y": 0.27449
+      },
+      "confidence": 0.5,
+      "text": "Efective Date"
+    },
+    {
+      "box": {
+        "h": 0.01603,
+        "w": 0.19961,
+        "x": 0.62403,
+        "y": 0.20344
+      },
+      "confidence": 0.5,
+      "text": "Case Numther: 011-407292"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.14922,
+        "x": 0.62209,
+        "y": 0.21933
+      },
+      "confidence": 0.5,
+      "text": "Wearicer DD: S0-24"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.16473,
+        "x": 0.62403,
+        "y": 0.23389
+      },
+      "confidence": 1,
+      "text": "Phones: 44088) 7558-244601"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.13953,
+        "x": 0.34109,
+        "y": 0.25145
+      },
+      "confidence": 1,
+      "text": "ALEST 24, 2008"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.17248,
+        "x": 0.33915,
+        "y": 0.27616
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 330, 200R"
+    },
+    {
+      "box": {
+        "h": 0.02296,
+        "w": 0.61672,
+        "x": 0.09472,
+        "y": 0.32318
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH BENERITS WILL STOP ON SEPTEWBIER 30, 2126."
+    },
+    {
+      "box": {
+        "h": 0.01467,
+        "w": 0.24031,
+        "x": 0.07558,
+        "y": 0.375
+      },
+      "confidence": 1,
+      "text": "REASON FOR THIS ACTION"
+    },
+    {
+      "box": {
+        "h": 0.02311,
+        "w": 0.85299,
+        "x": 0.07349,
+        "y": 0.39219
+      },
+      "confidence": 1,
+      "text": "We did nut receive your Semi-Ammual Eligibity Status Repot (SAR 7) that ves due on Septenber 5, 2126 Berase"
+    },
+    {
+      "box": {
+        "h": 0.02339,
+        "w": 0.85688,
+        "x": 0.07349,
+        "y": 0.40905
+      },
+      "confidence": 1,
+      "text": "the repot wes not retured, we camor deterine whether your househod renais eigble. Regulation: WAIP #S-508"
+    },
+    {
+      "box": {
+        "h": 0.01462,
+        "w": 0.17442,
+        "x": 0.07558,
+        "y": 0.4316
+      },
+      "confidence": 1,
+      "text": "MHAT HOW CAN DO"
+    },
+    {
+      "box": {
+        "h": 0.02042,
+        "w": 0.8314,
+        "x": 0.07171,
+        "y": 0.44913
+      },
+      "confidence": 1,
+      "text": "If you retum the completed SAR 7 with all required pout before Steptenter 30, 2125, yaur benelts may continue"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.18798,
+        "x": 0.07752,
+        "y": 0.46802
+      },
+      "confidence": 1,
+      "text": "without a new appication."
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.2093,
+        "x": 0.07752,
+        "y": 0.51147
+      },
+      "confidence": 1,
+      "text": "NOUR HEARING RIGHTE"
+    },
+    {
+      "box": {
+        "h": 0.01938,
+        "w": 0.86458,
+        "x": 0.07351,
+        "y": 0.53045
+      },
+      "confidence": 1,
+      "text": "If you thime this action ss wrong, you may ask for a sate tenaling. numuss\" ask within 910 days of thee datte off thes muttice"
+    },
+    {
+      "box": {
+        "h": 0.02052,
+        "w": 0.81008,
+        "x": 0.09302,
+        "y": 0.57105
+      },
+      "confidence": 1,
+      "text": "MPORTANT: if you ask for a hearing before Septenter 3, 2125, ymur benefits may continue at the same level"
+    },
+    {
+      "box": {
+        "h": 0.01899,
+        "w": 0.48643,
+        "x": 0.09109,
+        "y": 0.59003
+      },
+      "confidence": 1,
+      "text": "unti the hearing decision is matte. This is called aid paid pending."
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.39341,
+        "x": 0.07364,
+        "y": 0.63808
+      },
+      "confidence": 1,
+      "text": "To ask for a herating, call 11-80010-7443-88525 on write to:"
+    },
+    {
+      "box": {
+        "h": 0.02014,
+        "w": 0.47519,
+        "x": 0.07344,
+        "y": 0.65208
+      },
+      "confidence": 0.5,
+      "text": "Calitoria Depatinent of Social Benvies, Shatte Hematings hivssion"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.45543,
+        "x": 0.07171,
+        "y": 0.66858
+      },
+      "confidence": 1,
+      "text": "PO Bor 94C243, MS 19-17-37, Sacramento, CA S42M 2431"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.12791,
+        "x": 0.07364,
+        "y": 0.68888
+      },
+      "confidence": 0.3,
+      "text": "MAY SOON SS4AR TOUZAA"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

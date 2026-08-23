@@ -1,0 +1,342 @@
+{
+  "seed": 20261026,
+  "note": "Synthetic degradation. Score separately from real captures. Generated because iPhone computational photography sharpens text post-capture, making genuine motion blur uncapturable with the stock camera.",
+  "variants": [
+    {
+      "file": "sar7-synth-motionblur.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "sar7-synth-motionblur-diag.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "sar7-synth-defocus.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "sar7-synth-defocus-heavy.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "sar7-synth-noise.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "sar7-synth-underexposed.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "sar7-synth-jpeg.jpg",
+      "derived_from": "sar7-clean-01.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-motionblur.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-motionblur-diag.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-defocus.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-defocus-heavy.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-noise.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-underexposed.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "na960x-synth-jpeg.jpg",
+      "derived_from": "na960x-clean-06.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-motionblur.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-motionblur-diag.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-defocus.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-defocus-heavy.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-noise.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-underexposed.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "cf3776-synth-jpeg.jpg",
+      "derived_from": "cf3776-clean-10.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-motionblur.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-motionblur-diag.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-defocus.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-defocus-heavy.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-noise.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-underexposed.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "mc210-synth-jpeg.jpg",
+      "derived_from": "mc210-clean-12.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-motionblur.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-motionblur-diag.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-defocus.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-defocus-heavy.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-noise.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-underexposed.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "na960y-synth-jpeg.jpg",
+      "derived_from": "na960y-clean-14.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-motionblur.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-motionblur-diag.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-defocus.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-defocus-heavy.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-noise.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-underexposed.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "sar7es-synth-jpeg.jpg",
+      "derived_from": "sar7es-clean-16.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-motionblur.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-motionblur-diag.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-defocus.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-defocus-heavy.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-noise.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-underexposed.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "bilingual-synth-jpeg.jpg",
+      "derived_from": "bilingual-clean-18.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-motionblur.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "motion blur, 15px kernel at 0 deg",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-motionblur-diag.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "motion blur, 21px kernel at 35 deg",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-defocus.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "gaussian defocus, radius 2.2px",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-defocus-heavy.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "gaussian defocus, radius 4.0px",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-noise.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "gaussian luminance noise, sigma 9",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-underexposed.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "gamma 1.75 + sigma 7 noise",
+      "synthetic": true
+    },
+    {
+      "file": "ssa-synth-jpeg.jpg",
+      "derived_from": "ssa-clean-19.jpg",
+      "condition": "JPEG quality 22 recompression",
+      "synthetic": true
+    }
+  ]
+}

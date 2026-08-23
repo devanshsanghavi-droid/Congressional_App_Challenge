@@ -1,0 +1,258 @@
+{
+  "engine": "apple-vision",
+  "file": "ssa-synth-motionblur.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.31977,
+        "x": 0.06395,
+        "y": 0.05958
+      },
+      "confidence": 1,
+      "text": "SOCAL SECURITN ADMNSTRATTONN"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.17442,
+        "x": 0.76744,
+        "y": 0.07849
+      },
+      "confidence": 0.5,
+      "text": "Tatte Septenter B 202"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.31008,
+        "x": 0.06395,
+        "y": 0.11606
+      },
+      "confidence": 1,
+      "text": "Supplemental Security Income"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.26357,
+        "x": 0.06395,
+        "y": 0.13663
+      },
+      "confidence": 1,
+      "text": "Nolfice of Pedetermination"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.12791,
+        "x": 0.06395,
+        "y": 0.16417
+      },
+      "confidence": 1,
+      "text": "GALORA HAMES"
+    },
+    {
+      "box": {
+        "h": 0.01467,
+        "w": 0.19767,
+        "x": 0.61434,
+        "y": 0.16715
+      },
+      "confidence": 0.5,
+      "text": "Case Mumder: ****-482"
+    },
+    {
+      "box": {
+        "h": 0.01326,
+        "w": 0.22674,
+        "x": 0.06202,
+        "y": 0.18005
+      },
+      "confidence": 0.5,
+      "text": "160 WEIRD ANAME APT 222"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.1124,
+        "x": 0.61047,
+        "y": 0.18314
+      },
+      "confidence": 0.5,
+      "text": "Mokieer DD: NNA"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.17054,
+        "x": 0.06202,
+        "y": 0.19622
+      },
+      "confidence": 1,
+      "text": "SHALORE, CA 95 25"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.17248,
+        "x": 0.6124,
+        "y": 0.19903
+      },
+      "confidence": 1,
+      "text": "Phones: T-80772-121B"
+    },
+    {
+      "box": {
+        "h": 0.02278,
+        "w": 0.86081,
+        "x": 0.05798,
+        "y": 0.21715
+      },
+      "confidence": 1,
+      "text": "We are revewing your Supplenenal Seruity houne (S5)) to nake sue yu are sill eigible and that we ar paying"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.44574,
+        "x": 0.06202,
+        "y": 0.23692
+      },
+      "confidence": 1,
+      "text": "you thee right zamount. This resee iss called a redetermination."
+    },
+    {
+      "box": {
+        "h": 0.01873,
+        "w": 0.39769,
+        "x": 0.07925,
+        "y": 0.2813
+      },
+      "confidence": 1,
+      "text": "PLEASE REPLY BY: OCTOBER 8, 2126"
+    },
+    {
+      "box": {
+        "h": 0.01472,
+        "w": 0.21512,
+        "x": 0.06202,
+        "y": 0.32994
+      },
+      "confidence": 1,
+      "text": "WHAT HOW NEED TO DO"
+    },
+    {
+      "box": {
+        "h": 0.01709,
+        "w": 0.40537,
+        "x": 0.06185,
+        "y": 0.34866
+      },
+      "confidence": 0.5,
+      "text": "Calluss at 11-88000-77722-12213B to sadheetwee your needlessenita"
+    },
+    {
+      "box": {
+        "h": 0.01457,
+        "w": 0.12403,
+        "x": 0.06202,
+        "y": 0.36628
+      },
+      "confidence": 1,
+      "text": "following ready:"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.37984,
+        "x": 0.06008,
+        "y": 0.38517
+      },
+      "confidence": 1,
+      "text": "• Bank statenents for all accounts, ass: B munttiss"
+    },
+    {
+      "box": {
+        "h": 0.01605,
+        "w": 0.38953,
+        "x": 0.06008,
+        "y": 0.40407
+      },
+      "confidence": 1,
+      "text": "L Proof of any income you ar your spun use receivest"
+    },
+    {
+      "box": {
+        "h": 0.01473,
+        "w": 0.43798,
+        "x": 0.06008,
+        "y": 0.42277
+      },
+      "confidence": 0.5,
+      "text": "O Incormation admutt iteete youllives and vito lives with you"
+    },
+    {
+      "box": {
+        "h": 0.01632,
+        "w": 0.49435,
+        "x": 0.06194,
+        "y": 0.44884
+      },
+      "confidence": 1,
+      "text": "IF WOU DO NOT REPLY, MOUR SIS PAMMENTS MILN STOP"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.15891,
+        "x": 0.06202,
+        "y": 0.47529
+      },
+      "confidence": 0.5,
+      "text": "IF NODOSAGTEE"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.37791,
+        "x": 0.06202,
+        "y": 0.51015
+      },
+      "confidence": 1,
+      "text": "aD days of the date you reeve the de sson nudice"
+    },
+    {
+      "box": {
+        "h": 0.01164,
+        "w": 0.1531,
+        "x": 0.06202,
+        "y": 0.53779
+      },
+      "confidence": 0.5,
+      "text": "From 3S4488922 C9P200E"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.06589,
+        "x": 0.81008,
+        "y": 0.35305
+      },
+      "confidence": 1,
+      "text": "tave the"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

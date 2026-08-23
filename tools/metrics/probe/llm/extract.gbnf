@@ -1,0 +1,38 @@
+# FEASIBILITY PROBE grammar — NOT the extraction grammar.
+#
+# The real schema and grammar are Devansh's and live in /src/extraction
+# (CLAUDE.md §15). This one covers eight fields for one experiment: can the
+# model recover the long-tail fields regex misses without corrupting the core
+# fields regex already gets right?
+#
+# Every field is nullable, and the ranges are constrained rather than just the
+# shapes — both because the earlier date experiment showed that a shape-only
+# grammar permits "00/00/0001" and that a grammar with no null production
+# forces the model to invent a value when the notice states none.
+#
+# Field order is fixed by the grammar. That is a real constraint on the model,
+# and a useful one: it cannot omit a field, so "missing" and "null" are the
+# same thing and there is no partial-object case to handle.
+
+# NOTE: this build of llama.cpp does not accept a rule split across lines —
+# a newline ends the rule and the next line must start with a rule name. So
+# `root` is one long line. Found by the parser rejecting the readable version.
+root ::= "{" ws "\"notice_date\":" ws (date | null) "," ws "\"deadline_date\":" ws (date | null) "," ws "\"effective_date\":" ws (date | null) "," ws "\"case_number\":" ws (idstr | null) "," ws "\"employer\":" ws (text | null) "," ws "\"citation\":" ws (text | null) "," ws "\"household_size\":" ws (int | null) "," ws "\"appointment_time\":" ws (time | null) ws "}"
+
+date   ::= "\"" month "/" day "/" year "\""
+month  ::= ("0" [1-9]) | ("1" [0-2])
+day    ::= ("0" [1-9]) | ([12] [0-9]) | ("3" [01])
+year   ::= "20" [0-9] [0-9]
+
+# 12-hour clock with a meridiem, which is how these notices print appointments.
+time   ::= "\"" hour ":" minute " " ("AM" | "PM") "\""
+hour   ::= [1-9] | ("1" [0-2])
+minute ::= [0-5] [0-9]
+
+# Case numbers are digits, letters and hyphens — never prose.
+idstr  ::= "\"" [A-Za-z0-9-]+ "\""
+
+int    ::= [0-9] | ([1-9] [0-9])
+text   ::= "\"" [^"\\]* "\""
+null   ::= "null"
+ws     ::= [ \t\n]*

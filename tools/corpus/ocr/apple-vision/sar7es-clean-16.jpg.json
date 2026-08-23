@@ -1,0 +1,338 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7es-clean-16.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.1686,
+        "x": 0.08333,
+        "y": 0.0436
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.32558,
+        "x": 0.08333,
+        "y": 0.05814
+      },
+      "confidence": 1,
+      "text": "AGENCIA DE SALUD Y SERVICIOS HUMANOS"
+    },
+    {
+      "box": {
+        "h": 0.01029,
+        "w": 0.17054,
+        "x": 0.08333,
+        "y": 0.07267
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.12791,
+        "x": 0.82946,
+        "y": 0.07105
+      },
+      "confidence": 0.5,
+      "text": "SAR 7 (Rev. 5/25)"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.45349,
+        "x": 0.07946,
+        "y": 0.11337
+      },
+      "confidence": 1,
+      "text": "INFORME SEMESTRAL DE ELEGIBILIDAD"
+    },
+    {
+      "box": {
+        "h": 0.01329,
+        "w": 0.17636,
+        "x": 0.0814,
+        "y": 0.13808
+      },
+      "confidence": 0.5,
+      "text": "CalFresh / CalWORKs"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.15891,
+        "x": 0.0814,
+        "y": 0.17873
+      },
+      "confidence": 1,
+      "text": "CARMEN DELGADO"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.23062,
+        "x": 0.0814,
+        "y": 0.19462
+      },
+      "confidence": 1,
+      "text": "1902 ALUM ROCK AVE APT 7"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.16667,
+        "x": 0.0814,
+        "y": 0.21076
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95116"
+    },
+    {
+      "box": {
+        "h": 0.01168,
+        "w": 0.20543,
+        "x": 0.62597,
+        "y": 0.17873
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-5538-7742"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.14535,
+        "x": 0.62403,
+        "y": 0.19462
+      },
+      "confidence": 0.5,
+      "text": "Worker ID: SC-4471"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.16667,
+        "x": 0.62403,
+        "y": 0.21076
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 758-3401"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.56202,
+        "x": 0.0814,
+        "y": 0.25
+      },
+      "confidence": 1,
+      "text": "DEBE COMPLETAR, FIRMAR Y DEVOLVER ESTE FORMULARIO."
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.43605,
+        "x": 0.10078,
+        "y": 0.29214
+      },
+      "confidence": 1,
+      "text": "FECHA LIMITE: 5 DE SEPTIEMBRE DE 2026"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.5155,
+        "x": 0.10271,
+        "y": 0.31541
+      },
+      "confidence": 1,
+      "text": "Mes del informe: AGOSTO 2026 Mes de beneficios: OCTUBRE 2026"
+    },
+    {
+      "box": {
+        "h": 0.01467,
+        "w": 0.81589,
+        "x": 0.08527,
+        "y": 0.35029
+      },
+      "confidence": 1,
+      "text": "Si no recibimos su informe completo antes de la fecha limite, sus beneficios pueden ser retrasados, reducidos o"
+    },
+    {
+      "box": {
+        "h": 0.01546,
+        "w": 0.83146,
+        "x": 0.08524,
+        "y": 0.36619
+      },
+      "confidence": 1,
+      "text": "suspendidos. Si no puede devolver el formulario a tiempo, comuniquese con su trabajador antes de la fecha limite."
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.20543,
+        "x": 0.08527,
+        "y": 0.4113
+      },
+      "confidence": 1,
+      "text": "SECCION 1 -- INGRESOS"
+    },
+    {
+      "box": {
+        "h": 0.01473,
+        "w": 0.34884,
+        "x": 0.08527,
+        "y": 0.42878
+      },
+      "confidence": 1,
+      "text": "X Recibio alguien ingresos el mes pasado? SI"
+    },
+    {
+      "box": {
+        "h": 0.01327,
+        "w": 0.16667,
+        "x": 0.08721,
+        "y": 0.44748
+      },
+      "confidence": 1,
+      "text": "Nombre del empleador"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.15891,
+        "x": 0.08527,
+        "y": 0.47529
+      },
+      "confidence": 1,
+      "text": "Ingreso bruto recibido"
+    },
+    {
+      "box": {
+        "h": 0.01166,
+        "w": 0.31977,
+        "x": 0.08527,
+        "y": 0.50291
+      },
+      "confidence": 1,
+      "text": "SECCION 2 -- CAMBIOS EN EL HOGAR"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.36628,
+        "x": 0.08721,
+        "y": 0.5203
+      },
+      "confidence": 1,
+      "text": "X Se mudo alguien a su casa o salio de ella? NO"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.3624,
+        "x": 0.08527,
+        "y": 0.5406
+      },
+      "confidence": 1,
+      "text": "SECCION 3 -- PRUEBAS QUE DEBE ENVIAR"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.33527,
+        "x": 0.08721,
+        "y": 0.55958
+      },
+      "confidence": 1,
+      "text": "• Todos los talones de pago del mes pasado"
+    },
+    {
+      "box": {
+        "h": 0.01167,
+        "w": 0.34884,
+        "x": 0.08721,
+        "y": 0.57703
+      },
+      "confidence": 1,
+      "text": "• Recibo de renta o contrato de arrendamiento"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.23062,
+        "x": 0.40116,
+        "y": 0.44913
+      },
+      "confidence": 1,
+      "text": "PANADERIA LA ESPERANZA"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.07558,
+        "x": 0.40116,
+        "y": 0.47384
+      },
+      "confidence": 1,
+      "text": "$1,392.50"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.04264,
+        "x": 0.08721,
+        "y": 0.62936
+      },
+      "confidence": 1,
+      "text": "Firma"
+    },
+    {
+      "box": {
+        "h": 0.01055,
+        "w": 0.04666,
+        "x": 0.08714,
+        "y": 0.65534
+      },
+      "confidence": 1,
+      "text": "Fecha"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.24419,
+        "x": 0.08721,
+        "y": 0.6875
+      },
+      "confidence": 1,
+      "text": "Preguntas? Llame al (408) 758-3401."
+    },
+    {
+      "box": {
+        "h": 0.00891,
+        "w": 0.16667,
+        "x": 0.08721,
+        "y": 0.70203
+      },
+      "confidence": 0.5,
+      "text": "SAR 7 (Rev. 5/25) SPANISH"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2666,
+  "sourceWidth": 2000
+}

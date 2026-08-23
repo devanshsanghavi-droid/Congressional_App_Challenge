@@ -1,0 +1,128 @@
+{
+  "engine": "apple-vision",
+  "file": "cf3776-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.26938,
+        "x": 0.07171,
+        "y": 0.05075
+      },
+      "confidence": 0.3,
+      "text": "MOMENTO CA SANAS"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.17442,
+        "x": 0.06977,
+        "y": 0.06395
+      },
+      "confidence": 0.5,
+      "text": "SANTA GARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.16085,
+        "x": 0.07171,
+        "y": 0.10465
+      },
+      "confidence": 1,
+      "text": "INFORMATION"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.07558,
+        "x": 0.06977,
+        "y": 0.13081
+      },
+      "confidence": 0.3,
+      "text": "Cantessh"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.15116,
+        "x": 0.06589,
+        "y": 0.16858
+      },
+      "confidence": 0.3,
+      "text": "AD СКОМКИ"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.19961,
+        "x": 0.06589,
+        "y": 0.19767
+      },
+      "confidence": 0.5,
+      "text": "SANTA CARA CA 95058"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.17829,
+        "x": 0.32558,
+        "y": 0.21657
+      },
+      "confidence": 0.3,
+      "text": "SER 144 20850"
+    },
+    {
+      "box": {
+        "h": 0.01605,
+        "w": 0.1376,
+        "x": 0.06783,
+        "y": 0.35465
+      },
+      "confidence": 0.3,
+      "text": "MAS MER"
+    },
+    {
+      "box": {
+        "h": 0.01855,
+        "w": 0.41893,
+        "x": 0.06573,
+        "y": 0.41069
+      },
+      "confidence": 0.3,
+      "text": "1 Rapporó den dines ingen, siáte 1D, 05 988880961"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.35465,
+        "x": 0.09109,
+        "y": 0.43023
+      },
+      "confidence": 0.3,
+      "text": "Наробгобнанн собі да, вівне, до ротне ін"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.19186,
+        "x": 0.06589,
+        "y": 0.53177
+      },
+      "confidence": 0.3,
+      "text": "ENARDOR STORRA"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

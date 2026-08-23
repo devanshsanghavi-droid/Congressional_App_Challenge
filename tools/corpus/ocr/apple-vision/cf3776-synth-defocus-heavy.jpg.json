@@ -1,0 +1,328 @@
+{
+  "engine": "apple-vision",
+  "file": "cf3776-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01327,
+        "w": 0.16667,
+        "x": 0.07171,
+        "y": 0.03924
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNA"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.26357,
+        "x": 0.07364,
+        "y": 0.05233
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF SOCIAL SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1686,
+        "x": 0.07364,
+        "y": 0.06686
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.43798,
+        "x": 0.06977,
+        "y": 0.10591
+      },
+      "confidence": 1,
+      "text": "INFORMATION / VERIFICATION NEEDED"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.06783,
+        "x": 0.07171,
+        "y": 0.12791
+      },
+      "confidence": 0.5,
+      "text": "Caffee"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.14729,
+        "x": 0.06783,
+        "y": 0.1699
+      },
+      "confidence": 0.5,
+      "text": "DAVID ORONENO"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.27132,
+        "x": 0.06783,
+        "y": 0.18447
+      },
+      "confidence": 1,
+      "text": "877 N WINCHESTER INVO APT 4B"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.19767,
+        "x": 0.06783,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA, CA 950S0"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.0814,
+        "x": 0.07171,
+        "y": 0.21801
+      },
+      "confidence": 0.5,
+      "text": "Natoe Dan"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.1686,
+        "x": 0.32752,
+        "y": 0.21933
+      },
+      "confidence": 0.3,
+      "text": "ВЕРТЕМВЕЯ 14, 2028"
+    },
+    {
+      "box": {
+        "h": 0.01473,
+        "w": 0.14535,
+        "x": 0.79457,
+        "y": 0.0625
+      },
+      "confidence": 0.3,
+      "text": "СF 378 e 336"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.20349,
+        "x": 0.61047,
+        "y": 0.1699
+      },
+      "confidence": 1,
+      "text": "Cane Number: 01-0813-2201"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.14729,
+        "x": 0.6124,
+        "y": 0.18314
+      },
+      "confidence": 0.3,
+      "text": "в o 1018)"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.16279,
+        "x": 0.61434,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 738-3401"
+    },
+    {
+      "box": {
+        "h": 0.0191,
+        "w": 0.47287,
+        "x": 0.08527,
+        "y": 0.26599
+      },
+      "confidence": 1,
+      "text": "SEND THESE ITEMS BY: SEPTEMBER 28, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.49806,
+        "x": 0.16667,
+        "y": 0.31686
+      },
+      "confidence": 1,
+      "text": "informaton before we can frish working on your Caffrost case. P"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.08721,
+        "x": 0.79264,
+        "y": 0.31818
+      },
+      "confidence": 0.5,
+      "text": "If the fe"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.05426,
+        "x": 0.06977,
+        "y": 0.3343
+      },
+      "confidence": 0.5,
+      "text": "checke"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.13178,
+        "x": 0.06977,
+        "y": 0.35746
+      },
+      "confidence": 1,
+      "text": "ITEMS NEEDED"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.07171,
+        "x": 0.12403,
+        "y": 0.41424
+      },
+      "confidence": 0.3,
+      "text": "и от его"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.07946,
+        "x": 0.10465,
+        "y": 0.4316
+      },
+      "confidence": 0.5,
+      "text": "hoot of t"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.24225,
+        "x": 0.16667,
+        "y": 0.37643
+      },
+      "confidence": 0.5,
+      "text": "amed neone - a pay sis ton"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.20736,
+        "x": 0.2345,
+        "y": 0.43292
+      },
+      "confidence": 1,
+      "text": "- pet, seceit, or phone ba"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.46318,
+        "x": 0.06783,
+        "y": 0.51744
+      },
+      "confidence": 1,
+      "text": "IF WE DO NOT RECEIVE THESE ITEMS BY SEPTEMBER"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.18411,
+        "x": 0.06977,
+        "y": 0.53486
+      },
+      "confidence": 1,
+      "text": "DENIED OR STOPPED"
+    },
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.14341,
+        "x": 0.06783,
+        "y": 0.5609
+      },
+      "confidence": 1,
+      "text": "Yau may bring Sen"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.13953,
+        "x": 0.07364,
+        "y": 0.57849
+      },
+      "confidence": 0.5,
+      "text": "ow need he pete"
+    },
+    {
+      "box": {
+        "h": 0.01371,
+        "w": 0.22099,
+        "x": 0.20927,
+        "y": 0.57818
+      },
+      "confidence": 1,
+      "text": "ng These lens of your woke"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.09109,
+        "x": 0.06589,
+        "y": 0.60591
+      },
+      "confidence": 0.5,
+      "text": "0 1778 306"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.23643,
+        "x": 0.55426,
+        "y": 0.5189
+      },
+      "confidence": 1,
+      "text": "L2026 YOUR CALFRESH BE"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.02326,
+        "x": 0.9031,
+        "y": 0.52035
+      },
+      "confidence": 1,
+      "text": "BE"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

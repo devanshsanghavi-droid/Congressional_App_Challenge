@@ -1,0 +1,14 @@
+# FEASIBILITY PROBE grammar — not the extraction grammar. See date-strict.gbnf.
+#
+# The same field with one addition: the value may be null.
+#
+# The difference between this file and date-strict.gbnf is the whole finding.
+# A grammar that permits only a well-formed date guarantees a well-formed date
+# — including on a notice that does not state one, where the model has no
+# option but to invent something that fits. Allowing null is what turns "cannot
+# be malformed" into "cannot be malformed AND can decline".
+
+root        ::= "{" ws "\"deadline\":" ws (date | "null") ws "}"
+date        ::= "\"" digit digit "/" digit digit "/" digit digit digit digit "\""
+digit       ::= [0-9]
+ws          ::= [ \t\n]*

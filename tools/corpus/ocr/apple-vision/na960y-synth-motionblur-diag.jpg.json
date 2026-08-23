@@ -1,0 +1,148 @@
+{
+  "engine": "apple-vision",
+  "file": "na960y-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.27132,
+        "x": 0.06395,
+        "y": 0.06973
+      },
+      "confidence": 0.5,
+      "text": "DARENTY OR SOCH SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.17248,
+        "x": 0.06395,
+        "y": 0.08429
+      },
+      "confidence": 0.5,
+      "text": "SANTA CARA COUN"
+    },
+    {
+      "box": {
+        "h": 0.01901,
+        "w": 0.2345,
+        "x": 0.06395,
+        "y": 0.12489
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.20349,
+        "x": 0.06202,
+        "y": 0.20477
+      },
+      "confidence": 0.5,
+      "text": "BER SENTER RED 590885"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.17248,
+        "x": 0.06008,
+        "y": 0.22093
+      },
+      "confidence": 0.5,
+      "text": "SANYONE CA 95H M"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.17829,
+        "x": 0.31977,
+        "y": 0.23963
+      },
+      "confidence": 0.5,
+      "text": "SPER 18828856"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.14729,
+        "x": 0.32171,
+        "y": 0.26599
+      },
+      "confidence": 0.3,
+      "text": "COmE 1305"
+    },
+    {
+      "box": {
+        "h": 0.02143,
+        "w": 0.61263,
+        "x": 0.07934,
+        "y": 0.31607
+      },
+      "confidence": 1,
+      "text": "YOUR OAFISH BENITS WAA CHANGE ON OCTOBER 1, 2025."
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.1938,
+        "x": 0.0814,
+        "y": 0.34012
+      },
+      "confidence": 0.3,
+      "text": "Creen moRe"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.07171,
+        "x": 0.28876,
+        "y": 0.33866
+      },
+      "confidence": 1,
+      "text": "8385000"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.06977,
+        "x": 0.29845,
+        "y": 0.3561
+      },
+      "confidence": 1,
+      "text": "$811000"
+    },
+    {
+      "box": {
+        "h": 0.01325,
+        "w": 0.27519,
+        "x": 0.06977,
+        "y": 0.39099
+      },
+      "confidence": 0.5,
+      "text": "WNYMOU SENSES CHANGED"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.20736,
+        "x": 0.06395,
+        "y": 0.44616
+      },
+      "confidence": 1,
+      "text": "MOURHEARING RIGHTS"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

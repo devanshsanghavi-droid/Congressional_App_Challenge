@@ -1,0 +1,182 @@
+{
+  "_schema": "carta.offices.v1",
+  "_purpose": "Offline directory for the Where to Go screen. Bundled static JSON, no API.",
+  "_verified_on": "2026-08-18",
+  "_ui_requirement": "Every entry must render a 'Call to confirm hours before you go' line. Hours change and a wasted trip is a real harm for someone without a car.",
+  "_confidence_note": "confidence=high means taken directly from the operating agency's own site. confidence=medium means from a third-party aggregator and NOT yet confirmed at the agency source. Do not ship a medium entry without verifying it.",
+
+  "county_offices": {
+    "agency": "Santa Clara County Social Services Agency, Department of Employment and Benefit Services",
+    "source_url": "https://ssa.santaclaracounty.gov/departments/department-employment-and-benefit-services/contact-department-employment-and-benefit",
+    "verified_on": "2026-08-18",
+    "confidence": "high",
+    "shared": {
+      "hours": "Monday to Friday, 8:00 AM to 5:00 PM. Closed on County holidays.",
+      "drop_box": true,
+      "drop_box_note": "Document drop boxes are outside every location, so you can submit paperwork without waiting in line.",
+      "languages": ["English", "Spanish", "Vietnamese", "Chinese", "Tagalog", "Farsi"],
+      "accessibility_line": "+1-408-755-7999",
+      "accessibility_note": "Call this number to request an interpreter, help filling out forms, or a disability accommodation. You have a right to ask."
+    },
+    "phones": [
+      {
+        "label": "To apply for benefits",
+        "number": "+1-408-758-3800"
+      },
+      {
+        "label": "If you already receive CalFresh, CalWORKs, General Assistance, CAPI, or Refugee Cash Assistance",
+        "number": "+1-408-758-3800"
+      },
+      {
+        "label": "If you only receive Medi-Cal",
+        "number": "+1-408-758-3600"
+      }
+    ],
+    "phone_tip": "The fastest way to reach your worker is to call them directly. Their name and number are printed in the top right corner of the last Notice of Action you received.",
+    "locations": [
+      {
+        "id": "scc-benefit-assistance",
+        "name": "Benefit Assistance Center",
+        "address": "1867 Senter Road",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95112",
+        "purpose": "Apply for benefits. Start here if you are new.",
+        "walk_in": true
+      },
+      {
+        "id": "scc-continuing-benefits",
+        "name": "Continuing Benefit Services",
+        "address": "1877 Senter Road",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95112",
+        "purpose": "For cases already open. Recertifications and status reports.",
+        "walk_in": true
+      },
+      {
+        "id": "scc-general-assistance",
+        "name": "General Assistance Services",
+        "address": "1919 Senter Road",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95112",
+        "purpose": "General Assistance.",
+        "walk_in": true
+      },
+      {
+        "id": "scc-employment",
+        "name": "Employment Services",
+        "address": "1879 and 1919 Senter Road",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95112",
+        "purpose": "CalWORKs employment services and welfare-to-work.",
+        "walk_in": true
+      },
+      {
+        "id": "scc-north-county",
+        "name": "North County Office",
+        "address": "1330 W. Middlefield Road",
+        "city": "Mountain View",
+        "state": "CA",
+        "zip": "94043",
+        "purpose": "All benefit services, north county.",
+        "walk_in": true,
+        "note": "Closest office for CA-16 residents in Mountain View, Los Altos, Palo Alto, and Sunnyvale."
+      },
+      {
+        "id": "scc-south-county",
+        "name": "South County Office",
+        "address": "379 Tomkins Court",
+        "city": "Gilroy",
+        "state": "CA",
+        "zip": "95020",
+        "purpose": "All benefit services, south county.",
+        "walk_in": true
+      }
+    ]
+  },
+
+  "appeals": {
+    "_purpose": "Used by the 'How to appeal' section of Notice Detail. This is the highest-stakes data in the file.",
+    "confidence": "high",
+    "source_url": "https://ssa.santaclaracounty.gov/departments/department-employment-and-benefit-services/contact-department-employment-and-benefit",
+    "verified_on": "2026-08-18",
+    "how": "Instructions are printed on the back of the Notice of Action itself. Fill out the back of the notice and send or take it to the Appeals Unit.",
+    "appeals_unit": {
+      "name": "Appeals Unit, County of Santa Clara Social Services",
+      "address": "353 W. Julian St.",
+      "city": "San Jose",
+      "state": "CA",
+      "zip": "95110-2335"
+    },
+    "state_hearings_phone": "+1-800-952-5253",
+    "state_hearings_tdd": "+1-800-952-8349",
+    "ombuds_note": "Before filing a hearing you can ask your worker, then a supervisor, then request a free confidential case review from the County Ombuds office.",
+    "TODO_verify": "Confirm the appeal window and the aid-paid-pending deadline against current CDSS guidance before this ships. These two numbers are the difference between keeping benefits during an appeal and not."
+  },
+
+  "ssa_offices": {
+    "agency": "Social Security Administration",
+    "national_phone": "+1-800-772-1213",
+    "national_phone_hours": "7:00 AM to 7:00 PM, Monday to Friday",
+    "appointment_note": "Call the national number to make an appointment. Most SSA business can be done by phone or at ssa.gov without going in person.",
+    "locator_url": "https://www.ssa.gov/locator/",
+    "confidence": "medium",
+    "verified_on": "2026-08-18",
+    "TODO_verify": "These three came from third-party aggregators, not ssa.gov. Confirm each at ssa.gov/locator before shipping -- SSA has closed and relocated field offices and aggregator data goes stale.",
+    "locations": [
+      {
+        "id": "ssa-fontaine",
+        "name": "San Jose SSA - Fontaine Road",
+        "address": "2500 Fontaine Rd",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95121",
+        "hours": "Monday to Friday, 9:00 AM to 4:00 PM",
+        "walk_in": true
+      },
+      {
+        "id": "ssa-cottle",
+        "name": "San Jose SSA - Cottle Road",
+        "address": "6140 Cottle Rd",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95123",
+        "hours": "Monday to Friday, 9:00 AM to 4:00 PM",
+        "walk_in": true
+      },
+      {
+        "id": "ssa-downtown",
+        "name": "San Jose SSA - Downtown",
+        "address": "280 S First Street, Room 244, 2nd Floor",
+        "city": "San Jose",
+        "state": "CA",
+        "zip": "95113",
+        "hours": "Monday to Friday, 9:00 AM to 4:00 PM",
+        "walk_in": true
+      }
+    ]
+  },
+
+  "what_to_bring": {
+    "_purpose": "Rendered from the active notice's checklist, not hardcoded. This is the fallback list when no checklist exists.",
+    "always": [
+      "The notice itself, or a photo of it",
+      "Photo ID",
+      "Your case number"
+    ],
+    "usually": [
+      "Pay stubs from the last 30 days",
+      "Proof of where you live (lease or a utility bill)",
+      "Social Security numbers for everyone in the household"
+    ]
+  },
+
+  "_still_needed": [
+    "2-3 community organizations that help with benefit applications (Sacred Heart Community Service, Second Harvest of Silicon Valley). Not yet researched -- add name, address, phone, hours, languages, and what they actually help with.",
+    "Confirm all three SSA addresses at ssa.gov/locator.",
+    "Confirm CDSS appeal window and aid-paid-pending deadline."
+  ]
+}

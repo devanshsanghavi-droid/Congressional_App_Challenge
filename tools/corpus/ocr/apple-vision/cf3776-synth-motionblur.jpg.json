@@ -1,0 +1,338 @@
+{
+  "engine": "apple-vision",
+  "file": "cf3776-synth-motionblur.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01327,
+        "w": 0.1686,
+        "x": 0.07364,
+        "y": 0.03924
+      },
+      "confidence": 0.5,
+      "text": "SSTATTE OF CAL FURNAL"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.26357,
+        "x": 0.07171,
+        "y": 0.05378
+      },
+      "confidence": 0.5,
+      "text": "DIESRMFITMENTT OF SOCDAAL SERWGES"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.17636,
+        "x": 0.06977,
+        "y": 0.06686
+      },
+      "confidence": 0.5,
+      "text": "SHANTTA TILAIFAA TRUNTTY"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.42442,
+        "x": 0.07558,
+        "y": 0.10591
+      },
+      "confidence": 1,
+      "text": "INFORWATION /VERIFICATION NEEDET"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.06977,
+        "x": 0.06977,
+        "y": 0.13081
+      },
+      "confidence": 0.5,
+      "text": "CalFiess"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.14729,
+        "x": 0.06783,
+        "y": 0.1699
+      },
+      "confidence": 0.3,
+      "text": "DAWED OMONO"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.27132,
+        "x": 0.06783,
+        "y": 0.18447
+      },
+      "confidence": 0.5,
+      "text": "8577 N WNCHESTER BLVD APT 48"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.20349,
+        "x": 0.06783,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "SANTA CLAFAL CA95I50"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.09302,
+        "x": 0.06589,
+        "y": 0.21933
+      },
+      "confidence": 0.5,
+      "text": "Metiize Teatte"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.17248,
+        "x": 0.32558,
+        "y": 0.21933
+      },
+      "confidence": 0.5,
+      "text": "SEPTEWBIER 114, 225"
+    },
+    {
+      "box": {
+        "h": 0.01328,
+        "w": 0.13953,
+        "x": 0.79845,
+        "y": 0.06395
+      },
+      "confidence": 0.5,
+      "text": "LIF 337066 ((Fesv 30024"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.20349,
+        "x": 0.6124,
+        "y": 0.1699
+      },
+      "confidence": 0.5,
+      "text": "Casse Numer: 011-8 3-22-"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.14535,
+        "x": 0.61047,
+        "y": 0.18447
+      },
+      "confidence": 0.5,
+      "text": "Noorieer DD: SC-8"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.16279,
+        "x": 0.61047,
+        "y": 0.20058
+      },
+      "confidence": 0.5,
+      "text": "Phoone: (4428) 7688-24401"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.47287,
+        "x": 0.08527,
+        "y": 0.26743
+      },
+      "confidence": 1,
+      "text": "SEND THESE ITEWS BI= SEPTEWBER 28, 2126"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.81783,
+        "x": 0.06783,
+        "y": 0.31686
+      },
+      "confidence": 0.5,
+      "text": "Mes memet munee intormeation deetoee wee caan fimsst warkiingg oom yonun CaalFieesh caare. Plesare seentd amppiees of thee iiteme"
+    },
+    {
+      "box": {
+        "h": 0.01168,
+        "w": 0.12016,
+        "x": 0.06589,
+        "y": 0.3343
+      },
+      "confidence": 0.3,
+      "text": "clemiet dedi"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.12791,
+        "x": 0.06977,
+        "y": 0.35746
+      },
+      "confidence": 1,
+      "text": "TEWS NEETEI"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.46705,
+        "x": 0.06589,
+        "y": 0.375
+      },
+      "confidence": 0.5,
+      "text": "* Proudi of esaneed mocome - all paay sstultes ifcom Ithee aes: 350 dlays"
+    },
+    {
+      "box": {
+        "h": 0.01608,
+        "w": 0.43605,
+        "x": 0.06589,
+        "y": 0.3939
+      },
+      "confidence": 0.5,
+      "text": "2 Proudf ofi tonussingg cosst - (enre, reent. eereipt, or mutages"
+    },
+    {
+      "box": {
+        "h": 0.0163,
+        "w": 0.40715,
+        "x": 0.06773,
+        "y": 0.41263
+      },
+      "confidence": 0.3,
+      "text": "X Proudi uf dentiiyy - driveer liersee, state (D), oor peepo"
+    },
+    {
+      "box": {
+        "h": 0.01608,
+        "w": 0.36628,
+        "x": 0.08527,
+        "y": 0.4316
+      },
+      "confidence": 0.5,
+      "text": "1 Prondf of uttitty couss -ges, electic, mr phune aill"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.20155,
+        "x": 0.06783,
+        "y": 0.45057
+      },
+      "confidence": 0.5,
+      "text": "_ Paud uf chit caare co ess"
+    },
+    {
+      "box": {
+        "h": 0.01609,
+        "w": 0.39729,
+        "x": 0.06589,
+        "y": 0.46802
+      },
+      "confidence": 0.5,
+      "text": "• Paud of metiizal eogerses (f aye GD+ oor dissebet)"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.03876,
+        "x": 0.53488,
+        "y": 0.3968
+      },
+      "confidence": 0.3,
+      "text": "eneent"
+    },
+    {
+      "box": {
+        "h": 0.0161,
+        "w": 0.75581,
+        "x": 0.06977,
+        "y": 0.51744
+      },
+      "confidence": 1,
+      "text": "IF ME DO NOT RECEWE THESE MEWS EW SEPTENBER 28, 2126, WOUR CALFRESH BENEF"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.18605,
+        "x": 0.06589,
+        "y": 0.53486
+      },
+      "confidence": 1,
+      "text": "DENED OF STOPPET"
+    },
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.67442,
+        "x": 0.06783,
+        "y": 0.5609
+      },
+      "confidence": 0.5,
+      "text": "Monu mayy (doringg teemss ito ary omnunty offoe, mall theem tto thhee aditeess adhvee, corupbrat theem aat"
+    },
+    {
+      "box": {
+        "h": 0.01463,
+        "w": 0.37791,
+        "x": 0.06783,
+        "y": 0.57849
+      },
+      "confidence": 0.5,
+      "text": "ynuteet tee geetting thesse lenss, czall ymnum wokieer."
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.09302,
+        "x": 0.06589,
+        "y": 0.60591
+      },
+      "confidence": 0.5,
+      "text": "CSF 337/26 38224"
+    },
+    {
+      "box": {
+        "h": 0.01168,
+        "w": 0.0969,
+        "x": 0.8314,
+        "y": 0.5203
+      },
+      "confidence": 0.5,
+      "text": "MES WAW BIE"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.17636,
+        "x": 0.74806,
+        "y": 0.5625
+      },
+      "confidence": 0.5,
+      "text": "www/deereeifiss.al/.comm. Iff"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

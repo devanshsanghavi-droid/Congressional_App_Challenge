@@ -1,0 +1,368 @@
+{
+  "engine": "apple-vision",
+  "file": "na960x-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01325,
+        "w": 0.16667,
+        "x": 0.09109,
+        "y": 0.07105
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIPONNA"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.26163,
+        "x": 0.09109,
+        "y": 0.08429
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF SOCIL SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1686,
+        "x": 0.08915,
+        "y": 0.09738
+      },
+      "confidence": 1,
+      "text": "SANTA GLANA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01903,
+        "w": 0.23256,
+        "x": 0.08721,
+        "y": 0.13504
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.09302,
+        "x": 0.08527,
+        "y": 0.16134
+      },
+      "confidence": 0.5,
+      "text": "Caffresh -"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.11628,
+        "x": 0.08333,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "MARIA REYES"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.21124,
+        "x": 0.08333,
+        "y": 0.21492
+      },
+      "confidence": 1,
+      "text": "1428 STORY ROAD APT 18"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.16473,
+        "x": 0.08333,
+        "y": 0.2311
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 90120"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.0969,
+        "x": 0.08333,
+        "y": 0.24846
+      },
+      "confidence": 0.5,
+      "text": "Netoe Dele"
+    },
+    {
+      "box": {
+        "h": 0.01462,
+        "w": 0.09496,
+        "x": 0.08915,
+        "y": 0.27317
+      },
+      "confidence": 0.5,
+      "text": "Mote Dee"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.07364,
+        "x": 0.82752,
+        "y": 0.10018
+      },
+      "confidence": 0.5,
+      "text": "SAR (en"
+    },
+    {
+      "box": {
+        "h": 0.02132,
+        "w": 0.19655,
+        "x": 0.62552,
+        "y": 0.20018
+      },
+      "confidence": 1,
+      "text": "Came fumber 01-4473 000"
+    },
+    {
+      "box": {
+        "h": 0.0191,
+        "w": 0.14535,
+        "x": 0.62791,
+        "y": 0.21492
+      },
+      "confidence": 0.3,
+      "text": "в 0 50804"
+    },
+    {
+      "box": {
+        "h": 0.01608,
+        "w": 0.1376,
+        "x": 0.34109,
+        "y": 0.24846
+      },
+      "confidence": 1,
+      "text": "AUGUST 34, 20N"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.1686,
+        "x": 0.34109,
+        "y": 0.27758
+      },
+      "confidence": 0.3,
+      "text": "ВЕРТЕМВЕЯ 30, 2004"
+    },
+    {
+      "box": {
+        "h": 0.02333,
+        "w": 0.61667,
+        "x": 0.09477,
+        "y": 0.32225
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH BENEFITS WILL STOP ON SEPTEMBER 30, 2026"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.22674,
+        "x": 0.08721,
+        "y": 0.375
+      },
+      "confidence": 1,
+      "text": "EASON FOR THIS ACTION"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.3469,
+        "x": 0.12984,
+        "y": 0.3939
+      },
+      "confidence": 0.5,
+      "text": "set one your Bens Annual Bighly Sate"
+    },
+    {
+      "box": {
+        "h": 0.02207,
+        "w": 0.08721,
+        "x": 0.52907,
+        "y": 0.39673
+      },
+      "confidence": 0.3,
+      "text": "A 7,00"
+    },
+    {
+      "box": {
+        "h": 0.01462,
+        "w": 0.17248,
+        "x": 0.07752,
+        "y": 0.4316
+      },
+      "confidence": 1,
+      "text": "WHAT YOU CAN DO"
+    },
+    {
+      "box": {
+        "h": 0.01813,
+        "w": 0.53315,
+        "x": 0.07353,
+        "y": 0.45052
+      },
+      "confidence": 1,
+      "text": "* you seen the completed SAll 7 with at regured proct before Septeme"
+    },
+    {
+      "box": {
+        "h": 0.0161,
+        "w": 0.18605,
+        "x": 0.07946,
+        "y": 0.46646
+      },
+      "confidence": 0.5,
+      "text": "-out a see solcaton"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.21318,
+        "x": 0.07558,
+        "y": 0.51015
+      },
+      "confidence": 1,
+      "text": "YOUR HEARING RIGNTS"
+    },
+    {
+      "box": {
+        "h": 0.01648,
+        "w": 0.25806,
+        "x": 0.07348,
+        "y": 0.53043
+      },
+      "confidence": 1,
+      "text": "& you hes this actor a wing, yo"
+    },
+    {
+      "box": {
+        "h": 0.01603,
+        "w": 0.27326,
+        "x": 0.09884,
+        "y": 0.57267
+      },
+      "confidence": 1,
+      "text": "MPORTANT: I you aik for a hearing"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.17442,
+        "x": 0.09496,
+        "y": 0.59135
+      },
+      "confidence": 0.5,
+      "text": "the seag dece"
+    },
+    {
+      "box": {
+        "h": 0.00872,
+        "w": 0.0562,
+        "x": 0.27519,
+        "y": 0.59302
+      },
+      "confidence": 0.5,
+      "text": "1000"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.05039,
+        "x": 0.34884,
+        "y": 0.59135
+      },
+      "confidence": 1,
+      "text": "The a"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.0562,
+        "x": 0.79264,
+        "y": 0.39971
+      },
+      "confidence": 1,
+      "text": "18.2029"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.13953,
+        "x": 0.78295,
+        "y": 0.4157
+      },
+      "confidence": 0.3,
+      "text": "a Me 83-00"
+    },
+    {
+      "box": {
+        "h": 0.01328,
+        "w": 0.08333,
+        "x": 0.81783,
+        "y": 0.45494
+      },
+      "confidence": 0.3,
+      "text": "ну слетя"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.34496,
+        "x": 0.55426,
+        "y": 0.57267
+      },
+      "confidence": 1,
+      "text": "1, your benels may sentrue a the same inve"
+    },
+    {
+      "box": {
+        "h": 0.01461,
+        "w": 0.38372,
+        "x": 0.07364,
+        "y": 0.63808
+      },
+      "confidence": 1,
+      "text": "Te ant for a hearing, cal 1-800-743-8525 or wrie 1"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.30039,
+        "x": 0.07364,
+        "y": 0.65402
+      },
+      "confidence": 1,
+      "text": "Calloria Department of Social Services"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.05814,
+        "x": 0.07171,
+        "y": 0.66858
+      },
+      "confidence": 0.5,
+      "text": "10 6"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

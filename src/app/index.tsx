@@ -1,78 +1,156 @@
-import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import Constants from 'expo-constants';
-import { Link } from 'expo-router';
-import { useTranslation } from 'react-i18next';
-
 /**
- * Phase 1 build-check screen.
+ * Home — the countdown is the screen.
  *
- * Its only job right now is to prove the dev client actually launched on the
- * phone with translations wired up. It gets replaced by the real Home screen
- * (SPEC §7 — one card per active benefit, countdown to the nearest deadline)
- * in Phase 3.
+ * AUTHORSHIP: Claude. App-side (CLAUDE.md §7).
  *
- * Even this throwaway screen follows the two rules that apply everywhere:
- * every string comes from i18n rather than being hardcoded English
- * (CLAUDE.md), and body text is at least 16pt and free to scale with Dynamic
- * Type (SPEC §7 design constraints).
+ * SPEC §7: the dominant visual element, by a wide margin, is the days remaining
+ * on the nearest deadline — not the programme name, not the notice text. This
+ * screen opens the video, so the hierarchy is the design: one enormous number
+ * in a colour, then what it is about, then everything else.
+ *
+ * The list is ordered by nearest deadline (the SQL does it), so the top card is
+ * always the one that matters and the first thing on screen is the thing the
+ * user came to find out.
  */
-export default function BuildCheckScreen() {
-  const { t, i18n } = useTranslation();
 
-  const rows: { label: string; value: string }[] = [
-    { label: t('dev.platform'), value: `${Platform.OS} ${String(Platform.Version)}` },
-    { label: t('dev.appVersion'), value: Constants.expoConfig?.version ?? '—' },
-    { label: t('dev.locale'), value: i18n.language },
-  ];
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+
+import { Body, Button, Caption, Card, EmptyState, ErrorState, Screen } from '@/components/ui';
+import { Countdown } from '@/components/Countdown';
+import type { Notice } from '@/lib/db/notices';
+import { listActiveNotices } from '@/lib/db/notices';
+import { color, radius, space, type } from '@/lib/theme/tokens';
+import { countdownDate } from '@/lib/urgency';
+import type { NoticeDates } from '@/lib/urgency';
+
+/** The dates a notice counts down on, in the shape `urgency.ts` expects. */
+function datesOf(notice: Notice): NoticeDates {
+  return {
+    actionType: notice.actionType,
+    ...(notice.deadlineDate === undefined ? {} : { deadlineDate: notice.deadlineDate }),
+    ...(notice.aidPaidPendingDeadline === undefined
+      ? {}
+      : { aidPaidPendingDeadline: notice.aidPaidPendingDeadline }),
+  };
+}
+
+export default function HomeScreen() {
+  const { t } = useTranslation();
+  const router = useRouter();
+  const [notices, setNotices] = useState<Notice[]>();
+  const [failed, setFailed] = useState(false);
+  // Read once per load rather than during render: reading the clock in render
+  // is impure, and two cards could otherwise be computed against different
+  // milliseconds.
+  const [now, setNow] = useState(() => Date.now());
+
+  const load = useCallback(() => {
+    setNow(Date.now());
+    setFailed(false);
+    listActiveNotices().then(setNotices).catch(() => setFailed(true));
+  }, []);
+
+  // On focus, not on mount: Review replaces this screen after a save, and a
+  // stale list would make a successful save look like it failed.
+  useFocusEffect(useCallback(() => void load(), [load]));
+
+  const capture = (
+    <Button
+      title={t('home.action')}
+      onPress={() => router.push('/capture')}
+      accessibilityHint={t('home.actionHint')}
+    />
+  );
+
+  if (failed) {
+    return (
+      <Screen footer={capture}>
+        <ErrorState
+          title={t('home.errorTitle')}
+          body={t('home.errorBody')}
+          action={<Button title={t('common.tryAgain')} onPress={load} variant="secondary" />}
+        />
+      </Screen>
+    );
+  }
+
+  // `undefined` is "not loaded yet" and `[]` is "genuinely empty". Rendering
+  // the empty state during the first read would flash "no notices yet" at
+  // someone who has several.
+  if (notices === undefined) return <Screen>{null}</Screen>;
+
+  if (notices.length === 0) {
+    return (
+      <Screen footer={capture}>
+        <EmptyState title={t('home.emptyTitle')} body={t('home.emptyBody')} />
+        <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
+      </Screen>
+    );
+  }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.tagline} accessibilityRole="header">
-        {t('app.tagline')}
-      </Text>
+    <Screen footer={capture}>
+      {notices.map((notice) => {
+        const dates = datesOf(notice);
+        const hasDeadline = countdownDate(dates) !== undefined;
+        const program = notice.programId ?? t('common.unknownProgram');
+        const action = t(`review.actions.${notice.actionType}`, { defaultValue: notice.actionType });
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle} accessibilityRole="header">
-          {t('dev.title')}
-        </Text>
-        <Text style={styles.cardBody}>{t('dev.subtitle')}</Text>
+        return (
+          <Card
+            key={notice.id}
+            onPress={() => router.push(`/notice/${notice.id}`)}
+            accessibilityLabel={`${program}. ${action}.`}
+          >
+            <Countdown dates={dates} nowMs={now} />
 
-        {rows.map((row) => (
-          <View key={row.label} style={styles.row} accessible accessibilityLabel={`${row.label}: ${row.value}`}>
-            <Text style={styles.rowLabel}>{row.label}</Text>
-            <Text style={styles.rowValue}>{row.value}</Text>
-          </View>
-        ))}
-      </View>
+            <View style={styles.meta}>
+              <Text style={styles.program}>{program}</Text>
+              <Text style={styles.action}>{action}</Text>
+              {notice.caseLast4 ? (
+                <Text style={styles.case}>{t('notice.caseEnding', { last4: notice.caseLast4 })}</Text>
+              ) : null}
+            </View>
 
-      {/* Developer entry point for the week 1 latency gate. Removed before freeze. */}
-      <Link href="/bench" asChild>
-        <Pressable style={styles.devLink} accessibilityRole="button">
-          <Text style={styles.devLinkText}>{t('bench.title')}</Text>
-        </Pressable>
-      </Link>
-
-      <Text style={styles.disclaimer}>{t('disclaimer.notLegalAdvice')}</Text>
-    </ScrollView>
+            {/* A deadline the app is silently not going to remind anyone about
+                is the most dangerous state this product can be in, so it lives
+                on the card for as long as it is true — and offers the fix. */}
+            {!notice.remindersActive && hasDeadline ? (
+              <View style={styles.warning}>
+                <Text style={styles.warningTitle}>{t('home.noRemindersTitle')}</Text>
+                <Body>{t('home.noRemindersBody')}</Body>
+                <Button
+                  title={t('home.noRemindersAction')}
+                  variant="secondary"
+                  onPress={() => void Linking.openSettings()}
+                />
+              </View>
+            ) : null}
+          </Card>
+        );
+      })}
+      <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 20 },
-  tagline: { fontSize: 24, fontWeight: '600', lineHeight: 32 },
-  card: { gap: 12, padding: 16, borderRadius: 12, borderWidth: StyleSheet.hairlineWidth, borderColor: '#8E8E93' },
-  cardTitle: { fontSize: 18, fontWeight: '600' },
-  cardBody: { fontSize: 16, lineHeight: 22 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', gap: 12, minHeight: 44, alignItems: 'center' },
-  rowLabel: { fontSize: 16, flexShrink: 1 },
-  rowValue: { fontSize: 16, fontVariant: ['tabular-nums'], flexShrink: 1, textAlign: 'right' },
-  disclaimer: { fontSize: 16, lineHeight: 22, fontStyle: 'italic' },
-  devLink: {
-    minHeight: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#208AEF',
+  meta: { gap: 2 },
+  program: { ...type.heading, color: color.text },
+  action: { ...type.body, color: color.textMuted },
+  case: { ...type.caption, color: color.textFaint, marginTop: space.xs },
+
+  warning: {
+    marginTop: space.sm,
+    padding: space.md,
+    gap: space.sm,
+    borderRadius: radius.md,
+    backgroundColor: color.redSoft,
+    borderWidth: 1,
+    borderColor: color.red,
   },
-  devLinkText: { fontSize: 16, fontWeight: '600', color: '#FFFFFF' },
+  warningTitle: { ...type.subheading, color: color.red },
 });

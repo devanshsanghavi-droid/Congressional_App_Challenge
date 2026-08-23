@@ -1,0 +1,218 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7es-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.3314,
+        "x": 0.0814,
+        "y": 0.05378
+      },
+      "confidence": 0.3,
+      "text": "BONEHA SHADY SIRMIRIS HIMANS"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.17442,
+        "x": 0.07946,
+        "y": 0.06831
+      },
+      "confidence": 0.5,
+      "text": "SANTA CARA COUNTIN"
+    },
+    {
+      "box": {
+        "h": 0.01903,
+        "w": 0.45736,
+        "x": 0.07946,
+        "y": 0.11033
+      },
+      "confidence": 1,
+      "text": "INFORME SEMESTRAL DE ELEGBUDAD"
+    },
+    {
+      "box": {
+        "h": 0.01769,
+        "w": 0.1299,
+        "x": 0.82555,
+        "y": 0.06674
+      },
+      "confidence": 0.3,
+      "text": "SART (RR45938"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.16279,
+        "x": 0.07946,
+        "y": 0.17587
+      },
+      "confidence": 0.5,
+      "text": "CARMEN DE GADO"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.23643,
+        "x": 0.07946,
+        "y": 0.1902
+      },
+      "confidence": 0.3,
+      "text": "19R AALLUM ROOK AME AMPSTI"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.17442,
+        "x": 0.07752,
+        "y": 0.2064
+      },
+      "confidence": 0.5,
+      "text": "SUNLOSE CA 9551168"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.56589,
+        "x": 0.07946,
+        "y": 0.24709
+      },
+      "confidence": 0.3,
+      "text": "DECOMMAR ARONOWER STRIKARD"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.44186,
+        "x": 0.09884,
+        "y": 0.28906
+      },
+      "confidence": 1,
+      "text": "RECHA LIMITE 5DE SEPTEMBRE DE 2028"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.52519,
+        "x": 0.0969,
+        "y": 0.31105
+      },
+      "confidence": 0.5,
+      "text": "IRES d6 iMPROPRe: ARRST 29056 MRS 0402861RRS: 060B81: 29056"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.14922,
+        "x": 0.62016,
+        "y": 0.19329
+      },
+      "confidence": 0.5,
+      "text": "Wins/s/D: 8040807"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.17054,
+        "x": 0.62209,
+        "y": 0.2064
+      },
+      "confidence": 0.5,
+      "text": "RATRe: (4068) 1588-384001"
+    },
+    {
+      "box": {
+        "h": 0.01611,
+        "w": 0.2093,
+        "x": 0.08333,
+        "y": 0.40843
+      },
+      "confidence": 0.3,
+      "text": "SOON WINGES"
+    },
+    {
+      "box": {
+        "h": 0.01473,
+        "w": 0.32946,
+        "x": 0.07946,
+        "y": 0.42878
+      },
+      "confidence": 0.5,
+      "text": "186209M 1959888611962888880"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.16279,
+        "x": 0.08333,
+        "y": 0.47384
+      },
+      "confidence": 0.5,
+      "text": "16R88--5к80960R5480"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.32558,
+        "x": 0.08333,
+        "y": 0.49855
+      },
+      "confidence": 0.5,
+      "text": "STOODN-T CAMBERS IN IN HOOAR"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.05814,
+        "x": 0.42248,
+        "y": 0.47238
+      },
+      "confidence": 1,
+      "text": "3900390"
+    },
+    {
+      "box": {
+        "h": 0.016,
+        "w": 0.34109,
+        "x": 0.0814,
+        "y": 0.55814
+      },
+      "confidence": 0.5,
+      "text": "Let TRERS 968 R018: 08029619080/119831086336680"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.06589,
+        "x": 0.26357,
+        "y": 0.68605
+      },
+      "confidence": 0.5,
+      "text": "7R889401"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.17442,
+        "x": 0.0814,
+        "y": 0.69903
+      },
+      "confidence": 0.5,
+      "text": "SURE SO SANS"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

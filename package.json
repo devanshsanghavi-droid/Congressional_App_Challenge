@@ -9,10 +9,17 @@
     "ios": "expo run:ios",
     "android": "expo run:android",
     "lint": "expo lint",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p src/extraction",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p src/extraction && tsc --noEmit -p tools",
     "test": "jest",
     "test:node": "jest --selectProjects node",
-    "test:app": "jest --selectProjects app"
+    "test:app": "jest --selectProjects app",
+    "corpus:ocr": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/ocr/run-ocr.ts",
+    "metrics": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/run.ts",
+    "metrics:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/run.ts --check",
+    "probe": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/compare.ts",
+    "probe:errors": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/errors.ts",
+    "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/content-check.ts",
+    "probe:llm": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/long-tail.ts"
   },
   "comments": {
     "overrides": "We do not ship a web build (SPEC.md §10 forbids a web version), but expo-router's dev tooling (@expo/router-server, @expo/ui) still pulls react-dom transitively. Left alone npm resolves it to a newer react-dom that demands a newer react than React Native 0.86.2 ships with. Pinning it here keeps one React version in the tree."
@@ -21,14 +28,17 @@
     "react-dom": "19.2.3"
   },
   "dependencies": {
+    "@noble/ciphers": "^2.3.0",
     "expo": "~57.0.12",
     "expo-camera": "~57.0.3",
     "expo-clipboard": "~57.0.1",
     "expo-constants": "~57.0.10",
+    "expo-crypto": "~57.0.1",
     "expo-dev-client": "~57.0.11",
     "expo-file-system": "~57.0.2",
     "expo-image": "~57.0.2",
     "expo-image-manipulator": "~57.0.9",
+    "expo-image-picker": "~57.0.12",
     "expo-linking": "~57.0.5",
     "expo-localization": "~57.0.1",
     "expo-mlkit-ocr": "^0.2.7",

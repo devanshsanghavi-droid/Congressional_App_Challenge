@@ -1,0 +1,268 @@
+{
+  "engine": "apple-vision",
+  "file": "ssa-synth-defocus.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.31977,
+        "x": 0.06395,
+        "y": 0.05958
+      },
+      "confidence": 1,
+      "text": "SOCIAL SECURITY ADMINISTRATION"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.31202,
+        "x": 0.06395,
+        "y": 0.07546
+      },
+      "confidence": 1,
+      "text": "Retirement, Survivors, and Disability Insurance"
+    },
+    {
+      "box": {
+        "h": 0.01463,
+        "w": 0.17636,
+        "x": 0.76744,
+        "y": 0.07849
+      },
+      "confidence": 1,
+      "text": "Date: September 8, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01766,
+        "w": 0.30814,
+        "x": 0.06395,
+        "y": 0.11606
+      },
+      "confidence": 1,
+      "text": "Supplemental Security Income"
+    },
+    {
+      "box": {
+        "h": 0.01606,
+        "w": 0.26357,
+        "x": 0.06395,
+        "y": 0.13663
+      },
+      "confidence": 1,
+      "text": "Notice of Redetermination"
+    },
+    {
+      "box": {
+        "h": 0.01461,
+        "w": 0.12791,
+        "x": 0.06395,
+        "y": 0.16417
+      },
+      "confidence": 1,
+      "text": "GLORIA HAYES"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.2093,
+        "x": 0.61047,
+        "y": 0.16858
+      },
+      "confidence": 1,
+      "text": "Case Number: XXX-XX-4821"
+    },
+    {
+      "box": {
+        "h": 0.01326,
+        "w": 0.22287,
+        "x": 0.06395,
+        "y": 0.18005
+      },
+      "confidence": 1,
+      "text": "1150 MERIDIAN AVE APT 22"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.1124,
+        "x": 0.61047,
+        "y": 0.18314
+      },
+      "confidence": 1,
+      "text": "Worker ID: N/A"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.1686,
+        "x": 0.06395,
+        "y": 0.19462
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95125"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.17248,
+        "x": 0.61047,
+        "y": 0.19903
+      },
+      "confidence": 1,
+      "text": "Phone: 1-800-772-1213"
+    },
+    {
+      "box": {
+        "h": 0.02204,
+        "w": 0.85497,
+        "x": 0.06185,
+        "y": 0.21796
+      },
+      "confidence": 1,
+      "text": "We are reviewing your Supplemental Security Income (SI) to make sure you are still eligible and that we are paying"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.44961,
+        "x": 0.06202,
+        "y": 0.23692
+      },
+      "confidence": 1,
+      "text": "you the right amount. This review is called a redetermination."
+    },
+    {
+      "box": {
+        "h": 0.0218,
+        "w": 0.39729,
+        "x": 0.07946,
+        "y": 0.28198
+      },
+      "confidence": 1,
+      "text": "PLEASE REPLY BY: OCTOBER 8, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01472,
+        "w": 0.21318,
+        "x": 0.06202,
+        "y": 0.32994
+      },
+      "confidence": 1,
+      "text": "WHAT YOU NEED TO DO"
+    },
+    {
+      "box": {
+        "h": 0.02065,
+        "w": 0.81226,
+        "x": 0.06189,
+        "y": 0.34876
+      },
+      "confidence": 1,
+      "text": "Call us at 1-800-772-1213 to schedule your redetermination interview, or visit your local office. Please have the"
+    },
+    {
+      "box": {
+        "h": 0.01457,
+        "w": 0.12403,
+        "x": 0.06008,
+        "y": 0.36628
+      },
+      "confidence": 1,
+      "text": "following ready:"
+    },
+    {
+      "box": {
+        "h": 0.02235,
+        "w": 0.37665,
+        "x": 0.06167,
+        "y": 0.38209
+      },
+      "confidence": 1,
+      "text": "• Bank statements for all accounts, last 3 months"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.36434,
+        "x": 0.08721,
+        "y": 0.40407
+      },
+      "confidence": 1,
+      "text": "Proof of any income you or your spouse received"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.41279,
+        "x": 0.08721,
+        "y": 0.42277
+      },
+      "confidence": 1,
+      "text": "Information about where you live and who lives with you"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.49612,
+        "x": 0.06008,
+        "y": 0.44913
+      },
+      "confidence": 1,
+      "text": "IF YOU DO NOT REPLY, YOUR SSI PAYMENTS MAY STOP."
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.15891,
+        "x": 0.06202,
+        "y": 0.47384
+      },
+      "confidence": 1,
+      "text": "IF YOU DISAGREE"
+    },
+    {
+      "box": {
+        "h": 0.01865,
+        "w": 0.86446,
+        "x": 0.06195,
+        "y": 0.4927
+      },
+      "confidence": 1,
+      "text": "If you disagree with a decision we make after this review, you may appeal. You must ask for an appeal in writing within"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.38178,
+        "x": 0.06202,
+        "y": 0.51015
+      },
+      "confidence": 1,
+      "text": "60 days of the date you receive the decision notice."
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15891,
+        "x": 0.06202,
+        "y": 0.53779
+      },
+      "confidence": 1,
+      "text": "Form SSA-8202 (09-2026)"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

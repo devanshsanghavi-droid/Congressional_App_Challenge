@@ -1,0 +1,278 @@
+{
+  "engine": "apple-vision",
+  "file": "mc210-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.18217,
+        "x": 0.04264,
+        "y": 0.02762
+      },
+      "confidence": 0.3,
+      "text": "STAR OR-CALFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.33333,
+        "x": 0.04457,
+        "y": 0.04215
+      },
+      "confidence": 0.3,
+      "text": "DESTMENT O-HEN TA CARE SERVICHS"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.18411,
+        "x": 0.0407,
+        "y": 0.05649
+      },
+      "confidence": 0.5,
+      "text": "SANTA OUTRA COUNTIN"
+    },
+    {
+      "box": {
+        "h": 0.02207,
+        "w": 0.45736,
+        "x": 0.04264,
+        "y": 0.10018
+      },
+      "confidence": 1,
+      "text": "WEDICAL ANNUAL REDETERMINATION"
+    },
+    {
+      "box": {
+        "h": 0.02046,
+        "w": 0.36434,
+        "x": 0.0407,
+        "y": 0.12489
+      },
+      "confidence": 0.5,
+      "text": "Keep your health co mage. adin Rained"
+    },
+    {
+      "box": {
+        "h": 0.01775,
+        "w": 0.09506,
+        "x": 0.04065,
+        "y": 0.16554
+      },
+      "confidence": 0.3,
+      "text": "ANNA TREAT"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.24225,
+        "x": 0.03876,
+        "y": 0.18314
+      },
+      "confidence": 0.5,
+      "text": "3955444NDISS AWE APT 2477"
+    },
+    {
+      "box": {
+        "h": 0.01899,
+        "w": 0.17248,
+        "x": 0.03876,
+        "y": 0.19903
+      },
+      "confidence": 0.5,
+      "text": "INITIAS, O1 980685"
+    },
+    {
+      "box": {
+        "h": 0.0169,
+        "w": 0.09716,
+        "x": 0.04057,
+        "y": 0.21757
+      },
+      "confidence": 0.3,
+      "text": "Ninge bette"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.24419,
+        "x": 0.03876,
+        "y": 0.24564
+      },
+      "confidence": 0.3,
+      "text": "CURREN FORE WILdin"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.17442,
+        "x": 0.31008,
+        "y": 0.22093
+      },
+      "confidence": 0.5,
+      "text": "SEPTEMBER 11 20050"
+    },
+    {
+      "box": {
+        "h": 0.01611,
+        "w": 0.16085,
+        "x": 0.4186,
+        "y": 0.25
+      },
+      "confidence": 1,
+      "text": "0010BR 31 20056"
+    },
+    {
+      "box": {
+        "h": 0.0254,
+        "w": 0.46968,
+        "x": 0.06166,
+        "y": 0.29589
+      },
+      "confidence": 1,
+      "text": "RETURN THIS FORM BY: OCTOBER 15, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.18023,
+        "x": 0.77326,
+        "y": 0.0625
+      },
+      "confidence": 0.5,
+      "text": "NIC 2490RW (Reek, 196864)"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.22093,
+        "x": 0.60465,
+        "y": 0.17297
+      },
+      "confidence": 1,
+      "text": "Chese Mumnse: 40028801771994"
+    },
+    {
+      "box": {
+        "h": 0.01606,
+        "w": 0.15698,
+        "x": 0.60465,
+        "y": 0.18888
+      },
+      "confidence": 0.3,
+      "text": "Wesles/D: AC0140"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.18023,
+        "x": 0.60271,
+        "y": 0.20344
+      },
+      "confidence": 0.5,
+      "text": "FRonR: (4088) 7583-71080"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.21899,
+        "x": 0.27713,
+        "y": 0.37335
+      },
+      "confidence": 0.3,
+      "text": "R8NR51 009086 91 205"
+    },
+    {
+      "box": {
+        "h": 0.01899,
+        "w": 0.24031,
+        "x": 0.04264,
+        "y": 0.39099
+      },
+      "confidence": 0.5,
+      "text": "SOTION A HOUSEHRAD"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.22674,
+        "x": 0.04264,
+        "y": 0.43895
+      },
+      "confidence": 0.3,
+      "text": "Any Cheng sine aest ye??"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.19767,
+        "x": 0.04264,
+        "y": 0.46646
+      },
+      "confidence": 1,
+      "text": "MOTIONS INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.12016,
+        "x": 0.04264,
+        "y": 0.51453
+      },
+      "confidence": 0.3,
+      "text": "SHIRE INS"
+    },
+    {
+      "box": {
+        "h": 0.01899,
+        "w": 0.30233,
+        "x": 0.04264,
+        "y": 0.5406
+      },
+      "confidence": 1,
+      "text": "SPOTION C-PROOF TO INCLUDE"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.26938,
+        "x": 0.0407,
+        "y": 0.55958
+      },
+      "confidence": 0.5,
+      "text": "With Pay stiles 11psm the net: 880 daiss"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.0814,
+        "x": 0.44961,
+        "y": 0.48983
+      },
+      "confidence": 0.5,
+      "text": "Sb61:000"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.11628,
+        "x": 0.04264,
+        "y": 0.65843
+      },
+      "confidence": 0.3,
+      "text": "1820S10N"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

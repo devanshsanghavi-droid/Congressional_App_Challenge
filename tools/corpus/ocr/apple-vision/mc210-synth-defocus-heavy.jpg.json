@@ -1,0 +1,348 @@
+{
+  "engine": "apple-vision",
+  "file": "mc210-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01461,
+        "w": 0.17636,
+        "x": 0.04457,
+        "y": 0.03045
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNA"
+    },
+    {
+      "box": {
+        "h": 0.01458,
+        "w": 0.32946,
+        "x": 0.04457,
+        "y": 0.04501
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF HEALTH CARE SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.17829,
+        "x": 0.04457,
+        "y": 0.05958
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.0205,
+        "w": 0.45543,
+        "x": 0.04264,
+        "y": 0.10174
+      },
+      "confidence": 1,
+      "text": "MEDI-CAL ANNUAL REDETERMINATION"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.35659,
+        "x": 0.04264,
+        "y": 0.1293
+      },
+      "confidence": 1,
+      "text": "Keep your heat severage - action regured"
+    },
+    {
+      "box": {
+        "h": 0.01357,
+        "w": 0.09121,
+        "x": 0.04257,
+        "y": 0.16981
+      },
+      "confidence": 1,
+      "text": "ANH TRAN"
+    },
+    {
+      "box": {
+        "h": 0.01607,
+        "w": 0.23643,
+        "x": 0.04264,
+        "y": 0.18605
+      },
+      "confidence": 1,
+      "text": "7236 LANDESS AVE APT 217"
+    },
+    {
+      "box": {
+        "h": 0.0161,
+        "w": 0.16667,
+        "x": 0.04264,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "MUPITAS, CA 95036"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.09109,
+        "x": 0.04264,
+        "y": 0.22093
+      },
+      "confidence": 1,
+      "text": "Notice Date"
+    },
+    {
+      "box": {
+        "h": 0.01901,
+        "w": 0.2345,
+        "x": 0.04264,
+        "y": 0.24709
+      },
+      "confidence": 1,
+      "text": "Coverage Ends Without Action"
+    },
+    {
+      "box": {
+        "h": 0.0146,
+        "w": 0.16667,
+        "x": 0.31202,
+        "y": 0.22238
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 1, 2021"
+    },
+    {
+      "box": {
+        "h": 0.01611,
+        "w": 0.15504,
+        "x": 0.42054,
+        "y": 0.25
+      },
+      "confidence": 0.5,
+      "text": "ОСТОВЕЙ 31, 2021"
+    },
+    {
+      "box": {
+        "h": 0.02074,
+        "w": 0.46899,
+        "x": 0.06008,
+        "y": 0.29921
+      },
+      "confidence": 1,
+      "text": "RETURN THIS FORM BY: OCTOBER 15, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.25,
+        "x": 0.04651,
+        "y": 0.35305
+      },
+      "confidence": 1,
+      "text": "* is toe to senew your Med-Cal"
+    },
+    {
+      "box": {
+        "h": 0.01327,
+        "w": 0.14341,
+        "x": 0.3314,
+        "y": 0.3561
+      },
+      "confidence": 1,
+      "text": "send in check whe"
+    },
+    {
+      "box": {
+        "h": 0.01902,
+        "w": 0.44186,
+        "x": 0.05039,
+        "y": 0.36761
+      },
+      "confidence": 1,
+      "text": "00, your Med Cal severage will and on Ouber 31,200%"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.23837,
+        "x": 0.04457,
+        "y": 0.39232
+      },
+      "confidence": 1,
+      "text": "SECTION A - HOUSEHOLD"
+    },
+    {
+      "box": {
+        "h": 0.02039,
+        "w": 0.22868,
+        "x": 0.04845,
+        "y": 0.4113
+      },
+      "confidence": 1,
+      "text": "Nunter of people in househol"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.22287,
+        "x": 0.04651,
+        "y": 0.43895
+      },
+      "confidence": 1,
+      "text": "Any charges since last year?"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.02907,
+        "x": 0.45155,
+        "y": 0.44186
+      },
+      "confidence": 1,
+      "text": "NO"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.18992,
+        "x": 0.04651,
+        "y": 0.46646
+      },
+      "confidence": 1,
+      "text": "SECTION B - INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.21318,
+        "x": 0.04651,
+        "y": 0.48544
+      },
+      "confidence": 1,
+      "text": "Monthly income before tames"
+    },
+    {
+      "box": {
+        "h": 0.0189,
+        "w": 0.12403,
+        "x": 0.04845,
+        "y": 0.51308
+      },
+      "confidence": 1,
+      "text": "Source of econ"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.29651,
+        "x": 0.04457,
+        "y": 0.54215
+      },
+      "confidence": 1,
+      "text": "SECTION C - PROOF TO INCLUDE"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.2655,
+        "x": 0.04264,
+        "y": 0.5609
+      },
+      "confidence": 1,
+      "text": "• Pay suds to the in 30 days"
+    },
+    {
+      "box": {
+        "h": 0.02041,
+        "w": 0.23643,
+        "x": 0.0407,
+        "y": 0.57988
+      },
+      "confidence": 0.3,
+      "text": "• Pole Clone metere"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.07752,
+        "x": 0.44961,
+        "y": 0.49128
+      },
+      "confidence": 1,
+      "text": "82,410.00"
+    },
+    {
+      "box": {
+        "h": 0.01843,
+        "w": 0.12621,
+        "x": 0.44756,
+        "y": 0.51695
+      },
+      "confidence": 1,
+      "text": "EMPLOYMENT"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.11822,
+        "x": 0.04457,
+        "y": 0.63227
+      },
+      "confidence": 1,
+      "text": "You can senera"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.21705,
+        "x": 0.60465,
+        "y": 0.17151
+      },
+      "confidence": 1,
+      "text": "Case Number: 40-2291-7734"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.1686,
+        "x": 0.60853,
+        "y": 0.20344
+      },
+      "confidence": 1,
+      "text": "Phone (40E) 796-7100"
+    },
+    {
+      "box": {
+        "h": 0.01467,
+        "w": 0.10465,
+        "x": 0.53295,
+        "y": 0.63504
+      },
+      "confidence": 1,
+      "text": "756-7100, c1"
+    },
+    {
+      "box": {
+        "h": 0.01898,
+        "w": 0.13566,
+        "x": 0.2093,
+        "y": 0.65843
+      },
+      "confidence": 0.3,
+      "text": "Ca home fees"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

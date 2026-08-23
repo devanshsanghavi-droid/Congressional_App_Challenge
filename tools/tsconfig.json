@@ -1,0 +1,51 @@
+{
+  // ------------------------------------------------------------------------
+  // The Node-side tools: the metrics harness and the corpus OCR producer.
+  //
+  // These are excluded from the root tsconfig (which targets the app) and are
+  // not the extraction island either, so without this file they would be the
+  // only TypeScript in the repo that nothing typechecks. `npm run typecheck`
+  // runs all three configs.
+  //
+  // Two settings carry weight here:
+  //
+  //   erasableSyntaxOnly     — bans enums, namespaces and parameter properties.
+  //                            Node 24 runs these files directly by stripping
+  //                            the types, which only works if every construct
+  //                            can be erased. This turns "the harness stopped
+  //                            running" into a compile error.
+  //
+  //   allowImportingTsExtensions — imports here name the .ts file explicitly,
+  //                            which is what Node's type-stripping requires.
+  //
+  // The harness is allowed the Node globals and the DOM-free lib set. It may
+  // import from src/lib (pure app-side helpers) but has no business importing
+  // from src/app.
+  // ------------------------------------------------------------------------
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "types": ["node", "jest"],
+
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts", "../src/lib/urgency.ts", "../tests/node/**/*.ts"],
+  "exclude": ["corpus/**"]
+}

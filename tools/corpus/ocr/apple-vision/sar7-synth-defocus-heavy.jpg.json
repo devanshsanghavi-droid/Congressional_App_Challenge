@@ -1,0 +1,208 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7-synth-defocus-heavy.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.06202,
+        "x": 0.17636,
+        "y": 0.1032
+      },
+      "confidence": 0.5,
+      "text": "OF CALE"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.12403,
+        "x": 0.15698,
+        "y": 0.12791
+      },
+      "confidence": 1,
+      "text": "TA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.02347,
+        "w": 0.45019,
+        "x": 0.12374,
+        "y": 0.16228
+      },
+      "confidence": 1,
+      "text": "SEMIANNUAL ELIGIBILITY STATUS REPORT"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.07558,
+        "x": 0.80426,
+        "y": 0.13663
+      },
+      "confidence": 0.3,
+      "text": "BART A"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.08721,
+        "x": 0.14341,
+        "y": 0.22374
+      },
+      "confidence": 0.5,
+      "text": "A NEVES"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.18605,
+        "x": 0.12791,
+        "y": 0.23692
+      },
+      "confidence": 0.3,
+      "text": "НОЕ ВТОМУ МОКО МРТ 18"
+    },
+    {
+      "box": {
+        "h": 0.01608,
+        "w": 0.1531,
+        "x": 0.12016,
+        "y": 0.24846
+      },
+      "confidence": 1,
+      "text": "BAN JOBE, CA 10-08"
+    },
+    {
+      "box": {
+        "h": 0.0241,
+        "w": 0.45421,
+        "x": 0.11592,
+        "y": 0.2845
+      },
+      "confidence": 1,
+      "text": "YOU MUST COMPLETE, SION, AND RETURN THIS FORM"
+    },
+    {
+      "box": {
+        "h": 0.02484,
+        "w": 0.31318,
+        "x": 0.13119,
+        "y": 0.32087
+      },
+      "confidence": 1,
+      "text": "SUBMIT BY: SEPTEMBER S, 2028"
+    },
+    {
+      "box": {
+        "h": 0.01782,
+        "w": 0.17132,
+        "x": 0.11203,
+        "y": 0.43329
+      },
+      "confidence": 1,
+      "text": "SECTION 1 - INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01764,
+        "w": 0.33744,
+        "x": 0.1336,
+        "y": 0.45194
+      },
+      "confidence": 0.5,
+      "text": "Dit anyone is the he sace one a mere"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.02519,
+        "x": 0.35465,
+        "y": 0.47238
+      },
+      "confidence": 1,
+      "text": "NO"
+    },
+    {
+      "box": {
+        "h": 0.0204,
+        "w": 0.10271,
+        "x": 0.11434,
+        "y": 0.48401
+      },
+      "confidence": 0.5,
+      "text": "Deploye name"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.03295,
+        "x": 0.39147,
+        "y": 0.49128
+      },
+      "confidence": 0.5,
+      "text": "TAL"
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.29457,
+        "x": 0.10853,
+        "y": 0.53486
+      },
+      "confidence": 1,
+      "text": "SECTION J - HOUSEHOLD CHANGES"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.02713,
+        "x": 0.43217,
+        "y": 0.51453
+      },
+      "confidence": 0.5,
+      "text": "1 20"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.08915,
+        "x": 0.48643,
+        "y": 0.48983
+      },
+      "confidence": 0.5,
+      "text": "SH MARKET"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.01938,
+        "x": 0.32171,
+        "y": 0.57413
+      },
+      "confidence": 1,
+      "text": "NO"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.29457,
+        "x": 0.11047,
+        "y": 0.58866
+      },
+      "confidence": 1,
+      "text": "MECTION 3 - PROOF YOU MUST SEN"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

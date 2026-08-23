@@ -1,0 +1,308 @@
+{
+  "engine": "apple-vision",
+  "file": "cf3776-synth-noise.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01027,
+        "w": 0.16473,
+        "x": 0.07558,
+        "y": 0.0406
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.01021,
+        "w": 0.26163,
+        "x": 0.07558,
+        "y": 0.05378
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF SOCIAL SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01024,
+        "w": 0.1686,
+        "x": 0.07364,
+        "y": 0.06831
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.14535,
+        "x": 0.79845,
+        "y": 0.06395
+      },
+      "confidence": 1,
+      "text": "CF 377.6 (Rev. 3/24)"
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.43605,
+        "x": 0.06977,
+        "y": 0.10756
+      },
+      "confidence": 1,
+      "text": "INFORMATION / VERIFICATION NEEDED"
+    },
+    {
+      "box": {
+        "h": 0.01391,
+        "w": 0.0739,
+        "x": 0.06964,
+        "y": 0.1304
+      },
+      "confidence": 1,
+      "text": "CalFresh"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.14535,
+        "x": 0.06977,
+        "y": 0.1699
+      },
+      "confidence": 1,
+      "text": "DAVID OKONKWO"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.26938,
+        "x": 0.06783,
+        "y": 0.18605
+      },
+      "confidence": 1,
+      "text": "877 N WINCHESTER BLVD APT 4B"
+    },
+    {
+      "box": {
+        "h": 0.0161,
+        "w": 0.19961,
+        "x": 0.06783,
+        "y": 0.20058
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA, CA 95050"
+    },
+    {
+      "box": {
+        "h": 0.01032,
+        "w": 0.08721,
+        "x": 0.06977,
+        "y": 0.21933
+      },
+      "confidence": 1,
+      "text": "Notice Date"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.17248,
+        "x": 0.32752,
+        "y": 0.21933
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 14, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01031,
+        "w": 0.20736,
+        "x": 0.6124,
+        "y": 0.17151
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-8813-2205"
+    },
+    {
+      "box": {
+        "h": 0.01166,
+        "w": 0.14535,
+        "x": 0.6124,
+        "y": 0.18605
+      },
+      "confidence": 1,
+      "text": "Worker ID: SC-1187"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.16473,
+        "x": 0.6124,
+        "y": 0.20203
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 758-3401"
+    },
+    {
+      "box": {
+        "h": 0.01904,
+        "w": 0.47093,
+        "x": 0.08527,
+        "y": 0.26876
+      },
+      "confidence": 1,
+      "text": "SEND THESE ITEMS BY: SEPTEMBER 28, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.81783,
+        "x": 0.06977,
+        "y": 0.31686
+      },
+      "confidence": 1,
+      "text": "We need more information before we can finish working on your CalFresh case. Please send copies of the items"
+    },
+    {
+      "box": {
+        "h": 0.01168,
+        "w": 0.11628,
+        "x": 0.06977,
+        "y": 0.3343
+      },
+      "confidence": 1,
+      "text": "checked below."
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.13178,
+        "x": 0.06783,
+        "y": 0.35746
+      },
+      "confidence": 1,
+      "text": "ITEMS NEEDED"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.46318,
+        "x": 0.06977,
+        "y": 0.37643
+      },
+      "confidence": 1,
+      "text": "X Proof of earned income -- all pay stubs from the last 30 days"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.48062,
+        "x": 0.09496,
+        "y": 0.39535
+      },
+      "confidence": 1,
+      "text": "Proof of housing cost --lease, rent receipt, or mortgage statement"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.38566,
+        "x": 0.0969,
+        "y": 0.41424
+      },
+      "confidence": 1,
+      "text": "Proof of identity - driver license, state ID, or passport"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.3469,
+        "x": 0.0969,
+        "y": 0.43292
+      },
+      "confidence": 1,
+      "text": "Proof of utility costs -- gas, electric, or phone bill"
+    },
+    {
+      "box": {
+        "h": 0.01164,
+        "w": 0.17442,
+        "x": 0.0969,
+        "y": 0.45057
+      },
+      "confidence": 1,
+      "text": "Proof of child care costs"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.36434,
+        "x": 0.0969,
+        "y": 0.46948
+      },
+      "confidence": 1,
+      "text": "Proof of medical expenses (if age 60+ or disabled)"
+    },
+    {
+      "box": {
+        "h": 0.01984,
+        "w": 0.86253,
+        "x": 0.06582,
+        "y": 0.51739
+      },
+      "confidence": 1,
+      "text": "IF WE DO NOT RECEIVE THESE ITEMS BY SEPTEMBER 28, 2026, YOUR CALFRESH BENEFITS MAY BE"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.18992,
+        "x": 0.06977,
+        "y": 0.53486
+      },
+      "confidence": 1,
+      "text": "DENIED OR STOPPED."
+    },
+    {
+      "box": {
+        "h": 0.01601,
+        "w": 0.85465,
+        "x": 0.06977,
+        "y": 0.55958
+      },
+      "confidence": 1,
+      "text": "You may bring items to any county office, mail them to the address above, or upload them at www.benefitscal.com. If"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.37791,
+        "x": 0.06783,
+        "y": 0.57849
+      },
+      "confidence": 1,
+      "text": "you need help getting these items, call your worker."
+    },
+    {
+      "box": {
+        "h": 0.01037,
+        "w": 0.09302,
+        "x": 0.06783,
+        "y": 0.60591
+      },
+      "confidence": 1,
+      "text": "CF 377.6 (3/24)"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

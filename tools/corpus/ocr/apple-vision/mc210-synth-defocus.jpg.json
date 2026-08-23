@@ -1,0 +1,358 @@
+{
+  "engine": "apple-vision",
+  "file": "mc210-synth-defocus.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.17829,
+        "x": 0.04457,
+        "y": 0.03045
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.01458,
+        "w": 0.32946,
+        "x": 0.04457,
+        "y": 0.04501
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF HEALTH CARE SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.18023,
+        "x": 0.04264,
+        "y": 0.05958
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.02261,
+        "w": 0.45577,
+        "x": 0.0444,
+        "y": 0.09956
+      },
+      "confidence": 1,
+      "text": "MEDI-CAL ANNUAL REDETERMINATION"
+    },
+    {
+      "box": {
+        "h": 0.02252,
+        "w": 0.35919,
+        "x": 0.04227,
+        "y": 0.12631
+      },
+      "confidence": 1,
+      "text": "Keep your health coverage -- action required"
+    },
+    {
+      "box": {
+        "h": 0.0137,
+        "w": 0.09124,
+        "x": 0.04256,
+        "y": 0.16975
+      },
+      "confidence": 1,
+      "text": "ANH TRAN"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.23643,
+        "x": 0.0407,
+        "y": 0.18605
+      },
+      "confidence": 1,
+      "text": "2255 LANDESS AVE APT 217"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.1686,
+        "x": 0.0407,
+        "y": 0.20203
+      },
+      "confidence": 1,
+      "text": "MILPITAS, CA 95035"
+    },
+    {
+      "box": {
+        "h": 0.01358,
+        "w": 0.09508,
+        "x": 0.04064,
+        "y": 0.22068
+      },
+      "confidence": 1,
+      "text": "Notice Date"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.23837,
+        "x": 0.0407,
+        "y": 0.24709
+      },
+      "confidence": 1,
+      "text": "Coverage Ends Without Action"
+    },
+    {
+      "box": {
+        "h": 0.01901,
+        "w": 0.17054,
+        "x": 0.31202,
+        "y": 0.22238
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 1, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.15891,
+        "x": 0.4186,
+        "y": 0.25145
+      },
+      "confidence": 1,
+      "text": "OCTOBER 31, 2026"
+    },
+    {
+      "box": {
+        "h": 0.01463,
+        "w": 0.17636,
+        "x": 0.77713,
+        "y": 0.06531
+      },
+      "confidence": 1,
+      "text": "MC 210 RV (Rev. 10/24)"
+    },
+    {
+      "box": {
+        "h": 0.01464,
+        "w": 0.21512,
+        "x": 0.60659,
+        "y": 0.17432
+      },
+      "confidence": 1,
+      "text": "Case Number: 40-2291-7734"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15698,
+        "x": 0.60465,
+        "y": 0.19186
+      },
+      "confidence": 1,
+      "text": "Worker ID: MC-0442"
+    },
+    {
+      "box": {
+        "h": 0.01457,
+        "w": 0.17248,
+        "x": 0.60659,
+        "y": 0.20785
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 755-7100"
+    },
+    {
+      "box": {
+        "h": 0.0218,
+        "w": 0.46705,
+        "x": 0.06202,
+        "y": 0.30087
+      },
+      "confidence": 1,
+      "text": "RETURN THIS FORM BY: OCTOBER 15, 2026"
+    },
+    {
+      "box": {
+        "h": 0.02292,
+        "w": 0.89573,
+        "x": 0.04246,
+        "y": 0.35288
+      },
+      "confidence": 1,
+      "text": "It is time to renew your Medi-Cal. We need to check whether you still quality. If we do not hear from you by October 15,"
+    },
+    {
+      "box": {
+        "h": 0.02095,
+        "w": 0.45591,
+        "x": 0.04242,
+        "y": 0.36917
+      },
+      "confidence": 1,
+      "text": "2026, your Medi-Cal coverage will end on October 31, 2026."
+    },
+    {
+      "box": {
+        "h": 0.01677,
+        "w": 0.23491,
+        "x": 0.04436,
+        "y": 0.39379
+      },
+      "confidence": 1,
+      "text": "SECTION A - HOUSEHOLD"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.23837,
+        "x": 0.04457,
+        "y": 0.41424
+      },
+      "confidence": 1,
+      "text": "Number of people in household"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.01744,
+        "x": 0.44961,
+        "y": 0.41715
+      },
+      "confidence": 1,
+      "text": "3"
+    },
+    {
+      "box": {
+        "h": 0.01744,
+        "w": 0.22287,
+        "x": 0.04457,
+        "y": 0.44041
+      },
+      "confidence": 1,
+      "text": "Any changes since last year?"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.03101,
+        "x": 0.44961,
+        "y": 0.44477
+      },
+      "confidence": 1,
+      "text": "NO"
+    },
+    {
+      "box": {
+        "h": 0.01464,
+        "w": 0.19186,
+        "x": 0.04457,
+        "y": 0.46948
+      },
+      "confidence": 1,
+      "text": "SECTION B - INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01604,
+        "w": 0.21899,
+        "x": 0.04457,
+        "y": 0.48837
+      },
+      "confidence": 1,
+      "text": "Monthly income before taxes"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.13566,
+        "x": 0.04457,
+        "y": 0.51453
+      },
+      "confidence": 1,
+      "text": "Source of income"
+    },
+    {
+      "box": {
+        "h": 0.01474,
+        "w": 0.07759,
+        "x": 0.45152,
+        "y": 0.49118
+      },
+      "confidence": 1,
+      "text": "$2,610.00"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.12209,
+        "x": 0.45155,
+        "y": 0.5189
+      },
+      "confidence": 1,
+      "text": "EMPLOYMENT"
+    },
+    {
+      "box": {
+        "h": 0.01676,
+        "w": 0.29686,
+        "x": 0.0444,
+        "y": 0.54352
+      },
+      "confidence": 1,
+      "text": "SECTION C - PROOF TO INCLUDE"
+    },
+    {
+      "box": {
+        "h": 0.01975,
+        "w": 0.26422,
+        "x": 0.04421,
+        "y": 0.56193
+      },
+      "confidence": 1,
+      "text": "• Pay stubs from the last 30 days"
+    },
+    {
+      "box": {
+        "h": 0.01836,
+        "w": 0.24273,
+        "x": 0.04243,
+        "y": 0.58061
+      },
+      "confidence": 1,
+      "text": "• Proof of California residency"
+    },
+    {
+      "box": {
+        "h": 0.02732,
+        "w": 0.77774,
+        "x": 0.04427,
+        "y": 0.62824
+      },
+      "confidence": 1,
+      "text": "You can renew online at www.benefitscal.com, by phone at (408) 755-7100, or by mailing this form back."
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.33527,
+        "x": 0.04264,
+        "y": 0.65843
+      },
+      "confidence": 1,
+      "text": "MC 210 RV (10/24) - MediCal Annual Redetermination"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

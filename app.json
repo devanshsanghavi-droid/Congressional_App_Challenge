@@ -9,16 +9,20 @@
     "icon": "./assets/images/icon.png",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.devanshsanghavi.carta",
+      "bundleIdentifier": "com.devanshsanghavi.noticetracker",
       "icon": "./assets/expo.icon",
       "supportsTablet": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "Carta uses the camera to photograph your benefit notices. Photos stay on this phone and are never uploaded."
+        "NSCameraUsageDescription": "Carta uses the camera to photograph your benefit notices. Photos stay on this phone and are never uploaded.",
+        "CFBundleDisplayName": "Carta",
+        "CFBundleName": "Carta"
       },
       "entitlements": {
         "com.apple.developer.kernel.increased-memory-limit": true,
-        "com.apple.developer.kernel.extended-virtual-addressing": true
-      }
+        "com.apple.developer.kernel.extended-virtual-addressing": true,
+        "com.apple.developer.default-data-protection": "NSFileProtectionComplete"
+      },
+      "appleTeamId": "A4367BS428"
     },
     "android": {
       "package": "com.devanshsanghavi.carta",
@@ -40,6 +44,7 @@
       ]
     },
     "plugins": [
+      "./plugins/withDevelopmentTeam",
       "expo-router",
       "expo-secure-store",
       "expo-mlkit-ocr",
@@ -69,7 +74,18 @@
         "llama.rn",
         {
           "enableEntitlements": true,
-          "entitlementsProfile": ["development", "preview", "production"]
+          "entitlementsProfile": [
+            "development",
+            "preview",
+            "production"
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Carta needs to open a photo you already took of a benefit notice. It reads the letter on this phone and never adds anything to your photo library.",
+          "cameraPermission": "Carta uses the camera to photograph your benefit notice. Photos stay on this phone and are never uploaded."
         }
       ]
     ],

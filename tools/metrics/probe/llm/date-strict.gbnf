@@ -1,0 +1,16 @@
+# FEASIBILITY PROBE grammar — not the extraction grammar.
+#
+# The real GBNF grammar is Devansh's and lives in /src/extraction (CLAUDE.md
+# §15). This one exists to test a single claim from the project docs:
+#
+#   "A hand-written grammar constrains a date field to \d{2}/\d{2}/\d{4}
+#    *at the token level* — a malformed date becomes structurally unreachable
+#    rather than caught afterwards."
+#
+# Note what this grammar does NOT allow: a null. That is deliberate — it is the
+# variant that tests what happens when the model has no date to give.
+
+root        ::= "{" ws "\"deadline\":" ws date ws "}"
+date        ::= "\"" digit digit "/" digit digit "/" digit digit digit digit "\""
+digit       ::= [0-9]
+ws          ::= [ \t\n]*

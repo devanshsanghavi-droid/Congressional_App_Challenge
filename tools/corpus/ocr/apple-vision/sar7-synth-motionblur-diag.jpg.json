@@ -1,0 +1,128 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7-synth-motionblur-diag.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01768,
+        "w": 0.15982,
+        "x": 0.1217,
+        "y": 0.12503
+      },
+      "confidence": 0.3,
+      "text": "SANTORONN"
+    },
+    {
+      "box": {
+        "h": 0.0248,
+        "w": 0.45411,
+        "x": 0.12176,
+        "y": 0.1616
+      },
+      "confidence": 0.5,
+      "text": "SEN-ANNUAL ELGIBUTY STATS REPORT"
+    },
+    {
+      "box": {
+        "h": 0.02078,
+        "w": 0.16189,
+        "x": 0.11574,
+        "y": 0.24672
+      },
+      "confidence": 0.5,
+      "text": "SUN-OSSE 04 95-082"
+    },
+    {
+      "box": {
+        "h": 0.01453,
+        "w": 0.10465,
+        "x": 0.66667,
+        "y": 0.25581
+      },
+      "confidence": 0.3,
+      "text": "40838301"
+    },
+    {
+      "box": {
+        "h": 0.02626,
+        "w": 0.321,
+        "x": 0.12731,
+        "y": 0.32063
+      },
+      "confidence": 0.3,
+      "text": "SUBMT SN SITES 2006"
+    },
+    {
+      "box": {
+        "h": 0.01456,
+        "w": 0.16473,
+        "x": 0.10659,
+        "y": 0.51015
+      },
+      "confidence": 0.3,
+      "text": "R8s 1R8оnес 9686н961"
+    },
+    {
+      "box": {
+        "h": 0.01468,
+        "w": 0.18411,
+        "x": 0.10465,
+        "y": 0.60756
+      },
+      "confidence": 0.3,
+      "text": "morie: 0561981988420"
+    },
+    {
+      "box": {
+        "h": 0.01698,
+        "w": 0.27371,
+        "x": 0.12769,
+        "y": 0.64081
+      },
+      "confidence": 0.3,
+      "text": "CureR: 1884096-9880-6086101"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.17442,
+        "x": 0.10078,
+        "y": 0.65698
+      },
+      "confidence": 0.3,
+      "text": "по мава евеннь і"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.0562,
+        "x": 0.24031,
+        "y": 0.76163
+      },
+      "confidence": 0.3,
+      "text": "188940"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1124,
+        "x": 0.3062,
+        "y": 0.76163
+      },
+      "confidence": 0.3,
+      "text": "8482889886"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

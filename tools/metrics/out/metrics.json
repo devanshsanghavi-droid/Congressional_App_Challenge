@@ -1,0 +1,5447 @@
+{
+  "extractor": "tools/metrics/probe/spatial.ts",
+  "ocr": {
+    "engine": "apple-vision",
+    "revision": 3,
+    "maxWidth": 1700,
+    "caveat": "macOS Apple Vision. The iOS app also runs Apple Vision — expo-mlkit-ocr installs no ML Kit pod at its default iosEngine \"auto\" — so this is the same engine family, pending a device-side confirmation that iOS Vision agrees with macOS Vision. Android is ML Kit and is not described by these figures."
+  },
+  "syntheticSeed": 20261026,
+  "buckets": {
+    "real": {
+      "images": 23,
+      "conditions": [
+        "flat",
+        "dim",
+        "angled",
+        "creased",
+        "shadow",
+        "colour-cast",
+        "inverted",
+        "blur-attempt",
+        "dim-angled"
+      ],
+      "byField": {
+        "form_id": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 22,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0.9565217391304348,
+          "ceiling": 0.9565217391304348,
+          "ceilingCounts": {
+            "hits": 22,
+            "support": 23
+          }
+        },
+        "program": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 23,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 23,
+            "support": 23
+          }
+        },
+        "agency": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "language": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "action_type": {
+          "evidence": "semantic",
+          "critical": true,
+          "tp": 23,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "recipient_name": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 19,
+          "fp": 2,
+          "fn": 4,
+          "precision": 0.9047619047619048,
+          "recall": 0.8260869565217391,
+          "ceiling": 0.9130434782608695,
+          "ceilingCounts": {
+            "hits": 21,
+            "support": 23
+          }
+        },
+        "case_number": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 21,
+          "fp": 2,
+          "fn": 1,
+          "precision": 0.9130434782608695,
+          "recall": 0.9545454545454546,
+          "ceiling": 0.9545454545454546,
+          "ceilingCounts": {
+            "hits": 21,
+            "support": 22
+          }
+        },
+        "deadline_date": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 15,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.8333333333333334,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 18,
+            "support": 18
+          }
+        },
+        "report_month": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 5
+          }
+        },
+        "benefit_month": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 5
+          }
+        },
+        "employer": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 6,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.8571428571428571,
+          "recall": 0.8571428571428571,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 7,
+            "support": 7
+          }
+        },
+        "gross_income": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 6,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0.8571428571428571,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 7,
+            "support": 7
+          }
+        },
+        "worker_id": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 5,
+          "fp": 18,
+          "fn": 0,
+          "precision": 0.21739130434782608,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 5
+          }
+        },
+        "required_docs": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 44,
+          "fp": 4,
+          "fn": 1,
+          "precision": 0.9166666666666666,
+          "recall": 0.9777777777777777,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "notice_date": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 13,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.8125,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 16,
+            "support": 16
+          }
+        },
+        "effective_date": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 7,
+          "fp": 1,
+          "fn": 5,
+          "precision": 0.875,
+          "recall": 0.5833333333333334,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 12,
+            "support": 12
+          }
+        },
+        "appeal_deadline": {
+          "evidence": "derived",
+          "critical": false,
+          "tp": 7,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0.875,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "aid_paid_pending_deadline": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 6,
+          "fp": 0,
+          "fn": 2,
+          "precision": 1,
+          "recall": 0.75,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 8,
+            "support": 8
+          }
+        },
+        "reason": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3,
+          "precision": null,
+          "recall": 0,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "citation": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 5
+          }
+        },
+        "household_size": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 2,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 3,
+            "support": 3
+          }
+        },
+        "monthly_income": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 2,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0.6666666666666666,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 3,
+            "support": 3
+          }
+        },
+        "old_amount": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 2,
+            "support": 2
+          }
+        },
+        "new_amount": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 2,
+            "support": 2
+          }
+        },
+        "monthly_amount": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "appeal_window_days": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 1,
+            "support": 1
+          }
+        },
+        "appointment_time": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 1,
+            "support": 1
+          }
+        },
+        "appointment_address": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 1,
+            "support": 1
+          }
+        }
+      },
+      "byFieldCondition": {
+        "form_id": {
+          "flat": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "creased": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "program": {
+          "flat": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "creased": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "agency": {
+          "flat": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "dim": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 2
+          },
+          "angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 2
+          },
+          "creased": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "language": {
+          "flat": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "dim": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 2
+          },
+          "angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 2
+          },
+          "creased": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "action_type": {
+          "flat": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 8
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 2
+          },
+          "angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 2
+          },
+          "creased": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "recipient_name": {
+          "flat": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "creased": {
+            "tp": 4,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.8,
+            "recall": 0.8,
+            "ceiling": 0.8,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          }
+        },
+        "case_number": {
+          "flat": {
+            "tp": 7,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "creased": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "deadline_date": {
+          "flat": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.8333333333333334,
+            "ceiling": 1,
+            "images": 6
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "creased": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 3
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "colour-cast": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "report_month": {
+          "flat": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "benefit_month": {
+          "flat": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "employer": {
+          "flat": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "gross_income": {
+          "flat": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "dim": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "worker_id": {
+          "flat": {
+            "tp": 1,
+            "fp": 7,
+            "fn": 0,
+            "precision": 0.125,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "dim": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.5,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "angled": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.5,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 4,
+            "fn": 0,
+            "precision": 0.2,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 5
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.5,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "required_docs": {
+          "flat": {
+            "tp": 14,
+            "fp": 2,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": null,
+            "images": 5
+          },
+          "dim": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 2
+          },
+          "angled": {
+            "tp": 8,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.8888888888888888,
+            "recall": 1,
+            "ceiling": null,
+            "images": 2
+          },
+          "creased": {
+            "tp": 9,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.9,
+            "recall": 1,
+            "ceiling": null,
+            "images": 3
+          },
+          "shadow": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": null,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "notice_date": {
+          "flat": {
+            "tp": 6,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 6
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "blur-attempt": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 4,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 4
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "effective_date": {
+          "flat": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": 1,
+            "images": 4
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 2,
+            "precision": 1,
+            "recall": 0.3333333333333333,
+            "ceiling": 1,
+            "images": 3
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "appeal_deadline": {
+          "flat": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 3
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 1
+          },
+          "creased": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 2
+          }
+        },
+        "aid_paid_pending_deadline": {
+          "flat": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.6666666666666666,
+            "ceiling": 1,
+            "images": 3
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          }
+        },
+        "reason": {
+          "flat": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "colour-cast": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "citation": {
+          "flat": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "colour-cast": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "inverted": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "household_size": {
+          "flat": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "monthly_income": {
+          "flat": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "dim-angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "creased": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "old_amount": {
+          "flat": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "new_amount": {
+          "flat": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "monthly_amount": {
+          "flat": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "shadow": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "appeal_window_days": {
+          "flat": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "appointment_time": {
+          "angled": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "appointment_address": {
+          "angled": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          }
+        }
+      }
+    },
+    "synthetic": {
+      "images": 56,
+      "conditions": [
+        "motionblur",
+        "motionblur-diag",
+        "defocus",
+        "defocus-heavy",
+        "noise",
+        "underexposed",
+        "jpeg"
+      ],
+      "byField": {
+        "form_id": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 32,
+          "fp": 3,
+          "fn": 24,
+          "precision": 0.9142857142857143,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 32,
+            "support": 56
+          }
+        },
+        "program": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 44,
+          "fp": 1,
+          "fn": 12,
+          "precision": 0.9777777777777777,
+          "recall": 0.7857142857142857,
+          "ceiling": 0.7857142857142857,
+          "ceilingCounts": {
+            "hits": 44,
+            "support": 56
+          }
+        },
+        "agency": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "language": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "action_type": {
+          "evidence": "semantic",
+          "critical": true,
+          "tp": 44,
+          "fp": 0,
+          "fn": 12,
+          "precision": 1,
+          "recall": 0.7857142857142857,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "recipient_name": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 34,
+          "fp": 3,
+          "fn": 22,
+          "precision": 0.918918918918919,
+          "recall": 0.6071428571428571,
+          "ceiling": 0.6071428571428571,
+          "ceilingCounts": {
+            "hits": 34,
+            "support": 56
+          }
+        },
+        "case_number": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 29,
+          "fp": 8,
+          "fn": 20,
+          "precision": 0.7837837837837838,
+          "recall": 0.5918367346938775,
+          "ceiling": 0.5918367346938775,
+          "ceilingCounts": {
+            "hits": 29,
+            "support": 49
+          }
+        },
+        "deadline_date": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 24,
+          "fp": 2,
+          "fn": 18,
+          "precision": 0.9230769230769231,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.7142857142857143,
+          "ceilingCounts": {
+            "hits": 30,
+            "support": 42
+          }
+        },
+        "report_month": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.7142857142857143,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 7
+          }
+        },
+        "benefit_month": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 4,
+            "support": 7
+          }
+        },
+        "employer": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 8,
+          "fp": 0,
+          "fn": 6,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 8,
+            "support": 14
+          }
+        },
+        "gross_income": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 8,
+          "fp": 0,
+          "fn": 6,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 8,
+            "support": 14
+          }
+        },
+        "worker_id": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 28,
+          "fn": 3,
+          "precision": 0.125,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 4,
+            "support": 7
+          }
+        },
+        "required_docs": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 56,
+          "fp": 10,
+          "fn": 42,
+          "precision": 0.8484848484848485,
+          "recall": 0.5714285714285714,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "notice_date": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 20,
+          "fp": 5,
+          "fn": 22,
+          "precision": 0.8,
+          "recall": 0.47619047619047616,
+          "ceiling": 0.47619047619047616,
+          "ceilingCounts": {
+            "hits": 20,
+            "support": 42
+          }
+        },
+        "effective_date": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 12,
+          "fp": 0,
+          "fn": 16,
+          "precision": 1,
+          "recall": 0.42857142857142855,
+          "ceiling": 0.6785714285714286,
+          "ceilingCounts": {
+            "hits": 19,
+            "support": 28
+          }
+        },
+        "appeal_deadline": {
+          "evidence": "derived",
+          "critical": false,
+          "tp": 8,
+          "fp": 4,
+          "fn": 13,
+          "precision": 0.6666666666666666,
+          "recall": 0.38095238095238093,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "aid_paid_pending_deadline": {
+          "evidence": "printed",
+          "critical": true,
+          "tp": 4,
+          "fp": 4,
+          "fn": 17,
+          "precision": 0.5,
+          "recall": 0.19047619047619047,
+          "ceiling": 0.38095238095238093,
+          "ceilingCounts": {
+            "hits": 8,
+            "support": 21
+          }
+        },
+        "reason": {
+          "evidence": "semantic",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 7,
+          "precision": null,
+          "recall": 0,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "citation": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 8,
+          "fp": 1,
+          "fn": 6,
+          "precision": 0.8888888888888888,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 8,
+            "support": 14
+          }
+        },
+        "household_size": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 1,
+          "ceilingCounts": {
+            "hits": 7,
+            "support": 7
+          }
+        },
+        "monthly_income": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.5714285714285714,
+          "ceilingCounts": {
+            "hits": 4,
+            "support": 7
+          }
+        },
+        "old_amount": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.8571428571428571,
+          "ceilingCounts": {
+            "hits": 6,
+            "support": 7
+          }
+        },
+        "new_amount": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 3,
+          "precision": 1,
+          "recall": 0.5714285714285714,
+          "ceiling": 0.7142857142857143,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 7
+          }
+        },
+        "monthly_amount": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 0,
+          "fp": 4,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "ceiling": null,
+          "ceilingCounts": {
+            "hits": 0,
+            "support": 0
+          }
+        },
+        "appeal_window_days": {
+          "evidence": "printed",
+          "critical": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 7,
+          "precision": null,
+          "recall": 0,
+          "ceiling": 0.7142857142857143,
+          "ceilingCounts": {
+            "hits": 5,
+            "support": 7
+          }
+        }
+      },
+      "byFieldCondition": {
+        "form_id": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 2,
+            "fn": 8,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 8
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 8
+          },
+          "defocus": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 8,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 8
+          },
+          "noise": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          }
+        },
+        "program": {
+          "motionblur": {
+            "tp": 5,
+            "fp": 1,
+            "fn": 3,
+            "precision": 0.8333333333333334,
+            "recall": 0.625,
+            "ceiling": 0.5,
+            "images": 8
+          },
+          "motionblur-diag": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 7,
+            "precision": 1,
+            "recall": 0.125,
+            "ceiling": 0.25,
+            "images": 8
+          },
+          "defocus": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 6,
+            "fp": 0,
+            "fn": 2,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": 0.75,
+            "images": 8
+          },
+          "noise": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          }
+        },
+        "agency": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "defocus": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "noise": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          }
+        },
+        "language": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "defocus": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "noise": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 8
+          }
+        },
+        "action_type": {
+          "motionblur": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 6,
+            "precision": 1,
+            "recall": 0.25,
+            "ceiling": null,
+            "images": 8
+          },
+          "motionblur-diag": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 5,
+            "precision": 1,
+            "recall": 0.375,
+            "ceiling": null,
+            "images": 8
+          },
+          "defocus": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 7,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.875,
+            "ceiling": null,
+            "images": 8
+          },
+          "noise": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": null,
+            "images": 8
+          }
+        },
+        "recipient_name": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 8,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 8
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 8
+          },
+          "defocus": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 3,
+            "fp": 1,
+            "fn": 5,
+            "precision": 0.75,
+            "recall": 0.375,
+            "ceiling": 0.375,
+            "images": 8
+          },
+          "noise": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 8,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 7,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.875,
+            "recall": 0.875,
+            "ceiling": 0.875,
+            "images": 8
+          }
+        },
+        "case_number": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 7,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 7
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 7
+          },
+          "defocus": {
+            "tp": 7,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 1,
+            "fp": 3,
+            "fn": 6,
+            "precision": 0.25,
+            "recall": 0.14285714285714285,
+            "ceiling": 0.14285714285714285,
+            "images": 8
+          },
+          "noise": {
+            "tp": 7,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 7,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 7,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          }
+        },
+        "deadline_date": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 2,
+            "fn": 6,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 6
+          },
+          "motionblur-diag": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 5,
+            "precision": 1,
+            "recall": 0.16666666666666666,
+            "ceiling": 0.3333333333333333,
+            "images": 6
+          },
+          "defocus": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.8333333333333334,
+            "ceiling": 1,
+            "images": 6
+          },
+          "defocus-heavy": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 3,
+            "precision": 1,
+            "recall": 0.5,
+            "ceiling": 0.6666666666666666,
+            "images": 6
+          },
+          "noise": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.8333333333333334,
+            "ceiling": 1,
+            "images": 6
+          },
+          "underexposed": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.8333333333333334,
+            "ceiling": 1,
+            "images": 6
+          },
+          "jpeg": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.8333333333333334,
+            "ceiling": 1,
+            "images": 6
+          }
+        },
+        "report_month": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "benefit_month": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "employer": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "defocus": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "noise": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "underexposed": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "jpeg": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          }
+        },
+        "gross_income": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "defocus": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "noise": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "underexposed": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "jpeg": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          }
+        },
+        "worker_id": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 7,
+            "fn": 0,
+            "precision": 0.125,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 7,
+            "fn": 0,
+            "precision": 0.125,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 7,
+            "fn": 0,
+            "precision": 0.125,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 7,
+            "fn": 0,
+            "precision": 0.125,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 8
+          }
+        },
+        "required_docs": {
+          "motionblur": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 13,
+            "precision": 0.5,
+            "recall": 0.07142857142857142,
+            "ceiling": null,
+            "images": 5
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 14,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 5
+          },
+          "defocus": {
+            "tp": 13,
+            "fp": 2,
+            "fn": 1,
+            "precision": 0.8666666666666667,
+            "recall": 0.9285714285714286,
+            "ceiling": null,
+            "images": 5
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 14,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": null,
+            "images": 5
+          },
+          "noise": {
+            "tp": 14,
+            "fp": 2,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": null,
+            "images": 5
+          },
+          "underexposed": {
+            "tp": 14,
+            "fp": 2,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": null,
+            "images": 5
+          },
+          "jpeg": {
+            "tp": 14,
+            "fp": 2,
+            "fn": 0,
+            "precision": 0.875,
+            "recall": 1,
+            "ceiling": null,
+            "images": 5
+          }
+        },
+        "notice_date": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 6
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 6
+          },
+          "defocus": {
+            "tp": 5,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "ceiling": 0.8333333333333334,
+            "images": 6
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 6,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 6
+          },
+          "noise": {
+            "tp": 5,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "ceiling": 0.8333333333333334,
+            "images": 6
+          },
+          "underexposed": {
+            "tp": 5,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "ceiling": 0.8333333333333334,
+            "images": 6
+          },
+          "jpeg": {
+            "tp": 5,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "ceiling": 0.8333333333333334,
+            "images": 6
+          }
+        },
+        "effective_date": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 4
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0.25,
+            "images": 4
+          },
+          "defocus": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": 1,
+            "images": 4
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0.5,
+            "images": 4
+          },
+          "noise": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": 1,
+            "images": 4
+          },
+          "underexposed": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": 1,
+            "images": 4
+          },
+          "jpeg": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.75,
+            "ceiling": 1,
+            "images": 4
+          }
+        },
+        "appeal_deadline": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 3
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 3
+          },
+          "defocus": {
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.6666666666666666,
+            "ceiling": null,
+            "images": 3
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 3
+          },
+          "noise": {
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.6666666666666666,
+            "ceiling": null,
+            "images": 3
+          },
+          "underexposed": {
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.6666666666666666,
+            "ceiling": null,
+            "images": 3
+          },
+          "jpeg": {
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.6666666666666666,
+            "ceiling": null,
+            "images": 3
+          }
+        },
+        "aid_paid_pending_deadline": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 3
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 3
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 2,
+            "precision": 0.5,
+            "recall": 0.3333333333333333,
+            "ceiling": 0.6666666666666666,
+            "images": 3
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 3
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 2,
+            "precision": 0.5,
+            "recall": 0.3333333333333333,
+            "ceiling": 0.6666666666666666,
+            "images": 3
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 2,
+            "precision": 0.5,
+            "recall": 0.3333333333333333,
+            "ceiling": 0.6666666666666666,
+            "images": 3
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 1,
+            "fn": 2,
+            "precision": 0.5,
+            "recall": 0.3333333333333333,
+            "ceiling": 0.6666666666666666,
+            "images": 3
+          }
+        },
+        "reason": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "noise": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "citation": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "defocus": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 2,
+            "precision": 0,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 2
+          },
+          "noise": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "underexposed": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          },
+          "jpeg": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 2
+          }
+        },
+        "household_size": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "monthly_income": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "old_amount": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "new_amount": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "noise": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "ceiling": 1,
+            "images": 1
+          }
+        },
+        "monthly_amount": {
+          "defocus": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "noise": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "ceiling": null,
+            "images": 1
+          }
+        },
+        "appeal_window_days": {
+          "motionblur": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "motionblur-diag": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "defocus": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "defocus-heavy": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 0,
+            "images": 1
+          },
+          "noise": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "underexposed": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          },
+          "jpeg": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
+            "ceiling": 1,
+            "images": 1
+          }
+        }
+      }
+    }
+  },
+  "controlledSet": [
+    "sar7-clean-01.jpg",
+    "sar7-dim-02.jpg",
+    "sar7-angled-03.jpg",
+    "sar7-shadow-05.jpg",
+    "sar7-creased-04.jpg"
+  ],
+  "repeatabilityPair": [
+    "bilingual-creased-21.jpg",
+    "bilingual-creased-24.jpg"
+  ],
+  "logic": {
+    "chain": [
+      {
+        "name": "same case number",
+        "passed": true,
+        "detail": "01=01-4472-9931 02=01-4472-9931 expected 01-4472-9931"
+      },
+      {
+        "name": "same recipient",
+        "passed": true,
+        "detail": "MARIA REYES"
+      },
+      {
+        "name": "cause is a report request, consequence is a discontinuance",
+        "passed": true,
+        "detail": "01=recert_due 02=discontinuance"
+      },
+      {
+        "name": "consequence names the cause’s form in its reason",
+        "passed": true,
+        "detail": "reason=\"SAR 7 not returned\" form=SAR 7"
+      }
+    ],
+    "chainWarnings": [],
+    "approval": [
+      {
+        "name": "approval: countdown is not red",
+        "passed": true,
+        "detail": "tier=none"
+      },
+      {
+        "name": "approval: no countdown at all",
+        "passed": true,
+        "detail": "tier=none (no deadline_date and no aid-paid-pending date on this notice)"
+      },
+      {
+        "name": "approval: no urgent reminder",
+        "passed": true,
+        "detail": "0 reminders scheduled"
+      },
+      {
+        "name": "approval: no reminders at all",
+        "passed": true,
+        "detail": "appeal_deadline=2026-11-10, certification_end=2027-02-28 — neither may schedule anything"
+      },
+      {
+        "name": "approval: not urgent",
+        "passed": true,
+        "detail": "tier=none"
+      },
+      {
+        "name": "control: notice 01 two days out IS red",
+        "passed": true,
+        "detail": "tier=red at 2026-09-03 for a 2026-09-05 deadline"
+      },
+      {
+        "name": "control: notice 02 DOES schedule the urgent aid-paid-pending tier",
+        "passed": true,
+        "detail": "2 urgent of 7"
+      }
+    ]
+  },
+  "images": {
+    "sar7-clean-01.jpg": {
+      "notice": "01",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 36,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-dim-02.jpg": {
+      "notice": "01",
+      "bucket": "real",
+      "condition": "dim",
+      "ocrLines": 35,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-angled-03.jpg": {
+      "notice": "01",
+      "bucket": "real",
+      "condition": "angled",
+      "ocrLines": 36,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-creased-04.jpg": {
+      "notice": "01",
+      "bucket": "real",
+      "condition": "creased",
+      "ocrLines": 36,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-shadow-05.jpg": {
+      "notice": "01",
+      "bucket": "real",
+      "condition": "shadow",
+      "ocrLines": 38,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "na960x-clean-06.jpg": {
+      "notice": "02",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960x-dim-07.jpg": {
+      "notice": "02",
+      "bucket": "real",
+      "condition": "colour-cast",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960x-angled-08.jpg": {
+      "notice": "02",
+      "bucket": "real",
+      "condition": "inverted",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-clean-10.jpg": {
+      "notice": "03",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-blur-11.jpg": {
+      "notice": "03",
+      "bucket": "real",
+      "condition": "blur-attempt",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": true,
+        "case_number": false,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-creased-23.jpg": {
+      "notice": "03",
+      "bucket": "real",
+      "condition": "creased",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-clean-12.jpg": {
+      "notice": "04",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 35,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-dimangle-13.jpg": {
+      "notice": "04",
+      "bucket": "real",
+      "condition": "dim-angled",
+      "ocrLines": 34,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": false,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-creased-22.jpg": {
+      "notice": "04",
+      "bucket": "real",
+      "condition": "creased",
+      "ocrLines": 34,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": false,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960y-clean-14.jpg": {
+      "notice": "05",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 28,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id",
+        "monthly_amount"
+      ]
+    },
+    "na960y-shadow-15.jpg": {
+      "notice": "05",
+      "bucket": "real",
+      "condition": "shadow",
+      "ocrLines": 28,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id",
+        "monthly_amount"
+      ]
+    },
+    "sar7es-clean-16.jpg": {
+      "notice": "06",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "employer": true,
+        "gross_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "sar7es-dim-17.jpg": {
+      "notice": "06",
+      "bucket": "real",
+      "condition": "dim",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "employer": true,
+        "gross_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-clean-18.jpg": {
+      "notice": "07",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-creased-21.jpg": {
+      "notice": "07",
+      "bucket": "real",
+      "condition": "creased",
+      "ocrLines": 24,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-creased-24.jpg": {
+      "notice": "07",
+      "bucket": "real",
+      "condition": "creased",
+      "ocrLines": 24,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "ssa-clean-19.jpg": {
+      "notice": "08",
+      "bucket": "real",
+      "condition": "flat",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "appeal_window_days": true
+      },
+      "spurious": [
+        "case_number",
+        "worker_id"
+      ]
+    },
+    "hcv-angled-20.jpg": {
+      "notice": "09",
+      "bucket": "real",
+      "condition": "angled",
+      "ocrLines": 27,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "appointment_time": true,
+        "appointment_address": true,
+        "effective_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "sar7-synth-motionblur.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 33,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "deadline_date": false,
+        "report_month": true,
+        "benefit_month": false,
+        "employer": false,
+        "gross_income": false,
+        "worker_id": false
+      },
+      "spurious": []
+    },
+    "sar7-synth-motionblur-diag.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 11,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "deadline_date": false,
+        "report_month": false,
+        "benefit_month": false,
+        "employer": false,
+        "gross_income": false,
+        "worker_id": false
+      },
+      "spurious": []
+    },
+    "sar7-synth-defocus.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 36,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-synth-defocus-heavy.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 19,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "deadline_date": false,
+        "report_month": false,
+        "benefit_month": false,
+        "employer": false,
+        "gross_income": false,
+        "worker_id": false
+      },
+      "spurious": []
+    },
+    "sar7-synth-noise.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 37,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-synth-underexposed.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 36,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "sar7-synth-jpeg.jpg": {
+      "notice": "01",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 37,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "report_month": true,
+        "benefit_month": true,
+        "employer": true,
+        "gross_income": true,
+        "worker_id": true
+      },
+      "spurious": []
+    },
+    "na960x-synth-motionblur.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 30,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": false,
+        "deadline_date": false,
+        "aid_paid_pending_deadline": false,
+        "citation": false
+      },
+      "spurious": []
+    },
+    "na960x-synth-motionblur-diag.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 17,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": false,
+        "citation": false
+      },
+      "spurious": []
+    },
+    "na960x-synth-defocus.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": false,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": false,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960x-synth-defocus-heavy.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 35,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": true,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": false,
+        "citation": false
+      },
+      "spurious": []
+    },
+    "na960x-synth-noise.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": false,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": false,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960x-synth-underexposed.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": false,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": false,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960x-synth-jpeg.jpg": {
+      "notice": "02",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": false,
+        "effective_date": true,
+        "deadline_date": true,
+        "aid_paid_pending_deadline": false,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-synth-motionblur.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "deadline_date": false
+      },
+      "spurious": []
+    },
+    "cf3776-synth-motionblur-diag.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 11,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "deadline_date": false
+      },
+      "spurious": []
+    },
+    "cf3776-synth-defocus.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-synth-defocus-heavy.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "deadline_date": true
+      },
+      "spurious": []
+    },
+    "cf3776-synth-noise.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-synth-underexposed.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "cf3776-synth-jpeg.jpg": {
+      "notice": "03",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 29,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-synth-motionblur.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 31,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "deadline_date": false,
+        "effective_date": false,
+        "household_size": true,
+        "monthly_income": false
+      },
+      "spurious": []
+    },
+    "mc210-synth-motionblur-diag.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 26,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "deadline_date": true,
+        "effective_date": false,
+        "household_size": true,
+        "monthly_income": false
+      },
+      "spurious": []
+    },
+    "mc210-synth-defocus.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 34,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-synth-defocus-heavy.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 33,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": false,
+        "deadline_date": true,
+        "effective_date": false,
+        "household_size": true,
+        "monthly_income": false
+      },
+      "spurious": []
+    },
+    "mc210-synth-noise.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 34,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-synth-underexposed.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 34,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "mc210-synth-jpeg.jpg": {
+      "notice": "04",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 34,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": false,
+        "case_number": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "effective_date": true,
+        "household_size": true,
+        "monthly_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "na960y-synth-motionblur.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 26,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": false,
+        "aid_paid_pending_deadline": false,
+        "old_amount": true,
+        "new_amount": false,
+        "citation": false
+      },
+      "spurious": []
+    },
+    "na960y-synth-motionblur-diag.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 13,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": false,
+        "aid_paid_pending_deadline": false,
+        "old_amount": false,
+        "new_amount": false,
+        "citation": false
+      },
+      "spurious": []
+    },
+    "na960y-synth-defocus.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 28,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id",
+        "monthly_amount"
+      ]
+    },
+    "na960y-synth-defocus-heavy.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": true,
+        "aid_paid_pending_deadline": false,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": false
+      },
+      "spurious": []
+    },
+    "na960y-synth-noise.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 28,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id",
+        "monthly_amount"
+      ]
+    },
+    "na960y-synth-underexposed.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 28,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id",
+        "monthly_amount"
+      ]
+    },
+    "na960y-synth-jpeg.jpg": {
+      "notice": "05",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 28,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true,
+        "old_amount": true,
+        "new_amount": true,
+        "citation": true
+      },
+      "spurious": [
+        "worker_id",
+        "monthly_amount"
+      ]
+    },
+    "sar7es-synth-motionblur.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 26,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "deadline_date": false,
+        "employer": false,
+        "gross_income": false
+      },
+      "spurious": []
+    },
+    "sar7es-synth-motionblur-diag.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 20,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "deadline_date": false,
+        "employer": false,
+        "gross_income": false
+      },
+      "spurious": []
+    },
+    "sar7es-synth-defocus.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "employer": true,
+        "gross_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "sar7es-synth-defocus-heavy.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 23,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": true,
+        "case_number": false,
+        "deadline_date": false,
+        "employer": false,
+        "gross_income": false
+      },
+      "spurious": []
+    },
+    "sar7es-synth-noise.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 33,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "employer": true,
+        "gross_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "sar7es-synth-underexposed.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "employer": true,
+        "gross_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "sar7es-synth-jpeg.jpg": {
+      "notice": "06",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 32,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "deadline_date": true,
+        "employer": true,
+        "gross_income": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-synth-motionblur.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 26,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": false,
+        "aid_paid_pending_deadline": false
+      },
+      "spurious": []
+    },
+    "bilingual-synth-motionblur-diag.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 15,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": false,
+        "aid_paid_pending_deadline": false
+      },
+      "spurious": []
+    },
+    "bilingual-synth-defocus.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 24,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-synth-defocus-heavy.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 15,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "case_number": false,
+        "notice_date": false,
+        "effective_date": false,
+        "aid_paid_pending_deadline": false
+      },
+      "spurious": []
+    },
+    "bilingual-synth-noise.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 24,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-synth-underexposed.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "bilingual-synth-jpeg.jpg": {
+      "notice": "07",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "case_number": true,
+        "notice_date": true,
+        "effective_date": true,
+        "aid_paid_pending_deadline": true
+      },
+      "spurious": [
+        "worker_id"
+      ]
+    },
+    "ssa-synth-motionblur.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "motionblur",
+      "ocrLines": 24,
+      "ceiling": {
+        "form_id": false,
+        "program": false,
+        "recipient_name": false,
+        "notice_date": false,
+        "deadline_date": false,
+        "appeal_window_days": true
+      },
+      "spurious": []
+    },
+    "ssa-synth-motionblur-diag.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "motionblur-diag",
+      "ocrLines": 19,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "notice_date": false,
+        "deadline_date": false,
+        "appeal_window_days": false
+      },
+      "spurious": []
+    },
+    "ssa-synth-defocus.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "defocus",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "appeal_window_days": true
+      },
+      "spurious": [
+        "case_number",
+        "worker_id"
+      ]
+    },
+    "ssa-synth-defocus-heavy.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "defocus-heavy",
+      "ocrLines": 23,
+      "ceiling": {
+        "form_id": false,
+        "program": true,
+        "recipient_name": false,
+        "notice_date": false,
+        "deadline_date": true,
+        "appeal_window_days": false
+      },
+      "spurious": [
+        "case_number"
+      ]
+    },
+    "ssa-synth-noise.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "noise",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "appeal_window_days": true
+      },
+      "spurious": [
+        "case_number",
+        "worker_id"
+      ]
+    },
+    "ssa-synth-underexposed.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "underexposed",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "appeal_window_days": true
+      },
+      "spurious": [
+        "case_number",
+        "worker_id"
+      ]
+    },
+    "ssa-synth-jpeg.jpg": {
+      "notice": "08",
+      "bucket": "synthetic",
+      "condition": "jpeg",
+      "ocrLines": 25,
+      "ceiling": {
+        "form_id": true,
+        "program": true,
+        "recipient_name": true,
+        "notice_date": true,
+        "deadline_date": true,
+        "appeal_window_days": true
+      },
+      "spurious": [
+        "case_number",
+        "worker_id"
+      ]
+    }
+  }
+}

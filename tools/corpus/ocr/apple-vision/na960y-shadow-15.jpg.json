@@ -1,0 +1,298 @@
+{
+  "engine": "apple-vision",
+  "file": "na960y-shadow-15.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.16085,
+        "x": 0.05426,
+        "y": 0.05516
+      },
+      "confidence": 1,
+      "text": "STATE OF CALIFORNIA"
+    },
+    {
+      "box": {
+        "h": 0.0158,
+        "w": 0.25446,
+        "x": 0.05396,
+        "y": 0.06678
+      },
+      "confidence": 1,
+      "text": "DEPARTMENT OF SOCIAL SERVICES"
+    },
+    {
+      "box": {
+        "h": 0.01328,
+        "w": 0.16279,
+        "x": 0.05233,
+        "y": 0.0812
+      },
+      "confidence": 1,
+      "text": "SANTA CLARA COUNTY"
+    },
+    {
+      "box": {
+        "h": 0.01962,
+        "w": 0.22358,
+        "x": 0.05003,
+        "y": 0.11867
+      },
+      "confidence": 1,
+      "text": "NOTICE OF ACTION"
+    },
+    {
+      "box": {
+        "h": 0.01602,
+        "w": 0.29845,
+        "x": 0.05039,
+        "y": 0.14387
+      },
+      "confidence": 1,
+      "text": "CalFresh -- Change in Benefit Amount"
+    },
+    {
+      "box": {
+        "h": 0.01555,
+        "w": 0.18097,
+        "x": 0.04809,
+        "y": 0.1825
+      },
+      "confidence": 1,
+      "text": "ROSA MARTINEZ CRUZ"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.1938,
+        "x": 0.04651,
+        "y": 0.19767
+      },
+      "confidence": 1,
+      "text": "3390 SENTER RD SPC 88"
+    },
+    {
+      "box": {
+        "h": 0.01462,
+        "w": 0.15891,
+        "x": 0.04651,
+        "y": 0.21221
+      },
+      "confidence": 1,
+      "text": "SAN JOSE, CA 95111"
+    },
+    {
+      "box": {
+        "h": 0.01035,
+        "w": 0.08527,
+        "x": 0.04651,
+        "y": 0.22948
+      },
+      "confidence": 1,
+      "text": "Notice Date"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.10078,
+        "x": 0.04651,
+        "y": 0.25419
+      },
+      "confidence": 1,
+      "text": "Effective Date"
+    },
+    {
+      "box": {
+        "h": 0.01465,
+        "w": 0.17888,
+        "x": 0.70899,
+        "y": 0.08849
+      },
+      "confidence": 1,
+      "text": "NA 960Y SAR (Rev. 10/24)"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.19767,
+        "x": 0.56977,
+        "y": 0.1902
+      },
+      "confidence": 1,
+      "text": "Case Number: 01-6620-4418"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.1376,
+        "x": 0.56977,
+        "y": 0.20477
+      },
+      "confidence": 1,
+      "text": "Worker ID: SC-3390"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.15698,
+        "x": 0.56977,
+        "y": 0.21933
+      },
+      "confidence": 1,
+      "text": "Phone: (408) 758-3401"
+    },
+    {
+      "box": {
+        "h": 0.01633,
+        "w": 0.16473,
+        "x": 0.29651,
+        "y": 0.23389
+      },
+      "confidence": 1,
+      "text": "SEPTEMBER 18, 2026"
+    },
+    {
+      "box": {
+        "h": 0.0161,
+        "w": 0.1376,
+        "x": 0.29457,
+        "y": 0.25861
+      },
+      "confidence": 1,
+      "text": "OCTOBER 1, 2026"
+    },
+    {
+      "box": {
+        "h": 0.0258,
+        "w": 0.5899,
+        "x": 0.05971,
+        "y": 0.30503
+      },
+      "confidence": 1,
+      "text": "YOUR CALFRESH BENEFITS WILL CHANGE ON OCTOBER 1, 2026."
+    },
+    {
+      "box": {
+        "h": 0.01765,
+        "w": 0.2655,
+        "x": 0.06202,
+        "y": 0.32392
+      },
+      "confidence": 1,
+      "text": "Current monthly benefit: $535.00"
+    },
+    {
+      "box": {
+        "h": 0.01985,
+        "w": 0.18324,
+        "x": 0.05954,
+        "y": 0.33978
+      },
+      "confidence": 1,
+      "text": "New monthly benefit:"
+    },
+    {
+      "box": {
+        "h": 0.01577,
+        "w": 0.06636,
+        "x": 0.27109,
+        "y": 0.34386
+      },
+      "confidence": 1,
+      "text": "$291.00"
+    },
+    {
+      "box": {
+        "h": 0.01669,
+        "w": 0.2699,
+        "x": 0.04239,
+        "y": 0.37267
+      },
+      "confidence": 1,
+      "text": "WHY YOUR BENEFITS CHANGED"
+    },
+    {
+      "box": {
+        "h": 0.02382,
+        "w": 0.7699,
+        "x": 0.0462,
+        "y": 0.39087
+      },
+      "confidence": 1,
+      "text": "You reported new earned income of $1,240.00 per month from SOUTH BAY HOME CARE on your SAR 7. We"
+    },
+    {
+      "box": {
+        "h": 0.02167,
+        "w": 0.62068,
+        "x": 0.04432,
+        "y": 0.40721
+      },
+      "confidence": 1,
+      "text": "counted this income and recalculated your household's benefit. Regulation: MPP 63-503."
+    },
+    {
+      "box": {
+        "h": 0.01688,
+        "w": 0.20024,
+        "x": 0.04231,
+        "y": 0.42857
+      },
+      "confidence": 1,
+      "text": "YOUR HEARING RIGHTS"
+    },
+    {
+      "box": {
+        "h": 0.02439,
+        "w": 0.82615,
+        "x": 0.0443,
+        "y": 0.44755
+      },
+      "confidence": 1,
+      "text": "You may ask for a state hearing within 90 days of the date of this notice. If you ask for a hearing before September 28,"
+    },
+    {
+      "box": {
+        "h": 0.02318,
+        "w": 0.52787,
+        "x": 0.04417,
+        "y": 0.46245
+      },
+      "confidence": 1,
+      "text": "2026, your benefits may stay at the current amount until a decision is made."
+    },
+    {
+      "box": {
+        "h": 0.01826,
+        "w": 0.29526,
+        "x": 0.04231,
+        "y": 0.48594
+      },
+      "confidence": 1,
+      "text": "To ask for a hearing, call 1-800-743-8525."
+    },
+    {
+      "box": {
+        "h": 0.01025,
+        "w": 0.12403,
+        "x": 0.04264,
+        "y": 0.50574
+      },
+      "confidence": 1,
+      "text": "NA 960Y SAR (10/24)"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2666,
+  "sourceWidth": 2000
+}

@@ -93,8 +93,21 @@ private/
 # EXPLICITLY TRACKED
 # ---------------------------------------------------------------------------
 
-# The golden corpus is synthetic — generated from blank public forms and
-# fictional data (SPEC §8.1) — so it is committed on purpose, images and all.
-# It is the evidence behind the metrics table in the README.
-!/tools/corpus/out/**
+# The golden corpus is synthetic — generated from fictional data (SPEC §8.1) —
+# so it is committed on purpose, images and all. It is the evidence behind the
+# metrics table in the README.
+!/tools/corpus/**
 !/tools/forms/**
+
+# The cached OCR text layer is committed too, and deliberately. It is what lets
+# the metrics harness run in bare Node on any machine with no camera, no
+# simulator and no OCR engine, and it holds the text fixed so that when a number
+# moves, the extraction cascade is the only thing that could have moved it.
+!/tools/corpus/ocr/**
+
+# ---------------------------------------------------------------------------
+# Metrics harness build output
+# ---------------------------------------------------------------------------
+
+# The compiled Swift OCR producer. Rebuilt by `npm run corpus:ocr` on demand.
+/tools/metrics/ocr/.build/

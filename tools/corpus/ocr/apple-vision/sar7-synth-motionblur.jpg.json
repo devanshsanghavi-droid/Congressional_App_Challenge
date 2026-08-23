@@ -1,0 +1,348 @@
+{
+  "engine": "apple-vision",
+  "file": "sar7-synth-motionblur.jpg",
+  "languageCorrection": true,
+  "languages": [
+    "en-US",
+    "es-ES"
+  ],
+  "lines": [
+    {
+      "box": {
+        "h": 0.01586,
+        "w": 0.15583,
+        "x": 0.12365,
+        "y": 0.10079
+      },
+      "confidence": 1,
+      "text": "STATE IF DALFIRNA"
+    },
+    {
+      "box": {
+        "h": 0.0173,
+        "w": 0.27774,
+        "x": 0.12371,
+        "y": 0.11389
+      },
+      "confidence": 0.5,
+      "text": "HEALTH NOT HUMAN SERVERES MENON"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.15698,
+        "x": 0.12209,
+        "y": 0.12645
+      },
+      "confidence": 0.5,
+      "text": "SHANTIA COLARTRA CHERUN T"
+    },
+    {
+      "box": {
+        "h": 0.02095,
+        "w": 0.44629,
+        "x": 0.12376,
+        "y": 0.16384
+      },
+      "confidence": 1,
+      "text": "SEMI-ANNUAL ELIGBILITY STATUS REPORT"
+    },
+    {
+      "box": {
+        "h": 0.01475,
+        "w": 0.16279,
+        "x": 0.12209,
+        "y": 0.18605
+      },
+      "confidence": 0.5,
+      "text": "CalFeesh/ CalMORNSs"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.0969,
+        "x": 0.12984,
+        "y": 0.22374
+      },
+      "confidence": 0.5,
+      "text": "VARIA REVERS"
+    },
+    {
+      "box": {
+        "h": 0.01463,
+        "w": 0.19574,
+        "x": 0.12016,
+        "y": 0.23692
+      },
+      "confidence": 1,
+      "text": "TACE STORM ROAD APT 122"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.1531,
+        "x": 0.11822,
+        "y": 0.25145
+      },
+      "confidence": 0.5,
+      "text": "SANCHE, CA 9522"
+    },
+    {
+      "box": {
+        "h": 0.02212,
+        "w": 0.45419,
+        "x": 0.11788,
+        "y": 0.28591
+      },
+      "confidence": 1,
+      "text": "KOWWUST COMPLETE, SIN AND RETURNTHS FORN"
+    },
+    {
+      "box": {
+        "h": 0.02537,
+        "w": 0.32293,
+        "x": 0.12539,
+        "y": 0.32152
+      },
+      "confidence": 1,
+      "text": "SUBWIT BY: SEPTEWBER 5, 2026"
+    },
+    {
+      "box": {
+        "h": 0.02968,
+        "w": 0.44888,
+        "x": 0.12729,
+        "y": 0.34007
+      },
+      "confidence": 1,
+      "text": "Reput Want: AUGUST 2026 Beneft: Month: OCTOBER 202"
+    },
+    {
+      "box": {
+        "h": 0.01017,
+        "w": 0.04264,
+        "x": 0.80039,
+        "y": 0.13808
+      },
+      "confidence": 0.5,
+      "text": "SART"
+    },
+    {
+      "box": {
+        "h": 0.00872,
+        "w": 0.03295,
+        "x": 0.61822,
+        "y": 0.2311
+      },
+      "confidence": 0.5,
+      "text": "ToBer"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.14147,
+        "x": 0.66085,
+        "y": 0.2311
+      },
+      "confidence": 1,
+      "text": "Numöleer: 00T1-4407249813"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.04264,
+        "x": 0.61628,
+        "y": 0.24419
+      },
+      "confidence": 0.5,
+      "text": "Merities"
+    },
+    {
+      "box": {
+        "h": 0.01192,
+        "w": 0.09496,
+        "x": 0.65504,
+        "y": 0.24404
+      },
+      "confidence": 0.5,
+      "text": "erD: 580-2224"
+    },
+    {
+      "box": {
+        "h": 0.01325,
+        "w": 0.14922,
+        "x": 0.61628,
+        "y": 0.25727
+      },
+      "confidence": 1,
+      "text": "Phome: 4438 7558-2467"
+    },
+    {
+      "box": {
+        "h": 0.02541,
+        "w": 0.77765,
+        "x": 0.11212,
+        "y": 0.3779
+      },
+      "confidence": 0.5,
+      "text": "f your completed reputies mad eeceived by thee submit date altoon attorve, your teenefits may the delayeet, retirest, cor"
+    },
+    {
+      "box": {
+        "h": 0.01466,
+        "w": 0.17636,
+        "x": 0.11047,
+        "y": 0.43459
+      },
+      "confidence": 1,
+      "text": "SECTTON 1 - INCOME"
+    },
+    {
+      "box": {
+        "h": 0.01981,
+        "w": 0.41724,
+        "x": 0.10628,
+        "y": 0.45175
+      },
+      "confidence": 1,
+      "text": "A Did anyone in thee tome reeseve income dast month?? VESS"
+    },
+    {
+      "box": {
+        "h": 0.01469,
+        "w": 0.11047,
+        "x": 0.10853,
+        "y": 0.48676
+      },
+      "confidence": 1,
+      "text": "Employeen meane"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.16085,
+        "x": 0.10853,
+        "y": 0.51147
+      },
+      "confidence": 0.5,
+      "text": "Boses incomes earseiveet"
+    },
+    {
+      "box": {
+        "h": 0.0168,
+        "w": 0.29887,
+        "x": 0.10445,
+        "y": 0.53615
+      },
+      "confidence": 1,
+      "text": "SECTON 2-HOUSIEHOLD CHANGES"
+    },
+    {
+      "box": {
+        "h": 0.01599,
+        "w": 0.34109,
+        "x": 0.10465,
+        "y": 0.55378
+      },
+      "confidence": 1,
+      "text": "I Did anyone move in ar mdt of your home? NO"
+    },
+    {
+      "box": {
+        "h": 0.01471,
+        "w": 0.24031,
+        "x": 0.10271,
+        "y": 0.57105
+      },
+      "confidence": 1,
+      "text": "2 Old your albeess change? NO"
+    },
+    {
+      "box": {
+        "h": 0.0133,
+        "w": 0.3062,
+        "x": 0.10465,
+        "y": 0.59135
+      },
+      "confidence": 0.5,
+      "text": "SECTION PIROCIF WOU MIST SIEND"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.23643,
+        "x": 0.10659,
+        "y": 0.609
+      },
+      "confidence": 0.5,
+      "text": "#taeth coppees Tito mati seend originaess"
+    },
+    {
+      "box": {
+        "h": 0.01604,
+        "w": 0.28682,
+        "x": 0.10271,
+        "y": 0.62209
+      },
+      "confidence": 0.5,
+      "text": "• Al paychedi stutes reseivest/ aast mount"
+    },
+    {
+      "box": {
+        "h": 0.01459,
+        "w": 0.18217,
+        "x": 0.39147,
+        "y": 0.48983
+      },
+      "confidence": 1,
+      "text": "WALLEN FRESH WARNET"
+    },
+    {
+      "box": {
+        "h": 0.01163,
+        "w": 0.07752,
+        "x": 0.38953,
+        "y": 0.51453
+      },
+      "confidence": 0.5,
+      "text": "ST13840,220"
+    },
+    {
+      "box": {
+        "h": 0.01308,
+        "w": 0.06783,
+        "x": 0.10271,
+        "y": 0.70494
+      },
+      "confidence": 0.5,
+      "text": "Sigrature"
+    },
+    {
+      "box": {
+        "h": 0.01017,
+        "w": 0.03101,
+        "x": 0.10465,
+        "y": 0.72965
+      },
+      "confidence": 0.5,
+      "text": "Tase"
+    },
+    {
+      "box": {
+        "h": 0.01324,
+        "w": 0.19574,
+        "x": 0.10465,
+        "y": 0.75861
+      },
+      "confidence": 0.5,
+      "text": "Duestina Call 4638) 7586-34401"
+    }
+  ],
+  "maxWidth": 1700,
+  "ocrHeight": 2266,
+  "ocrWidth": 1700,
+  "recognitionLevel": "accurate",
+  "revision": 3,
+  "sourceHeight": 2266,
+  "sourceWidth": 1700
+}

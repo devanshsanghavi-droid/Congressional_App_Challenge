@@ -1,0 +1,214 @@
+{
+  "generated_for": "Carta golden corpus",
+  "warning": "ALL DATA FICTIONAL. Layouts are plausible reconstructions for OCR testing, not official forms.",
+  "notices": [
+    {
+      "file": "01-sar7-en.pdf",
+      "form_id": "SAR 7",
+      "program": "CalFresh/CalWORKs",
+      "agency": "Santa Clara County HHSA",
+      "language": "en",
+      "action_type": "recert_due",
+      "fields": {
+        "recipient_name": "MARIA REYES",
+        "case_number": "01-4472-9931",
+        "deadline_date": "2026-09-05",
+        "report_month": "AUGUST 2026",
+        "benefit_month": "OCTOBER 2026",
+        "employer": "VALLEY FRESH MARKET",
+        "gross_income": "1847.20",
+        "worker_id": "SC-2214",
+        "required_docs": [
+          "pay_stub",
+          "lease_or_rent_receipt",
+          "utility_bill"
+        ]
+      },
+      "note": ""
+    },
+    {
+      "file": "02-na960x-discontinuance-en.pdf",
+      "form_id": "NA 960X SAR",
+      "program": "CalFresh",
+      "agency": "Santa Clara County DSS",
+      "language": "en",
+      "action_type": "discontinuance",
+      "fields": {
+        "recipient_name": "MARIA REYES",
+        "case_number": "01-4472-9931",
+        "notice_date": "2026-09-08",
+        "effective_date": "2026-09-30",
+        "deadline_date": "2026-09-30",
+        "appeal_deadline": "2026-12-07",
+        "aid_paid_pending_deadline": "2026-09-18",
+        "reason": "SAR 7 not returned",
+        "citation": "MPP 63-508"
+      },
+      "note": "Chains from notice 01 -- same case, missed SAR 7. Notice date is 3 days AFTER the 2026-09-05 SAR 7 deadline, so the chronology holds."
+    },
+    {
+      "file": "03-cf377-6-verification-en.pdf",
+      "form_id": "CF 377.6",
+      "program": "CalFresh",
+      "agency": "Santa Clara County DSS",
+      "language": "en",
+      "action_type": "info_request",
+      "fields": {
+        "recipient_name": "DAVID OKONKWO",
+        "case_number": "01-8813-2205",
+        "notice_date": "2026-09-14",
+        "deadline_date": "2026-09-28",
+        "required_docs": [
+          "pay_stub",
+          "lease_or_rent_receipt",
+          "photo_id",
+          "utility_bill"
+        ]
+      },
+      "note": ""
+    },
+    {
+      "file": "04-mc210rv-redetermination-en.pdf",
+      "form_id": "MC 210 RV",
+      "program": "Medi-Cal",
+      "agency": "DHCS / Santa Clara County",
+      "language": "en",
+      "action_type": "recert_due",
+      "fields": {
+        "recipient_name": "ANH TRAN",
+        "case_number": "40-2291-7734",
+        "notice_date": "2026-09-01",
+        "deadline_date": "2026-10-15",
+        "effective_date": "2026-10-31",
+        "household_size": "3",
+        "monthly_income": "2610.00",
+        "required_docs": [
+          "pay_stub",
+          "proof_of_residency"
+        ]
+      },
+      "note": ""
+    },
+    {
+      "file": "05-na960y-reduction-en.pdf",
+      "form_id": "NA 960Y SAR",
+      "program": "CalFresh",
+      "agency": "Santa Clara County DSS",
+      "language": "en",
+      "action_type": "reduction",
+      "fields": {
+        "recipient_name": "ROSA MARTINEZ CRUZ",
+        "case_number": "01-6620-4418",
+        "notice_date": "2026-09-18",
+        "effective_date": "2026-10-01",
+        "appeal_deadline": "2026-12-17",
+        "aid_paid_pending_deadline": "2026-09-28",
+        "old_amount": "535.00",
+        "new_amount": "291.00",
+        "citation": "MPP 63-503"
+      },
+      "note": ""
+    },
+    {
+      "file": "06-sar7-es.pdf",
+      "form_id": "SAR 7",
+      "program": "CalFresh/CalWORKs",
+      "agency": "Santa Clara County HHSA",
+      "language": "es",
+      "action_type": "recert_due",
+      "fields": {
+        "recipient_name": "CARMEN DELGADO",
+        "case_number": "01-5538-7742",
+        "deadline_date": "2026-09-05",
+        "employer": "PANADERIA LA ESPERANZA",
+        "gross_income": "1392.50",
+        "required_docs": [
+          "pay_stub",
+          "lease_or_rent_receipt"
+        ]
+      },
+      "note": ""
+    },
+    {
+      "file": "07-na960x-bilingual.pdf",
+      "form_id": "NA 960X SAR",
+      "program": "CalFresh",
+      "agency": "Santa Clara County DSS",
+      "language": "en+es",
+      "action_type": "discontinuance",
+      "fields": {
+        "recipient_name": "JOSE RAMIREZ",
+        "case_number": "01-9917-3320",
+        "notice_date": "2026-10-02",
+        "effective_date": "2026-11-01",
+        "appeal_deadline": "2026-12-31",
+        "aid_paid_pending_deadline": "2026-10-12"
+      },
+      "note": "Bilingual single sheet -- tests language detection."
+    },
+    {
+      "file": "08-ssa-redetermination-en.pdf",
+      "form_id": "SSA-8202",
+      "program": "SSI",
+      "agency": "Social Security Administration",
+      "language": "en",
+      "action_type": "recert_due",
+      "fields": {
+        "recipient_name": "GLORIA HAYES",
+        "notice_date": "2026-09-08",
+        "deadline_date": "2026-10-08",
+        "appeal_window_days": "60",
+        "required_docs": [
+          "bank_statement",
+          "proof_of_income",
+          "living_arrangement"
+        ]
+      },
+      "note": "Non-CDSS letterhead -- tests generalization beyond county forms."
+    },
+    {
+      "file": "09-hcv-annual-recert-en.pdf",
+      "form_id": "HCV-AR-101",
+      "program": "Housing Choice Voucher",
+      "agency": "Housing Authority of Santa Clara County",
+      "language": "en",
+      "action_type": "recert_due",
+      "fields": {
+        "recipient_name": "PATRICIA NGUYEN",
+        "case_number": "HCV-33812",
+        "notice_date": "2026-08-20",
+        "deadline_date": "2026-10-06",
+        "appointment_time": "10:30",
+        "appointment_address": "505 W JULIAN ST, SAN JOSE, CA 95110",
+        "effective_date": "2026-12-01",
+        "required_docs": [
+          "photo_id",
+          "ssn_card",
+          "pay_stub",
+          "bank_statement",
+          "utility_bill"
+        ]
+      },
+      "note": "Appointment-based deadline, not a mail-by date."
+    },
+    {
+      "file": "10-na960-approval-en.pdf",
+      "form_id": "NA 960 SAR",
+      "program": "CalFresh",
+      "agency": "Santa Clara County DSS",
+      "language": "en",
+      "action_type": "approval",
+      "fields": {
+        "recipient_name": "SAMUEL BRIGHT",
+        "case_number": "01-2204-6653",
+        "notice_date": "2026-08-12",
+        "effective_date": "2026-08-15",
+        "certification_end": "2027-02-28",
+        "monthly_amount": "412.00",
+        "income_reporting_threshold": "2510.00",
+        "appeal_deadline": "2026-11-10"
+      },
+      "note": "Approval, not a deadline. App must NOT show a red countdown."
+    }
+  ]
+}

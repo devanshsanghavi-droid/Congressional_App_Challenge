@@ -1,0 +1,15 @@
+# FEASIBILITY PROBE grammar — not the extraction grammar.
+#
+# The same field, with the ranges actually constrained rather than just the
+# shape. A month of 20 is now unreachable, not merely wrong.
+#
+#   month ::= 01..12      day ::= 01..31      year ::= 2000..2099
+#
+# Day-of-month validity against the month (31 September) is NOT expressible
+# here without an unreasonable grammar; that belongs in the sanity pass.
+root   ::= "{" ws "\"deadline\":" ws date ws "}"
+date   ::= "\"" month "/" day "/" year "\""
+month  ::= ("0" [1-9]) | ("1" [0-2])
+day    ::= ("0" [1-9]) | ([12] [0-9]) | ("3" [01])
+year   ::= "20" [0-9] [0-9]
+ws     ::= [ \t\n]*
