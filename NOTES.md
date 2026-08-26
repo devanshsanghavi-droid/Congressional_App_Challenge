@@ -4011,12 +4011,30 @@ top-of-screen problem because near the top there is usually something 50pt above
 your target to hit instead, while near the bottom the tall primary buttons
 absorb the error.
 
-**Consequence for anyone verifying UI here.** `tap.sh` derives the device origin
-inside the Simulator window arithmetically (`OFF_Y = WH - DEV_H - OFF_X`) and
-that arithmetic is wrong by ~50pt. Either calibrate it against a known target
-before trusting a negative result, or avoid it: **`xcrun simctl openurl
-carta:///<route>` navigates without a tap**, and a left-edge drag goes back. Both
-were used for everything structural in this session.
+**CORRECTED 2026-08-26 — the offset explanation was wrong.** On a later pass the
+window geometry checked out exactly (bezel 15 all round, title bar 20, so
+`OFF_Y = 35` is right), and a tap at the *unadjusted* coordinate worked once the
+**press duration** was raised from 0.06s to 0.25s. So the failing variable was
+time, not position.
+
+That is not the end of it either, and the honest state is that there are now
+three diagnoses and no settled one: 0.06s fails on a SpringBoard system alert,
+0.25s works on that alert but triggers **text selection** on a React Native
+`Pressable`, and 0.10s registered on neither. The same `Pressable` rows accepted
+taps earlier in the same session.
+
+**So the useful conclusion is about method, not about a constant:** synthetic
+taps here are unreliable in a way that has resisted three explanations, and a
+negative result from one is worth nothing. Drive navigation with
+**`xcrun simctl openurl carta:///<route>`**, which needs no tap at all, and
+confirm outcomes at the **data layer** with `sqlite3` rather than by eye. Both
+were used for everything structural in this session, and both were what actually
+caught the reminder bug.
+
+The wider lesson is the one this file keeps arriving at: **a confident diagnosis
+that explains the symptom is not the same as the cause.** The 50pt figure was
+derived from one real observation — `language|en` being written when `Español`
+was aimed at — and it fitted. It was still wrong.
 
 **The generalisation, and it is the same one as above.** "The tap did nothing" is
 a claim about the app. Before believing it, check what the app *did* — the

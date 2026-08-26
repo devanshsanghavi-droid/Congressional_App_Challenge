@@ -197,7 +197,6 @@ describe('the ship gate — what a human still has to confirm', () => {
     // strings were written for Carta, not taken from an agency translation —
     // these programmes are not CDSS forms, so CLAUDE.md §9's "use CDSS's own
     // wording" has nothing to point at. A fluent speaker has to read them.
-    'cross_reference: Spanish descriptions (what_es)',
     // Added 2026-08-24. This one had never been counted: `outstandingVerifications`
     // was not given the doc-types pack at all, so the ship gate reported a number
     // lower than the truth for as long as the pack existed.
@@ -207,6 +206,15 @@ describe('the ship gate — what a human still has to confirm', () => {
     'cross_reference: public charge note',
     'cross_reference: school-meals',
     'cross_reference: subsidized-childcare',
+    // CLOSED 2026-08-26: `cross_reference: Spanish descriptions (what_es)` was
+    // here. A fluent speaker read every what_es string and signed it off, which
+    // is exactly what the item asked for — see `_translation_reviewed`.
+    //
+    // `doc_types: Spanish labels and descriptions` deliberately did NOT close on
+    // the same review. That item is two things — is the Spanish good, and whose
+    // words are they — and only the first is done. The state publishes this
+    // vocabulary in SAR 7 (SP); Carta does not have the document yet. A
+    // well-reviewed translation is still a translation.
     // CLOSED 2026-08-25: `offices: appeals` was here. The two appeal clocks are
     // now sourced to LSNC's CalFresh guide and asserted below by `describe('the
     // appeal windows')` — which is a stronger guard than being on this list was.

@@ -222,14 +222,11 @@ src/app/                 expo-router routes
   index.tsx              build-check screen — replaced by Home in week 3
   settings.tsx           language, model download/delete, reminder hour,
                          privacy statement, delete everything
-  bench.tsx              DEV TOOL: week 1 latency gate. Delete before freeze.
 
 src/lib/                 app-side, platform-aware code (Claude drives this)
   i18n/index.ts          i18next setup; resolveInitialLanguage() from device prefs
   i18n/locales/{en,es}.json
   llm/model.ts           model catalogue, sandboxed download + progress, delete
-  llm/benchmark.ts       latency harness; timings come from llama.cpp, not wall clock
-  llm/benchmark-fixtures.ts  fictional notice, stub GBNF grammar, 4 benchmark cases
 
 src/extraction/          THE STUDENT'S WORK — pure TS island, see §8
   README.md              what lives here and why the island rule is enforced 3 ways
@@ -561,14 +558,21 @@ Three things that came out of it and matter beyond the harness:
    that reported it is now inverted into a regression guard, because
    `make_corpus.py` was never updated and would reintroduce it.
 
-**BLOCKED — the week 1 gate is not closed.** The benchmark has never been run.
-It requires the **physical iPhone**: the simulator runs on the Mac's CPU and
-says nothing about Metal. Nothing else in week 1 matters until these numbers
-exist, because they decide 1.5B vs 0.5B, which everything else is built on.
+**ABANDONED, not closed — the week 1 latency gate will not be measured.** The
+benchmark was never run: it needed a physical iPhone with the
+`extended-virtual-addressing` entitlement, which a personal Apple team cannot
+hold (see 2026-08-20), so the numbers were blocked on a paid account that was
+never bought. `bench.tsx`, `llm/benchmark.ts` and `llm/benchmark-fixtures.ts`
+were **deleted on 2026-08-26** in the pre-freeze cleanup, which removes the only
+way to run it.
 
-To close it: `eas build --profile development --platform ios`, install, open the
-app, tap **Model benchmark**, download the 1.5B, **Run benchmark**, **Copy
-results**, paste into NOTES.md.
+**What that costs, stated plainly:** there is no measured TTFT, no generation
+rate, and no evidence for 1.5B over 0.5B on device. The decision tree below is
+kept as a record of how the choice *would* have been made, and it was never
+executed. The exposure is bounded by design rather than by measurement — the
+model is an optional download, every screen works without it, and the only
+feature that depends on it is the plain-language explanation. Say "unmeasured",
+never "fast enough".
 
 ### How to read the results (decision tree agreed with Devansh)
 
@@ -776,18 +780,13 @@ npm run probe:llm    # Qwen2.5-1.5B long-tail test (needs the GGUF in ~/models)
 npm run probe:explain # the explanation grammar over all 10 notices (same GGUF)
 npm run content:check  # ship gate: what a human still has to verify in content/
 
-npm run metrics      # score the corpus, write tools/metrics/out/METRICS.md
-npm run metrics -- --extractor src/extraction/index.ts   # once the cascade exists
+npm run metrics      # score the corpus with the null extractor (the OCR ceiling)
+npm run metrics -- --extractor src/extraction/index.ts   # score the cascade
 npm run metrics:check                            # non-zero exit if an assertion fails
+npm run metrics:split      # in-sample (01-07) vs held-out (08-10), real captures only
+npm run metrics:extension  # accented / mixed-case names, parser only, never merged
 npm run corpus:ocr   # rebuild the OCR text layer (macOS only, needs swiftc)
 
-# End-to-end acceptance test in the Simulator (dev screen, deleted before freeze).
-# Copies corpus photos into the app sandbox and runs the real spine over them.
-npx expo run:ios --device "iPhone 17 Pro" --port 8082
-C=$(xcrun simctl get_app_container booted com.devanshsanghavi.noticetracker data)
-mkdir -p "$C/Documents/selftest" && cp tools/corpus/photos/sar7-clean-01.jpg "$C/Documents/selftest/"
-xcrun simctl openurl booted carta://selftest
-cat "$C/Documents/selftest-report.json"
 ```
 
 ---

@@ -29,7 +29,7 @@
  * second failure mode, hard, and leaves the first to the metrics harness.
  */
 
-import { extractNotice, USING_SCAFFOLD } from '../../src/lib/extraction-port/adapter.ts';
+import { extractNotice } from '../../src/lib/extraction-port/adapter.ts';
 import type {
   ExtractionInput,
   ExtractionResult,
@@ -266,18 +266,6 @@ describe('the extractor under test is the one the app actually uses', () => {
     expect(typeof result.redacted).toBe('boolean');
   });
 
-  it('reports honestly whether it is still the scaffold', () => {
-    // USING_SCAFFOLD is a hand-maintained boolean, which makes it exactly the
-    // kind of thing that goes stale silently — a comment asserting the opposite
-    // of behaviour has already bitten this project twice. So check it against
-    // the import rather than trusting it.
-    const source = require('node:fs').readFileSync(
-      require('node:path').join(process.cwd(), 'src/lib/extraction-port/adapter.ts'),
-      'utf8',
-    ) as string;
-    const importsScaffold = /from '\.\/scaffold\.ts'/.test(source);
-    expect(USING_SCAFFOLD).toBe(importsScaffold);
-  });
 });
 
 // ---------------------------------------------------------------------------
@@ -496,19 +484,6 @@ describe('redaction is claimed only when it happened', () => {
     if (result.containedSsn === true) expect(result.redacted).toBe(true);
   });
 
-  it('is never claimed by the scaffold, which has no matcher', () => {
-    // Dies naturally when the cascade lands — at which point the assertions
-    // above take over. Until then this is the specific regression guard for
-    // the specific thing that went wrong: `redacted: true` sat in scaffold.ts
-    // from fc33506 to 2026-08-26, disarming saveNotice()'s refusal to store
-    // unredacted OCR text. Nothing threw, nothing logged, and INTERFACE.md
-    // documented the opposite of what the code did.
-    if (!USING_SCAFFOLD) return;
-    const result = extractNotice(
-      synthetic(['MARIA REYES', 'SSN: 123-45-6789', 'SUBMIT BY: SEPTEMBER 5, 2026']),
-    );
-    expect(result.redacted).toBe(false);
-  });
 
   it('does not report an SSN it did not see', () => {
     const result = extractNotice(PAGE_CASE_NUMBER);

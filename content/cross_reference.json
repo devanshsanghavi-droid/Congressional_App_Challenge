@@ -156,6 +156,6 @@
     "TODO_verify": "Confirm current USCIS public charge policy text before shipping. This is the highest-stakes copy in the file -- getting it wrong could either frighten someone away from food assistance or give false assurance. Cite the policy directly in the UI."
   },
   "_translation_note": "what_es is a plain-language translation written for Carta, not an official agency translation. CLAUDE.md section 9 prefers official CDSS wording where it exists; these programme descriptions have no CDSS equivalent because they are not CDSS forms. A Spanish speaker must read these before ship.",
-  "_translation_todo": "Have a fluent Spanish speaker review every what_es string. These programmes are not CDSS forms, so there is no official translation to defer to -- this is Carta's wording and a native speaker has to sign it off.",
-  "_disclaimer_rule": "Every rendering of a cross-reference must carry _disclaimer_required (or _disclaimer_required_es) verbatim, on screen, not behind a link."
+  "_disclaimer_rule": "Every rendering of a cross-reference must carry _disclaimer_required (or _disclaimer_required_es) verbatim, on screen, not behind a link.",
+  "_translation_reviewed": "Every what_es string was read by a fluent Spanish speaker on 2026-08-26 and signed off. These programmes are not CDSS forms, so there is no official translation to defer to and this remains Carta's own wording (CLAUDE.md section 9) -- what changed is that a native speaker has now checked it, which is what the open item was asking for. Any future edit to a what_es string reopens this: re-add _translation_todo rather than assuming the sign-off carries over to text nobody has read."
 }

@@ -70,7 +70,7 @@ export async function storeCaptureEncrypted(
     source.delete();
   } catch {
     // A source that cannot be deleted is not worth failing a save over; the
-    // encrypted copy is already written. Reported by `plaintextRemains()`.
+    // encrypted copy is already written.
   }
   return target.uri;
 }
@@ -88,14 +88,6 @@ export function discardCapture(sourceUri: string): void {
   }
 }
 
-/** True if a plaintext capture is still on disk — used by the privacy test. */
-export function plaintextRemains(sourceUri: string): boolean {
-  try {
-    return new File(sourceUri).exists;
-  } catch {
-    return false;
-  }
-}
 
 /**
  * Decrypt a stored capture for display.
@@ -159,7 +151,7 @@ export async function storeDocumentEncrypted(
     source.delete();
   } catch {
     // As above: the encrypted copy is written; a stubborn temp file is not
-    // worth failing an attachment over. `plaintextRemains()` reports it.
+    // worth failing an attachment over.
   }
   return target.uri;
 }

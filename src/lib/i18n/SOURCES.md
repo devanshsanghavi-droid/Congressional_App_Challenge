@@ -133,6 +133,18 @@ the paper. A sentence is Carta explaining, and it should be plain. `review.actio
 stays "Necesitan papeles de usted" and not the form's own
 "Se necesita información/verificación", on purpose.
 
+### Fluent-speaker review, 2026-08-26
+
+Every Spanish string in `cross_reference.json` (`what_es`) was read by a fluent
+speaker and signed off, which closed that item on `npm run content:check`.
+
+**`doc_types.json` was reviewed in the same pass and did not close**, and the
+distinction is the point of this file: that item asks two questions — *is the
+Spanish good* and *whose words are they* — and the review only answers the first.
+CLAUDE.md §9 defers to CDSS's own wording wherever it exists, and for the proof
+vocabulary it does exist, in SAR 7 (SP). Carta just does not have the document.
+A well-reviewed translation is still a translation.
+
 ### `content/cross_reference.json`
 
 California LifeLine, WIC, LIHEAP, school meals, Medi-Cal, subsidised child care,

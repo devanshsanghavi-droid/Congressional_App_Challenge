@@ -165,24 +165,3 @@ export async function listScheduled(): Promise<Notifications.NotificationRequest
   return Notifications.getAllScheduledNotificationsAsync();
 }
 
-/**
- * Fire a notification a few seconds out.
- *
- * A development affordance, and an honest one: the thin spine's acceptance test
- * is "a notification appears because I photographed a piece of paper", and a
- * real ladder's earliest tier can be weeks away. Deleted with the dev screens
- * before freeze.
- */
-export async function scheduleProof(seconds: number, programName: string): Promise<string> {
-  return Notifications.scheduleNotificationAsync({
-    content: {
-      title: i18n.t('notifications.proofTitle'),
-      body: i18n.t('notifications.proofBody', { program: programName }),
-    },
-    trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-      seconds,
-      repeats: false,
-    },
-  });
-}

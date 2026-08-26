@@ -146,9 +146,7 @@ describe('nothing outside the countdown caps Dynamic Type', () => {
   }
 
   const SRC = join(__dirname, '..', '..', 'src');
-  // The dev-only benchmark screen is deleted before freeze (CLAUDE.md §7) and
-  // is never seen by a user.
-  const EXEMPT = ['components/Countdown.tsx', 'app/bench.tsx'];
+  const EXEMPT = ['components/Countdown.tsx'];
 
   it('finds files to check, so a pass is not vacuous', () => {
     expect(tsxFilesUnder(SRC).length).toBeGreaterThan(15);

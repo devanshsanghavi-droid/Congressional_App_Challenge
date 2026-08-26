@@ -24,6 +24,3 @@ import { extract as cascadeExtract } from '../../extraction/index.ts';
 import type { Extractor } from './port.ts';
 
 export const extractNotice: Extractor = cascadeExtract as unknown as Extractor;
-
-/** True while the app is running on the scaffold rather than the real cascade. */
-export const USING_SCAFFOLD = false;

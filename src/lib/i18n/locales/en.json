@@ -26,23 +26,6 @@
     "appVersion": "App version",
     "locale": "Device language"
   },
-  "bench": {
-    "title": "Model benchmark",
-    "subtitle": "Week 1 latency gate. Downloads the model, runs four cases, and prints a table for NOTES.md.",
-    "notDownloaded": "Not downloaded",
-    "downloaded": "Ready ({{size}})",
-    "download": "Download model",
-    "downloading": "Downloading… {{percent}}%",
-    "delete": "Delete model",
-    "run": "Run benchmark",
-    "running": "Running…",
-    "copy": "Copy results",
-    "copied": "Copied",
-    "results": "Results",
-    "stream": "Live output",
-    "wifiWarning": "This downloads about {{size}} over the internet. Use Wi-Fi. This is the only time Carta uses the network — reading your letters never does.",
-    "error": "Something went wrong"
-  },
   "capture": {
     "title": "Photograph the notice",
     "instruction": "Lay the letter flat and fit the whole page in the frame.",
