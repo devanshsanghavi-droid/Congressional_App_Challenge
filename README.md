@@ -258,10 +258,17 @@ and says nothing about Metal.
 ```bash
 npm run typecheck
 npm run lint
-npm test                         # both Jest projects
+npm test                         # both Jest projects — see note below
 npm run content:check            # ship gate for sourced content
 npm run metrics                  # score the corpus
 ```
+
+**`main` carries 2 intentional test failures**, both in
+`tests/node/extraction-contract.test.ts`. They are real defects in the
+placeholder extractor the app is currently wired to, and they are the acceptance
+criteria for `recipientName` in the extraction cascade — kept visible rather than
+skipped, because suppressing a true failure to keep a badge green is how a red
+build stops meaning anything. They go green when the cascade lands.
 
 ---
 

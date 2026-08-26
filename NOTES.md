@@ -4521,3 +4521,99 @@ positive, not a broken test, and it is deliberately not suppressed: the scaffold
 reproduces the defect and is deleted at step 4 of the build order, at which point
 these become the definition of done for `recipientName`.
 
+---
+
+## 2026-08-26 — Implicit membership is invisible membership
+
+Three defects in this project turned out to be the same defect. Writing it down
+once rather than logging a fourth instance.
+
+### The three
+
+**1. `deleteAllData()` deleted two tables of five.** It ran `DELETE FROM
+reminders` and `DELETE FROM notices` and relied on foreign keys to imply the
+rest. `requirements` cascades and went; `documents` is deliberately standalone —
+that is what makes the Vault possible — and `settings` has no parent. So the
+strongest privacy control in the app kept every photographed document the user
+owned.
+
+**2. `isRealIsoDate()` checked whichever dates a loop happened to reach.** It was
+written the same day as the contract suite and called in exactly one place: a
+loop over the real captures. Every adversarial synthetic page in that file — the
+ones built specifically to produce bad values — was never calendar-checked. The
+corpus is generated from valid dates, so the check was pointed away from the only
+inputs that could fail it.
+
+**3. Settings existed in six strings before it existed as a screen.** The i18n
+parity gate compared the two locales *to each other*, and they agreed perfectly,
+about a screen that was not there. Membership in "places the app can send you"
+was implied by prose rather than stated anywhere a test could read.
+
+### The shape
+
+In each case a set that mattered — *tables to wipe*, *inputs to validate*,
+*destinations that exist* — was never written down. It was implied: by the
+schema's foreign keys, by a loop's iteration order, by the text of some strings.
+
+> **A set defined by "whatever happens to be reachable" changes silently whenever
+> the surrounding code changes, and it changes in the direction of covering
+> less.**
+
+That direction is the whole problem. Adding a table, adding a fixture, adding a
+string — each is a perfectly ordinary edit, each *narrows* the implicit set as a
+side effect, and none of them looks like it touched a guarantee. Nothing fails.
+The check keeps passing, over a smaller domain, and reports the same green it
+reported when the domain was complete.
+
+Explicit membership inverts that. `WIPED_TABLES` and `SYNTHETIC_PAGES` are both
+just arrays, and neither is clever. What they buy is that **adding a member is
+now a visible act**: a new table that is not in `WIPED_TABLES` shows up in a
+diff, and a synthetic page constructed inline is a page the sweep provably cannot
+see, so the mechanism is the list rather than a convention about remembering.
+
+The test for whether a set is at risk: *if someone adds a thing tomorrow, does
+the set grow by itself, and if it does, what told it to?* If the answer is "the
+schema" or "the loop" or "the file", the set is implicit and it will quietly stop
+covering what you think it covers.
+
+### The calendar finding, which is the clearest argument for `invalid` so far
+
+Found by the sweep in (2), and worth keeping for its own reason. `parseDate` built
+the day with `pad(Number(...))` and never asked the calendar:
+
+```
+"SEPTEMBER 45, 2026"  ->  2026-09-45
+"SEPTEMBER 31, 2026"  ->  2026-09-31
+```
+
+Both ISO-shaped, both sorting correctly, neither a day.
+
+**Nothing was ever mis-scheduled.** `isoToLocalMs` in `src/lib/dates.ts` rejects
+`day > 31` outright and catches the rollover cases by comparing the components
+back out of the `Date` — September 31 becomes October 1, so the round-trip fails
+and it returns `undefined`. The guard is correct and it was already there.
+
+**But the rejection is silent, and that is the damage.** The sequence a user
+actually experiences: Review shows `2026-09-45` as what Carta read, with no
+`invalid` flag to mark it, so it looks confirmed; they tap save; the storage
+boundary drops it; no reminder is scheduled. Shown confidently, not flagged, then
+discarded.
+
+> **A guard that can only reject cannot explain.**
+
+`isoToLocalMs` is at the wrong altitude to help: by the time a value reaches the
+storage boundary the screen has already been drawn, the user has already made a
+decision about it, and the only vocabulary left is "yes" or "silently no". The
+validity check has to live in the layer that can still talk to Review — which is
+exactly what `invalid` is for, and why INTERFACE.md asks for the value *plus a
+flag* rather than a drop. Present-and-wrong and absent are different situations
+and only one of them can be fixed by the person holding the paper.
+
+Fixed in `scaffold.ts` today, in the one date path it has. It returns `undefined`
+rather than a flagged value, deliberately: flagging is better behaviour and it is
+step 6 of the cascade, in the file that replaces this one. A placeholder should
+fail in the mild direction, not grow features. **The reason it was fixed at all,
+rather than left to be deleted, is that "we are deleting this soon" is precisely
+the reasoning that left `redacted: true` sitting in that file from fc33506 until
+last week.**
+

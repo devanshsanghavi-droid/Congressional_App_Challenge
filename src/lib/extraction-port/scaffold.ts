@@ -37,8 +37,34 @@ function isoDate(text: string): string | undefined {
   if (!found) return undefined;
   const month = MONTHS.indexOf((found[1] ?? '').toLowerCase());
   if (month < 0) return undefined;
+
+  const year = Number(found[3]);
+  const day = Number(found[2]);
+
+  // Ask the calendar whether the day exists, rather than trusting `\d{1,2}`.
+  //
+  // Without this, "SEPTEMBER 45, 2026" became "2026-09-45" and "SEPTEMBER 31,
+  // 2026" became "2026-09-31" — ISO-shaped strings that sort correctly and are
+  // not days. `isoToLocalMs` in src/lib/dates.ts does reject both, so nothing
+  // was ever mis-scheduled; the damage was that Review displayed the impossible
+  // date as a confident read, with no `invalid` flag to mark it, and the value
+  // was then silently dropped at the storage boundary.
+  //
+  // The Date constructor rolls a bad day over — September 31 becomes October 1 —
+  // so comparing the components back out is what detects it. Checking `day <= 31`
+  // is not enough for exactly that reason.
+  const date = new Date(year, month, day);
+  if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) {
+    return undefined;
+  }
+
+  // Returns `undefined` rather than the value with `invalid: 'implausible_date'`,
+  // which is what INTERFACE.md asks a real extractor for. Flagging is the better
+  // behaviour and it is deliberately not implemented here: `invalid` is step 6 of
+  // the cascade and belongs to the file that replaces this one. A placeholder
+  // should fail in the mild direction, not grow features.
   const pad = (n: number): string => String(n).padStart(2, '0');
-  return `${found[3]}-${pad(month + 1)}-${pad(Number(found[2]))}`;
+  return `${year}-${pad(month + 1)}-${pad(day)}`;
 }
 
 const field = (value: string, lineIndex?: number): ExtractedField => ({
