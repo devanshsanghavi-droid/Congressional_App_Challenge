@@ -24,6 +24,7 @@
  * On demand behind a tap, so nothing in the product waits on inference.
  */
 
+import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
@@ -38,6 +39,7 @@ const SPEC = MODELS['qwen2.5-1.5b-instruct-q4_k_m'];
 
 export function Explanation(props: Omit<ExplainRequest, 'spec'>) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [status, setStatus] = useState<ExplainStatus>({ state: 'idle' });
 
   const start = useCallback(() => {
@@ -51,6 +53,14 @@ export function Explanation(props: Omit<ExplainRequest, 'spec'>) {
     return (
       <View style={styles.offer}>
         <Muted>{t('explain.notDownloaded')}</Muted>
+        {/* The copy says "turn it on in Settings", so it has to be one tap from
+            here. Until 2026-08-25 this sentence pointed at a screen that did not
+            exist and this was the end of the road for the whole feature. */}
+        <Button
+          title={t('explain.goToSettings')}
+          variant="secondary"
+          onPress={() => router.push('/settings')}
+        />
       </View>
     );
   }
@@ -103,9 +113,15 @@ export function Explanation(props: Omit<ExplainRequest, 'spec'>) {
         <Body>
           {status.reason === 'model-missing' ? t('explain.notDownloaded') : t('explain.failedBody')}
         </Body>
-        {status.reason !== 'model-missing' ? (
+        {status.reason === 'model-missing' ? (
+          <Button
+            title={t('explain.goToSettings')}
+            variant="secondary"
+            onPress={() => router.push('/settings')}
+          />
+        ) : (
           <Button title={t('common.tryAgain')} variant="secondary" onPress={start} />
-        ) : null}
+        )}
       </View>
     );
   }

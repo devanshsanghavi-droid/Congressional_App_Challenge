@@ -11,7 +11,7 @@
  */
 
 import type { ExtractedNotice } from '../extraction-port/port.ts';
-import type { ActionType } from '../urgency.ts';
+import type { ActionType, NoticeDates } from '../urgency.ts';
 import { isoToLocalMs } from '../dates.ts';
 import { encryptField, decryptField, hashCaseNumber } from './crypto.ts';
 import { getDatabase } from './index.ts';
@@ -221,6 +221,26 @@ export async function setImageRef(id: string, imageRef: string): Promise<void> {
 }
 
 /** Active notices, nearest deadline first — the order Home renders in. */
+/**
+ * The date fields the countdown and the scheduler read, pulled off a stored
+ * notice.
+ *
+ * Lifted out of Home and Notice Detail, which each had their own identical
+ * copy. A third copy was about to appear for the reminder reschedule, and three
+ * copies of the rule "which dates drive urgency" is how the countdown and the
+ * scheduler end up disagreeing — the one disagreement `urgency.ts` exists to
+ * make impossible.
+ */
+export function datesOf(notice: Notice): NoticeDates {
+  return {
+    actionType: notice.actionType,
+    ...(notice.deadlineDate === undefined ? {} : { deadlineDate: notice.deadlineDate }),
+    ...(notice.aidPaidPendingDeadline === undefined
+      ? {}
+      : { aidPaidPendingDeadline: notice.aidPaidPendingDeadline }),
+  };
+}
+
 export async function listActiveNotices(): Promise<Notice[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<NoticeRowWithReminders>(

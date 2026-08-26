@@ -119,7 +119,30 @@
     "state_hearings_phone": "+1-800-952-5253",
     "state_hearings_tdd": "+1-800-952-8349",
     "ombuds_note": "Before filing a hearing you can ask your worker, then a supervisor, then request a free confidential case review from the County Ombuds office.",
-    "TODO_verify": "Confirm the appeal window and the aid-paid-pending deadline against current CDSS guidance before this ships. These two numbers are the difference between keeping benefits during an appeal and not."
+    "windows": {
+      "_purpose": "The two appeal clocks. They are DIFFERENT DEADLINES and the app must never merge them or describe one using the other's number. This is the highest-stakes data in Carta.",
+      "aid_paid_pending": {
+        "days": 10,
+        "from": "notice_sent_date",
+        "en": "Ask for a state hearing within 10 days of the date on the notice and your CalFresh stays at the same amount until a judge decides.",
+        "es": "Pida una audiencia estatal dentro de los 10 días de la fecha del aviso y su CalFresh se mantiene en la misma cantidad hasta que un juez decida.",
+        "what_it_is": "Continuing benefits while waiting for a fair hearing. Requesting the hearing inside this window keeps benefits at the current amount until the ALJ rules -- it does not decide the appeal."
+      },
+      "hearing_request": {
+        "days": 90,
+        "from": "notice_sent_date",
+        "en": "You have 90 days from the date on the notice to ask for a state hearing at all.",
+        "es": "Tiene 90 días desde la fecha del aviso para pedir una audiencia estatal.",
+        "what_it_is": "The deadline to request a hearing. Missing the 10-day window does NOT end the right to a hearing -- it only ends continuing benefits while it is pending."
+      },
+      "_do_not_conflate": "10 days keeps benefits running. 90 days is how long the right to a hearing lasts. Telling a household '90 days' when they are deciding whether to file this week would cost them their benefits during the appeal; telling them '10 days' after day 11 would make them think they had lost a right they still have.",
+      "source_url": "https://calfresh.guide/continuing-benefits-while-waiting-for-a-fair-hearing/",
+      "source_name": "Legal Services of Northern California, LSNC Guide to CalFresh Benefits -- 'Continuing benefits while waiting for a fair hearing'",
+      "source_kind": "legal aid guide, not regulation",
+      "verified_on": "2026-08-25",
+      "confidence": "medium",
+      "disclaimer_required": "Confirm with your county -- this is not legal advice."
+    }
   },
   "ssa_offices": {
     "agency": "Social Security Administration",
@@ -185,17 +208,9 @@
         "verified_on": "2026-08-18",
         "confidence": "medium",
         "TODO_verify": "Santa Clara County's own 'what to bring' guidance says 'Pay stubs from the last 30 days'. Confirm that wording at the county source and check whether it applies to CalFresh recertification specifically or only to a new application, before this ships."
-      },
-      "bank_statement": {
-        "days": 60,
-        "en": "Bank statements are usually asked for from the last two months.",
-        "es": "Los estados de cuenta bancarios suelen pedirse de los últimos dos meses.",
-        "source_url": "https://ssa.santaclaracounty.gov/departments/department-employment-and-benefit-services/contact-department-employment-and-benefit",
-        "verified_on": "2026-08-18",
-        "confidence": "low",
-        "TODO_verify": "NOT SOURCED at the agency. This is a plausible convention, not a rule Carta has a citation for. Either find the citation or delete this entry — an unsourced freshness rule is exactly what CLAUDE.md section 16 forbids."
       }
-    }
+    },
+    "_freshness_removed": "bank_statement (60 days) was removed 2026-08-25. It was confidence:low and its own TODO_verify said it was NOT SOURCED at the agency -- a plausible convention rather than a rule with a citation. CLAUDE.md section 16 does not allow a low-confidence claim about what an agency requires, so the choice was cite it or delete it, and there was no source to cite. Consequence, and it is the correct one: a bank statement in the Vault now shows its age with NO claim about whether that age is a problem. Restore it only WITH a citation."
   },
   "_still_needed": [
     "2-3 community organizations that help with benefit applications (Sacred Heart Community Service, Second Harvest of Silicon Valley). Not yet researched -- add name, address, phone, hours, languages, and what they actually help with.",

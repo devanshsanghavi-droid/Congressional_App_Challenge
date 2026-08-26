@@ -183,7 +183,7 @@
     "checkBody": "Carta read this letter with a machine. Look at the original if anything above seems wrong.",
     "seePhoto": "See the photo",
     "seeText": "See the words Carta read",
-    "photoDeleted": "The photo was deleted after Carta read the letter. You can change that in Settings.",
+    "photoDeleted": "The photo was deleted after Carta read the letter. Carta keeps the text, not the picture.",
     "textNotStored": "The words were not saved for this notice.",
     "textIsAsRead": "This is exactly what Carta read from your photo, including any mistakes.",
     "photoAlt": "Your photo of the notice",
@@ -209,7 +209,8 @@
     "withheldBody": "Carta checked its own writing and something did not match your letter, so it is not showing it. Read the original below instead.",
     "withheldReason": "Reason: {{reason}}",
     "failedTitle": "Carta could not write an explanation",
-    "failedBody": "Nothing is wrong with your notice. You can read the original below."
+    "failedBody": "Nothing is wrong with your notice. You can read the original below.",
+    "goToSettings": "Open Settings"
   },
   "worthChecking": {
     "title": "Worth checking",
@@ -338,5 +339,48 @@
     "modelSize": "Download size: about {{size}}.",
     "downloadFailedTitle": "The download did not finish",
     "downloadFailedBody": "Nothing is wrong with Carta — everything works without this. You can try again later in Settings."
+  },
+  "settings": {
+    "title": "Settings",
+    "languageTitle": "Language",
+    "language": {
+      "en": "English",
+      "es": "Español"
+    },
+    "modelTitle": "Plain-language explanations",
+    "modelWhat": "Carta can rewrite a letter in plain words, on this phone. It is optional — everything else works without it.",
+    "modelSize": "One-time download, about {{size}}. Use wifi.",
+    "modelAbsent": "Not downloaded yet.",
+    "modelDownload": "Download it (about {{size}})",
+    "modelDownloadHint": "Downloads the file that lets Carta rewrite letters in plain words. Uses wifi.",
+    "modelDownloading": "Downloading… {{percent}}%",
+    "modelReady": "Downloaded. Carta can rewrite letters in plain words.",
+    "modelDelete": "Delete the download",
+    "modelDeleteHint": "Frees the space. You can download it again later.",
+    "modelFailedTitle": "The download did not finish",
+    "modelFailedBody": "Nothing is wrong with Carta — everything works without this. Check wifi and try again.",
+    "reminderTitle": "When reminders arrive",
+    "reminderWhat": "Carta reminds you before a deadline. Pick the time of day that works.",
+    "hour": {
+      "8": "Early morning (8:00)",
+      "9": "Morning (9:00)",
+      "12": "Midday (12:00)",
+      "18": "Evening (18:00)"
+    },
+    "privacyTitle": "What Carta keeps, and where",
+    "privacyStored": "Everything Carta reads stays on this phone. There is no account and no server.",
+    "privacyPhoto": "The photo of your letter is deleted once Carta has read it.",
+    "privacyNetwork": "The only thing Carta ever downloads is the optional file above. Nothing about your letter is ever sent anywhere.",
+    "privacyExactTitle": "Exactly what is stored",
+    "privacyExact": "The text of the letter is encrypted with AES-256-GCM under a key that never leaves the device; the case number is never stored, only a salted hash and the last four digits; the deadline dates, the programme, and the recipient's name are stored in plaintext so the app can sort, display and correct them, and the photograph is a plain file inside the app sandbox.",
+    "wipeTitle": "Delete everything",
+    "wipeWhat": "Removes every notice, every document, every reminder and the key that unlocks them. This cannot be undone.",
+    "wipeAction": "Delete everything",
+    "wipeHint": "Asks you to confirm first.",
+    "wipeConfirmTitle": "Delete everything?",
+    "wipeConfirmBody": "Every notice, document and reminder will be gone. This cannot be undone.",
+    "wipeConfirmAction": "Delete everything",
+    "wipePartialTitle": "Not everything was deleted",
+    "wipePartialBody": "Carta could not finish: {{steps}}. Try again, and if it keeps failing you can delete the app itself, which removes all of it."
   }
 }

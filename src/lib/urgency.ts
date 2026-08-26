@@ -48,8 +48,29 @@ export interface ScheduledReminder {
   readonly urgent: boolean;
 }
 
-/** Reminders fire at 9am local on the day in question (SPEC §6). */
-const REMINDER_HOUR = 9;
+/**
+ * The hour reminders fire at, local time (SPEC §6).
+ *
+ * 9am by default: early enough to act on the same day, late enough not to wake
+ * anyone. It is a **setting**, not a constant, because "before your shift" and
+ * "after the kids are in bed" are different hours for different people and
+ * Carta's whole promise is a reminder that actually gets seen.
+ */
+export const DEFAULT_REMINDER_HOUR = 9;
+
+/**
+ * The hours Settings offers. Deliberately a short list of whole hours rather
+ * than a time picker: this is a decision made once, and every extra degree of
+ * freedom here is a decision the user has to make about an app they opened
+ * because they were frightened by a letter.
+ */
+export const REMINDER_HOURS = [8, 9, 12, 18] as const;
+export type ReminderHour = (typeof REMINDER_HOURS)[number];
+
+/** Narrow an arbitrary stored value back to an offered hour. */
+export function isReminderHour(value: number): value is ReminderHour {
+  return (REMINDER_HOURS as readonly number[]).includes(value);
+}
 
 /** Days before the deadline that the standard ladder fires on. */
 const LADDER: readonly { tier: ReminderTier; daysBefore: number }[] = [
@@ -107,8 +128,8 @@ export function countdownTier(dates: NoticeDates, nowMs: number): CountdownTier 
   return 'green';
 }
 
-/** 9am local on the day `daysBefore` days ahead of `targetMs`. */
-function fireTime(targetMs: number, daysBefore: number): number {
+/** `hour` local on the day `daysBefore` days ahead of `targetMs`. */
+function fireTime(targetMs: number, daysBefore: number, hour: number): number {
   const target = new Date(targetMs);
   // setDate() rather than subtracting milliseconds: across a DST change the
   // arithmetic version lands an hour off, and these fire at a stated wall-clock
@@ -117,7 +138,7 @@ function fireTime(targetMs: number, daysBefore: number): number {
     target.getFullYear(),
     target.getMonth(),
     target.getDate() - daysBefore,
-    REMINDER_HOUR,
+    hour,
   ).getTime();
 }
 
@@ -128,19 +149,23 @@ function fireTime(targetMs: number, daysBefore: number): number {
  * immediately (SPEC §6) — a notice photographed a week before its deadline
  * should not produce a burst of four stale notifications.
  */
-export function remindersFor(dates: NoticeDates, nowMs: number): ScheduledReminder[] {
+export function remindersFor(
+  dates: NoticeDates,
+  nowMs: number,
+  hour: number = DEFAULT_REMINDER_HOUR,
+): ScheduledReminder[] {
   const reminders: ScheduledReminder[] = [];
 
   if (dates.deadlineDate !== undefined) {
     for (const { tier, daysBefore } of LADDER) {
-      const fireAt = fireTime(dates.deadlineDate, daysBefore);
+      const fireAt = fireTime(dates.deadlineDate, daysBefore, hour);
       if (fireAt > nowMs) reminders.push({ tier, fireAt, urgent: false });
     }
   }
 
   if (dates.aidPaidPendingDeadline !== undefined) {
     for (const daysBefore of URGENT_LADDER) {
-      const fireAt = fireTime(dates.aidPaidPendingDeadline, daysBefore);
+      const fireAt = fireTime(dates.aidPaidPendingDeadline, daysBefore, hour);
       if (fireAt > nowMs) reminders.push({ tier: 'appeal_urgent', fireAt, urgent: true });
     }
   }

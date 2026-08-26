@@ -183,7 +183,7 @@
     "checkBody": "Carta leyó esta carta con una máquina. Mire el original si algo de arriba parece estar mal.",
     "seePhoto": "Ver la foto",
     "seeText": "Ver las palabras que leyó Carta",
-    "photoDeleted": "La foto se borró después de que Carta leyó la carta. Puede cambiar eso en Ajustes.",
+    "photoDeleted": "La foto se borró después de que Carta leyó la carta. Carta guarda el texto, no la imagen.",
     "textNotStored": "Las palabras no se guardaron para este aviso.",
     "textIsAsRead": "Esto es exactamente lo que Carta leyó de su foto, incluyendo cualquier error.",
     "photoAlt": "Su foto del aviso",
@@ -209,7 +209,8 @@
     "withheldBody": "Carta revisó lo que escribió y algo no coincidía con su carta, así que no lo muestra. Lea el original abajo.",
     "withheldReason": "Razón: {{reason}}",
     "failedTitle": "Carta no pudo escribir una explicación",
-    "failedBody": "Su aviso está bien. Puede leer el original abajo."
+    "failedBody": "Su aviso está bien. Puede leer el original abajo.",
+    "goToSettings": "Abrir Ajustes"
   },
   "worthChecking": {
     "title": "Vale la pena revisar",
@@ -338,5 +339,48 @@
     "modelSize": "Tamaño de la descarga: alrededor de {{size}}.",
     "downloadFailedTitle": "La descarga no terminó",
     "downloadFailedBody": "Carta no tiene ningún problema — todo funciona sin esto. Puede intentarlo más tarde en Ajustes."
+  },
+  "settings": {
+    "title": "Ajustes",
+    "languageTitle": "Idioma",
+    "language": {
+      "en": "English",
+      "es": "Español"
+    },
+    "modelTitle": "Explicaciones en palabras sencillas",
+    "modelWhat": "Carta puede reescribir una carta en palabras sencillas, en este teléfono. Es opcional: todo lo demás funciona sin esto.",
+    "modelSize": "Descarga única, como {{size}}. Use wifi.",
+    "modelAbsent": "Todavía no se ha descargado.",
+    "modelDownload": "Descargarlo (como {{size}})",
+    "modelDownloadHint": "Descarga el archivo que permite a Carta reescribir cartas en palabras sencillas. Usa wifi.",
+    "modelDownloading": "Descargando… {{percent}}%",
+    "modelReady": "Descargado. Carta puede reescribir cartas en palabras sencillas.",
+    "modelDelete": "Borrar la descarga",
+    "modelDeleteHint": "Libera el espacio. Puede descargarlo otra vez más tarde.",
+    "modelFailedTitle": "La descarga no terminó",
+    "modelFailedBody": "Carta está bien: todo funciona sin esto. Revise el wifi e intente otra vez.",
+    "reminderTitle": "Cuándo llegan los recordatorios",
+    "reminderWhat": "Carta le recuerda antes de una fecha límite. Escoja la hora del día que le sirva.",
+    "hour": {
+      "8": "Temprano en la mañana (8:00)",
+      "9": "Mañana (9:00)",
+      "12": "Mediodía (12:00)",
+      "18": "Tarde (18:00)"
+    },
+    "privacyTitle": "Qué guarda Carta, y dónde",
+    "privacyStored": "Todo lo que Carta lee se queda en este teléfono. No hay cuenta ni servidor.",
+    "privacyPhoto": "La foto de su carta se borra en cuanto Carta la ha leído.",
+    "privacyNetwork": "Lo único que Carta descarga es el archivo opcional de arriba. Nada de su carta se envía a ningún lado.",
+    "privacyExactTitle": "Exactamente qué se guarda",
+    "privacyExact": "El texto de la carta se cifra con AES-256-GCM con una clave que nunca sale del dispositivo; el número de caso nunca se guarda, solo un hash con sal y los últimos cuatro dígitos; las fechas límite, el programa y el nombre de la persona se guardan sin cifrar para que la aplicación pueda ordenarlos, mostrarlos y corregirlos, y la fotografía es un archivo simple dentro del área de la aplicación.",
+    "wipeTitle": "Borrar todo",
+    "wipeWhat": "Quita cada aviso, cada documento, cada recordatorio y la clave que los abre. Esto no se puede deshacer.",
+    "wipeAction": "Borrar todo",
+    "wipeHint": "Le pide confirmar primero.",
+    "wipeConfirmTitle": "¿Borrar todo?",
+    "wipeConfirmBody": "Cada aviso, documento y recordatorio se perderá. Esto no se puede deshacer.",
+    "wipeConfirmAction": "Borrar todo",
+    "wipePartialTitle": "No se borró todo",
+    "wipePartialBody": "Carta no pudo terminar: {{steps}}. Intente otra vez, y si sigue fallando puede borrar la aplicación, lo cual quita todo."
   }
 }

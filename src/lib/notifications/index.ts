@@ -116,9 +116,11 @@ export async function scheduleForNotice(options: {
   dates: NoticeDates;
   programName?: string;
   nowMs?: number;
+  /** Local hour to fire at. Defaults to the ladder's own default (9am). */
+  hour?: number;
 }): Promise<ScheduledResult[]> {
   const now = options.nowMs ?? Date.now();
-  const reminders = remindersFor(options.dates, now);
+  const reminders = remindersFor(options.dates, now, options.hour);
   const target = options.dates.deadlineDate ?? options.dates.aidPaidPendingDeadline;
   if (target === undefined) return [];
 

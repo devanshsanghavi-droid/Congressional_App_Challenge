@@ -81,16 +81,49 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
 }
 
 /**
- * Drop everything. Backs "Delete everything" in Settings (SPEC §7) together
- * with `destroyKeys()`, which is the half that makes it irreversible.
+ * Drop every row in every table. Backs "Delete everything" in Settings (SPEC §7)
+ * together with `destroyKeys()`, which is the half that makes it irreversible.
+ *
+ * **Every table is named explicitly, and that is the point.** This function
+ * used to delete `reminders` and `notices` only, on the reasonable-sounding
+ * assumption that foreign keys would carry the rest. They do not:
+ *
+ *   - `requirements` really does cascade from `notices`, so it was fine.
+ *   - **`documents` is deliberately standalone** — schema.ts explains why: a pay
+ *     stub outlives the notice it was attached to, which is what makes the Vault
+ *     possible. Nothing cascades to it, so a user who tapped "Delete everything"
+ *     kept every photographed document they owned.
+ *   - **`settings` has no parent either**, so the wipe left the language, the
+ *     reminder hour and `onboardingDone` behind — meaning the app did not even
+ *     return to a first-launch state.
+ *
+ * A wipe that quietly keeps the most sensitive images on the device is worse
+ * than no wipe, because the user has been told it is gone. So: no reliance on
+ * cascade, and a test asserts this list matches the tables `schema.ts` creates.
  */
 export async function deleteAllData(): Promise<void> {
   const db = await getDatabase();
   await db.withTransactionAsync(async () => {
-    await db.execAsync('DELETE FROM reminders');
-    await db.execAsync('DELETE FROM notices');
+    for (const table of WIPED_TABLES) {
+      await db.execAsync(`DELETE FROM ${table}`);
+    }
   });
 }
+
+/**
+ * Every table `schema.ts` creates. Exported so `tests/app/wipe.test.ts` can
+ * compare it against the schema and fail when a migration adds a sixth table
+ * that nobody remembered to wipe.
+ *
+ * Order matters only while foreign keys are on: children before parents.
+ */
+export const WIPED_TABLES = [
+  'requirements',
+  'reminders',
+  'documents',
+  'notices',
+  'settings',
+] as const;
 
 /** Testing seam: forget the open handle so the next call re-opens and migrates. */
 export function resetConnectionForTests(): void {

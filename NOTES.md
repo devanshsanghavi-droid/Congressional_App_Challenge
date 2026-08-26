@@ -3842,3 +3842,185 @@ a defect that eleven screenshot reviews did not. It belongs beside
 rubric axis *and* the entire point of the app; "we never set
 `allowFontScaling={false}`" is a statement about the code, not a measurement of
 the result.
+
+---
+
+## 2026-08-25 — Settings existed in the copy for weeks before it existed in the app
+
+### The bug
+
+Six user-facing strings told people to go to Settings. Carta had no Settings
+screen.
+
+Two of the six meant the *iOS* Settings app and were fine. The other four meant
+Carta's own, and the worst was `onboarding.modelLater`:
+
+> "You can turn this on later in Settings. Nothing is missing without it."
+
+Onboarding runs **once**, and it was the **only** production path to the model
+download (`bench.tsx` is the other and is deleted before freeze). So a user who
+tapped **"Not now"** — the sensible choice on a metered connection, and the one
+the copy actively reassures you about — was told they could enable it later and
+then never could. The plain-language explanation, one of the two things this app
+exists to do, was permanently unreachable, and Notice Detail rendered
+`explain.notDownloaded` — "Turn it on in Settings" — as a dead end with no
+button under it.
+
+### Why nothing caught it
+
+Nothing was broken in any way this repo can detect. It typechecked. It rendered.
+The copy read well. **Both locales were in perfect parity** — `npm test` proved
+en and es agreed, and they agreed about a screen that did not exist.
+
+The i18n parity gate compares the two locales to each other. Nothing compared
+either of them to the app.
+
+### The fix
+
+`src/app/settings.tsx`. Language, the local model (download / delete / size /
+what it does), reminder timing, the privacy statement, and delete everything.
+Reachable from Home in both the populated and the empty state, and from the two
+places in `Explanation.tsx` whose copy names it.
+
+`photoDeleted` — "You can change that in Settings" — was **not** fixed by
+building the control it promised. The `deleteSourceImage` toggle is a default-on
+privacy protection (SPEC §5), and a one-tap "keep the most legible copy of my
+case number on disk", sitting under a paragraph explaining that nothing leaves
+the phone, is a trap rather than a setting. The string was changed to state the
+behaviour instead: *"Carta keeps the text, not the picture."* **Making the
+sentence true was the cheaper and safer half.**
+
+### The guard
+
+`tests/node/settings-strings.test.ts`. Every string naming Settings must be
+classified as **ours** (route exists, reachable from Home, registered in the
+navigator) or **iOS** (the app actually calls `Linking.openSettings()`
+somewhere). There is no unclassified bucket, because that is the bucket all six
+were in.
+
+It knows *Ajustes* and *Configuración* as well as *Settings* — a check that only
+read English would have passed the Spanish half of every one of them.
+
+Two things it caught while being written, both worth keeping:
+
+- **The exemption list was wrong on the first try.** I wrote
+  `home.noRemindersBody` and `capture.cameraDenied`; the real keys are
+  `review.noRemindersBody` and `checklist.cameraDenied`. A stale exemption
+  excuses nothing while making the list look considered, so there is now a test
+  that every named key actually exists.
+- **Comments are not code**, again. The privacy assertion "never claims the
+  database is encrypted" failed because `settings.tsx` *documents* that this is
+  the forbidden sentence. Same fix as `countdown-scaling.test.ts`: strip comments
+  before scanning. Second time this month.
+
+### Three things found while building it
+
+**1. "Delete everything" did not delete everything.** `deleteAllData()` removed
+`notices` and `reminders` and relied on foreign keys for the rest. `requirements`
+really does cascade. **`documents` does not** — schema.ts makes it standalone on
+purpose, because a pay stub outlives the notice it was attached to, which is what
+makes the Vault possible. So the wipe kept every photographed document the user
+owned. `settings` has no parent either, so the app did not even return to a
+first-launch state.
+
+A wipe that quietly keeps the most sensitive images on the device is worse than
+no wipe, because the user has been told it is gone. Every table is now named
+explicitly in `WIPED_TABLES` and nothing relies on cascade.
+
+**2. Orchestration does not belong in a data-access module.** `rescheduleAllNotices`
+was first written into `db/reminders.ts`, which seemed natural. Importing
+`db/notices.ts` from there pulled `db/crypto.ts` and then `@noble/ciphers` — ESM,
+untransformed — into every test that had only ever needed a mocked SQLite, and
+`db-first-launch.test.ts` stopped being able to *parse*, on a change that had
+nothing to do with first launch. Moved to `src/lib/reschedule.ts`, beside
+`wipe.ts`, which already followed the rule: **a function that coordinates several
+stores lives next to them, not inside one of them.**
+
+**3. Changing the reminder hour has to reschedule.** Reminders already registered
+with iOS carry the fire time they were created with, so writing the setting alone
+would change what the screen says and nothing about when the phone buzzes. That
+is the same shape as the reminder bug earlier today — the database and the OS
+holding different truths — so it is fixed the same way: ask the OS to forget,
+tell it again, record what it accepted.
+
+### Verified on the device
+
+Erased Simulator, real notification authorisation. Settings renders; the model
+section reads 1.12 GB and offers the download; reminder timing persisted
+(`reminderHour|8` in the settings table); **"Delete everything" took the database
+from 38 notices / 152 reminders to 0 across all five tables, with no encrypted
+image files left**, and returned to Home's empty state — which now carries the
+Settings link.
+
+---
+
+## 2026-08-25 — Two things that looked like app bugs and were not
+
+Recorded because the *reasoning that separated them* is the reusable part. Both
+cost real time, and in both cases the tempting move was to start fixing the app.
+
+### 1. React Native does not re-run layout when Dynamic Type changes at runtime
+
+**Symptom.** After capping the countdown's font scaling, Home at AX5 looked
+worse, not better: the programme name, the action line and the case line drew on
+top of one another, the footer button clipped "Photograph a notice" to "Photo",
+and the countdown card had a large dead gap between the number and its word.
+
+That is three separate layout defects, all plausible, all in code I had just
+touched. I nearly wrote them up as such.
+
+**What distinguished it.** The text size had been changed with
+`xcrun simctl ui <device> content_size` **while the app was running**. So the
+question is not "is the layout wrong at AX5" but "is the layout wrong at AX5, or
+is it wrong *after a change to* AX5" — and those have different tests.
+
+**Relaunch at the same size.** Everything rendered correctly: the name wrapped
+across three lines, the button showed both of its lines, the gap was gone. The
+size was identical; only the transition was removed. So the layout is right and
+the *response to the change* is wrong — React Native redraws glyphs at the new
+size inside boxes Yoga measured for the old one.
+
+**Decision: not fixed.** Platform behaviour, not something Carta introduced, and
+a relaunch corrects it. It is still a real user path — people change text size in
+Settings and come back — and the fix would be to key the tree on
+`useWindowDimensions().fontScale` so a change forces re-measurement. Devansh's
+call; left out under the feature freeze.
+
+**The generalisation.** A stale-layout artifact and a real layout bug look
+identical in a screenshot. The cheap discriminator is to *reach the state a
+different way* — here, launch into it rather than transition into it. If the two
+paths disagree, the bug is in the transition, not the layout.
+
+### 2. Synthetic taps land about 50pt above where they are aimed
+
+**Symptom.** Tapping the "Español" row in Settings did nothing, repeatedly.
+Tapping the nav back chevron did nothing. The previous session recorded the same
+thing and concluded "top-of-screen taps do not register", which is the wrong
+shape of explanation — a region that ignores input is not a thing iOS does.
+
+**What distinguished it.** After tapping "Español" (centre y≈254) several times
+with no visible change, the settings table read `language|en`. **The taps were
+landing — on the "English" row, centre y≈202.** A 52pt offset, not a dead zone.
+
+Confirmed from the other direction: the identical `Choice` component lower on the
+same screen — "Early morning (8:00)" at y≈707 — selected on the first tap and
+wrote `reminderHour|8`.
+
+So the control works, the offset is constant, and it only *looks* like a
+top-of-screen problem because near the top there is usually something 50pt above
+your target to hit instead, while near the bottom the tall primary buttons
+absorb the error.
+
+**Consequence for anyone verifying UI here.** `tap.sh` derives the device origin
+inside the Simulator window arithmetically (`OFF_Y = WH - DEV_H - OFF_X`) and
+that arithmetic is wrong by ~50pt. Either calibrate it against a known target
+before trusting a negative result, or avoid it: **`xcrun simctl openurl
+carta:///<route>` navigates without a tap**, and a left-edge drag goes back. Both
+were used for everything structural in this session.
+
+**The generalisation, and it is the same one as above.** "The tap did nothing" is
+a claim about the app. Before believing it, check what the app *did* — the
+database said the tap had worked perfectly, on the wrong row. **An input that
+appears to do nothing has usually done something; look for the side effect
+before concluding the control is dead.**
+

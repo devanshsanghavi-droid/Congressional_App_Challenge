@@ -220,6 +220,8 @@ Full inventory with licences and rationale: **`DEPENDENCIES.md`**.
 src/app/                 expo-router routes
   _layout.tsx            root Stack, SafeAreaProvider, i18n init (side-effect import)
   index.tsx              build-check screen — replaced by Home in week 3
+  settings.tsx           language, model download/delete, reminder hour,
+                         privacy statement, delete everything
   bench.tsx              DEV TOOL: week 1 latency gate. Delete before freeze.
 
 src/lib/                 app-side, platform-aware code (Claude drives this)
@@ -249,7 +251,12 @@ tests/node/              bare-Node tests
   metrics-scoring.test.ts     the comparators and the P/R arithmetic
   urgency.test.ts             countdown tiers, reminder ladder, DST boundaries
 
-src/lib/urgency.ts       countdown tier + reminder ladder (SPEC 6/7), pure
+src/lib/wipe.ts          "Delete everything": notifications, DB, files, keychain.
+                         Composed here so one edit cannot drop a store.
+src/lib/reschedule.ts    rebuild every ladder at a new hour. Orchestration lives
+                         beside db/ and notifications/, never inside either.
+src/lib/urgency.ts       countdown tier + reminder ladder (SPEC 6/7), pure.
+                         The reminder hour is a parameter, not a constant.
 src/lib/checklist.ts     checklist + Vault rules, pure. `ready` is false when
                          empty; `documentAge` is never stale without a source.
 src/lib/capture/pipeline.ts   ONE traced path: OCR -> orientation -> extract.
@@ -338,8 +345,8 @@ steal polish from anything above it.
 | Priority | Screen |
 |---|---|
 | **Core — must be excellent** | **Home** (countdown dominates), **Capture**, **Review**, **Notice Detail** |
+| **Core** | **Settings** — *promoted from 6 on 2026-08-25. Not a preferences screen: it is the only way to reach the model download after onboarding, and four strings already told users it existed. See NOTES.md.* |
 | 5 | Checklist |
-| 6 | Settings — *if cut back: language + model + delete everything only* |
 | 7 | Vault |
 | 8 | Where to Go — **first to cut** |
 | — | Onboarding (3 screens) |
@@ -697,6 +704,21 @@ Devansh (an afternoon each).
   to Go printed verbatim ("Not yet researched -- add name, address, phone").
   Anything addressed to whoever maintains the content belongs in
   `npm run content:check`, not in a screen.
+- **A string is not a feature.** Six strings told users to go to Settings for
+  weeks before Settings existed; four of them pointed at Carta's own screen and
+  the model download was unreachable after onboarding as a result. The i18n
+  parity gate compared the two locales *to each other* and they agreed
+  perfectly — about a screen that was not there. `settings-strings.test.ts` now
+  requires every string naming Settings to be classified as ours (route exists
+  and is reachable from Home) or iOS (`Linking.openSettings()` is actually
+  called). See NOTES.md 2026-08-25.
+- **An input that appears to do nothing has usually done something.** Synthetic
+  taps in this repo's Simulator helper land ~50pt **above** the target, which
+  reads as "top-of-screen taps do not register" and is not that. Tapping
+  "Español" repeatedly wrote `language|en` — it was hitting the English row
+  every time. Check the side effect before concluding a control is dead, and
+  prefer `xcrun simctl openurl carta:///<route>` for navigation, which needs no
+  tap at all.
 - **Dynamic Type is a measurement, not a policy.** "Nothing sets
   `allowFontScaling={false}`" describes the code and says nothing about the
   result. Measured 2026-08-25: the uncapped 72pt countdown reached ~220pt at AX5

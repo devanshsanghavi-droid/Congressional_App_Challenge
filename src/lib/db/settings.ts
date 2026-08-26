@@ -32,16 +32,45 @@ export const SETTINGS = {
    * should not be shown it again — they already made that choice.
    */
   onboardingDone: 'onboardingDone',
+
+  /**
+   * The interface language, when the user has chosen one.
+   *
+   * **Absent by default, and that is different from 'en'.** Absent means "follow
+   * the phone", so a Spanish-speaking household that has never opened Settings
+   * gets Spanish from `resolveInitialLanguage()`. Writing 'en' on first launch
+   * would silently pin every user to English the moment they opened the screen.
+   */
+  language: 'language',
+
+  /**
+   * Hour of the day reminders fire, local, as a decimal string.
+   *
+   * Stored rather than assumed because a reminder at the wrong hour for someone
+   * working a double shift is a reminder that is never seen, and that is the
+   * only failure this product cannot afford.
+   */
+  reminderHour: 'reminderHour',
 } as const;
 
 export type SettingKey = (typeof SETTINGS)[keyof typeof SETTINGS];
 
-const DEFAULTS: Readonly<Record<SettingKey, boolean>> = {
+/**
+ * The subset of settings that are booleans.
+ *
+ * Split from `SettingKey` so `getBooleanSetting(SETTINGS.language)` is a
+ * compile error rather than a value that reads `'es' === 'true'` and returns
+ * false. The boolean API predates the string one and is the easier of the two
+ * to reach for by habit.
+ */
+export type BooleanSettingKey = typeof SETTINGS.deleteSourceImage | typeof SETTINGS.onboardingDone;
+
+const DEFAULTS: Readonly<Record<BooleanSettingKey, boolean>> = {
   deleteSourceImage: true,
   onboardingDone: false,
 };
 
-export async function getBooleanSetting(key: SettingKey): Promise<boolean> {
+export async function getBooleanSetting(key: BooleanSettingKey): Promise<boolean> {
   const db = await getDatabase();
   const row = await db.getFirstAsync<{ value: string }>(
     'SELECT value FROM settings WHERE key = ?',
@@ -51,12 +80,38 @@ export async function getBooleanSetting(key: SettingKey): Promise<boolean> {
   return row.value === 'true';
 }
 
-export async function setBooleanSetting(key: SettingKey, value: boolean): Promise<void> {
+export async function setBooleanSetting(key: BooleanSettingKey, value: boolean): Promise<void> {
   const db = await getDatabase();
   await db.runAsync(
     `INSERT INTO settings (key, value) VALUES (?, ?)
      ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
     key,
     value ? 'true' : 'false',
+  );
+}
+
+/**
+ * Read a setting that is not a boolean.
+ *
+ * Returns `undefined` when the user has never set it, which callers must treat
+ * as "no decision made" rather than substituting a default of their own — see
+ * `SETTINGS.language` for why the distinction matters.
+ */
+export async function getStringSetting(key: SettingKey): Promise<string | undefined> {
+  const db = await getDatabase();
+  const row = await db.getFirstAsync<{ value: string }>(
+    'SELECT value FROM settings WHERE key = ?',
+    key,
+  );
+  return row?.value;
+}
+
+export async function setStringSetting(key: SettingKey, value: string): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync(
+    `INSERT INTO settings (key, value) VALUES (?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+    key,
+    value,
   );
 }

@@ -207,12 +207,18 @@ describe('the ship gate — what a human still has to confirm', () => {
     'cross_reference: public charge note',
     'cross_reference: school-meals',
     'cross_reference: subsidized-childcare',
-    'offices: appeals',
+    // CLOSED 2026-08-25: `offices: appeals` was here. The two appeal clocks are
+    // now sourced to LSNC's CalFresh guide and asserted below by `describe('the
+    // appeal windows')` — which is a stronger guard than being on this list was.
+    //
+    // REMOVED 2026-08-25: `offices: freshness / bank_statement` was here. It was
+    // confidence:low and self-described as NOT SOURCED, and §16 does not permit a
+    // low-confidence claim about what an agency requires. Cite it or delete it;
+    // there was no citation, so it was deleted.
+    //
     // Added 2026-08-24 with the Vault. A freshness rule is a claim about what an
     // agency requires, so it needs an agency source like an appeal window does.
-    // `pay_stub` echoes the county's own "what to bring" wording; `bank_statement`
-    // is explicitly NOT sourced and must be cited or deleted before ship.
-    'offices: freshness / bank_statement',
+    // `pay_stub` echoes the county's own "what to bring" wording.
     'offices: freshness / pay_stub',
     // Added 2026-08-24. `still_needed` is a work list for whoever sources the
     // content. It was being RENDERED to users on Where to Go — "Not yet
@@ -235,12 +241,64 @@ describe('the ship gate — what a human still has to confirm', () => {
     }
   });
 
-  it('flags the two highest-stakes items by name', () => {
-    // USCIS public charge copy and the CDSS appeal window. Getting the first
-    // wrong frightens a family away from food; getting the second wrong is the
-    // difference between keeping benefits during an appeal and not.
+  it('flags the highest-stakes remaining item by name', () => {
+    // USCIS public charge copy. Getting it wrong frightens a family away from
+    // food they are entitled to. The appeal window used to sit beside it here
+    // and is now sourced — see the block below, which replaces this guard with
+    // a stronger one rather than dropping it.
     const where = outstanding().map((o) => o.where);
     expect(where).toContain('cross_reference: public charge note');
-    expect(where).toContain('offices: appeals');
+  });
+});
+
+/**
+ * The appeal windows — the highest-stakes numbers in Carta.
+ *
+ * Sourced 2026-08-25 to Legal Services of Northern California's CalFresh guide,
+ * "Continuing benefits while waiting for a fair hearing". Deliberately marked
+ * `confidence: medium` and `source_kind: legal aid guide, not regulation`: a
+ * secondary source read carefully is honest, and dressing it up as a citation to
+ * the regs would not be.
+ *
+ * **There are two clocks and they are not the same clock.** Ten days keeps
+ * benefits running at the current amount until an ALJ decides. Ninety days is
+ * how long the right to request a hearing lasts at all. Conflating them fails in
+ * both directions: quote 90 to a household deciding whether to file this week
+ * and they lose benefits during the appeal; quote 10 on day 11 and they believe
+ * they have lost a right they still have.
+ *
+ * These tests exist because that is a single-word edit away at all times.
+ */
+describe('the appeal windows', () => {
+  const windows = () =>
+    (read('offices.json') as { appeals: { windows: Record<string, { days?: number; en?: string }> } })
+      .appeals.windows;
+
+  it('keeps continuing benefits at 10 days and the hearing right at 90', () => {
+    expect(windows()['aid_paid_pending']?.days).toBe(10);
+    expect(windows()['hearing_request']?.days).toBe(90);
+  });
+
+  it('never lets the two clocks collapse into one number', () => {
+    expect(windows()['aid_paid_pending']?.days).not.toBe(windows()['hearing_request']?.days);
+  });
+
+  it("does not put the other clock's number in either explanation", () => {
+    // The realistic failure is prose drift, not a changed integer: an edit that
+    // says "90 days" inside the sentence about keeping benefits.
+    expect(windows()['aid_paid_pending']?.en).toContain('10 days');
+    expect(windows()['aid_paid_pending']?.en).not.toContain('90');
+    expect(windows()['hearing_request']?.en).toContain('90 days');
+    expect(windows()['hearing_request']?.en).not.toContain('10 days');
+  });
+
+  it('carries its source, its kind, and the not-legal-advice line', () => {
+    const w = (read('offices.json') as { appeals: { windows: Record<string, string> } })
+      .appeals.windows;
+    expect(w['source_url']).toContain('calfresh.guide');
+    // Never quotable as regulation. CLAUDE.md §16.
+    expect(w['source_kind']).toMatch(/not regulation/i);
+    expect(w['confidence']).toBe('medium');
+    expect(w['disclaimer_required']).toMatch(/not legal advice/i);
   });
 });

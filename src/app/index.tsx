@@ -97,6 +97,14 @@ export default function HomeScreen() {
           >
             <Text style={styles.moreText}>{t('where.title')}</Text>
           </Pressable>
+          <Pressable
+            onPress={() => router.push('/settings')}
+            accessibilityRole="button"
+            accessibilityLabel={t('settings.title')}
+            style={styles.moreLink}
+          >
+            <Text style={styles.moreText}>{t('settings.title')}</Text>
+          </Pressable>
         </View>
         <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
       </Screen>
@@ -164,6 +172,17 @@ export default function HomeScreen() {
           style={styles.moreLink}
         >
           <Text style={styles.moreText}>{t('where.title')}</Text>
+        </Pressable>
+        {/* Settings has to be reachable from Home and nowhere else would do:
+            four strings across onboarding and Notice Detail tell the user to
+            come here, and until 2026-08-25 there was no here to come to. */}
+        <Pressable
+          onPress={() => router.push('/settings')}
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.title')}
+          style={styles.moreLink}
+        >
+          <Text style={styles.moreText}>{t('settings.title')}</Text>
         </Pressable>
       </View>
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>

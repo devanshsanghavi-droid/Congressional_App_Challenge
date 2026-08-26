@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
 // Imported for its side effect: this is what initialises i18next before any
 // screen renders. Nothing in the app should read a user-facing string before
 // this module has run.
-import '@/lib/i18n';
-import { SETTINGS, getBooleanSetting } from '@/lib/db/settings';
+import i18n, { SUPPORTED_LANGUAGES } from '@/lib/i18n';
+import { SETTINGS, getBooleanSetting, getStringSetting } from '@/lib/db/settings';
 
 /**
  * Root layout for every route in the app.
@@ -62,6 +62,37 @@ function useDevRoute(): void {
 }
 
 /**
+ * Re-apply the language the user chose in Settings.
+ *
+ * i18next is initialised at module load from the **device** locale, because
+ * nothing async can run before the first screen renders. A stored choice is
+ * therefore applied a beat later, here.
+ *
+ * The setting is absent until the user picks one, and absent deliberately means
+ * "follow the phone" rather than "English" — writing a default on first launch
+ * would pin a Spanish-speaking household to English the first time they opened
+ * this screen.
+ */
+function useSavedLanguage(): void {
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const saved = await getStringSetting(SETTINGS.language);
+        if (cancelled || saved === undefined) return;
+        if (!(SUPPORTED_LANGUAGES as readonly string[]).includes(saved)) return;
+        if (i18n.language !== saved) await i18n.changeLanguage(saved);
+      } catch {
+        // The device language is a reasonable answer and already applied.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+}
+
+/**
  * Send a first-time user to onboarding, once.
  *
  * Reads the flag rather than inferring from "are there notices yet": someone
@@ -93,6 +124,7 @@ export default function RootLayout() {
   const { t } = useTranslation();
   useSelfTestAutoRun();
   useDevRoute();
+  useSavedLanguage();
   useOnboardingGate();
 
   return (
@@ -111,6 +143,7 @@ export default function RootLayout() {
         <Stack.Screen name="checklist/[id]" options={{ title: t('checklist.title') }} />
         <Stack.Screen name="vault" options={{ title: t('vault.title') }} />
         <Stack.Screen name="where" options={{ title: t('where.title') }} />
+        <Stack.Screen name="settings" options={{ title: t('settings.title') }} />
         {/* No header: onboarding provides its own Skip, and a back chevron into
             a half-finished onboarding is not a state worth having. */}
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />

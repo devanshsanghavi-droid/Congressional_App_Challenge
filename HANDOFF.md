@@ -112,12 +112,18 @@ Committed. `npm test` green at the commit.
 
 Screenshots from this and the previous session are in `screenshots/`.
 
-### `content:check` is at 14 items — and that number went **up** on purpose
+### `content:check` is at 12 items (was 14)
 
-Nothing was closed. Four items were added: two new freshness rules, the
-`still_needed` work list now surfaced instead of rendered to users, and one
-**counting bug** — `outstandingVerifications` had never been passed the
-doc-types pack, so its translation TODO had never been counted at all.
+It went 10 → 14 on 2026-08-24 *on purpose* — nothing was closed, four items were
+added (two freshness rules, the `still_needed` work list surfaced rather than
+rendered to users, and a counting bug where `outstandingVerifications` had never
+been passed the doc-types pack).
+
+It went 14 → 12 on 2026-08-25 by genuinely closing two: the appeal windows are
+now sourced to LSNC's CalFresh guide (10 days for continuing benefits, 90 for the
+hearing request — two clocks, never conflated), and the `bank_statement` freshness
+rule was **deleted** rather than shipped, because §16 does not allow a
+low-confidence claim about what an agency requires and there was no citation.
 
 **Do not treat a falling count as progress unless something became verifiable.**
 
@@ -150,52 +156,30 @@ so that file is the mechanism.
 npm run metrics -- --extractor src/extraction/index.ts
 ```
 
-Devansh was writing the extraction cascade when this session ran. Everything is
-on `scaffold.ts` until it lands. That command produces **the number that goes in
-the README and the video**, and it is the last big unknown in the project.
+Everything is on `scaffold.ts` until it lands. That command produces **the number
+that goes in the README and the video**, and it is the last big unknown.
 
-Two things should change the moment it lands:
+Two things change the moment it does:
 
-- **`field.invalid` gets a producer.** The invalid-value state on Review
-  (`review.tsx`, the `flagged` branch) has been dead UI since it was built —
-  `scaffold.ts` never sets it. It was deliberately left alone rather than faked.
-- **`ExtractionResult.requiredDocs` starts populating**, which turns the
-  Checklist from "the user adds everything" into "the letter's own list", and
-  makes `origin: 'letter'` rows appear for the first time.
+- **`field.invalid` gets a producer.** The invalid-value state on Review has been
+  dead UI since it was built — `scaffold.ts` never sets it.
+- **`ExtractionResult.requiredDocs` starts populating**, so Checklist gets
+  `origin: 'letter'` rows instead of only user-added ones.
 
-### 2. Finish the interrupted cold-start verification
+### 2. Get SAR 7 (SP) and SAR 7A (SP), then close the doc-type translations
 
-Erase, install, run to a saved notice, and **watch for the banner**:
+Browser download; automated fetches are blocked. Put them in
+`tools/forms/spanish/`, copy the proof-item wording into `content/doc_types.json`
+(`label_es` / `what_es`), and only then clear `_translation_blocker`. A fluent
+speaker still has to read the result.
 
-```bash
-xcrun simctl erase DB2B3461-F7CD-4982-9DB1-53A316769153
-xcrun simctl boot   DB2B3461-F7CD-4982-9DB1-53A316769153
-xcrun simctl install DB2B3461-F7CD-4982-9DB1-53A316769153 \
-  ~/Library/Developer/Xcode/DerivedData/Carta-*/Build/Products/Debug-iphonesimulator/Carta.app
-# Metro: the LAN IP changes; localhost works from the Simulator.
-xcrun simctl openurl DB2B3461-F7CD-4982-9DB1-53A316769153 \
-  "exp+carta://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8082"
-```
+### 3. Work down `content:check`, now at 12
 
-Then, after a notice is saved, confirm the state at the data layer rather than
-by eye:
+Two closed on 2026-08-25: the appeal windows are sourced, and the unsourced
+`bank_statement` freshness rule was deleted rather than shipped. What is left is
+mostly Spanish review by a fluent speaker and three SSA office records.
 
-```bash
-D=$(xcrun simctl get_app_container booted com.devanshsanghavi.noticetracker data)
-sqlite3 "$D/Documents/SQLite/carta.db" \
-  "SELECT state, COUNT(*) FROM reminders GROUP BY state; PRAGMA user_version;"
-```
-
-Expected: all `scheduled`, `user_version` 3, and a visible banner ~5s after the
-self-test finishes.
-
-### 3. Get SAR 7 (SP) and SAR 7A (SP), then close the doc-type translations
-
-Browser download — automated fetches are blocked. Put them in
-`tools/forms/spanish/`, copy the wording for the proof items into
-`content/doc_types.json` (`label_es` / `what_es`), update `_translation_note`,
-and only then clear `_translation_blocker`. A fluent speaker still has to read
-the result.
+**Do not treat a falling count as progress unless something became verifiable.**
 
 ---
 
