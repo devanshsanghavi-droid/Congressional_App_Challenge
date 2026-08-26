@@ -797,11 +797,14 @@ cat "$C/Documents/selftest-report.json"
 The CAC permits AI assistance but requires it **disclosed** and requires it not
 to constitute the entirety of the technical development.
 
-- **`/src/extraction` is the student's work.** The GBNF grammar, extraction
-  schema, prompt construction, redaction matcher, region-selection and pre-fill
-  heuristics, sanity pass, and confidence model. Propose designs, review, and
-  critique — but do not autonomously write it. **When you do touch that
-  directory, say so explicitly, in the message and in NOTES.md.**
+- **`/src/extraction` — the reservation was LIFTED on 2026-08-26.** It was
+  reserved as hand-written work while this was a competition submission. It is
+  now written with AI assistance like the rest of the repository, at the author's
+  explicit direction, and the README's disclosure was rewritten in the same
+  commit as the first cascade code so the repo never carried a false claim.
+  Treat that directory as ordinary code. The **island rules in §8 still apply**
+  and are unrelated to authorship: they are what lets the cascade run unchanged
+  on the phone and in bare Node against the corpus.
 - **Explain before implementing.** Every non-trivial change gets an explanation
   specific enough to answer "what does this function do?" from memory later.
   Never merge code the student cannot explain line by line.
@@ -819,10 +822,11 @@ looks evasive:
 2. *The source code* was written partly with AI assistance. That is what the
    rule governs.
 
-Model statement: *"Claude Code was used for project scaffolding, UI components,
-the storage layer, and test harnesses. The extraction schema, GBNF grammar,
-prompt design, redaction logic, and confidence model were designed and
-implemented by me."* **Make that statement true.**
+Model statement, as of 2026-08-26: *"Claude Code was used throughout this
+project, including the extraction cascade. Design decisions, priorities, scope
+and product judgement were the author's; the implementation is substantially
+AI-written."* **Make that statement true** — and if the balance of authorship
+changes again, change the statement in the same commit as the code, not after.
 
 ---
 

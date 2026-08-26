@@ -1,10 +1,13 @@
 # What the extraction cascade is
 
-**Author: Claude. This is a design explanation, not an implementation.**
-CLAUDE.md §15 reserves `/src/extraction` for Devansh. Nothing in this file is
-code to paste. It exists because "write the cascade" is only a useful
-instruction if you know what the word means, and it is the last thing standing
-between Carta and a finished app.
+**Author: Claude. A design explanation, written before the implementation.**
+
+It was written while `/src/extraction` was reserved as hand-written work, to
+explain what a cascade *is* rather than to hand over code. That reservation was
+lifted on 2026-08-26 and the cascade is now implemented — but this file is kept
+as written, because the reasoning is still the reasoning, and a design document
+edited to match its implementation stops being a record of what was decided in
+advance.
 
 ---
 
@@ -202,13 +205,17 @@ Your cascade must be able to say nothing. That is the feature.
 100% / 95.5% on clean text and 96.4% / 87.6% on real OCR. Reading it is the
 fastest way to see the shape of every layer above running on real data.
 
-**It must not be copied into `/src/extraction`,** for two independent reasons:
+**It must not be copied into `/src/extraction`.** The authorship reason is gone
+as of 2026-08-26; the methodological one is not, and it was always the stronger
+of the two:
 
-1. **Authorship.** CAC rules and CLAUDE.md §15. The island is your work.
-2. **Method.** It was written with the ground truth visible and fitted to ten
-   notices. That is fine for deciding an architecture and disqualifying as a
-   reported accuracy figure. A number from copied probe code is a number fitted
-   to its own test set.
+It was written **with the ground truth visible and fitted to ten notices**. That
+is fine for deciding an architecture and disqualifying as a reported accuracy
+figure — a number from copied probe code is a number fitted to its own test set.
+The cascade was instead developed against notices 01–07 with **08–10 held out**,
+and the probe's holdout-specific patterns (`SSA-8202`, `HCV-AR-101`) were
+deliberately left out of its tables so the held-out figure measures
+generalisation rather than transcription.
 
 It is also missing everything in §3 b, e, f, g — no redaction matcher, no
 `invalid`, no sanity pass, no confidence, no provenance, no error handling. The
@@ -235,10 +242,10 @@ already produces a real number.
 
 ---
 
-## 7. The decisions that are yours alone
+## 7. The decisions that are judgement, not mechanism
 
-Everything above is mechanism. These are judgements, and they are what makes the
-cascade yours rather than a transcription:
+Everything above is mechanism. These are judgements, and every one of them is
+still open to challenge:
 
 - **Which fields are worth a layer, and which get one strategy and a shrug.** `formId` was deliberately excluded from the probe's core-field set. Was that right?
 - **Where the row tolerance sits.** The probe uses `0.6 × line height`. Skew widens rows. Too tight loses pairs; too loose pairs a label with the wrong column.

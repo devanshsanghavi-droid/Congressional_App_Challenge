@@ -2,12 +2,11 @@
  * FEASIBILITY PROBE — measurement instrument, not shipping code.
  *
  * ---------------------------------------------------------------------------
- * AUTHORSHIP AND SCOPE. CLAUDE.md §15 reserves /src/extraction for Devansh:
- * the schema, the GBNF grammar, the prompt construction, the redaction matcher,
- * the region selection, the pre-fill heuristics, the sanity pass and the
- * confidence model are his work.
+ * SCOPE. This is a measurement instrument, not shipping code, and it is not the
+ * extraction cascade — that lives in /src/extraction and was written separately,
+ * against notices 01-07 with 08-10 held out.
  *
- * This file is none of those. It is an instrument built to answer one
+ * It is an instrument built to answer one
  * architectural question — *how much of the deterministic result survives the
  * move from clean digital text to photographed OCR* — and it is deliberately
  * probe-shaped rather than production-shaped: no confidence model, no template
@@ -17,7 +16,8 @@
  * **It must not be copied into /src/extraction.** It was written with the
  * ground truth visible, which is fine for a design decision and disqualifying
  * for a shipped accuracy figure. It is also fitted to ten notices; the patterns
- * below are not a parser, they are ten notices' worth of hindsight.
+ * below are not a parser, they are ten notices' worth of hindsight — including
+ * the form ids for the held-out notices, which the cascade deliberately omits.
  * ---------------------------------------------------------------------------
  *
  * Ported from Devansh's `probe_deterministic.py` (approach, not code), which

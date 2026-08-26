@@ -1,10 +1,14 @@
 # /src/extraction — the parsing cascade
 
-**Authorship.** This directory is written by Devansh. Per SPEC.md §13 and
-CLAUDE.md, the cascade design, the notice templates, the extraction heuristics,
-and the confidence model are the student's own work. Claude reviews, critiques,
-and builds the harness around it, and any file it touches in here says so at the
-top.
+**Authorship.** This directory was reserved as hand-written work while the
+project was a competition submission. That reservation was **lifted on
+2026-08-26** and the cascade is written with AI assistance like the rest of the
+repository; the README's disclosure was rewritten in the same commit as the first
+cascade code.
+
+**The island rules below are unaffected and still enforced.** They were never
+about authorship — they are what lets this code run unchanged on the phone and in
+bare Node against the corpus (CLAUDE.md §8).
 
 ## What lives here
 

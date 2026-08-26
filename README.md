@@ -258,17 +258,10 @@ and says nothing about Metal.
 ```bash
 npm run typecheck
 npm run lint
-npm test                         # both Jest projects — see note below
+npm test                         # both Jest projects
 npm run content:check            # ship gate for sourced content
 npm run metrics                  # score the corpus
 ```
-
-**`main` carries 2 intentional test failures**, both in
-`tests/node/extraction-contract.test.ts`. They are real defects in the
-placeholder extractor the app is currently wired to, and they are the acceptance
-criteria for `recipientName` in the extraction cascade — kept visible rather than
-skipped, because suppressing a true failure to keep a badge green is how a red
-build stops meaning anything. They go green when the cascade lands.
 
 ---
 
@@ -285,17 +278,28 @@ language. It is an optional download, it runs entirely on the phone, and no text
 from a user's letter is ever transmitted anywhere. This is a product capability,
 not authorship.
 
-### 2. The source code was written partly with AI assistance — this is what the rule governs
+### 2. The source code was written with AI assistance — this is what the rule governs
 
-> Claude Code was used for project scaffolding, UI components, the storage layer,
-> and test harnesses. The extraction schema, GBNF grammar, prompt design,
-> redaction logic, and confidence model were designed and implemented by me.
+> **Claude Code was used throughout this project**, including the extraction
+> cascade in `/src/extraction` — the date parser, the geometry pairing, the
+> identity tables, the redaction matcher, the document lexicon and the name
+> resolution. It was also used for project scaffolding, UI components, the
+> storage layer, the content packs, the evaluation corpus and the test harnesses.
+> Design decisions, priorities, scope, the held-out evaluation method and every
+> product judgement were the author's; the implementation is substantially
+> AI-written and is disclosed as such.
 
-`/src/extraction` is the student's own work and is structurally isolated to make
-that verifiable: it is a pure-TypeScript island that imports nothing
-platform-specific, enforced three independent ways (a `tsconfig` with no DOM
-types, an ESLint rule, and a test that reads the bytes on disk). Files elsewhere
-in the repository carry an `AUTHORSHIP:` line in their header.
+An earlier version of this file reserved `/src/extraction` as hand-written work.
+That was true when it was written and stopped being true on 2026-08-26, when the
+constraint was lifted and the cascade was written with AI assistance like the
+rest. The statement was replaced in the same commit as the code, rather than left
+to be corrected later.
+
+`/src/extraction` remains structurally isolated — a pure-TypeScript island that
+imports nothing platform-specific, enforced three independent ways (a `tsconfig`
+with no DOM types, an ESLint rule, and a test that reads the bytes on disk). That
+isolation is an engineering property, not an authorship claim: it is what lets the
+same code run on the phone and in bare Node against the corpus.
 
 `NOTES.md` is a dated decision log kept throughout — what was tried, what broke,
 what was chosen and why, with the measurements rather than only the conclusions.
@@ -308,7 +312,7 @@ what was chosen and why, with the measurements rather than only the conclusions.
 |---|---|
 | `src/app/` | Screens (expo-router file-based routes) |
 | `src/lib/` | App-side, platform-aware code |
-| `src/extraction/` | **The extraction cascade — the student's work.** Pure TS island |
+| `src/extraction/` | The extraction cascade. Pure TS island — runs unchanged on device and in bare Node |
 | `content/` | Bundled, sourced JSON: programmes, offices, document types, cross-references |
 | `tools/corpus/` | The evaluation corpus and its ground truth |
 | `tools/metrics/` | The scoring harness |

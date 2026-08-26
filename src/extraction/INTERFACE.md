@@ -1,12 +1,15 @@
 # What the app needs from `/src/extraction`
 
-**For Devansh.** Written by Claude; this is a request, not a design. The schema,
-the grammar, the heuristics and the confidence model are yours (CLAUDE.md §15).
-This file says only what the app-side code already calls, so that when your
-parser lands the wiring is one line.
+What the app calls, and what it depends on getting back.
 
-Right now `src/lib/extraction-port/adapter.ts` points at a scaffold. Replace that
-import and delete `scaffold.ts`.
+Written while `/src/extraction` was reserved as hand-written work, as a request
+rather than a design; that reservation was lifted on 2026-08-26 and the cascade
+is now implemented against this contract. The contract itself is unchanged, which
+is the useful part — it was fixed before the implementation existed and the
+implementation had to meet it.
+
+`src/lib/extraction-port/adapter.ts` now points at `@/extraction`; `scaffold.ts`
+is deleted.
 
 ---
 

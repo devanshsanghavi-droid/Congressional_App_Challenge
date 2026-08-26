@@ -105,7 +105,66 @@ export async function loadExtractor(modulePath: string): Promise<Extractor> {
         'or an adapter in tools/metrics/extractor.ts that reshapes whatever it does export.',
     );
   }
-  return { id: modulePath, run: candidate as ExtractorFn };
+  return { id: modulePath, run: reshape(candidate as (input: ExtractionInput) => unknown) };
+}
+
+/**
+ * Field names as `/src/extraction` emits them, mapped to the names
+ * `ground_truth.json` uses.
+ *
+ * The island speaks the app's vocabulary — camelCase, because that is what
+ * `port.ts` and every screen use — and the corpus speaks the corpus's. Neither
+ * should bend to the other: the island must not carry snake_case keys it never
+ * uses on the phone, and the ground truth must not be renamed to suit an
+ * extractor, or every number measured before today stops being comparable.
+ *
+ * So the translation lives here, in the seam, which is what
+ * `src/extraction/INTERFACE.md` says the seam is for.
+ */
+const FIELD_NAMES: Readonly<Record<string, string>> = {
+  recipientName: 'recipient_name',
+  caseNumber: 'case_number',
+  programId: 'program',
+  agency: 'agency',
+  formId: 'form_id',
+  actionType: 'action_type',
+  noticeDate: 'notice_date',
+  deadlineDate: 'deadline_date',
+  effectiveDate: 'effective_date',
+  appealDeadline: 'appeal_deadline',
+  aidPaidPendingDeadline: 'aid_paid_pending_deadline',
+};
+
+/**
+ * Accept either vocabulary.
+ *
+ * A key that is already snake_case passes through untouched, so the probes in
+ * `tools/metrics/probe/` — which emit corpus names directly — keep working and
+ * stay comparable to the cascade. A field carrying `invalid` is dropped: the
+ * harness scores what an extractor *claims*, and a value the extractor has
+ * already marked as wrong is not a claim.
+ */
+function reshape(run: (input: ExtractionInput) => unknown): ExtractorFn {
+  return (input) => {
+    const raw = run(input) as {
+      fields?: Record<string, { value?: unknown; invalid?: string; source?: string; confidence?: number } | undefined>;
+      requiredDocs?: readonly string[];
+    };
+    const fields: Record<string, ExtractedField | undefined> = {};
+    for (const [key, field] of Object.entries(raw.fields ?? {})) {
+      if (!field || field.value === undefined || field.value === '') continue;
+      if (field.invalid !== undefined) continue;
+      const name = FIELD_NAMES[key] ?? key;
+      fields[name] = {
+        value: field.value as string | number,
+        ...(field.source === undefined ? {} : { source: field.source }),
+        ...(field.confidence === undefined ? {} : { confidence: field.confidence }),
+      };
+    }
+    return raw.requiredDocs === undefined
+      ? { fields }
+      : { fields, requiredDocs: raw.requiredDocs };
+  };
 }
 
 /**

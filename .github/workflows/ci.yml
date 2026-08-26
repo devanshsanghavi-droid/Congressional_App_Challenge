@@ -56,41 +56,6 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      # ---------------------------------------------------------------------
-      # MAIN CARRIES 2 INTENTIONAL FAILURES until the extraction cascade lands.
-      # ---------------------------------------------------------------------
-      # A red badge nobody can explain is how a team learns to ignore red, so
-      # the list is printed into the log immediately above the failure rather
-      # than living in a comment someone has to go and find.
-      #
-      # Both are in tests/node/extraction-contract.test.ts, both are real
-      # defects in `scaffold.ts` — the placeholder the app is wired to today —
-      # and both are the definition of done for `recipientName`, which is
-      # step 4 of the build order in docs/CASCADE.md:
-      #
-      #   1. "never returns the sender when the agency block is printed first"
-      #      scaffold anchors on the first CA ZIP on the page. When the agency's
-      #      own address is printed above the recipient's, the column walk
-      #      returns "SOCIAL SERVICES AGENCY" — upper-case, 22 characters, and
-      #      therefore passing a name-shaped check. A well-formed wrong name.
-      #
-      #   2. "never returns an address line as a name, on any of the three"
-      #      the same defect, caught by the broader assertion.
-      #
-      # They are deliberately NOT skipped and NOT marked `test.failing`. The
-      # point is that they stay visible as a countdown; suppressing a true
-      # failure to keep a badge green is the pattern NOTES.md keeps recording.
-      #
-      # WHEN THE CASCADE LANDS these must go green. If they are still red long
-      # after step 4, that is the signal, not the noise.
-      - name: Known intentional failures
-        run: |
-          echo "::notice title=Known red::2 tests fail on main by design, pending the extraction cascade."
-          echo "  tests/node/extraction-contract.test.ts"
-          echo "    - never returns the sender when the agency block is printed first"
-          echo "    - never returns an address line as a name, on any of the three"
-          echo "  Both are scaffold.ts defects and both are step 4 of docs/CASCADE.md."
-
       # Both Jest projects. The node project covers /tools, /content and
       # tests/node; the app project covers the screens and the pipeline gates,
       # including no-network.test.ts (SPEC §8.4) — the flagship privacy test,

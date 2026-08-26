@@ -36,6 +36,11 @@
     "lib": ["ES2022"],
     "types": [],
 
+    // The repo standardises on explicit `.ts` extensions in relative imports,
+    // because bare Node ESM will not resolve an extensionless one and the
+    // metrics harness loads this island directly in bare Node. Never came up
+    // while index.ts was a single `export {}` with no imports.
+    "allowImportingTsExtensions": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
