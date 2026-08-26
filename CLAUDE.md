@@ -697,6 +697,25 @@ Devansh (an afternoon each).
   to Go printed verbatim ("Not yet researched -- add name, address, phone").
   Anything addressed to whoever maintains the content belongs in
   `npm run content:check`, not in a screen.
+- **Dynamic Type is a measurement, not a policy.** "Nothing sets
+  `allowFontScaling={false}`" describes the code and says nothing about the
+  result. Measured 2026-08-25: the uncapped 72pt countdown reached ~220pt at AX5
+  and pushed the programme name off the card, so the biggest element on screen
+  made the app *worse* for the user Dynamic Type exists to serve. The rule is
+  now **cap display type, never cap prose** — `Countdown.tsx` is the only capped
+  component and `tests/app/countdown-scaling.test.tsx` enforces that nothing
+  else joins it. Sweep sizes with
+  `xcrun simctl ui <device> content_size <size>`; it is one line and it found
+  what eleven screenshot reviews did not.
+- **React Native does not re-run layout when iOS Dynamic Type changes while the
+  app is running.** Glyphs redraw at the new size inside boxes measured for the
+  old one, so text overlaps and buttons clip. It looks exactly like a broken
+  layout and is not one — **relaunch at the same size before believing it**.
+  Cost most of an investigation on 2026-08-25.
+- **A freshly erased device is on `large`, the ordinary iOS default.** It is not
+  a larger text size, and Home's title does not wrap there. A defect reported as
+  "the erased device defaults bigger" was really one size band further out; check
+  what the setting actually is before designing around a remembered symptom.
 - **`import.meta` is a syntax error under Jest's CommonJS transform.** Anything
   in `tools/` that Jest also imports has to find paths another way — the metrics
   harness walks up from `process.cwd()` looking for the corpus.

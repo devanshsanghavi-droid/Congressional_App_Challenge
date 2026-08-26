@@ -3731,3 +3731,114 @@ A device that has ever run Carta is not a device you can find first-launch bugs
 on. Both defects from this pass were invisible on a warm device and obvious
 within ninety seconds of an erased one. **`xcrun simctl erase` belongs in the
 routine before a phase boundary**, not as something done accidentally.
+
+---
+
+## 2026-08-25 — The countdown was the accessibility bug, not the accessibility feature
+
+Found on the same erased Simulator as the reminder defect, by sweeping Dynamic
+Type sizes rather than by looking at the default.
+
+### What was wrong
+
+`tokens.ts` claimed, in a comment: *"Sizes are chosen so the layout survives the
+larger accessibility sizes, which is also why the countdown uses a single short
+string rather than a sentence."*
+
+Measured, that was false. At the largest accessibility size (AX5) the 72pt
+countdown scaled uncapped to roughly **220pt**, and the card alone became about
+**600pt of an 874pt screen**. The programme name — "CalFresh/CalWORKs", the text
+that says *which* notice this is — was pushed off the bottom of the card.
+
+So a user at AX5 got a gigantic number and no way to tell what it counted down
+to. On a device with two notices, each card was more than a full screen, and
+every card looked identical.
+
+The irony is the point: **Dynamic Type existed to help this user, and the
+biggest element on the screen turned it into a worse experience than no scaling
+at all.**
+
+### Why it was invisible
+
+The default text size is `large`, and at `large` Home is fine — the title fits,
+nothing wraps, nothing clips. Every screenshot ever taken of this app was at
+`large`. Nothing in the repo looks at how big anything gets: it typechecks, it
+lints, it renders, and `screens.test.tsx` asserts the right tier and the right
+number at whatever size they happen to be.
+
+A note on the earlier report: the previous session recorded this as "the default
+text size is larger on an erased device and the title wraps." That is not what is
+happening. `xcrun simctl ui <device> content_size` reports `large` on a freshly
+erased device, which is the ordinary iOS default, and the Home title does **not**
+wrap there — it fits with about 27pt to spare, and the previous session's own
+screenshot shows it on one line. The real defect was one text size band away from
+where anyone was looking.
+
+### The fix, and the rule it establishes
+
+`maxFontSizeMultiplier` on the countdown number (1.6) and its word (2.0).
+Nothing else in the app is capped, and a test enforces that.
+
+> **Cap display type. Never cap prose.**
+
+The reasoning, because the obvious wrong fix is to cap everything and make all
+the screenshots tidy:
+
+- Dynamic Type exists so text can be **read**. The countdown is already 72pt,
+  four times body size. It was never the thing that was hard to read.
+- Prose is the opposite. At AX5 a 17pt sentence genuinely needs to become a 53pt
+  sentence and take as many lines as it needs. Body text, labels, headings and
+  the programme name are uncapped and reflow freely.
+- A cap is a **multiplier, not a size**. The capped countdown still grows — to
+  ~115pt — which keeps SPEC §7's "a number and a colour in two seconds" while
+  leaving the notice's identity on screen.
+
+Verified after the fix on the same device at AX5: the card is ~215pt instead of
+~600pt, "CalFresh/CalWORKs" wraps across three lines and is fully readable, and
+the footer button renders both its lines.
+
+`tests/app/countdown-scaling.test.tsx` — 12 tests. It asserts the caps are
+applied to all five `Text` elements in the component (each early return is a
+separate branch that can be missed independently), that the number's cap is
+tighter than the word's, and — the converse — that **no other file in `src/`
+uses `maxFontSizeMultiplier` or `allowFontScaling={false}`**. Verified by
+breaking it: removing the cap from the number failed 2 tests.
+
+Two things the test had to get right, both of which cost a run:
+
+- The number is deliberately hidden from the accessibility tree (the wrapping
+  `View` carries one combined label so a screen reader says "11 days left", not
+  "11" then "days left"). `getByText` therefore needs
+  `{ includeHiddenElements: true }`, or it reports the element as missing —
+  which reads as a broken component, not a hidden one.
+- The static half scans **comments stripped**. `tokens.ts` documents this very
+  rule and names both banned patterns while using neither; scanning raw bytes
+  flagged it, and the tempting fix — adding `tokens.ts` to the exempt list —
+  would have trained the next person to add exemptions instead of reading the
+  finding.
+
+### A separate thing found on the way, NOT fixed
+
+**React Native does not re-run layout when iOS Dynamic Type changes while the
+app is running.** Changing the text size in Settings and returning to Carta
+leaves glyphs drawn at the new size inside boxes measured for the old one: on
+Home the programme name, action and case line drew on top of one another, and
+the footer button clipped to "Photo".
+
+This looked exactly like a layout bug at AX5 and is not one — **a relaunch at the
+same size renders correctly**, which is how it was told apart. Worth knowing
+before someone spends an afternoon on a layout that is already right. It is
+still a real user-facing path (people change text size in Settings and come
+back), and the fix is to key the tree on `useWindowDimensions().fontScale` so a
+change forces re-measurement. Not done: it is a platform behaviour rather than
+something Carta introduced, and the feature freeze rule applies. **Devansh's
+call.**
+
+### What this changes about testing
+
+`xcrun simctl ui <device> content_size <size>` is a one-line sweep and it found
+a defect that eleven screenshot reviews did not. It belongs beside
+`xcrun simctl erase` in the phase-boundary routine. Accessibility is a scored
+rubric axis *and* the entire point of the app; "we never set
+`allowFontScaling={false}`" is a statement about the code, not a measurement of
+the result.

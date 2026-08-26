@@ -14,6 +14,32 @@
  *
  * The tier thresholds live in `urgency.ts` and are shared with the scheduler,
  * so the colour on screen and the day a reminder fires can never disagree.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THIS IS THE ONE PLACE THAT CAPS DYNAMIC TYPE
+ * ---------------------------------------------------------------------------
+ * Measured on an erased Simulator, 2026-08-25. At the largest accessibility
+ * size the uncapped 72pt number scaled to roughly 220pt and the card alone
+ * became ~600pt of an 874pt screen. The programme name — the text that says
+ * *which* notice this is — was pushed off the bottom. A user at AX5 saw a
+ * gigantic number and no way to tell what it counted down to.
+ *
+ * That is Dynamic Type harming the person it exists to serve, so the number
+ * and its word are capped and **nothing else in the app is**:
+ *
+ *   - Dynamic Type exists so text can be *read*. The countdown is already 72pt,
+ *     four times body size. It was never the thing that was hard to read.
+ *   - Prose is different: at AX5 a 17pt sentence genuinely needs to become a
+ *     53pt sentence, and it may take as many lines as it needs. Body text,
+ *     labels and the programme name are never capped.
+ *   - So the rule is: **cap display type, never cap prose.** This component is
+ *     the only display type in Carta, and `tests/app/countdown-scaling.test.tsx`
+ *     asserts the caps are here and that the word stays subordinate.
+ *
+ * The caps are multipliers, not sizes — a capped countdown still grows, just
+ * not without bound. At `NUMBER_MAX_SCALE` the number is ~115pt, which keeps
+ * SPEC §7's "a number and a colour in two seconds" while leaving the notice's
+ * identity on screen.
  */
 
 import { StyleSheet, Text, View } from 'react-native';
@@ -23,6 +49,22 @@ import { color, space, tone, type } from '@/lib/theme/tokens';
 import type { CountdownTone } from '@/lib/theme/tokens';
 import { countdownDate, countdownTier, daysUntil } from '@/lib/urgency';
 import type { NoticeDates } from '@/lib/urgency';
+
+/**
+ * How far the big number may grow. ~115pt at 72pt base.
+ *
+ * Exported so the test can assert the value that is actually applied rather
+ * than a copy of it.
+ */
+export const NUMBER_MAX_SCALE = 1.6;
+
+/**
+ * The word under the number ("days left") and the short states that replace the
+ * number entirely ("Due today", "Past due", "No date yet"). These are read, not
+ * glanced at, so they get more room than the number — but they still must not
+ * push the programme name off the card.
+ */
+export const WORD_MAX_SCALE = 2;
 
 const TIER_TONE: Record<ReturnType<typeof countdownTier>, CountdownTone> = {
   green: 'green',
@@ -58,7 +100,9 @@ export function Countdown({
         accessibilityRole="text"
         accessibilityLabel={t('notice.noDeadline')}
       >
-        <Text style={[styles.word, { color: palette.fg }]}>{t('notice.noDeadline')}</Text>
+        <Text style={[styles.word, { color: palette.fg }]} maxFontSizeMultiplier={WORD_MAX_SCALE}>
+          {t('notice.noDeadline')}
+        </Text>
       </View>
     );
   }
@@ -72,7 +116,9 @@ export function Countdown({
         accessibilityRole="text"
         accessibilityLabel={t('notice.overdue')}
       >
-        <Text style={[styles.word, { color: palette.fg }]}>{t('notice.overdue')}</Text>
+        <Text style={[styles.word, { color: palette.fg }]} maxFontSizeMultiplier={WORD_MAX_SCALE}>
+          {t('notice.overdue')}
+        </Text>
       </View>
     );
   }
@@ -84,7 +130,10 @@ export function Countdown({
         accessibilityRole="text"
         accessibilityLabel={t('notice.dueToday')}
       >
-        <Text style={[big ? styles.todayLarge : styles.word, { color: palette.fg }]}>
+        <Text
+          style={[big ? styles.todayLarge : styles.word, { color: palette.fg }]}
+          maxFontSizeMultiplier={WORD_MAX_SCALE}
+        >
           {t('notice.dueToday')}
         </Text>
       </View>
@@ -101,6 +150,7 @@ export function Countdown({
     >
       <Text
         style={[big ? styles.numberLarge : styles.numberCompact, { color: palette.fg }]}
+        maxFontSizeMultiplier={NUMBER_MAX_SCALE}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
       >
@@ -108,6 +158,7 @@ export function Countdown({
       </Text>
       <Text
         style={[big ? styles.word : styles.wordCompact, { color: palette.fg }]}
+        maxFontSizeMultiplier={WORD_MAX_SCALE}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
       >

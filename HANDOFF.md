@@ -79,20 +79,30 @@ Everything below was actually run, not reasoned about.
     `Documents/SQLite/carta.db` — more reliable than screenshots and the reason
     the reminder bug was caught at all.
 
-### Not verified — pick this up first
+### Verified 2026-08-25 — the banner fires
 
-**The 5-second proof notification banner was never observed.** The session ended
-while polling for it. Everything up to it is confirmed: permission granted, the
-proof notification scheduled with an id, `OS now holds 9`. What is missing is
-the visual confirmation that a banner actually appears on screen.
+**Closed.** The previous session ended while polling for the 5-second proof
+notification and never saw it. It has now been observed on an erased device:
+`screenshots/coldstart-notification-banner.png` shows *"Carta is set up — This
+is the reminder you just set for CalFresh"* drawn over the foregrounded app.
 
-Also unexercised: **the Skip button on onboarding**. Synthetic taps in this
-environment register reliably on bottom-of-screen controls and not on
-top-of-screen ones — the same pattern hit the nav back chevron, a sheet's close
-X, and Review's Edit affordance. **This is almost certainly the tap injection,
-not the app**, and it should not be recorded as a defect without a human tap to
-confirm. Onboarding was completed via *Next* instead, and the flag was verified
-written (`onboardingDone|true` in the settings table).
+Two things that made it hard to catch, both worth knowing:
+
+- The self-test asks for **provisional** authorisation, which iOS delivers
+  quietly. The banner only appears once **real** authorisation exists. The way
+  to get it is the ordinary product path — save a notice on Review and tap
+  *Allow* on the system prompt — after which `requestPermission` returns early
+  and the self-test's proof notification is banner-eligible.
+- The notification fires at **t+5.0s** and a `simctl io screenshot` takes ~1.2s,
+  so a burst started at t=0 covers 0–4.8s and misses it every time. Wait ~4.4s,
+  then burst.
+
+Also now exercised: **taps land accurately, including mid-screen system alerts**
+(the notification prompt, the "Open in Carta?" dialog). The previous session's
+note that top-of-screen taps do not register still holds for the nav back
+chevron — use the left-edge back swipe or a `carta://` deep link instead of
+fighting it. Onboarding's **Skip** button remains unexercised for the same
+reason; it is not known to be broken.
 
 ---
 

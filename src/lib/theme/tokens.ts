@@ -13,9 +13,18 @@
  *     meaning; `caption` is for provenance and disclaimers only.
  *   - **≥44pt touch targets.** `touchTarget` is the floor and components use it
  *     as a minimum height rather than a suggestion.
- *   - **Dynamic Type.** Nothing sets `allowFontScaling={false}`. Sizes are
- *     chosen so the layout survives the larger accessibility sizes, which is
- *     also why the countdown uses a single short string rather than a sentence.
+ *   - **Dynamic Type.** Nothing sets `allowFontScaling={false}` — no text in
+ *     Carta is ever prevented from scaling. Body text, labels and headings
+ *     scale without limit and reflow to as many lines as they need.
+ *
+ *     **`countdown` and `countdownWord` are the exception, and the only one.**
+ *     They are *display* type, not prose. Measured at the largest accessibility
+ *     size on 2026-08-25, an uncapped 72pt number reached ~220pt and pushed the
+ *     programme name off the card — leaving a user who needs AX5 with a huge
+ *     number and no idea which notice it belonged to. `Countdown.tsx` therefore
+ *     applies `maxFontSizeMultiplier`, and documents why at length. The rule is
+ *     **cap display type, never cap prose**; if a second display size is ever
+ *     added here, it needs the same treatment and the same measurement.
  *   - **One-handed.** Primary actions sit at the bottom of a screen, not the top.
  *
  * Contrast: every foreground/background pair here clears WCAG AA at body size.
