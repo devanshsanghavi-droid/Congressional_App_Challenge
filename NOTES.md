@@ -4642,3 +4642,98 @@ rather than left to be deleted, is that "we are deleting this soon" is precisely
 the reasoning that left `redacted: true` sitting in that file from fc33506 until
 last week.**
 
+---
+
+## 2026-08-26 — A plugin that was never registered, and the reason it was invisible
+
+The single most expensive defect in this project. Every device build since
+2026-08-20 failed on entitlements a config plugin was supposed to strip. The
+plugin was written, documented, and correct.
+
+**It was never in `app.json`'s `plugins` array.**
+
+```
+plugins: ['./plugins/withDevelopmentTeam', 'expo-router', 'expo-secure-store', ...]
+```
+
+`withPersonalTeamEntitlements.js` sat next to `withDevelopmentTeam.js` on disk,
+fully implemented, deleting `aps-environment` and
+`extended-virtual-addressing` — and never ran once.
+
+### Why it survived so long
+
+**A plugin that is not registered is indistinguishable, from the outside, from a
+plugin that runs and does not work.** Both produce an `.entitlements` file with
+the entitlement still in it. Both produce the same Xcode error. Nothing warns
+that a file in `plugins/` is not referenced — it is just a file.
+
+Three things then made it worse rather than better:
+
+- **CLAUDE.md documented it as active**, including a precise ordering rule:
+  *"It must stay FIRST in the plugins array: Expo mods run in reverse
+  registration order, and expo-notifications re-adds `aps-environment` whenever
+  it finds it missing."* That rule is correct. It described a plugin that was not
+  there. **A document describing behaviour is not evidence of behaviour**, and a
+  *detailed* document is more convincing than a vague one, so the better the
+  writing the longer the error survived.
+- **The failure had a plausible owner.** Xcode said a personal team cannot hold
+  these capabilities, which is true, so the conclusion "we need a paid account"
+  fit the evidence perfectly and stopped the investigation. The paid team was
+  eventually obtained and the build still failed, because the entitlement was
+  still being declared.
+- **The two entitlements were coupled.** Only the ~1 GB model needs
+  `extended-virtual-addressing`; the camera needs none of it. Because they were
+  declared together and stripped together, every failure to sign the *model*
+  entitlement also cost the *camera*. The most demonstrable feature in the app
+  was blocked on the least essential one, for months, and nobody separated them
+  because the blocker looked like a single wall.
+
+### The family it belongs to
+
+This is the fourth instance of the shape recorded on 2026-08-26 as **implicit
+membership is invisible membership**, and it is the sharpest:
+
+| set | implied by | what it silently omitted |
+|---|---|---|
+| tables to wipe | foreign keys | `documents`, `settings` |
+| inputs to calendar-check | a loop's iteration | every synthetic page |
+| places the app can send you | the text of six strings | Settings, which did not exist |
+| **config plugins that run** | **a directory listing** | **the one that mattered** |
+
+And it rhymes with the `babel.config.js` finding: the `app` Jest project was
+configured, referenced in the spec, and could not parse its first file for two
+weeks while `npm test` reported green. Configured is not running.
+
+> **A file's existence is not membership.** The registry is the membership list —
+> `plugins`, `WIPED_TABLES`, `SYNTHETIC_PAGES`, `testMatch` — and anything not in
+> it is inert no matter how good it is.
+
+### What would have caught it in one command
+
+Reading the generated artifact:
+
+```bash
+npx expo prebuild --platform ios
+cat ios/*/*.entitlements
+```
+
+This repo already has the rule — *"configuring a thing is not verifying it
+happened; read the generated artifact"* — recorded after four earlier instances.
+It was not applied here, and the reason is worth naming: the artifact lives in
+`ios/`, which is **gitignored and regenerated**, so it never appears in a diff
+and there is no habit of looking at it. **The rule needs to be attached to the
+places it is hardest to follow, not just stated.**
+
+### Fixed
+
+Registered first in the array, and made conditional so the two builds separate:
+
+- **Build A** (default) — strips both. Camera, picker, OCR, cascade, Review,
+  save, notifications. Needs nothing a paid team cannot hold.
+- **Build B** (`CARTA_MODEL_BUILD=1`) — keeps `extended-virtual-addressing`, for
+  the model only.
+
+Verified by reading `ios/Carta/Carta.entitlements`: `default-data-protection` and
+`increased-memory-limit` present, `extended-virtual-addressing` and
+`aps-environment` gone.
+
