@@ -4242,3 +4242,90 @@ someone who already knows what the word means.
 **Suite: 542 tests, 23 suites, typecheck clean.** Lint was not verified this
 session — it needs a native binding that is not installed on the Linux VM the
 work was done from; CI will run it on Ubuntu.
+---
+
+## 2026-08-26 — The check ran in the environment it was checking
+
+`npm ci` failed on Ubuntu and all three CI jobs died inside ten seconds, before
+a single test ran:
+
+```
+npm error Missing: @emnapi/runtime@1.11.3 from lock file
+```
+
+The lockfile carried `@emnapi/runtime` only *nested* under
+`@unrs/resolver-binding-wasm32-wasi`, with no hoisted entry, while
+`@emnapi/wasi-threads` **was** hoisted — internally inconsistent. npm 11
+tolerates that; npm 10 refuses. The runner was Node 22 (npm 10.9.8) and this
+machine is Node 24 (npm 11.6.2).
+
+### The finding is not the lockfile
+
+Before the CI commit, the lockfile was validated here with:
+
+```
+npm ci --dry-run     →  passes
+```
+
+It passed. It was also **meaningless**, for two compounding reasons:
+
+1. It ran under **npm 11**, the resolver that does not mind the gap. The
+   question was "is this lockfile valid", and it was answered by the one
+   implementation that says yes.
+2. It ran in a tree that **already had `node_modules`**. A dry run against a
+   satisfied tree is not a clean install; the thing that fails on a fresh
+   machine is precisely the thing already present here.
+
+So the check consumed the environment it was supposed to be testing, and
+reported the environment back as a result. It could not have failed.
+
+### This is the third instance, and the shape is now unmistakable
+
+- **The DST test.** `vault.test.ts` asserted that a naive millisecond division
+  under-reports a 31-day span as 30 — true only where a spring-forward exists.
+  Green in Pacific, red everywhere else. The test inherited the operator's
+  timezone and called it a property of the code.
+- **The `redacted` flag.** `saveNotice()`'s guard is written correctly and does
+  throw, but it fires on a flag supplied by the caller it is guarding. A caller
+  that lies does not trip the guard, it disarms it. The check inherited its
+  answer from the thing under test.
+- **`npm ci --dry-run`.** As above.
+
+Each one is a check that **took an input from the thing it was checking**. A
+guard that trusts the guarded party, a test that trusts the machine, a
+validation that trusts the resolver that has already accepted the file. None of
+them can fail, and all three read as green for weeks.
+
+> **A check must not draw any input from its subject.** If it does, it reports
+> the subject's own state back and calls it a verdict. The question to ask of any
+> green check is not "did it pass" but **"what would have made it fail, and is
+> that thing reachable from here?"** For `--dry-run` on a warm tree with the
+> permissive resolver, the honest answer was *nothing*.
+
+### The fix, and why it goes this direction
+
+The npm version difference finds nothing true about this app. It is churn, so it
+is removed rather than tested against:
+
+- `.github/workflows/ci.yml` — Node **24** in all three jobs.
+- `package.json` — `engines.node` `>=24 <25`, `engines.npm` `>=11 <12`, and
+  `packageManager: npm@11.6.2`, so the pin lives in the repo and not only in the
+  workflow. A machine that clones this repo now knows what it is supposed to run
+  without reading a CI file.
+- `package-lock.json` regenerated **under npm 11**, the pinned resolver. Doing
+  this under npm 10 (as the first fix did) would have moved the drift to the
+  other side rather than removing it — npm 11 promptly deleted the two entries
+  npm 10 had added, which is the drift demonstrating itself in both directions
+  within one afternoon.
+
+**Ubuntu and UTC stay.** Those are the differences that found the DST bug: a
+different OS and a different timezone are properties this app genuinely has to
+survive. A different npm is not.
+
+### How the fix was verified, given the above
+
+Not with `--dry-run`, and not in this tree. A **pristine clone into a temporary
+directory, with no `node_modules`, running a real `npm ci`** — the same method
+that reproduced the original failure under Node 22 before anything was changed.
+The reproduction failing first is what made the pass afterwards mean anything.
+

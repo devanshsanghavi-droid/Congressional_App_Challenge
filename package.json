@@ -2,6 +2,11 @@
   "name": "carta",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
+  },
+  "packageManager": "npm@11.6.2",
   "main": "expo-router/entry",
   "scripts": {
     "postinstall": "patch-package",
@@ -23,7 +28,7 @@
     "probe:explain": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/explain-probe.ts"
   },
   "comments": {
-    "overrides": "We do not ship a web build (SPEC.md §10 forbids a web version), but expo-router's dev tooling (@expo/router-server, @expo/ui) still pulls react-dom transitively. Left alone npm resolves it to a newer react-dom that demands a newer react than React Native 0.86.2 ships with. Pinning it here keeps one React version in the tree."
+    "overrides": "We do not ship a web build (SPEC.md \u00a710 forbids a web version), but expo-router's dev tooling (@expo/router-server, @expo/ui) still pulls react-dom transitively. Left alone npm resolves it to a newer react-dom that demands a newer react than React Native 0.86.2 ships with. Pinning it here keeps one React version in the tree."
   },
   "overrides": {
     "react-dom": "19.2.3"
