@@ -4357,3 +4357,75 @@ warns; and setting `packageManager` to a version other than the running npm stil
 exits 0, because npm does not enforce that field — corepack does, and `setup-node`
 does not enable it.
 
+---
+
+## 2026-08-26 — Four of the five open sourcing items cannot be checked from here
+
+Attempted to close the `content:check` items that a source can settle rather than
+a fluent Spanish speaker. **Nothing was closed, and the count stays at 12.**
+
+### Every government source refuses this environment
+
+| source | needed for | result |
+|---|---|---|
+| `ssa.gov/locator` and `secure.ssa.gov` | the three SSA office records | **403** |
+| `socialservices.sccgov.org` | the pay-stub freshness rule | **403** |
+| `ssa.santaclaracounty.gov` | same | **403** |
+
+Checked two independent ways — plain `curl` and the agent fetch path — so this is
+not a user-agent artifact of one client. It is the same wall `cdss.ca.gov` and
+`dhcs.ca.gov` already put up (CLAUDE.md §13), now confirmed for SSA and Santa
+Clara County too. **Assume every `.gov` source in this project is a manual
+browser step**, the way the Spanish CDSS forms already were.
+
+### What that means for each item
+
+**The three SSA offices stay open.** Their own `TODO_verify` says the addresses
+"came from third-party aggregators, not ssa.gov" and that SSA closes and
+relocates field offices. A confident wrong address in Carta is worse than no
+address: someone takes a bus across San Jose to a shuttered office on the last
+day of an appeal window. Aggregator data cannot be laundered into a source by
+re-reading it.
+
+**The pay-stub rule stays open, and is NOT narrowed.** The question was whether
+"pay stubs from the last 30 days" applies to CalFresh *recertification* or only
+to a new application. The county page that would answer it is blocked, so the
+answer is unknown — and **narrowing the rule on a guess would be worse than
+leaving it broad**, because the Vault's staleness warning would then either stop
+warning on a document that is genuinely stale, or start warning about one that is
+fine. Neither is a safe default to invent. It keeps `confidence: medium` and its
+existing county wording, and the open item now says precisely what a human has to
+look up.
+
+### The community organisations: researched, not shipped
+
+Both nonprofits are reachable, and their own sites gave everything the item asks
+for. Recorded here so the work is not lost:
+
+**Sacred Heart Community Service** — sacredheartcs.org, read 2026-08-26.
+1381 South First Street, San Jose, CA 95110 · (408) 278-2160 general,
+(408) 278-2172 financial coaching · Mon/Wed/Thu 9:00–16:00, Tue 9:00–18:00,
+Fri 9:00–12:00, closed weekends · member intake in English, Spanish, Vietnamese
+and Traditional Chinese · a computer lab where people can "sign up for CalFresh
+or Medi-Cal" themselves, plus financial coaching with eligibility screening,
+**by appointment**.
+
+**Second Harvest of Silicon Valley** — shfb.org, read 2026-08-26.
+Food Connection hotline 1-800-984-3663 · "here to help you figure out if you
+qualify for CalFresh, answer any questions you may have, and help you apply when
+you're ready" · thirteen languages including Spanish, Vietnamese, Chinese and
+Tagalog · **no public street address or hours stated** — it is a phone service,
+not a counter, which is a genuine difference from every other record in
+`offices.json`.
+
+**It is deliberately not in the content pack yet.** `offices.json` has
+`county_offices` and `ssa_offices`; there is no community-organisation section in
+`parse.ts` and no section rendering one in `where.tsx`. Adding the data without
+those would put an unrendered block in a pack — and this repo has twice shipped a
+string to a user because a pack and a screen disagreed about what a key was for.
+
+So this is a **screen change, not a sourcing task**, and it needs: a parser and a
+type, a `Section` on Where to Go, en+es strings, and a decision about how to
+render an organisation that has a hotline instead of an address. That is Devansh's
+call under the feature freeze — the research is done and waiting.
+
