@@ -89,6 +89,34 @@ guide (*Cómo completar el SAR 7*, adapted from San Diego County) rather than
 from CDSS: **servicios públicos**, **comprobante** / **prueba**, and
 **gastos médicos**. County wording, not state wording, and marked as such.
 
+### The `settings.*` block — Carta's own wording (added 2026-08-25)
+
+About thirty strings: the language picker, the model download, reminder timing,
+the privacy explainer and "delete everything".
+
+**None of it is sourced, and none of it should be.** CLAUDE.md §9 defers to CDSS
+*"wherever it exists"*, and it does not exist here — the state does not publish a
+Spanish translation of "one-time download, about 1.12 GB, use wifi". This is
+software copy, not notice vocabulary, so the rule that applies is the one below:
+prose keeps Carta's words.
+
+Two deliberate choices worth recording:
+
+- **`settings.language.en` / `.es` are endonyms in both locales** — "English" and
+  "Español" render identically whether the UI is in English or Spanish. Someone
+  who cannot read the current language has to be able to find their own, and
+  translating a language's name into a language they do not read defeats the one
+  control that gets them out.
+- **`settings.privacyExact`** is a translation of the verbatim NOTES.md sentence,
+  and it is the one string here that is *technical rather than plain*. It sits
+  under its own heading, below three plain sentences that carry the meaning —
+  see the comment on `PRIVACY_SENTENCE` in `settings.tsx` for why the
+  reading-level rule is knowingly relaxed for that one paragraph and nowhere
+  else.
+
+**Still wants a fluent speaker**, like everything else in this section. Accents
+are correct and the register is deliberately plain, but nobody has read it aloud.
+
 ### The rest of `en.json` / `es.json`
 
 Carta's own plain-language copy, and mostly it should stay that way. **The state's
