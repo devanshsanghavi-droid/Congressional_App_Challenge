@@ -9,7 +9,7 @@
     "icon": "./assets/images/icon.png",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.devanshsanghavi.noticetracker",
+      "bundleIdentifier": "com.devansh-s.carta",
       "icon": "./assets/expo.icon",
       "supportsTablet": false,
       "infoPlist": {

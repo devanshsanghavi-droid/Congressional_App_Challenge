@@ -67,11 +67,18 @@ module.exports = function withPersonalTeamEntitlements(config) {
     // week 1 latency numbers need a paid team before they mean anything.
     // ---------------------------------------------------------------------
     if (process.env['CARTA_MODEL_BUILD'] === '1') {
-      // Build B. The entitlement stays, and it is the caller's problem whether
-      // the signing team can actually hold it.
+      // Build B. Both memory entitlements stay, and it is the caller's problem
+      // whether the signing team can hold them.
       return mod;
     }
+
+    // Both of these exist for the ~1 GB GGUF and nothing else — CLAUDE.md §13
+    // records that without them the model is OOM-killed, and that the failure
+    // misreads as "the model is too big". Build A has no model, so it needs
+    // neither, and every capability dropped here is one fewer thing the App ID
+    // has to be granted before a phone will run the camera.
     delete mod.modResults['com.apple.developer.kernel.extended-virtual-addressing'];
+    delete mod.modResults['com.apple.developer.kernel.increased-memory-limit'];
 
     return mod;
   });

@@ -201,6 +201,22 @@ export default function CaptureScreen() {
           <ErrorState title={t('capture.noTextTitle')} body={t('capture.noTextBody')} />
         )}
 
+        {/* TEMPORARY DEV INSTRUMENTATION — 2026-08-26, remove after the device
+            session. A successful capture surfaces no trace anywhere: the copy
+            button exists only on the failure branch, and
+            `formatRememberedTraces()` has had no caller since fc33506. So on a
+            physical phone there was no way to read `sourcePortrait`, which is
+            the one number that says whether EXIF rotation was applied to a real
+            `takePictureAsync` result. __DEV__ only; never in a release build. */}
+        {__DEV__ ? (
+          <Card>
+            <Text style={styles.foundTitle}>trace (dev)</Text>
+            <Text selectable style={{ fontFamily: 'Menlo', fontSize: 11 }}>
+              {formatTrace(outcome.trace)}
+            </Text>
+          </Card>
+        ) : null}
+
         {/* The warning that saves the extraction. An inverted page still reads
             at full confidence, so nothing else on this screen would tell them. */}
         {outcome.upsideDown ? (

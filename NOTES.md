@@ -4737,3 +4737,83 @@ Verified by reading `ios/Carta/Carta.entitlements`: `default-data-protection` an
 `increased-memory-limit` present, `extended-virtual-addressing` and
 `aps-environment` gone.
 
+---
+
+## 2026-08-26 — The provisioning wall, actually explained
+
+**Carta ran on a physical iPhone for the first time today.** Bundle id
+`com.devansh-s.carta`, installed and launched on an iPhone 16 Pro, iOS 26.6.
+
+### The real cause, and the correction
+
+Every device build since 2026-08-20 failed. Two explanations were recorded along
+the way and **both were wrong**:
+
+1. **The PPQ theory** (2026-08-20, NOTES §"ppq.apple.com"). That free-account
+   installs are checked against Apple's anti-piracy service and ours was being
+   rejected on the bundle identifier or the display name. That entry already
+   admits it was "never proven or disproven — it stopped mattering". **Mark it
+   closed and wrong.** PPQ had nothing to do with it.
+2. **The paid-account theory.** That a personal team simply cannot hold the
+   entitlement set, so the fix was to buy a developer account. This one was
+   *partly* true and entirely misleading: a personal team indeed cannot hold
+   `extended-virtual-addressing`, so the error message fit — but the account was
+   obtained and **the build still failed**, because the entitlement was still
+   being declared by a plugin that was never registered (see the previous entry).
+
+The actual cause, seen only once the account was signed in and the plugin was
+running:
+
+```
+Failed Registering Bundle Identifier: The app identifier
+"com.devanshsanghavi.noticetracker" cannot be registered to your development
+team because it is not available.
+```
+
+**The free personal team `Q5BQCZ5D4G` had permanently claimed that bundle id.**
+Free teams auto-create an App ID the first time you build to a device, and there
+is no portal, no UI and no API to release one — a free account has no
+Certificates, Identifiers & Profiles section to manage. So the string was gone
+forever, and the paid team could never have it, and no amount of correct signing
+configuration was ever going to work.
+
+Fixed by taking a new identifier: **`com.devansh-s.carta`**, matching the paid
+team's existing pattern. Permanent.
+
+> **A free Apple team is not a sandbox you can back out of.** The first device
+> build you attempt burns the bundle identifier. Choose the one you intend to
+> ship *before* the first free-account build, not after.
+
+### Why it took three explanations
+
+Each wrong theory fitted the evidence available at the time, and each one
+**stopped the investigation** because it had a plausible action attached — change
+the display name, buy an account. The pattern is worth naming: an explanation
+that comes with something to *do* is much harder to abandon than one that does
+not, regardless of whether it is correct.
+
+The tell that should have been noticed earlier: the paid account was bought and
+the failure did not change. That is the moment the theory was falsified, and it
+was read as "still more configuration to do" instead.
+
+### And one more piece of instrumentation that reported success by existing
+
+`formatRememberedTraces()`, `hasTraces()` and `clearTraces()` in
+`src/lib/diagnostics/last-trace.ts` have had **no caller since fc33506**.
+`review.tsx` calls `rememberTrace()` on every confirmed notice, so traces have
+been recorded on every single run since the pipeline was built — and nothing has
+ever read one.
+
+That is the same shape as the rest of this list. The instrumentation existed, ran,
+cost something, and produced a result nobody could see. It looks identical to
+working instrumentation from every angle except the one that matters.
+
+It also had a real cost today: on a physical phone there was **no way to read
+`sourcePortrait`**, the one number that says whether EXIF rotation was applied to
+a real `takePictureAsync` result. The copy-trace button exists only on the
+failure branch, so a *successful* capture surfaces nothing.
+
+> **Instrumentation with no reader is not instrumentation.** If nothing consumes
+> it, it is a log file being written to `/dev/null` at the cost of a function
+> call and a false sense of coverage.
+
