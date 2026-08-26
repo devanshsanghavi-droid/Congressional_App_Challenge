@@ -42,7 +42,16 @@ module.exports = function withPersonalTeamEntitlements(config) {
     delete mod.modResults['aps-environment'];
 
     // ---------------------------------------------------------------------
-    // extended-virtual-addressing — REMOVED TEMPORARILY. ⚠️
+    // extended-virtual-addressing — REMOVED FOR BUILD A, KEPT FOR BUILD B.
+    //
+    // Split 2026-08-26. The camera path does not need this entitlement; only
+    // the ~1 GB model does. Coupling them meant every failure to sign the model
+    // entitlement also cost the camera, which is why the capture path had still
+    // never run on a phone months in.
+    //
+    //   Build A (default)          — no model. Camera, picker, OCR, cascade,
+    //                                Review, save, real banner. Stripped here.
+    //   Build B (CARTA_MODEL_BUILD=1) — keeps it, for the model only.
     //
     // This one is real and it is wanted. llama.rn needs it to hold a ~1 GB
     // GGUF model; without it the model is OOM-killed, and CLAUDE.md §13 records
@@ -57,6 +66,11 @@ module.exports = function withPersonalTeamEntitlements(config) {
     // extraction (2026-08-20), so it does not block the capture path, but the
     // week 1 latency numbers need a paid team before they mean anything.
     // ---------------------------------------------------------------------
+    if (process.env['CARTA_MODEL_BUILD'] === '1') {
+      // Build B. The entitlement stays, and it is the caller's problem whether
+      // the signing team can actually hold it.
+      return mod;
+    }
     delete mod.modResults['com.apple.developer.kernel.extended-virtual-addressing'];
 
     return mod;
