@@ -375,8 +375,13 @@ app — treat a11y regressions as build breaks.
   `urgency.ts` and watching both halves fail.** Referenced by filename in the
   README and the video.
 - **Redaction tests** — SSN in 8 formats must never reach the DB or a file.
-- **Readability gate** — Flesch–Kincaid ≤ grade 6 on bundled English
-  explanation content; Fernández-Huerta for Spanish. Fails CI above that.
+- **Readability gate — NOT IMPLEMENTED as of 2026-08-25.** The intent is
+  Flesch–Kincaid ≤ grade 6 on bundled English explanation content and
+  Fernández-Huerta for Spanish. **No such test exists, and this repo has no CI
+  at all** — no `.github/workflows`, so every "fails CI" in this document means
+  "fails `npm test` when someone runs it". Found while drafting the README,
+  because writing the claim down forced a check for the thing being claimed.
+  The reading level is currently held by hand. Do not describe it as enforced.
 - **Metrics table** — `npm run metrics`. Per-field precision/recall by
   condition, for *both* the deterministic-only path and the model path. Goes in
   the README. Three rules it enforces structurally:

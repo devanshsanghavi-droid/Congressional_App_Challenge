@@ -4024,3 +4024,88 @@ database said the tap had worked perfectly, on the wrong row. **An input that
 appears to do nothing has usually done something; look for the side effect
 before concluding the control is dead.**
 
+---
+
+## 2026-08-25 — The feature whose purpose is privacy was the one that did not work
+
+Found while building Settings, which is the screen "Delete everything" lives on.
+
+### What it did
+
+`deleteAllData()` ran two statements:
+
+```sql
+DELETE FROM reminders;
+DELETE FROM notices;
+```
+
+There are **five** tables. `requirements` really does cascade from `notices`, so
+it went. `documents` and `settings` did not.
+
+So a user who tapped "Delete everything" — the strongest privacy control in the
+app, the one whose copy says *"Removes every notice, every document, every
+reminder and the key that unlocks them. This cannot be undone"* — kept:
+
+- **every photographed document they owned.** Pay stubs, bank statements, a
+  Social Security card, an immigration document. The Vault's whole contents.
+- **every setting**, including `onboardingDone`, so the app did not even return
+  to a first-launch state afterwards.
+
+### Why it was invisible, and why that is the interesting part
+
+**The bug was produced by a good design decision, working exactly as designed.**
+
+`schema.ts` makes `documents` deliberately standalone, and says why in a comment
+written weeks earlier:
+
+> a pay stub photographed for August's SAR 7 is the same pay stub the next notice
+> asks for, and collapsing them would either duplicate the file or lose the
+> history. It is also what makes the Vault possible later without another
+> migration.
+
+That is correct. A document *should* outlive the notice it was attached to —
+that is the entire premise of the Vault, and the Vault is a real feature that
+exists because of it.
+
+But "outlives its notice" and "survives a wipe" are the same sentence to a
+foreign key. The deletion code was written when `documents` did not exist, it
+said `DELETE FROM notices` and trusted the schema to carry the rest, and the
+schema carried exactly what it had been told to carry. Nothing regressed.
+Nothing threw. The two decisions were made months apart by the same person and
+neither one was wrong on its own.
+
+### The shape, for the written answer
+
+Carta's pitch is that nothing leaves the phone. The corollary a user actually
+cares about is that they can get it *off* the phone — and for a mixed-status
+household deciding whether to trust this app at all, that is not a nice-to-have.
+
+**The feature whose entire purpose is privacy was the one that did not work, and
+it did not work because a decision made to enable a different feature quietly
+changed what a third piece of code meant.** It is not a typo, it is not a race,
+and no amount of care while writing `deleteAllData()` would have caught it,
+because that function did not change. The thing that changed was the meaning of
+"delete the notices".
+
+That is the failure mode this project keeps finding, in a new costume:
+configuring a thing is not verifying it happened; observing a discrepancy is not
+handling it; and now — **a guarantee is not transitive. Deleting a parent does
+not delete everything the user thinks of as "theirs", and the only way to know is
+to enumerate.**
+
+### The fix
+
+`WIPED_TABLES` in `db/index.ts` names all five explicitly, children first, and
+nothing relies on cascade. `wipe.ts` composes the four stores that have to go
+together — iOS's scheduled notifications, the database, the image files and the
+cached plaintext previews, and the keychain entries — collects failures instead
+of stopping at the first, and reports what did not go rather than claiming
+success.
+
+Verified on an erased Simulator: 38 notices and 152 reminders across five tables
+went to **0|0|0|0|0**, with no encrypted image files left on disk.
+
+**The general rule this leaves behind:** a destructive operation must enumerate
+what it destroys. Relying on the schema to imply the list means the list changes
+whenever the schema does, silently, in the one code path where silence is worst.
+
