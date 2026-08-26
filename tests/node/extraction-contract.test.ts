@@ -78,6 +78,41 @@ function synthetic(lines: readonly string[]): ExtractionInput {
   };
 }
 
+/**
+ * A synthetic page with **controlled boxes**.
+ *
+ * `synthetic()` above stacks every line at the same `x`, which is fine for the
+ * text-shaped assertions but useless for anything that reads geometry: a column
+ * walk cannot distinguish a left-hand address block from a right-hand metadata
+ * column if both are at x = 0.1. These cases are specifically about geometry, so
+ * they place their own boxes.
+ *
+ * `y` is derived from row order and `h` is a plausible line height, so
+ * "same row" and "the line above" mean what they mean on a real page.
+ */
+function syntheticBoxed(rows: readonly { text: string; x: number; row: number }[]): ExtractionInput {
+  const built = rows.map(({ text, x, row }) => ({
+    text,
+    confidence: 1,
+    box: { x, y: 0.05 + row * 0.022, w: Math.min(0.9 - x, 0.02 + text.length * 0.011), h: 0.016 },
+  }));
+  return {
+    lines: built,
+    text: built.map((line) => line.text).join('\n'),
+    width: 1700,
+    height: 2200,
+    nowMs: CORPUS_CLOCK_MS,
+  };
+}
+
+/** Accent- and case-insensitive comparison, so a correct reading in any casing
+ *  or with accents intact all count as the same person. */
+function samePerson(a: string, b: string): boolean {
+  const fold = (v: string): string =>
+    v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/\s+/g, ' ').trim();
+  return fold(a) === fold(b);
+}
+
 const DATE_FIELDS = [
   'noticeDate',
   'deadlineDate',
@@ -425,5 +460,117 @@ describe('an approval', () => {
     // becomes a red countdown on Home and an escalating reminder ladder for a
     // person whose benefits were just granted.
     expect(extractNotice(approval).fields.deadlineDate?.value).toBeUndefined();
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// The recipient name — three cases the corpus cannot measure
+// ---------------------------------------------------------------------------
+
+/**
+ * WHY THESE ARE SYNTHETIC, AND WHY THAT IS NOT A SHORTCUT
+ * -------------------------------------------------------
+ * All ten ground-truth recipient names are unaccented and upper-case, including
+ * `ROSA MARTINEZ CRUZ` and `JOSE RAMIREZ` — two names that would carry accents
+ * on a real notice. And while four of the twenty-three real captures do contain
+ * a second CA ZIP (the `na960x` appeals PO box in Sacramento, and `505 W JULIAN
+ * ST` on the housing notice), in **every** one of them the recipient's city line
+ * is emitted before the sender's. So the corpus contains the hazard and never
+ * once orders it adversarially.
+ *
+ * The consequence is precise: `npm run metrics` will report `recipient_name`
+ * near its OCR ceiling while the field can still fail, silently, for a large
+ * share of the households this app is built for. **A measurement cannot see what
+ * its test data does not contain**, and the corpus is frozen until final metrics,
+ * so the gap is covered here instead of by adding notices to it.
+ *
+ * Each case asserts the *contract*, never a value: **returning `undefined` is a
+ * pass.** Recall belongs to the metrics harness. What must never happen is a
+ * confident wrong name — the app shows it on Review under "check this against
+ * your letter", and a plausible-looking wrong name is exactly the thing a tired
+ * person taps past.
+ */
+describe('the recipient name is never a different name', () => {
+  /** A left-hand address block, with the right-hand metadata column interleaved
+   *  into reading order the way a real recogniser emits it. */
+  const accented = syntheticBoxed([
+    { text: 'COUNTY OF SANTA CLARA', x: 0.06, row: 0 },
+    { text: 'NOTICE OF ACTION', x: 0.06, row: 2 },
+    { text: 'JOSÉ MARTÍNEZ', x: 0.06, row: 5 },
+    { text: 'Case Number: 01-4472-9931', x: 0.60, row: 5 },
+    { text: '1428 STORY ROAD APT 12', x: 0.06, row: 6 },
+    { text: 'Worker ID: SC-2214', x: 0.60, row: 6 },
+    { text: 'SAN JOSE, CA 95122', x: 0.06, row: 7 },
+    { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 9 },
+  ]);
+
+  const mixedCase = syntheticBoxed([
+    { text: 'County of Santa Clara', x: 0.06, row: 0 },
+    { text: 'Notice of Action', x: 0.06, row: 2 },
+    { text: 'Maria Reyes', x: 0.06, row: 5 },
+    { text: '1428 Story Road Apt 12', x: 0.06, row: 6 },
+    { text: 'San Jose, CA 95122', x: 0.06, row: 7 },
+    { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 9 },
+  ]);
+
+  /**
+   * The sender's block, complete with its own CA ZIP, printed **above** the
+   * recipient's. This is the ordering the corpus never produces.
+   */
+  const senderFirst = syntheticBoxed([
+    { text: 'COUNTY OF SANTA CLARA', x: 0.06, row: 0 },
+    { text: 'SOCIAL SERVICES AGENCY', x: 0.06, row: 1 },
+    { text: '333 W JULIAN ST', x: 0.06, row: 2 },
+    { text: 'SAN JOSE, CA 95110', x: 0.06, row: 3 },
+    { text: 'NOTICE OF ACTION', x: 0.06, row: 6 },
+    { text: 'MARIA REYES', x: 0.06, row: 9 },
+    { text: '1428 STORY ROAD APT 12', x: 0.06, row: 10 },
+    { text: 'SAN JOSE, CA 95122', x: 0.06, row: 11 },
+    { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 13 },
+  ]);
+
+  it('has fixtures that still contain what they are testing', () => {
+    // Guards the way this suite decays: someone tidies a fixture, the distractor
+    // disappears, and three tests keep passing while testing nothing.
+    expect(accented.text).toMatch(/JOSÉ MARTÍNEZ/);
+    expect(mixedCase.text).toMatch(/Maria Reyes/);
+    expect(senderFirst.text.indexOf('CA 95110')).toBeLessThan(
+      senderFirst.text.indexOf('CA 95122'),
+    );
+  });
+
+  it('reads an accented name, or reads nothing — never the street or the county', () => {
+    const value = extractNotice(accented).fields.recipientName?.value;
+    if (value === undefined) return;
+    expect(samePerson(value, 'JOSÉ MARTÍNEZ')).toBe(true);
+  });
+
+  it('reads a mixed-case name, or reads nothing', () => {
+    const value = extractNotice(mixedCase).fields.recipientName?.value;
+    if (value === undefined) return;
+    expect(samePerson(value, 'Maria Reyes')).toBe(true);
+  });
+
+  it('never returns the sender when the agency block is printed first', () => {
+    // The specific wrong answer this guards: anchoring on the first CA ZIP on the
+    // page reaches the AGENCY's block, and "SOCIAL SERVICES AGENCY" is upper-case,
+    // 22 characters, letters and spaces — it satisfies a name-shaped check. The
+    // wrong answer here is well-formed, which is why a shape test alone cannot
+    // catch it and why this is a test rather than a comment.
+    const value = extractNotice(senderFirst).fields.recipientName?.value;
+    if (value === undefined) return;
+    expect(samePerson(value, 'MARIA REYES')).toBe(true);
+  });
+
+  it('never returns an address line as a name, on any of the three', () => {
+    for (const page of [accented, mixedCase, senderFirst]) {
+      const value = extractNotice(page).fields.recipientName?.value;
+      if (value === undefined) continue;
+      expect(value).not.toMatch(/^\d/);
+      expect(value).not.toMatch(/,\s*CA\s+\d{5}/);
+      expect(value.toUpperCase()).not.toContain('AGENCY');
+      expect(value.toUpperCase()).not.toContain('COUNTY OF');
+    }
   });
 });

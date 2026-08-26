@@ -4429,3 +4429,95 @@ type, a `Section` on Where to Go, en+es strings, and a decision about how to
 render an organisation that has a hotline instead of an address. That is Devansh's
 call under the feature freeze — the research is done and waiting.
 
+---
+
+## 2026-08-26 — What the corpus cannot measure about `recipient_name`
+
+Two defects in the column-walk approach to finding the recipient. Neither can be
+observed by `npm run metrics`, because the corpus does not contain the inputs
+that trigger them. Recorded as a **limit on the measurement**, not as a bug list:
+the corpus is frozen until final metrics and must not grow to chase this.
+
+### 1. Every ground-truth name is unaccented and upper-case
+
+All ten:
+
+```
+MARIA REYES · DAVID OKONKWO · ANH TRAN · ROSA MARTINEZ CRUZ · CARMEN DELGADO
+JOSE RAMIREZ · GLORIA HAYES · PATRICIA NGUYEN · SAMUEL BRIGHT
+```
+
+**`ROSA MARTINEZ CRUZ` and `JOSE RAMIREZ` would carry accents on a real notice**
+— MARTÍNEZ, JOSÉ. The name-shape test that guards the walk is
+`/^[A-Z][A-Z .'-]{3,40}$/`, whose character class contains no accented capitals
+and no mixed case. So `JOSÉ MARTÍNEZ` and `Maria Reyes` both fail the shape test
+and the field returns `undefined`.
+
+The corpus cannot see this. Every fixture satisfies the pattern, so the metrics
+run reports `recipient_name` at or near its OCR ceiling while the field fails,
+silently, for a substantial share of the households Carta is built for. **The
+measurement is not wrong. It is answering a narrower question than it appears to
+answer.**
+
+### 2. The sender's address block is never printed first
+
+The walk anchors on the first line matching `/,\s*CA\s+\d{5}/`. The premise
+"every capture has exactly one CA ZIP" turns out to be false — **four of the
+twenty-three real captures have two**: the three `na960x` captures carry the
+state appeals PO box in Sacramento, and `hcv-angled-20` carries
+`505 W JULIAN ST, SAN JOSE, CA 95110`.
+
+But in all four, **the recipient's city line is emitted before the sender's**. So
+the corpus contains the hazard and never once orders it adversarially. The
+untested case is not "more than one ZIP" — it is specifically *sender-before-
+recipient ordering*, which is narrower and more precise.
+
+That ordering produces a **well-formed wrong answer**, not a blank. Anchoring on
+the agency's ZIP walks up to `333 W JULIAN ST`, takes the line above it, and gets
+`SOCIAL SERVICES AGENCY` — upper-case, 22 characters, letters and spaces, which
+satisfies the name-shape test. Verified against the code actually wired into the
+app today: `scaffold.ts` returns exactly that.
+
+This is the worse of the two defects. Defect 1 fails to `undefined`, which costs
+the user a typing prompt. Defect 2 puts a plausible wrong name on Review under
+the words "check this against your letter", which is precisely what a tired
+person taps past.
+
+### The general form, which is the part worth keeping
+
+> **A measurement cannot see what its test data does not contain.**
+
+This is the same instinct as `MIN_IMAGES_FOR_RATE`, applied to *content* rather
+than *sample size*. That constant already stops the harness printing a percentage
+for a condition with too few images — it refuses to answer a question the data
+cannot support. Nothing yet stops the harness printing a confident
+`recipient_name` figure derived from ten names that are all shaped the same way.
+
+The failure mode is worse than an ordinary blind spot, because a corpus is
+*generated*: `make_corpus.py` produced ten fictional recipients, and whoever
+wrote them typed names they could type. The bias is not random and it points in a
+predictable direction — toward the ASCII, toward the majority-culture spelling,
+and away from the user in `CLAUDE.md`'s own persona, whose primary language is
+Spanish.
+
+**A corpus of fictional data inherits its author's defaults.** Ask of any test
+set not only "is it large enough" but "what does it not contain, and does the
+thing it omits correlate with the users who matter most."
+
+### What was done instead of touching the corpus
+
+Three cases added to `tests/node/extraction-contract.test.ts` as synthetic pages
+with controlled boxes: an accented name, a mixed-case name, and a page where the
+agency's block with its own CA ZIP precedes the recipient's.
+
+They assert the **contract, not a value** — returning `undefined` is a pass,
+because recall belongs to the metrics harness. What must never happen is a
+confident wrong name. There is also a fixture-integrity test, because the way a
+suite like this decays is that someone tidies a fixture, the distractor
+disappears, and the tests keep passing while testing nothing.
+
+**Two of them are red as of this commit**, against `scaffold.ts`. That is a true
+positive, not a broken test, and it is deliberately not suppressed: the scaffold
+reproduces the defect and is deleted at step 4 of the build order, at which point
+these become the definition of done for `recipientName`.
+
