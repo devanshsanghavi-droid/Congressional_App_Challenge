@@ -36,15 +36,48 @@ async function migrate(db: SQLite.SQLiteDatabase): Promise<void> {
   }
 }
 
+/**
+ * The in-flight open, memoised.
+ *
+ * **The promise, not the resolved handle.** Caching only the handle guards
+ * nothing until the first open has finished: two callers that arrive while it
+ * is still running both see `undefined`, both open the database, and both run
+ * `migrate()`. `CREATE TABLE IF NOT EXISTS` survives that. Migration v2's
+ * `ALTER TABLE notices DROP COLUMN recipient_name` does not — the second run
+ * throws "no such column", the whole open rejects, and the screen that asked
+ * renders its error state.
+ *
+ * That bug was latent from v2 until 2026-08-24, when the onboarding gate began
+ * reading a setting from the root layout at the same moment Home reads the
+ * notice list. Nothing had ever opened the database twice at once before, so a
+ * race that was always there had never been run. Found on a fresh install,
+ * where it presents as "Carta could not open your notices" on first launch —
+ * the worst possible first impression and invisible on every later launch,
+ * because by then the migrations are done and the second run is a no-op.
+ */
+let opening: Promise<SQLite.SQLiteDatabase> | undefined;
+
 export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
   if (database) return database;
-  const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
-  // Foreign keys are OFF by default in SQLite and must be set per connection.
-  // Without this, deleting a notice orphans its reminders instead of cascading.
-  await db.execAsync('PRAGMA foreign_keys = ON');
-  await migrate(db);
-  database = db;
-  return db;
+  // Every concurrent caller awaits the SAME open. One migration run, always.
+  opening ??= (async () => {
+    const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
+    // Foreign keys are OFF by default in SQLite and must be set per connection.
+    // Without this, deleting a notice orphans its reminders instead of cascading.
+    await db.execAsync('PRAGMA foreign_keys = ON');
+    await migrate(db);
+    database = db;
+    return db;
+  })();
+
+  try {
+    return await opening;
+  } catch (error) {
+    // A failed open must not be cached, or the app is broken until it is force
+    // quit. Clearing it lets the next caller — or a "Try again" tap — retry.
+    opening = undefined;
+    throw error;
+  }
 }
 
 /**
@@ -62,4 +95,5 @@ export async function deleteAllData(): Promise<void> {
 /** Testing seam: forget the open handle so the next call re-opens and migrates. */
 export function resetConnectionForTests(): void {
   database = undefined;
+  opening = undefined;
 }

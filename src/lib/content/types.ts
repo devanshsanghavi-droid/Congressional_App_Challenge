@@ -42,6 +42,12 @@ export interface CrossReferenceEntry extends Sourced {
   /** Plain-language description of the programme. ≤6th grade (CLAUDE.md §10). */
   readonly what: string;
   /**
+   * The same sentence in Spanish. Required, not optional: a Spanish speaker
+   * shown an English programme description is the failure this field exists to
+   * prevent, and making it optional is how that ships quietly.
+   */
+  readonly whatEs: string;
+  /**
    * True when an official source says receipt of the source programme itself
    * establishes eligibility. False means a common co-occurrence — which is
    * still only ever phrased at population level.
@@ -68,6 +74,13 @@ export interface CrossReferencePack {
   readonly publicChargeNote: PublicChargeNote;
   /** Required on every rendering. */
   readonly disclaimer: string;
+  /** The same, in Spanish. Required — see `whatEs`. */
+  readonly disclaimerEs: string;
+  /**
+   * Set while the Spanish descriptions are still unreviewed. Surfaced by
+   * `outstandingVerifications()` so `npm run content:check` names it.
+   */
+  readonly translationTodo?: string;
 }
 
 export interface OfficeLocation {
@@ -105,6 +118,25 @@ export interface AppealsInfo extends Sourced {
   readonly ombudsNote: string;
 }
 
+/**
+ * How recent a document has to be, for the Vault's staleness warning.
+ *
+ * `Sourced`, unlike `DocType`, and that difference is the point. A document
+ * type is a noun — "a gas, electric, water, or phone bill" — and needs no
+ * citation. **"Most offices want the last 30 days" is a rule about what an
+ * agency requires**, which CLAUDE.md §16 forbids inventing, so it carries a
+ * source URL, a verification date and a confidence like every other claim in
+ * the packs. A doc type with no entry here gets its age shown and no judgement
+ * attached.
+ */
+export interface DocumentFreshness extends Sourced {
+  /** Doc-type id this applies to. */
+  readonly docType: string;
+  readonly days: number;
+  readonly en: string;
+  readonly es: string;
+}
+
 export interface OfficesPack {
   readonly countyAgency: string;
   readonly countyLocations: readonly OfficeLocation[];
@@ -120,6 +152,8 @@ export interface OfficesPack {
   readonly appeals: AppealsInfo;
   readonly whatToBringAlways: readonly string[];
   readonly whatToBringUsually: readonly string[];
+  /** Doc-type id -> how recent it has to be. Empty is a valid answer. */
+  readonly freshness: ReadonlyMap<string, DocumentFreshness>;
   readonly stillNeeded: readonly string[];
 }
 
@@ -128,4 +162,31 @@ export interface OutstandingVerification {
   readonly where: string;
   readonly reason: string;
   readonly confidence: Confidence;
+}
+
+/**
+ * A kind of document a notice might ask for.
+ *
+ * Deliberately NOT `Sourced`. Every other pack entry makes a claim about the
+ * world that has to be checked at an agency — an appeal window, an office's
+ * hours, whether receipt of one programme establishes eligibility for another.
+ * This file makes no such claim: it is a vocabulary of ordinary nouns, and
+ * attaching a `source_url` to "a gas, electric, water, or phone bill" would be
+ * provenance theatre. What must never appear here is which programme requires
+ * what — see `_not_a_rule` in the JSON.
+ */
+export interface DocType {
+  readonly id: string;
+  readonly label: string;
+  readonly labelEs: string;
+  readonly what: string;
+  readonly whatEs: string;
+}
+
+export interface DocTypesPack {
+  readonly byId: ReadonlyMap<string, DocType>;
+  /** In file order, which is the order the picker offers them. */
+  readonly all: readonly DocType[];
+  /** Set while the Spanish is still awaiting CDSS wording and a human read. */
+  readonly translationTodo?: string;
 }

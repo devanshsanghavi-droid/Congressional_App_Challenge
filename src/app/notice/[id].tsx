@@ -28,12 +28,15 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Linking, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Body, Button, Caption, Card, Divider, ErrorState, Muted, Screen, Section } from '@/components/ui';
+import { Body, Button, Caption, Card, Divider, ErrorState, Muted, Screen, Section, Sheet } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
 import { Explanation } from '@/components/Explanation';
+import { WorthChecking } from '@/components/WorthChecking';
 import { loadOffices } from '@/lib/content';
+import { listRequirements, progressOf } from '@/lib/db/checklist';
+import type { ChecklistProgress } from '@/lib/db/checklist';
 import type { AppealsInfo } from '@/lib/content/types';
 import { decryptCaptureForDisplay, discardDecryptedPreviews } from '@/lib/db/images';
 import { getNotice, getNoticeRecipientName, getNoticeText } from '@/lib/db/notices';
@@ -74,6 +77,7 @@ export default function NoticeDetailScreen() {
   const [appeals, setAppeals] = useState<AppealsInfo>();
   const [photoUri, setPhotoUri] = useState<string>();
   const [viewing, setViewing] = useState<Viewing>('none');
+  const [checklist, setChecklist] = useState<ChecklistProgress>();
   const [failed, setFailed] = useState(false);
   const [now] = useState(() => Date.now());
 
@@ -93,6 +97,10 @@ export default function NoticeDetailScreen() {
         // that shows a single record — never from Home.
         setRecipient(await getNoticeRecipientName(id));
         setOriginalText(await getNoticeText(id));
+        // Read after the notice, never before: a checklist that fails to load
+        // must not stop the deadline rendering, which is what this screen is
+        // actually for.
+        if (!cancelled) setChecklist(progressOf(await listRequirements(id)));
       } catch {
         if (!cancelled) setFailed(true);
       }
@@ -190,6 +198,33 @@ export default function NoticeDetailScreen() {
 
       <Divider />
 
+      {/* Between "by when" and the model's rewrite, because "what do I have to
+          send" is the second question after "when" — and it is the one that
+          decides whether the deadline is actually met. A summary and a way in,
+          never the list itself: the countdown stays the screen (CLAUDE.md §2). */}
+      <Section title={t('checklist.openChecklist')}>
+        {checklist === undefined ? null : checklist.total === 0 ? (
+          <Muted>{t('checklist.summaryNone')}</Muted>
+        ) : checklist.ready ? (
+          <Body>{t('checklist.summaryReady')}</Body>
+        ) : (
+          <Body>
+            {t('checklist.summaryProgress', {
+              done: checklist.resolved,
+              total: checklist.total,
+            })}
+          </Body>
+        )}
+        <Button
+          title={t('checklist.openChecklist')}
+          variant="secondary"
+          accessibilityHint={t('checklist.openChecklistHint')}
+          onPress={() => router.push(`/checklist/${id}`)}
+        />
+      </Section>
+
+      <Divider />
+
       {/* On demand, behind a tap. The four sections above are the app's own and
           do not wait on inference; this offers the model's rewrite underneath
           them. Guardrails live inside the component. */}
@@ -206,6 +241,19 @@ export default function NoticeDetailScreen() {
             {...(notice.aidPaidPendingDeadline === undefined
               ? {}
               : { hearingBy: longDate(notice.aidPaidPendingDeadline, locale) })}
+            /* Every date on this notice, not just the two above. The user
+               confirmed all of them on Review, and the sanity pass withholds
+               any date it cannot find here — so a short list makes it reject
+               correct explanations that mention the coverage end date. */
+            confirmedDates={[
+              notice.deadlineDate,
+              notice.aidPaidPendingDeadline,
+              notice.appealDeadline,
+              notice.noticeDate,
+              notice.effectiveDate,
+            ]
+              .filter((ms): ms is number => ms !== undefined)
+              .map((ms) => longDate(ms, locale))}
           />
         ) : (
           // Without the stored text there is nothing to rewrite, and saying so
@@ -280,21 +328,30 @@ export default function NoticeDetailScreen() {
         )}
       </Section>
 
+      {/* Last, deliberately. SPEC §2.1 puts the cross-reference on this screen
+          rather than on one of its own, and CLAUDE.md §2 says nothing may take
+          priority from the countdown — so it sits below the trust affordance,
+          where someone who has already dealt with the deadline will find it.
+          It renders nothing at all when the programme has no entries. */}
+      <WorthChecking program={notice.programId} />
+
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
 
-      <Modal visible={viewing !== 'none'} animationType="slide" onRequestClose={() => setViewing('none')}>
-        <Screen footer={<Button title={t('common.close')} onPress={() => setViewing('none')} />}>
-          {viewing === 'photo' && photoUri ? (
-            <Image source={{ uri: photoUri }} style={styles.photo} accessibilityLabel={t('detail.photoAlt')} />
-          ) : null}
-          {viewing === 'text' && originalText ? (
-            <>
-              <Caption>{t('detail.textIsAsRead')}</Caption>
-              <Text style={styles.originalText}>{originalText}</Text>
-            </>
-          ) : null}
-        </Screen>
-      </Modal>
+      <Sheet
+        visible={viewing !== 'none'}
+        onClose={() => setViewing('none')}
+        closeLabel={t('common.close')}
+      >
+        {viewing === 'photo' && photoUri ? (
+          <Image source={{ uri: photoUri }} style={styles.photo} accessibilityLabel={t('detail.photoAlt')} />
+        ) : null}
+        {viewing === 'text' && originalText ? (
+          <>
+            <Caption>{t('detail.textIsAsRead')}</Caption>
+            <Text style={styles.originalText}>{originalText}</Text>
+          </>
+        ) : null}
+      </Sheet>
     </Screen>
   );
 }

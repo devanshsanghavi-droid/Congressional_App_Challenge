@@ -22,12 +22,23 @@ export const SETTINGS = {
    * want. It is never kept in plaintext either way.
    */
   deleteSourceImage: 'deleteSourceImage',
+
+  /**
+   * Has the user been through onboarding.
+   *
+   * **Defaults to false**, so a fresh install sees it once and every later
+   * launch does not. Stored rather than derived from "are there notices yet",
+   * because someone who skipped onboarding and then deleted their only notice
+   * should not be shown it again — they already made that choice.
+   */
+  onboardingDone: 'onboardingDone',
 } as const;
 
 export type SettingKey = (typeof SETTINGS)[keyof typeof SETTINGS];
 
 const DEFAULTS: Readonly<Record<SettingKey, boolean>> = {
   deleteSourceImage: true,
+  onboardingDone: false,
 };
 
 export async function getBooleanSetting(key: SettingKey): Promise<boolean> {

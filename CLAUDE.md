@@ -238,6 +238,11 @@ content/                 static bundled JSON: programs, explanations, doc types,
                          offices, "worth checking" cross-reference
 content/templates/       notice templates as DATA — part of the island
 
+tests/app/               jest-expo/ios tests (needs babel.config.js — see §13)
+  no-network.test.ts     THE privacy gate, SPEC 8.3. Runtime + static halves.
+  screens.test.tsx       Home / Review / Notice Detail rendering
+  setup.ts               sets IS_REACT_ACT_ENVIRONMENT for React 19
+
 tests/node/              bare-Node tests
   extraction-island.test.ts   reads bytes on disk, fails the build on a violation
   corpus-integrity.test.ts    corpus map vs disk; the 01->02 chain; the approval
@@ -245,6 +250,8 @@ tests/node/              bare-Node tests
   urgency.test.ts             countdown tiers, reminder ladder, DST boundaries
 
 src/lib/urgency.ts       countdown tier + reminder ladder (SPEC 6/7), pure
+src/lib/checklist.ts     checklist + Vault rules, pure. `ready` is false when
+                         empty; `documentAge` is never stale without a source.
 src/lib/capture/pipeline.ts   ONE traced path: OCR -> orientation -> extract.
                               Camera, picker and self-test all call it.
 src/lib/diagnostics/     stage trace with timings; copyable, carries no notice
@@ -256,6 +263,9 @@ src/lib/content/         bundled content packs, validated on parse
 
 content/cross_reference.json   "worth checking" cross-references, sourced
 content/offices.json           Where to Go directory + appeals routing
+content/doc_types.json         document VOCABULARY for the Checklist. Never a
+                               rule about what a programme requires (16).
+                               Freshness rules live in offices.json, sourced.
 
 tools/corpus/            THE EVALUATION CORPUS - 10 notices, 23 real captures,
                          56 synthetic variants, ground_truth.json, generators
@@ -348,9 +358,15 @@ app — treat a11y regressions as build breaks.
 
 ## 11. Testing and ship gates
 
-- **`no-network.test.ts`** — monkey-patches `fetch`, `XMLHttpRequest`, and the
-  RN bridge to throw, then runs the full pipeline over the corpus. Any network
-  attempt fails the build. Referenced by filename in the README and the video.
+- **`no-network.test.ts`** — EXISTS as of 2026-08-24, in `tests/app/`. Two
+  halves: a runtime half that poisons `fetch`, `XMLHttpRequest`, `WebSocket`,
+  `sendBeacon` **and the native bridge modules** and runs the notice-data path
+  over all 79 corpus OCR records; and a static half that reads every module on
+  that path off disk and fails on any networking API or hard-coded URL.
+  `src/lib/llm/model.ts` is the one exclusion, by name. 41 assertions, four of
+  which test the monkeypatch itself. **Verified by injecting a `fetch` into
+  `urgency.ts` and watching both halves fail.** Referenced by filename in the
+  README and the video.
 - **Redaction tests** — SSN in 8 formats must never reach the DB or a file.
 - **Readability gate** — Flesch–Kincaid ≤ grade 6 on bundled English
   explanation content; Fernández-Huerta for Spanish. Fails CI above that.
@@ -421,6 +437,34 @@ Week 2 of nine. Eight commits. `main` pushed to
 simulator; extraction island enforced and probe-verified; i18n en/es wired;
 storage/OCR/LLM dependencies installed and linking; week 1 benchmark harness
 built, committed, and verified to compile and bundle.
+
+**2026-08-24 — Checklist, "worth checking", Spanish; the explanation grammar
+is measured and does not work.** Schema v3 (`documents` + `requirements`),
+`content/doc_types.json`, the Checklist screen, and the cross-reference section
+on Notice Detail. Ten screenshots in `screenshots/` from real corpus photographs
+through the real UI, which found four layout/copy defects — one fixed (`Sheet`
+and the safe-area inset), three open (see NOTES.md). **181 tests, 13 suites.**
+The explanation grammar's digit ban was run over all ten notices for the first
+time and fails three separate ways; the design decision is Devansh's and the
+numbers are in NOTES.md.
+
+**2026-08-24 (later) — the explanation guardrail is redesigned and measured,
+and the privacy gate exists.** The digit ban is gone; the explanation has no
+"by when" section because Notice Detail renders that date from the confirmed
+field. **2 of 10 shown → 8 of 10**, both remaining withholdings genuine. The
+sanity pass is now a net over all confirmed dates plus a letter-number check.
+**`no-network.test.ts` exists**, in two halves, verified by breaking it.
+`tests/app/` went from empty-and-unrunnable to 61 tests. **247 tests, 15 suites,
+both projects.** Three of the four screenshot defects fixed and verified.
+
+**2026-08-24 (later still) — the below-the-line screens are built.** Vault,
+Where to Go and onboarding, all verified on the Simulator. **266 tests, 17
+suites.** i18n en/es parity is now a build gate. Found and fixed a
+`getDatabase()` race that broke **first launch** on any fresh install — latent
+since schema v2, exposed by the onboarding gate. `content:check` went **10 → 14**:
+three genuinely new claims plus one counting bug (doc types were never passed to
+the gate). **CDSS Spanish form wording could not be applied — cdss.ca.gov blocks
+automated requests**, so the doc-type Spanish is Carta's own and the pack says so.
 
 **NEXT — the camera path has never run.** Everything proven so far is
 downstream of a file a script put on disk. `DEVICE-TEST.md` is the tap-by-tap
@@ -605,6 +649,54 @@ Devansh (an afternoon each).
   OCR cache stored recognition time and was therefore never byte-identical
   across runs, which defeats the point of committing it. Timing is measured and
   reported, not stored.
+- **A `SafeAreaView` inside a React Native `Modal` measures a ZERO top inset.**
+  `Modal` renders into its own view hierarchy and `react-native-safe-area-context`
+  does not carry insets across that boundary, so the first line of every
+  full-screen sheet rendered under the clock and the Dynamic Island. Use `Sheet`
+  from `components/ui.tsx`, which re-provides `SafeAreaProvider` inside the
+  modal. Never put a bare `Screen` in a `Modal`.
+- **`minWidth` is a floor, not a cap.** `pickButton: { minWidth: 120 }` beside a
+  76pt shutter in a `space-between` row reads as "this column is 120pt". It is
+  not — the label expands it and the row overflows. Found by screenshot, not by
+  test; layout defects are invisible to this repo's test suite.
+- **Never ask the model for a value the app already has.** The explanation
+  guardrail went through three designs (NOTES.md 2026-08-24, the long entry).
+  Constraining a date's *shape* fabricated dates, because a grammar with no null
+  production converts every gap into a confident fabrication. *Forbidding
+  digits* made the model write numbers as letters — "October XXX XXX" reached a
+  user — emit **zero** placeholders across ten notices, and loop on 8 of 10. The
+  fix was to delete the "by when" section from the explanation entirely: Notice
+  Detail renders the confirmed date, the model is never asked. **2 of 10 shown →
+  8 of 10**, and both remaining withholdings are real unconfirmed dates.
+- **A grammar rule with no length bound will eat the whole token budget.**
+  `line ::= char+` withheld 6 of 10 as `incomplete` — the model never reached the
+  last section. Bound in **sentences**, not characters: a character cap cuts
+  mid-word and the next section reads as a continuation of the previous one.
+- **The `app` Jest project needs `babel.config.js` + `babel-preset-expo`.**
+  Without them it cannot parse React Native's Flow-typed `jest/setup.js` and
+  fails before the first test. Metro does not need them, so the app builds fine
+  while the test project is dead. Also: React 19 needs
+  `IS_REACT_ACT_ENVIRONMENT` (in `tests/app/setup.ts`), and **`render` is async
+  in @testing-library/react-native v14** — both present as "`render` function has
+  not been called", which reads as a broken test, not missing configuration.
+- **`ask.sh` cannot extract prose from llama-cli b10470.** It finds the response
+  via a sentinel at the end of the echoed prompt, and this build truncates a long
+  echoed prompt. It silently returns llama.cpp's own banner instead — which cost
+  a probe run reporting "16 digits emitted by the model" that were the build
+  number. `explain-probe.ts` anchors on the grammar's `SAYS:` literal.
+- **A cache keyed on "is it done yet" does not protect the window before it is
+  done.** `getDatabase()` memoised the resolved handle, so two concurrent
+  callers both ran the migrations and v2's non-idempotent `DROP COLUMN` threw.
+  Latent since v2; the onboarding gate reading a setting from the root layout
+  while Home reads notices was the first concurrent pair, and it broke **first
+  launch only** — invisible on any device that has run the app once. Memoise the
+  **promise**, and clear it on failure so a retry is possible.
+- **A string in a content pack is user-facing unless proven otherwise.** Twice
+  now a developer note has rendered to a user: `_disclaimer_required` was phrased
+  as an instruction to the renderer, and `still_needed` is a work list that Where
+  to Go printed verbatim ("Not yet researched -- add name, address, phone").
+  Anything addressed to whoever maintains the content belongs in
+  `npm run content:check`, not in a screen.
 - **`import.meta` is a syntax error under Jest's CommonJS transform.** Anything
   in `tools/` that Jest also imports has to find paths another way — the metrics
   harness walks up from `process.cwd()` looking for the corpus.
@@ -627,6 +719,7 @@ bash tools/forms/fetch-forms.sh                  # will fail; prints manual URLs
 npm run probe        # deterministic extraction on real OCR, both variants
 npm run probe:errors # every wrong value from the probe, named
 npm run probe:llm    # Qwen2.5-1.5B long-tail test (needs the GGUF in ~/models)
+npm run probe:explain # the explanation grammar over all 10 notices (same GGUF)
 npm run content:check  # ship gate: what a human still has to verify in content/
 
 npm run metrics      # score the corpus, write tools/metrics/out/METRICS.md
@@ -637,7 +730,7 @@ npm run corpus:ocr   # rebuild the OCR text layer (macOS only, needs swiftc)
 # End-to-end acceptance test in the Simulator (dev screen, deleted before freeze).
 # Copies corpus photos into the app sandbox and runs the real spine over them.
 npx expo run:ios --device "iPhone 17 Pro" --port 8082
-C=$(xcrun simctl get_app_container booted com.devanshsanghavi.carta data)
+C=$(xcrun simctl get_app_container booted com.devanshsanghavi.noticetracker data)
 mkdir -p "$C/Documents/selftest" && cp tools/corpus/photos/sar7-clean-01.jpg "$C/Documents/selftest/"
 xcrun simctl openurl booted carta://selftest
 cat "$C/Documents/selftest-report.json"

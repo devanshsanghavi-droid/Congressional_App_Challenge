@@ -18,7 +18,7 @@
  * rule 7 keeps this app out of MediaLibrary entirely. So images are copied
  * straight into the app container:
  *
- *   xcrun simctl get_app_container booted com.devanshsanghavi.carta data
+ *   xcrun simctl get_app_container booted com.devanshsanghavi.noticetracker data
  *   cp tools/corpus/photos/sar7-clean-01.jpg "$CONTAINER/Documents/selftest/"
  *   xcrun simctl openurl booted carta://selftest
  *
@@ -34,7 +34,7 @@ import { ScrollView, Text } from 'react-native';
 import { saveNotice, setImageRef } from '@/lib/db/notices';
 import { discardCapture, plaintextRemains, storeCaptureEncrypted } from '@/lib/db/images';
 import { getBooleanSetting, SETTINGS } from '@/lib/db/settings';
-import { recordScheduled } from '@/lib/db/reminders';
+import { recordScheduled, reconcileWithOs } from '@/lib/db/reminders';
 import type { FieldKey } from '@/lib/extraction-port/port';
 import { FIELD_ORDER } from '@/lib/extraction-port/port';
 import { listScheduled, requestPermission, scheduleForNotice, scheduleProof } from '@/lib/notifications';
@@ -60,6 +60,8 @@ interface CaseReport {
   capturePlaintextRemains?: boolean;
   captureStoredEncrypted?: boolean;
   remindersScheduled?: number;
+  /** How many of those iOS did not keep. Nonzero means the ladder is a lie. */
+  remindersDropped?: number;
   reminderTiers?: string[];
 }
 
@@ -73,6 +75,16 @@ export default function SelfTestScreen() {
   }, []);
 
   const run = useCallback(async () => {
+    // FIRST, before anything schedules. Until 2026-08-25 this happened at the
+    // END of the run, so every reminder was registered against a device with no
+    // authorisation and iOS silently kept none of them — the harness that is
+    // supposed to prove the spine was proving it against a state no real user
+    // is ever in, because Review asks for permission before it schedules.
+    // Provisional: granted without a prompt, so this works in the Simulator
+    // with no human to tap "Allow".
+    const granted = await requestPermission({ provisional: true });
+    append(`notification permission (provisional): ${granted ? 'granted' : 'not granted'}`);
+
     const reports: CaseReport[] = [];
     const inbox = new Directory(Paths.document, 'selftest');
 
@@ -172,9 +184,17 @@ export default function SelfTestScreen() {
             : {}),
         });
         await recordScheduled(noticeId, scheduled);
+        // Ask what iOS actually kept, and write that back. Asking for four and
+        // being given zero is a state the database must not record as success.
+        const heldNow = await listScheduled();
+        const dropped = await reconcileWithOs(noticeId, heldNow.map((h) => h.identifier));
         report.remindersScheduled = scheduled.length;
+        report.remindersDropped = dropped;
         report.reminderTiers = scheduled.map((s) => s.tier);
-        append(`reminders scheduled: ${scheduled.length} [${scheduled.map((s) => s.tier).join(', ')}]`);
+        append(
+          `reminders scheduled: ${scheduled.length} [${scheduled.map((s) => s.tier).join(', ')}]` +
+            (dropped > 0 ? ` — OS DROPPED ${dropped}` : ''),
+        );
 
         report.ok = true;
       } catch (error) {
@@ -184,8 +204,10 @@ export default function SelfTestScreen() {
       reports.push(report);
     }
 
-    // Scheduling is verifiable without display authorisation: iOS registers the
-    // request either way, so this proves the ladder reached the OS.
+    // NOT "verifiable without authorisation". That was the old comment here and
+    // it was wrong: measured on a freshly erased device, four reminders were
+    // requested and iOS retained ZERO, while every layer reported success. This
+    // count is now taken after authorisation, and it is the number that matters.
     const pending = await listScheduled();
     append(`OS reports ${pending.length} scheduled notification(s)`);
 
@@ -213,8 +235,6 @@ export default function SelfTestScreen() {
     // verified in the Simulator with no human to tap "Allow". Delivery is quiet
     // (Notification Center rather than a banner), which is enough to prove the
     // OS accepted and retained the request.
-    const granted = await requestPermission({ provisional: true });
-    append(`notification permission (provisional): ${granted ? 'granted' : 'not granted'}`);
     if (granted) {
       const proofId = await scheduleProof(5, 'CalFresh');
       append(`proof notification scheduled 5s out: ${proofId}`);

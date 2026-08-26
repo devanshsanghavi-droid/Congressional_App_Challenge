@@ -16,13 +16,13 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, EmptyState, ErrorState, Screen } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
 import type { Notice } from '@/lib/db/notices';
 import { listActiveNotices } from '@/lib/db/notices';
-import { color, radius, space, type } from '@/lib/theme/tokens';
+import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
 import { countdownDate } from '@/lib/urgency';
 import type { NoticeDates } from '@/lib/urgency';
 
@@ -86,6 +86,18 @@ export default function HomeScreen() {
     return (
       <Screen footer={capture}>
         <EmptyState title={t('home.emptyTitle')} body={t('home.emptyBody')} />
+        {/* Reachable before the first notice too: "where do I go" is a question
+            someone has on day one, often before they have a letter to scan. */}
+        <View style={styles.moreRow}>
+          <Pressable
+            onPress={() => router.push('/where')}
+            accessibilityRole="button"
+            accessibilityLabel={t('where.title')}
+            style={styles.moreLink}
+          >
+            <Text style={styles.moreText}>{t('where.title')}</Text>
+          </Pressable>
+        </View>
         <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
       </Screen>
     );
@@ -132,12 +144,38 @@ export default function HomeScreen() {
           </Card>
         );
       })}
+
+      {/* Below-the-line screens (CLAUDE.md §10, priorities 7 and 8), placed
+          last and styled quietly on purpose. Home is the countdown; these are
+          two text links under it, and cutting either is deleting one line. */}
+      <View style={styles.moreRow}>
+        <Pressable
+          onPress={() => router.push('/vault')}
+          accessibilityRole="button"
+          accessibilityLabel={t('vault.title')}
+          style={styles.moreLink}
+        >
+          <Text style={styles.moreText}>{t('vault.title')}</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => router.push('/where')}
+          accessibilityRole="button"
+          accessibilityLabel={t('where.title')}
+          style={styles.moreLink}
+        >
+          <Text style={styles.moreText}>{t('where.title')}</Text>
+        </Pressable>
+      </View>
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  moreRow: { flexDirection: 'row', gap: space.lg, paddingTop: space.sm },
+  moreLink: { minHeight: touchTarget, justifyContent: 'center' },
+  moreText: { ...type.bodyStrong, color: color.accent },
+
   meta: { gap: 2 },
   program: { ...type.heading, color: color.text },
   action: { ...type.body, color: color.textMuted },

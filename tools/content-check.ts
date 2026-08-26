@@ -16,7 +16,12 @@ import { readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { outstandingVerifications, parseCrossReferences, parseOffices } from '../src/lib/content/parse.ts';
+import {
+  outstandingVerifications,
+  parseCrossReferences,
+  parseDocTypes,
+  parseOffices,
+} from '../src/lib/content/parse.ts';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (name: string): unknown =>
@@ -24,7 +29,8 @@ const read = (name: string): unknown =>
 
 const crossRefs = parseCrossReferences(read('cross_reference.json'));
 const offices = parseOffices(read('offices.json'));
-const outstanding = outstandingVerifications(crossRefs, offices);
+const docTypes = parseDocTypes(read('doc_types.json'));
+const outstanding = outstandingVerifications(crossRefs, offices, docTypes);
 
 if (outstanding.length === 0) {
   console.log('\ncontent: everything is verified at the agency source.\n');

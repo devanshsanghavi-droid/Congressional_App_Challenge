@@ -10,11 +10,15 @@
  *      Detail, on the same screen, always.
  *   2. Visibly labelled machine-generated — the line under the heading, before
  *      the text, never after it.
- *   3. Never a deadline that was not confirmed — structural: the grammar
- *      forbids digits, and the app substitutes only confirmed values.
+ *   3. Never a deadline that was not confirmed — structural, but not the way
+ *      it once was. The explanation has **no "by when" section**: that date is
+ *      rendered by Notice Detail from the confirmed field and the model is
+ *      never asked for it. `checkExplanation` then withholds the whole
+ *      explanation if any date appears in the prose that is not one the user
+ *      confirmed. See `explain-grammar.ts` for the two designs this replaced.
  *   4. Never tells a user they are ineligible — `checkExplanation`, and if it
  *      fires the explanation is withheld rather than shown with a caveat.
- *   5. Only restates the source — same check; any number not traceable to a
+ *   5. Only restates the source — same check; any date not traceable to a
  *      confirmed field withholds the whole thing.
  *
  * On demand behind a tap, so nothing in the product waits on inference.
@@ -111,9 +115,12 @@ export function Explanation(props: Omit<ExplainRequest, 'spec'>) {
     <View style={styles.panel}>
       {/* Guardrail 2, before the text rather than after it. */}
       <Text style={styles.machineLabel}>{t('explain.machineLabel')}</Text>
+      {/* Three, not four. There is no "by when" line here: Notice Detail
+          renders the confirmed deadline itself, higher up this screen, and the
+          model is never asked for it. See `explain-grammar.ts` — removing that
+          section is what fixed the guardrail, not a stricter check. */}
       <ExplanationLine label={t('detail.whatThisSays')} text={sections.says} />
       <ExplanationLine label={t('detail.whatYouMustDo')} text={sections.doing} />
-      <ExplanationLine label={t('detail.byWhen')} text={sections.when} />
       <ExplanationLine label={t('detail.howToAppeal')} text={sections.appeal} />
     </View>
   );

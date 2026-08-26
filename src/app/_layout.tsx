@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 // screen renders. Nothing in the app should read a user-facing string before
 // this module has run.
 import '@/lib/i18n';
+import { SETTINGS, getBooleanSetting } from '@/lib/db/settings';
 
 /**
  * Root layout for every route in the app.
@@ -60,10 +61,39 @@ function useDevRoute(): void {
   }, [router]);
 }
 
+/**
+ * Send a first-time user to onboarding, once.
+ *
+ * Reads the flag rather than inferring from "are there notices yet": someone
+ * who skipped onboarding and later deleted their only notice has already made
+ * a choice, and showing it again would override it.
+ *
+ * A read failure sends nobody anywhere. Onboarding is the least important
+ * screen in the app and must never be the reason it does not open.
+ */
+function useOnboardingGate(): void {
+  const router = useRouter();
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const done = await getBooleanSetting(SETTINGS.onboardingDone);
+        if (!cancelled && !done) router.replace('/onboarding');
+      } catch {
+        // Straight to Home.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
+}
+
 export default function RootLayout() {
   const { t } = useTranslation();
   useSelfTestAutoRun();
   useDevRoute();
+  useOnboardingGate();
 
   return (
     <SafeAreaProvider>
@@ -78,6 +108,12 @@ export default function RootLayout() {
         <Stack.Screen name="capture" options={{ title: t('capture.title') }} />
         <Stack.Screen name="review" options={{ title: t('review.title') }} />
         <Stack.Screen name="notice/[id]" options={{ title: t('detail.title') }} />
+        <Stack.Screen name="checklist/[id]" options={{ title: t('checklist.title') }} />
+        <Stack.Screen name="vault" options={{ title: t('vault.title') }} />
+        <Stack.Screen name="where" options={{ title: t('where.title') }} />
+        {/* No header: onboarding provides its own Skip, and a back chevron into
+            a half-finished onboarding is not a state worth having. */}
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         {/* Developer tools. Both deleted before freeze. */}
         <Stack.Screen name="bench" options={{ title: t('bench.title') }} />
         <Stack.Screen name="selftest" options={{ title: 'Self-test' }} />

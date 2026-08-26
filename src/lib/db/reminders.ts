@@ -45,6 +45,60 @@ export async function recordScheduled(
   });
 }
 
+/**
+ * Mark as cancelled every reminder iOS did not actually keep.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THIS EXISTS
+ * ---------------------------------------------------------------------------
+ * `recordScheduled` writes `state = 'scheduled'` because that is what the app
+ * asked for. **iOS does not always agree.** Without notification authorisation
+ * it accepts every `scheduleNotificationAsync` call, returns an id for each,
+ * and retains none of them — and there is a pending-notification cap besides.
+ *
+ * Home computes `remindersActive` from `COUNT(*) WHERE state = 'scheduled'`,
+ * so an unreconciled table means Home shows a notice as covered while nothing
+ * will ever fire. Found on a cold-start pass 2026-08-25: on a freshly erased
+ * device the database held four rows marked `scheduled`, each with an OS id,
+ * and the OS held **zero**.
+ *
+ * The app already asked the right question — `listScheduled()` was being read
+ * and written into the diagnostic trace. It just never wrote the answer back.
+ * This is that write.
+ *
+ * Returns how many reminders were dropped, so the caller can tell the user.
+ */
+export async function reconcileWithOs(
+  noticeId: string,
+  osNotificationIds: readonly string[],
+): Promise<number> {
+  const db = await getDatabase();
+  const held = new Set(osNotificationIds);
+  const rows = await db.getAllAsync<{ id: string; os_notification_id: string | null }>(
+    `SELECT id, os_notification_id FROM reminders
+      WHERE notice_id = ? AND state = 'scheduled'`,
+    noticeId,
+  );
+
+  const dropped = rows.filter((r) => r.os_notification_id === null || !held.has(r.os_notification_id));
+  if (dropped.length === 0) return 0;
+
+  await db.withTransactionAsync(async () => {
+    for (const row of dropped) {
+      // `cancelled`, not a new state: from the user's point of view a reminder
+      // the OS never accepted and one that was cancelled are the same thing —
+      // it is not going to arrive — and Home's existing warning already covers
+      // it. Inventing a third state would mean teaching every reader about a
+      // distinction that changes nothing.
+      await db.runAsync(
+        `UPDATE reminders SET state = 'cancelled' WHERE id = ?`,
+        row.id,
+      );
+    }
+  });
+  return dropped.length;
+}
+
 export async function listForNotice(noticeId: string): Promise<StoredReminder[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<ReminderRow>(

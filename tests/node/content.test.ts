@@ -21,6 +21,7 @@ import { join } from 'node:path';
 import {
   CONFIRM_HOURS_NOTE,
   outstandingVerifications,
+  parseDocTypes,
   parseCrossReferences,
   parseOffices,
 } from '../../src/lib/content/parse.ts';
@@ -40,8 +41,9 @@ const read = (name: string): unknown =>
 const loadCrossReferences = (): ReturnType<typeof parseCrossReferences> =>
   parseCrossReferences(read('cross_reference.json'));
 const loadOffices = (): ReturnType<typeof parseOffices> => parseOffices(read('offices.json'));
+const loadDocTypes = (): ReturnType<typeof parseDocTypes> => parseDocTypes(read('doc_types.json'));
 const outstanding = (): ReturnType<typeof outstandingVerifications> =>
-  outstandingVerifications(loadCrossReferences(), loadOffices());
+  outstandingVerifications(loadCrossReferences(), loadOffices(), loadDocTypes());
 
 describe('content packs load and validate', () => {
   it('loads both packs without throwing', () => {
@@ -191,12 +193,32 @@ describe('the ship gate — what a human still has to confirm', () => {
    * verification.
    */
   const KNOWN_OUTSTANDING = [
+    // Added 2026-08-24 with the Spanish cross-reference copy. The what_es
+    // strings were written for Carta, not taken from an agency translation —
+    // these programmes are not CDSS forms, so CLAUDE.md §9's "use CDSS's own
+    // wording" has nothing to point at. A fluent speaker has to read them.
+    'cross_reference: Spanish descriptions (what_es)',
+    // Added 2026-08-24. This one had never been counted: `outstandingVerifications`
+    // was not given the doc-types pack at all, so the ship gate reported a number
+    // lower than the truth for as long as the pack existed.
+    'doc_types: Spanish labels and descriptions',
     'cross_reference: ihss',
     'cross_reference: liheap',
     'cross_reference: public charge note',
     'cross_reference: school-meals',
     'cross_reference: subsidized-childcare',
     'offices: appeals',
+    // Added 2026-08-24 with the Vault. A freshness rule is a claim about what an
+    // agency requires, so it needs an agency source like an appeal window does.
+    // `pay_stub` echoes the county's own "what to bring" wording; `bank_statement`
+    // is explicitly NOT sourced and must be cited or deleted before ship.
+    'offices: freshness / bank_statement',
+    'offices: freshness / pay_stub',
+    // Added 2026-08-24. `still_needed` is a work list for whoever sources the
+    // content. It was being RENDERED to users on Where to Go — "Not yet
+    // researched -- add name, address, phone" — until a device check caught it.
+    // It belongs here, in front of the person it is addressed to.
+    'offices: still needed',
     'offices: ssa / ssa-cottle',
     'offices: ssa / ssa-downtown',
     'offices: ssa / ssa-fontaine',

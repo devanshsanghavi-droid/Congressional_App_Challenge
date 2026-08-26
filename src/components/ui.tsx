@@ -12,6 +12,7 @@
 import type { ReactNode } from 'react';
 import {
   ActivityIndicator,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -19,7 +20,7 @@ import {
   View,
 } from 'react-native';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
 
@@ -28,11 +29,22 @@ export function Screen({
   children,
   scroll = true,
   footer,
+  insetTop = false,
 }: {
   children: ReactNode;
   scroll?: boolean;
   /** Pinned to the bottom — primary actions belong in thumb reach. */
   footer?: ReactNode;
+  /**
+   * Reserve the top safe area too.
+   *
+   * Off by default because a routed screen sits under a navigation header,
+   * which already clears the status bar and the Dynamic Island. **On inside a
+   * `Modal`**, where there is no header and the first line of content otherwise
+   * renders underneath the clock — which is exactly what it did, on every
+   * full-screen sheet in the app, until this was added.
+   */
+  insetTop?: boolean;
 }) {
   const body = scroll ? (
     <ScrollView
@@ -46,7 +58,7 @@ export function Screen({
   );
 
   return (
-    <SafeAreaView style={styles.screen} edges={['bottom']}>
+    <SafeAreaView style={styles.screen} edges={insetTop ? ['top', 'bottom'] : ['bottom']}>
       {body}
       {footer ? <View style={styles.footer}>{footer}</View> : null}
     </SafeAreaView>
@@ -115,6 +127,42 @@ export function Button({
         {title}
       </Text>
     </Pressable>
+  );
+}
+
+/**
+ * A full-screen sheet.
+ *
+ * The `SafeAreaProvider` is the whole point and is not decoration. React
+ * Native's `Modal` renders into its own view hierarchy, and
+ * `react-native-safe-area-context` does not carry insets across that boundary —
+ * so a `SafeAreaView` inside a bare `Modal` measures **zero** top inset and the
+ * first line of content renders underneath the clock and the Dynamic Island.
+ * That is exactly what every sheet in this app did until this component
+ * existed. Re-providing inside the modal is the library's documented fix.
+ *
+ * `insetTop` is on because a sheet has no navigation header to clear the status
+ * bar for it, which is the difference between a sheet and a routed screen.
+ */
+export function Sheet({
+  visible,
+  onClose,
+  closeLabel,
+  children,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  closeLabel: string;
+  children: ReactNode;
+}) {
+  return (
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+      <SafeAreaProvider>
+        <Screen insetTop footer={<Button title={closeLabel} onPress={onClose} variant="secondary" />}>
+          {children}
+        </Screen>
+      </SafeAreaProvider>
+    </Modal>
   );
 }
 

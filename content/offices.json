@@ -4,7 +4,6 @@
   "_verified_on": "2026-08-18",
   "_ui_requirement": "Every entry must render a 'Call to confirm hours before you go' line. Hours change and a wasted trip is a real harm for someone without a car.",
   "_confidence_note": "confidence=high means taken directly from the operating agency's own site. confidence=medium means from a third-party aggregator and NOT yet confirmed at the agency source. Do not ship a medium entry without verifying it.",
-
   "county_offices": {
     "agency": "Santa Clara County Social Services Agency, Department of Employment and Benefit Services",
     "source_url": "https://ssa.santaclaracounty.gov/departments/department-employment-and-benefit-services/contact-department-employment-and-benefit",
@@ -14,7 +13,14 @@
       "hours": "Monday to Friday, 8:00 AM to 5:00 PM. Closed on County holidays.",
       "drop_box": true,
       "drop_box_note": "Document drop boxes are outside every location, so you can submit paperwork without waiting in line.",
-      "languages": ["English", "Spanish", "Vietnamese", "Chinese", "Tagalog", "Farsi"],
+      "languages": [
+        "English",
+        "Spanish",
+        "Vietnamese",
+        "Chinese",
+        "Tagalog",
+        "Farsi"
+      ],
       "accessibility_line": "+1-408-755-7999",
       "accessibility_note": "Call this number to request an interpreter, help filling out forms, or a disability accommodation. You have a right to ask."
     },
@@ -97,7 +103,6 @@
       }
     ]
   },
-
   "appeals": {
     "_purpose": "Used by the 'How to appeal' section of Notice Detail. This is the highest-stakes data in the file.",
     "confidence": "high",
@@ -116,7 +121,6 @@
     "ombuds_note": "Before filing a hearing you can ask your worker, then a supervisor, then request a free confidential case review from the County Ombuds office.",
     "TODO_verify": "Confirm the appeal window and the aid-paid-pending deadline against current CDSS guidance before this ships. These two numbers are the difference between keeping benefits during an appeal and not."
   },
-
   "ssa_offices": {
     "agency": "Social Security Administration",
     "national_phone": "+1-800-772-1213",
@@ -159,7 +163,6 @@
       }
     ]
   },
-
   "what_to_bring": {
     "_purpose": "Rendered from the active notice's checklist, not hardcoded. This is the fallback list when no checklist exists.",
     "always": [
@@ -171,9 +174,29 @@
       "Pay stubs from the last 30 days",
       "Proof of where you live (lease or a utility bill)",
       "Social Security numbers for everyone in the household"
-    ]
+    ],
+    "_freshness_purpose": "How recent a document has to be, for the Vault's staleness warning. Keyed on a doc_types.json id. THIS IS THE ONLY PLACE SUCH A RULE MAY LIVE, and every entry carries its own source: CLAUDE.md section 16 forbids inventing a rule about what a programme requires, and 'most offices want the last 30 days' is exactly such a rule. doc_types.json must stay a vocabulary and must never grow this. A document type with no entry here gets its age shown and NO claim about whether that age is a problem.",
+    "freshness": {
+      "pay_stub": {
+        "days": 30,
+        "en": "Most offices want pay stubs from the last 30 days.",
+        "es": "La mayoría de las oficinas piden talones de pago de los últimos 30 días.",
+        "source_url": "https://ssa.santaclaracounty.gov/departments/department-employment-and-benefit-services/contact-department-employment-and-benefit",
+        "verified_on": "2026-08-18",
+        "confidence": "medium",
+        "TODO_verify": "Santa Clara County's own 'what to bring' guidance says 'Pay stubs from the last 30 days'. Confirm that wording at the county source and check whether it applies to CalFresh recertification specifically or only to a new application, before this ships."
+      },
+      "bank_statement": {
+        "days": 60,
+        "en": "Bank statements are usually asked for from the last two months.",
+        "es": "Los estados de cuenta bancarios suelen pedirse de los últimos dos meses.",
+        "source_url": "https://ssa.santaclaracounty.gov/departments/department-employment-and-benefit-services/contact-department-employment-and-benefit",
+        "verified_on": "2026-08-18",
+        "confidence": "low",
+        "TODO_verify": "NOT SOURCED at the agency. This is a plausible convention, not a rule Carta has a citation for. Either find the citation or delete this entry — an unsourced freshness rule is exactly what CLAUDE.md section 16 forbids."
+      }
+    }
   },
-
   "_still_needed": [
     "2-3 community organizations that help with benefit applications (Sacred Heart Community Service, Second Harvest of Silicon Valley). Not yet researched -- add name, address, phone, hours, languages, and what they actually help with.",
     "Confirm all three SSA addresses at ssa.gov/locator.",

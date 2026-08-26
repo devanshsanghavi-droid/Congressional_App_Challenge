@@ -22,7 +22,7 @@ import type { LlamaContext } from 'llama.rn';
 
 import { modelFile, type ModelSpec } from './model.ts';
 import { EXPLANATION_GRAMMAR, buildExplanationPrompt } from './explain-grammar.ts';
-import { checkExplanation, parseSections, substitute } from './explain-check.ts';
+import { checkExplanation, parseSections } from './explain-check.ts';
 import type { ExplanationSections } from './explain-check.ts';
 
 export type ExplainStatus =
@@ -39,9 +39,30 @@ export interface ExplainRequest {
   readonly office: string;
   readonly actionType: string;
   readonly noticeText: string;
-  /** Confirmed values, already formatted the way they should read. */
+  /**
+   * Confirmed dates, formatted the way Notice Detail renders them.
+   *
+   * Two jobs, and they used to be three. They go into the prompt so the model
+   * can refer to a date it is told rather than one it derives, and they are the
+   * set `checkExplanation` traces every date in the output back to. What they
+   * are no longer is substitution input — there are no placeholders to fill.
+   */
   readonly deadline?: string;
   readonly hearingBy?: string;
+  /**
+   * **Every** date the user confirmed on Review, rendered as the screen shows
+   * it — notice date, effective date, appeal deadline, all of them, not just
+   * the two above.
+   *
+   * This is the set `checkExplanation` traces against, and it has to be the
+   * whole set. Measured 2026-08-24: given only the deadline, the check withheld
+   * a correct explanation of notice 04 because the model mentioned the coverage
+   * end date — a value that is on the letter, was extracted, and that the user
+   * confirmed two fields above the deadline. The guardrail is "no date the user
+   * did not confirm", and answering it with a partial view of what they
+   * confirmed turns it into "no date except one".
+   */
+  readonly confirmedDates?: readonly string[];
 }
 
 /**
@@ -74,8 +95,8 @@ export async function explain(
       program: request.program,
       office: request.office,
       actionType: request.actionType,
-      hasDeadline: request.deadline !== undefined,
-      hasHearingDate: request.hearingBy !== undefined,
+      ...(request.deadline === undefined ? {} : { deadline: request.deadline }),
+      ...(request.hearingBy === undefined ? {} : { hearingBy: request.hearingBy }),
       noticeText: request.noticeText,
     });
 
@@ -83,34 +104,36 @@ export async function explain(
     const result = await context.completion(
       {
         prompt,
-        n_predict: 300,
+        // Three sections of prose rather than four, and none of them spends
+        // tokens dodging a digit it is not allowed to write.
+        n_predict: 260,
         temperature: 0.3,
-        // The grammar forbids digits outright, so a fabricated date is not
-        // merely rejected afterwards — it is unreachable.
+        // A shape, not a filter: three labelled sections in a fixed order, so
+        // the screen always has something under each heading. It makes no claim
+        // about truth — that is `checkExplanation`, on the finished text.
         grammar: EXPLANATION_GRAMMAR,
         stop: ['\n\n', 'LETTER:'],
       },
       (data) => {
         partial += data.token;
-        // Substituted as it streams, so the reader never sees `{deadline}`
-        // flash past on its way to being replaced.
-        onStatus({ state: 'streaming', partial: fill(partial, request) });
+        onStatus({ state: 'streaming', partial });
       },
     );
 
-    const filled = fill(result.text.trim(), request);
-    const sections = parseSections(filled);
+    const sections = parseSections(result.text.trim());
     if (!sections) {
       // A partial explanation is a stub, and CLAUDE.md §10 says cut a stub
       // rather than ship it.
       return finish(onStatus, { state: 'withheld', reason: 'incomplete' });
     }
 
-    const confirmed = [request.deadline, request.hearingBy].filter(
-      (v): v is string => v !== undefined,
-    );
+    const confirmed = [
+      ...(request.confirmedDates ?? []),
+      request.deadline,
+      request.hearingBy,
+    ].filter((v): v is string => v !== undefined);
     const check = checkExplanation(
-      [sections.says, sections.doing, sections.when, sections.appeal].join(' '),
+      [sections.says, sections.doing, sections.appeal].join(' '),
       confirmed,
     );
     if (!check.ok) {
@@ -128,15 +151,6 @@ export async function explain(
     // killed the next time the camera opens.
     if (context) await releaseAllLlama();
   }
-}
-
-function fill(text: string, request: ExplainRequest): string {
-  return substitute(text, {
-    program: request.program,
-    office: request.office,
-    ...(request.deadline === undefined ? {} : { deadline: request.deadline }),
-    ...(request.hearingBy === undefined ? {} : { hearingBy: request.hearingBy }),
-  });
 }
 
 function finish(onStatus: (s: ExplainStatus) => void, status: ExplainStatus): ExplainStatus {

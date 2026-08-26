@@ -89,6 +89,13 @@ const FORBIDDEN_PHRASING: readonly (readonly [RegExp, string])[] = [
   [/\busted (?:puede )?califica\b/i, '"usted califica"'],
   [/\bpuede calificar\b/i, '"puede calificar"'],
   [/\bes elegible\b/i, '"es elegible"'],
+  // Added 2026-08-24 with the Spanish cross-reference copy. The list above was
+  // written when only English entry copy existed, and "reunir/cumplir los
+  // requisitos" is the ordinary Spanish for "to qualify" — without it the
+  // Spanish strings were being checked more loosely than the English ones,
+  // which is precisely the direction this project cannot afford to be loose in.
+  [/\b(?:usted |tu )?(?:reune|reúne|cumple|reunir|cumplir)\s+(?:con\s+)?los requisitos\b/i,
+    '"reúne los requisitos"'],
 ];
 
 /**

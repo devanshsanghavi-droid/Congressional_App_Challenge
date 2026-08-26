@@ -1,0 +1,96 @@
+{
+  "_schema": "carta.doc_types.v1",
+  "_purpose": "Names and plain-language descriptions for the kinds of document a benefit notice commonly asks for. Used by the Checklist to label a requirement and to offer a list when the user adds one themselves.",
+  "_not_a_rule": "THESE ARE DESCRIPTIONS, NOT REQUIREMENTS. CLAUDE.md section 16 forbids inventing a rule about what a programme requires. Nothing in this file says any programme needs any of these. A checklist row may only be presented as 'the letter asks for this' when the extraction cascade read it off the notice; a row built from this list is presented as something the user added. If a future change starts keying this file on programme or action type, that change has turned a vocabulary into a rule and must not ship.",
+  "_translation_note": "PARTIALLY SOURCED, AND NOT FROM CDSS. Three terms come from San Mateo County's Spanish-language SAR 7 guide ('Como completar el SAR 7', adapted from San Diego County): 'servicios publicos' for utilities, 'comprobante'/'prueba' for proof, and 'gastos medicos' for medical expenses. That is COUNTY wording, not state wording. Everything else in label_es/what_es is Carta's own. See src/lib/i18n/SOURCES.md for the full provenance map.",
+  "_translation_todo": "Get SAR 7 (SP) and SAR 7A (SP) from the browser, copy the wording each uses for the proof items, and replace label_es/what_es with it. Then have a fluent Spanish speaker read the result. Accents are correct and three county terms are applied; what remains is whose words these are.",
+  "_verified_on": "2026-08-24",
+  "doc_types": [
+    {
+      "id": "pay_stub",
+      "label": "Pay stub",
+      "label_es": "Talón de pago",
+      "what": "A paper or printout from a job showing what was paid and when.",
+      "what_es": "Un papel o impresión del trabajo que muestra cuánto se pagó y cuándo."
+    },
+    {
+      "id": "employer_letter",
+      "label": "Letter from an employer",
+      "label_es": "Carta del empleador",
+      "what": "A signed note from a job, used when there are no pay stubs.",
+      "what_es": "Una nota firmada del trabajo, que se usa cuando no hay talones de pago."
+    },
+    {
+      "id": "rent_receipt",
+      "label": "Rent receipt or lease",
+      "label_es": "Recibo de renta o contrato de arrendamiento",
+      "what": "Proof of what is paid for housing, and to whom.",
+      "what_es": "Comprobante de lo que se paga por la vivienda, y a quién."
+    },
+    {
+      "id": "utility_bill",
+      "label": "Utility bill",
+      "label_es": "Factura de servicios públicos",
+      "what": "A gas, electric, water, or phone bill.",
+      "what_es": "Una factura de gas, electricidad, agua o teléfono."
+    },
+    {
+      "id": "bank_statement",
+      "label": "Bank statement",
+      "label_es": "Estado de cuenta bancario",
+      "what": "A statement from a bank or credit union.",
+      "what_es": "Un estado de cuenta de un banco o cooperativa de crédito."
+    },
+    {
+      "id": "photo_id",
+      "label": "Photo ID",
+      "label_es": "Identificación con foto",
+      "what": "A driver license, state ID, passport, or consular ID.",
+      "what_es": "Una licencia de conducir, identificación estatal, pasaporte o matrícula consular."
+    },
+    {
+      "id": "social_security_card",
+      "label": "Social Security card",
+      "label_es": "Tarjeta de Seguro Social",
+      "what": "The card itself. Carta never stores the number.",
+      "what_es": "La tarjeta misma. Carta nunca guarda el número."
+    },
+    {
+      "id": "medical_bill",
+      "label": "Medical bill or receipt",
+      "label_es": "Factura o recibo de gastos médicos",
+      "what": "A bill or receipt for care, medicine, or insurance.",
+      "what_es": "Una factura o recibo por atención médica, medicinas o seguro."
+    },
+    {
+      "id": "child_care_receipt",
+      "label": "Child care receipt",
+      "label_es": "Recibo de cuidado de niños",
+      "what": "Proof of what is paid for child care, and to whom.",
+      "what_es": "Comprobante de lo que se paga por el cuidado de niños, y a quién."
+    },
+    {
+      "id": "school_record",
+      "label": "School record",
+      "label_es": "Registro escolar",
+      "what": "Proof that a child is enrolled, or a school schedule.",
+      "what_es": "Comprobante de que un niño está inscrito, o un horario escolar."
+    },
+    {
+      "id": "immigration_document",
+      "label": "Immigration document",
+      "label_es": "Documento de inmigración",
+      "what": "A card, letter, or notice from an immigration agency.",
+      "what_es": "Una tarjeta, carta o aviso de una agencia de inmigración."
+    },
+    {
+      "id": "other",
+      "label": "Something else",
+      "label_es": "Otra cosa",
+      "what": "Anything the letter asks for that is not on this list.",
+      "what_es": "Cualquier cosa que la carta pida y que no esté en esta lista."
+    }
+  ],
+  "_translation_blocker": "STILL BLOCKED as of 2026-08-24, even though two CDSS Spanish forms are now committed under tools/forms/spanish/. Neither one covers this file. CF 377.6 (SP) is a Notice of Action asking for information -- it carries notice-level vocabulary (Numero del caso, Fecha de la notificacion, Nombre del caso) and no list of what to send. CF 30 (SP) is the SAR 7 REMINDER notice, sent when a SAR 7 is missing; it gives the form's official Spanish name ('Reporte sobre el estado de elegibilidad (SAR 7)') and, again, no document checklist. The required-document vocabulary lives in SAR 7 (SP) -- its 'proof you must send' section -- and in SAR 7A (SP), the instruction sheet. Neither has been obtained. cdss.ca.gov returns a 302 to a dead host for automated requests (CLAUDE.md section 13), so this is a manual browser step. DO NOT mark these strings verified until one of those two forms is in tools/forms/spanish/ and its wording has actually been copied across.",
+  "_verified_on_note": "_verified_on refers to when this vocabulary was written, not to a source. There is no source_url because a list of ordinary nouns makes no claim needing one (see _not_a_rule). The Spanish is a different question and is tracked by _translation_blocker."
+}

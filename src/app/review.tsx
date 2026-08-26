@@ -31,10 +31,11 @@ import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 import type { ExtractedNotice, FieldKey } from '@/lib/extraction-port/port';
 import { FIELD_ORDER, effectiveRisk, fieldNeedingAttention } from '@/lib/extraction-port/port';
 import { saveNotice, setImageRef } from '@/lib/db/notices';
+import { seedFromLetter } from '@/lib/db/checklist';
 import { discardCapture, storeCaptureEncrypted } from '@/lib/db/images';
 import { getBooleanSetting, SETTINGS } from '@/lib/db/settings';
 import { isoToLocalMs } from '@/lib/dates';
-import { recordScheduled } from '@/lib/db/reminders';
+import { recordScheduled, reconcileWithOs } from '@/lib/db/reminders';
 import { listScheduled, requestPermission, scheduleForNotice } from '@/lib/notifications';
 import { useCaptureStore } from '@/lib/store/capture';
 import { startTrace } from '@/lib/diagnostics/trace';
@@ -100,6 +101,17 @@ export default function ReviewScreen() {
         return { value: noticeId, detail: { redacted: pending.extraction.redacted } };
       });
 
+      // The checklist, from what the cascade read off the page. `requiredDocs`
+      // is absent on the scaffold extractor, and then this writes nothing and
+      // the Checklist screen opens on its empty state — which is the correct
+      // behaviour, not a degraded one: Carta must never assert that a programme
+      // requires a document it did not read (CLAUDE.md §16).
+      await recorder.step('checklist', async () => {
+        const docs = pending.extraction.requiredDocs ?? [];
+        await seedFromLetter(id, docs);
+        return { value: docs.length, detail: { seeded: docs.length } };
+      });
+
       // The photograph is encrypted with the same key as the notice text, and the
       // camera's plaintext temporary file is deleted either way. A picture of the
       // letter carries the name, the address and the case number in plain sight —
@@ -145,12 +157,19 @@ export default function ReviewScreen() {
         // 2026-08-20 that these can differ: without authorisation iOS accepts the
         // call and retains nothing.
         const held = await listScheduled();
+        // And write that answer back, rather than only reporting it. Until
+        // 2026-08-25 this number went into the trace and nowhere else, so the
+        // database kept claiming `scheduled` for reminders iOS had discarded
+        // and Home showed the notice as covered. Home's "No reminders set"
+        // warning already existed and could never fire.
+        const dropped = await reconcileWithOs(id, held.map((h) => h.identifier));
         return {
           value: true,
           detail: {
             permission: 'granted',
             requested: scheduled.length,
             osHeld: held.length,
+            dropped,
             tiers: scheduled.map((s) => s.tier).join(','),
           },
         };
@@ -231,7 +250,22 @@ export default function ReviewScreen() {
               {/* Dates measured 100% precision on real photographs, so they are
                   presented as settled. Asking someone to re-verify nine fields
                   is how the one wrong field gets confirmed along with the rest. */}
-              {risk === 'verified' && isDate && field?.value !== undefined ? (
+              {/* "Read clearly" is a claim about how Carta OBTAINED the value —
+                  that it came off the page unambiguously. So it is gated on the
+                  source, not on the risk tier.
+
+                  `effectiveRisk` returns `verified` for a manual value, which is
+                  correct: a value the user typed does not need re-checking. But
+                  reading that as "Carta read this clearly" put the label over a
+                  date the user had just typed in themselves, which is Carta
+                  taking credit for the user's work and, worse, claiming a
+                  provenance the value does not have. The fix belongs here rather
+                  than in `effectiveRisk`, because the risk answer was right and
+                  it was this screen that misread it. */}
+              {risk === 'verified' &&
+              isDate &&
+              field?.value !== undefined &&
+              field.source !== 'manual' ? (
                 <Text style={styles.readClearly}>{t('review.readClearly')}</Text>
               ) : null}
             </View>

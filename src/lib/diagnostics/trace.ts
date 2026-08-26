@@ -31,6 +31,7 @@ export type StageName =
   | 'orientation'
   | 'extract'
   | 'save'
+  | 'checklist'
   | 'encrypt-image'
   | 'schedule';
 
@@ -148,6 +149,10 @@ export const STAGE_HELP: Readonly<Record<StageName, string>> = {
   orientation: 'capture.errorOrientation',
   extract: 'capture.errorExtract',
   save: 'capture.errorSave',
+  // The notice and its reminders are already saved by this point, so a failure
+  // here costs the checklist and nothing the deadline depends on. It reads as a
+  // save failure to the user because that is what it is, from where they stand.
+  checklist: 'capture.errorSave',
   'encrypt-image': 'capture.errorSave',
   schedule: 'capture.errorSchedule',
 };

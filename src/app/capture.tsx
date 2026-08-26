@@ -3,9 +3,6 @@
  *
  * AUTHORSHIP: Claude. App-side (CLAUDE.md §7).
  *
- * Unstyled: this is the thin spine (SPEC §9 week 2) and the design pass is
- * week 6. What has to be right now is the behaviour underneath.
- *
  * Two ways in, one pipeline. The camera is the demo path; the picker is the
  * fallback for someone who already photographed the letter, or whose hands are
  * full, and it is the path that works when the camera does not. They share
@@ -24,7 +21,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Clipboard from 'expo-clipboard';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { File, Paths } from 'expo-file-system';
 
@@ -34,7 +31,7 @@ import { STAGE_HELP, formatTrace } from '@/lib/diagnostics/trace';
 import type { CaptureTrace } from '@/lib/diagnostics/trace';
 import { useCaptureStore } from '@/lib/store/capture';
 import { Body, Button, Card, ErrorState, Muted, Screen } from '@/components/ui';
-import { color, radius, space, type } from '@/lib/theme/tokens';
+import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
 
 type Phase = 'camera' | 'working' | 'done' | 'failed';
 
@@ -139,7 +136,7 @@ export default function CaptureScreen() {
     return () => clearTimeout(timer);
   }, [phase, outcome, proceed]);
 
-  if (!permission) return <View />;
+  if (!permission) return <View style={styles.cameraScreen} />;
 
   if (phase === 'working') {
     // OCR takes 1.7-2.8s on real captures, which is long enough that silence
@@ -240,11 +237,52 @@ export default function CaptureScreen() {
 
   return (
     <View style={styles.cameraScreen}>
-      <CameraView ref={camera} style={styles.camera} facing="back" />
+      <View style={styles.cameraFrame}>
+        <CameraView ref={camera} style={StyleSheet.absoluteFill} facing="back" />
+      {/* A document guide, not a crop. Carta wants the whole sheet — the frame
+          is there to tell the user what to aim at, never to cut anything off.
+          It is decorative, so it is hidden from screen readers.
+
+          It lives INSIDE the camera view rather than over the whole screen.
+          As a sibling filling the screen its lower half sat behind the controls
+          panel and only the top two corners were ever visible — a document
+          guide with two corners does not read as a guide at all. */}
+      <View pointerEvents="none" style={styles.guide} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <View style={styles.guideCornerTopLeft} />
+        <View style={styles.guideCornerTopRight} />
+        <View style={styles.guideCornerBottomLeft} />
+        <View style={styles.guideCornerBottomRight} />
+        </View>
+      </View>
       <View style={styles.cameraControls}>
         <Text style={styles.instruction}>{t('capture.instruction')}</Text>
-        <Button title={t('capture.shutter')} onPress={() => void takePhoto()} />
-        <Button title={t('capture.pickInstead')} variant="secondary" onPress={() => void pickPhoto()} />
+        {/* The shutter is centred by the row; the picker is placed OVER the row
+            rather than in it. The previous version put both in a
+            `space-between` row and gave the picker `minWidth: 120` — but
+            `minWidth` is a floor, not a cap, so the 16pt label expanded past it,
+            the row overflowed its 338pt, and the text ran under the shutter.
+            Taking the picker out of the layout flow means no label length can
+            move the shutter. */}
+        <View style={styles.shutterRow}>
+          <Pressable
+            onPress={() => void takePhoto()}
+            accessibilityRole="button"
+            accessibilityLabel={t('capture.shutter')}
+            style={({ pressed }) => [styles.shutter, pressed && styles.shutterPressed]}
+          >
+            <View style={styles.shutterInner} />
+          </Pressable>
+        </View>
+        <Pressable
+          onPress={() => void pickPhoto()}
+          accessibilityRole="button"
+          accessibilityLabel={t('capture.pickInstead')}
+          style={styles.pickButton}
+        >
+          <Text style={styles.pickButtonText} numberOfLines={2}>
+            {t('capture.pickInstead')}
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -271,7 +309,61 @@ const styles = StyleSheet.create({
   permissionTitle: { ...type.title, color: color.text },
 
   cameraScreen: { flex: 1, backgroundColor: '#000' },
-  camera: { flex: 1 },
+  /** The preview, and the only thing the guide is allowed to overlay. */
+  cameraFrame: { flex: 1 },
+
+  // A document-shaped guide with four corner brackets. Decorative and
+  // non-interactive: it sits over the preview to say "fit the page in here",
+  // and never crops.
+  guide: {
+    ...StyleSheet.absoluteFill,
+    margin: space.xl,
+  },
+  guideCornerTopLeft: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 40,
+    height: 40,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: 'rgba(255,255,255,0.75)',
+    borderTopLeftRadius: radius.md,
+  },
+  guideCornerTopRight: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'rgba(255,255,255,0.75)',
+    borderTopRightRadius: radius.md,
+  },
+  guideCornerBottomLeft: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: 40,
+    height: 40,
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: 'rgba(255,255,255,0.75)',
+    borderBottomLeftRadius: radius.md,
+  },
+  guideCornerBottomRight: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'rgba(255,255,255,0.75)',
+    borderBottomRightRadius: radius.md,
+  },
+
   cameraControls: {
     padding: space.lg,
     paddingBottom: space.xl,
@@ -279,4 +371,37 @@ const styles = StyleSheet.create({
     backgroundColor: color.surface,
   },
   instruction: { ...type.body, color: color.textMuted, textAlign: 'center' },
+
+  shutterRow: { alignItems: 'center' },
+  shutter: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    borderWidth: 4,
+    borderColor: color.text,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shutterPressed: { opacity: 0.7 },
+  shutterInner: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: color.text,
+  },
+  /**
+   * Absolutely positioned, left of the centred shutter, with a right edge that
+   * stops clear of it: 402pt screen, 76pt shutter centred, so the shutter's left
+   * edge is at 163. Ending at 150 leaves a 13pt gutter no label can cross.
+   */
+  pickButton: {
+    position: 'absolute',
+    left: space.lg,
+    right: undefined,
+    bottom: space.xl,
+    maxWidth: 150 - space.lg,
+    minHeight: touchTarget,
+    justifyContent: 'center',
+  },
+  pickButtonText: { ...type.bodyStrong, color: color.accent },
 });

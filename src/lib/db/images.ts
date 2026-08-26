@@ -24,12 +24,24 @@ import { Directory, File, Paths } from 'expo-file-system';
 import { decryptBytes, encryptBytes } from './crypto.ts';
 
 const IMAGE_DIR = 'notices';
+/**
+ * Checklist attachments live beside the notices, in their own directory.
+ *
+ * Separate from `notices/` because they have a different lifetime: deleting a
+ * notice must not take a pay stub with it, since the same document is what the
+ * next notice will ask for. Same key, same encryption, same sandbox.
+ */
+const DOCUMENT_DIR = 'documents';
 
 /** `.enc` rather than `.jpg`: nothing should try to render this as an image. */
-function encryptedFileFor(noticeId: string): File {
-  const directory = new Directory(Paths.document, IMAGE_DIR);
+function encryptedFileIn(dir: string, id: string): File {
+  const directory = new Directory(Paths.document, dir);
   if (!directory.exists) directory.create({ intermediates: true });
-  return new File(directory, `${noticeId}.enc`);
+  return new File(directory, `${id}.enc`);
+}
+
+function encryptedFileFor(noticeId: string): File {
+  return encryptedFileIn(IMAGE_DIR, noticeId);
 }
 
 /**
@@ -118,7 +130,52 @@ export function deleteStoredCapture(noticeId: string): void {
 
 /** Wipe every stored capture. Part of "Delete everything". */
 export function deleteAllStoredCaptures(): void {
-  const directory = new Directory(Paths.document, IMAGE_DIR);
-  if (directory.exists) directory.delete();
+  for (const dir of [IMAGE_DIR, DOCUMENT_DIR]) {
+    const directory = new Directory(Paths.document, dir);
+    if (directory.exists) directory.delete();
+  }
   discardDecryptedPreviews();
+}
+
+// ------------------------------------------------------- checklist documents
+//
+// The same three operations as a notice capture, against the documents
+// directory. A photograph of a pay stub carries a name, an employer and an
+// income; it is not less sensitive than the letter that asked for it, so it
+// gets exactly the same treatment and none of the shortcuts.
+
+/** Encrypt a captured document and delete the plaintext. */
+export async function storeDocumentEncrypted(
+  documentId: string,
+  sourceUri: string,
+): Promise<string | undefined> {
+  const source = new File(sourceUri);
+  if (!source.exists) return undefined;
+
+  const ciphertext = await encryptBytes(await source.bytes());
+  const target = encryptedFileIn(DOCUMENT_DIR, documentId);
+  target.write(ciphertext);
+  try {
+    source.delete();
+  } catch {
+    // As above: the encrypted copy is written; a stubborn temp file is not
+    // worth failing an attachment over. `plaintextRemains()` reports it.
+  }
+  return target.uri;
+}
+
+export async function decryptDocumentForDisplay(documentId: string): Promise<string | undefined> {
+  const stored = encryptedFileIn(DOCUMENT_DIR, documentId);
+  if (!stored.exists) return undefined;
+
+  const previews = new Directory(Paths.cache, 'previews');
+  if (!previews.exists) previews.create({ intermediates: true });
+  const preview = new File(previews, `doc-${documentId}.jpg`);
+  preview.write(await decryptBytes(await stored.bytes()));
+  return preview.uri;
+}
+
+export function deleteStoredDocument(documentId: string): void {
+  const stored = encryptedFileIn(DOCUMENT_DIR, documentId);
+  if (stored.exists) stored.delete();
 }

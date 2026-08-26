@@ -91,7 +91,8 @@ back to Qwen2.5-0.5B on devices where 1.5B is too slow.
 | `typescript` | 6.0.3 | Apache-2.0 | Strict-mode type checking, including the extraction island's stricter config. |
 | `jest` | 29.7.0 | MIT | Test runner. Two projects: bare Node for extraction and tools, jest-expo for app code. |
 | `jest-expo` | 57.0.4 | MIT | Jest preset that understands React Native and Expo modules. |
-| `@testing-library/react-native` | 14.0.1 | MIT | Component tests written against what a user sees, which keeps accessibility labels honest. |
+| `@testing-library/react-native` | 14.0.1 | MIT | Component tests written against what a user sees, which keeps accessibility labels honest. **`render` is async in v14** — without `await` it returns a Promise and every query fails with "`render` function has not been called". |
+| `babel-preset-expo` | 57.0.8 | MIT | **Dev only.** Required by `jest-expo`, which loads React Native's Flow-typed `jest/setup.js`; without it the whole `app` project failed to parse and `tests/app/` could never run. Metro does not need it — SDK 57 applies it to the bundle by default — which is why its absence went unnoticed until 2026-08-24. |
 | `react-test-renderer` | 19.2.3 | MIT | Renderer backing the component tests. Pinned to match React exactly. |
 | `@types/jest` | 29.5.14 | MIT | Jest type definitions. |
 | `@types/react` | 19.2.18 | MIT | React type definitions. |

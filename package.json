@@ -19,7 +19,8 @@
     "probe": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/compare.ts",
     "probe:errors": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/errors.ts",
     "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/content-check.ts",
-    "probe:llm": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/long-tail.ts"
+    "probe:llm": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/long-tail.ts",
+    "probe:explain": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/explain-probe.ts"
   },
   "comments": {
     "overrides": "We do not ship a web build (SPEC.md §10 forbids a web version), but expo-router's dev tooling (@expo/router-server, @expo/ui) still pulls react-dom transitively. Left alone npm resolves it to a newer react-dom that demands a newer react than React Native 0.86.2 ships with. Pinning it here keeps one React version in the tree."
@@ -66,6 +67,7 @@
     "@testing-library/react-native": "^14.0.1",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.2.2",
+    "babel-preset-expo": "^57.0.8",
     "eslint": "^9.39.5",
     "eslint-config-expo": "~57.0.1",
     "jest": "~29.7.0",

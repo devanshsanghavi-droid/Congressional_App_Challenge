@@ -2,18 +2,20 @@
   "_schema": "carta.cross_reference.v1",
   "_purpose": "Population-level cross-references shown on Notice Detail after a notice is confirmed. Keyed on program + county ONLY. Never on household size, income, or any eligibility input.",
   "_phrasing_rule": "Always 'People receiving X are often also eligible for Y.' NEVER 'You may qualify.' The moment copy addresses the individual it becomes an eligibility determination, which SPEC section 10 forbids.",
-  "_disclaimer_required": "Every rendering must carry: 'This is general information, not a determination about your household. Contact the program to find out if you qualify.'",
+  "_disclaimer_required": "This is general information, not a determination about your household. Contact the program to find out if you qualify.",
+  "_disclaimer_required_es": "Esta es información general, no una decisión sobre su hogar. Comuníquese con el programa para saber si usted reúne los requisitos.",
   "_verified_on": "2026-08-18",
   "_confidence_note": "categorical_eligibility=true means an official source states receipt of the source program itself establishes eligibility (adjunctive/categorical). Anything marked false is a common co-occurrence, not a rule.",
-
-  "counties": ["santa-clara"],
-
+  "counties": [
+    "santa-clara"
+  ],
   "cross_references": {
     "CalFresh": [
       {
         "id": "ca-lifeline",
         "name": "California LifeLine",
         "what": "Discounted home phone or cell phone service.",
+        "what_es": "Servicio de teléfono fijo o celular con descuento.",
         "categorical_eligibility": true,
         "basis": "CPUC lists CalFresh/SNAP as a qualifying program for California LifeLine.",
         "apply_url": "https://www.californialifeline.com/en",
@@ -25,6 +27,7 @@
         "id": "wic",
         "name": "WIC",
         "what": "Food, formula, and nutrition help for pregnant people and children under 5.",
+        "what_es": "Alimentos, fórmula y ayuda de nutrición para personas embarazadas y niños menores de 5 años.",
         "categorical_eligibility": true,
         "basis": "Receipt of CalFresh, Medi-Cal, or CalWORKs establishes adjunctive income eligibility for WIC. Category and residency requirements still apply.",
         "apply_url": "https://www.myfamily.wic.ca.gov/",
@@ -36,6 +39,7 @@
         "id": "liheap",
         "name": "LIHEAP energy assistance",
         "what": "Help paying gas and electric bills, and emergency help if service is shut off.",
+        "what_es": "Ayuda para pagar las facturas de servicios públicos, y ayuda de emergencia si le cortan el servicio.",
         "categorical_eligibility": false,
         "basis": "Separate income test, but CalFresh households commonly qualify and LIHEAP receipt itself qualifies you for LifeLine.",
         "apply_url": "https://www.csd.ca.gov/Pages/Get-Help-Paying-My-Energy-Bills.aspx",
@@ -47,18 +51,20 @@
         "id": "school-meals",
         "name": "Free school meals",
         "what": "Free breakfast and lunch at school.",
+        "what_es": "Desayuno y almuerzo gratis en la escuela.",
         "categorical_eligibility": true,
         "basis": "CalFresh households are directly certified for free school meals. California also serves universal free meals to all public school students regardless of income.",
         "apply_url": "https://www.cde.ca.gov/ls/nu/sn/",
         "source_url": "https://www.cde.ca.gov/ls/nu/sn/",
         "verified_on": "2026-08-18",
         "confidence": "medium",
-        "note": "Verify the current status of California Universal Meals before shipping this copy -- if all students already receive free meals, the useful message is 'you do not need to apply', not 'you may be eligible'."
+        "TODO_verify": "Verify the current status of California Universal Meals before shipping this copy -- if all students already receive free meals, the useful message is 'you do not need to apply', not 'you may be eligible'."
       },
       {
         "id": "medi-cal",
         "name": "Medi-Cal",
         "what": "Free or low-cost health coverage.",
+        "what_es": "Cobertura de salud gratuita o de bajo costo.",
         "categorical_eligibility": false,
         "basis": "Separate program with its own rules, but CalFresh and Medi-Cal households overlap heavily and both are administered by the same county agency.",
         "apply_url": "https://www.benefitscal.com/",
@@ -67,13 +73,15 @@
         "confidence": "high"
       }
     ],
-
     "CalFresh/CalWORKs": [
-      { "$ref": "CalFresh" },
+      {
+        "$ref": "CalFresh"
+      },
       {
         "id": "subsidized-childcare",
         "name": "Subsidized child care",
         "what": "Help paying for child care while you work or attend school.",
+        "what_es": "Ayuda para pagar el cuidado de niños mientras usted trabaja o estudia.",
         "categorical_eligibility": false,
         "basis": "CalWORKs participants have access to Stage 1/2/3 child care.",
         "apply_url": "https://www.cdss.ca.gov/inforesources/child-care-and-development",
@@ -82,12 +90,12 @@
         "confidence": "medium"
       }
     ],
-
     "Medi-Cal": [
       {
         "id": "medi-cal-dental",
         "name": "Medi-Cal Dental",
         "what": "Dental coverage included with Medi-Cal at no extra cost.",
+        "what_es": "Cobertura dental incluida con Medi-Cal sin costo adicional.",
         "categorical_eligibility": true,
         "basis": "Dental benefits are part of Medi-Cal coverage.",
         "apply_url": "https://smilecalifornia.org/",
@@ -99,6 +107,7 @@
         "id": "ihss",
         "name": "In-Home Supportive Services (IHSS)",
         "what": "Pays someone to help with daily tasks at home so you can stay out of a care facility.",
+        "what_es": "Paga a alguien para ayudar con las tareas diarias en casa para que no tenga que ir a un centro de cuidado.",
         "categorical_eligibility": false,
         "basis": "Requires Medi-Cal plus an assessed need for care.",
         "apply_url": "https://ssa.santaclaracounty.gov/supportive-services/home-supportive-services-ihss",
@@ -106,38 +115,47 @@
         "verified_on": "2026-08-18",
         "confidence": "medium"
       },
-      { "$ref": "wic" }
+      {
+        "$ref": "wic"
+      }
     ],
-
     "SSI": [
-      { "$ref": "ca-lifeline" },
+      {
+        "$ref": "ca-lifeline"
+      },
       {
         "id": "calfresh-ssi",
         "name": "CalFresh",
         "what": "Monthly money for groceries on an EBT card.",
+        "what_es": "Dinero cada mes para comprar comida con una tarjeta EBT.",
         "categorical_eligibility": false,
         "basis": "SSI recipients in California became eligible for CalFresh in 2019; many still do not know this.",
         "apply_url": "https://www.getcalfresh.org/",
         "source_url": "https://www.cdss.ca.gov/inforesources/calfresh",
         "verified_on": "2026-08-18",
         "confidence": "high",
-        "note": "High-value cross-reference. SSI recipients were excluded from CalFresh for decades and awareness remains low."
+        "_note": "High-value cross-reference. SSI recipients were excluded from CalFresh for decades and awareness remains low."
       }
     ],
-
     "Housing Choice Voucher": [
-      { "$ref": "ca-lifeline" },
-      { "$ref": "liheap" }
+      {
+        "$ref": "ca-lifeline"
+      },
+      {
+        "$ref": "liheap"
+      }
     ]
   },
-
   "public_charge_note": {
     "_purpose": "Renders INLINE with the cross-reference list, never behind a link. Suggesting extra programs to a mixed-status household is exactly where fear does its damage.",
     "en": "Using most public benefits does not affect your immigration case. Food assistance, health coverage, and school meals are not counted in a public charge decision. Benefits used by your children do not count against you.",
-    "es": "Usar la mayoria de los beneficios publicos no afecta su caso de inmigracion. La ayuda de alimentos, la cobertura de salud y las comidas escolares no cuentan en una decision de carga publica. Los beneficios que usan sus hijos no cuentan en su contra.",
+    "es": "Usar la mayoría de los beneficios públicos no afecta su caso de inmigración. La ayuda de alimentos, la cobertura de salud y las comidas escolares no cuentan en una decisión de carga pública. Los beneficios que usan sus hijos no cuentan en su contra.",
     "source_url": "https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge",
     "verified_on": "2026-08-18",
     "confidence": "medium",
     "TODO_verify": "Confirm current USCIS public charge policy text before shipping. This is the highest-stakes copy in the file -- getting it wrong could either frighten someone away from food assistance or give false assurance. Cite the policy directly in the UI."
-  }
+  },
+  "_translation_note": "what_es is a plain-language translation written for Carta, not an official agency translation. CLAUDE.md section 9 prefers official CDSS wording where it exists; these programme descriptions have no CDSS equivalent because they are not CDSS forms. A Spanish speaker must read these before ship.",
+  "_translation_todo": "Have a fluent Spanish speaker review every what_es string. These programmes are not CDSS forms, so there is no official translation to defer to -- this is Carta's wording and a native speaker has to sign it off.",
+  "_disclaimer_rule": "Every rendering of a cross-reference must carry _disclaimer_required (or _disclaimer_required_es) verbatim, on screen, not behind a link."
 }

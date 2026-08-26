@@ -53,6 +53,8 @@ module.exports = {
       displayName: { name: 'app', color: 'magenta' },
       preset: 'jest-expo/ios',
       rootDir: __dirname,
+      // React 19 will not flush a test render without this global; see the file.
+      setupFilesAfterEnv: ['<rootDir>/tests/app/setup.ts'],
       testMatch: [
         '<rootDir>/src/app/**/*.test.tsx',
         '<rootDir>/src/components/**/*.test.tsx',

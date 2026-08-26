@@ -2559,3 +2559,1175 @@ Neural Engine may differ in either direction.
 
 Recognition quality did not degrade with the harder captures: **31 lines and
 ~1,300 characters on all four**, including the dim, the skewed and the inverted.
+
+---
+
+## 2026-08-24 — The explanation grammar, measured. It does not work.
+
+**AUTHORSHIP: Claude ran the probe and wrote this entry. No file in
+`/src/extraction` was touched.**
+
+`src/lib/llm/explain-grammar.ts` made a strong claim that had never been run:
+`char ::= [^0-9{}]` forbids the model any digit, so a fabricated date is not
+rejected afterwards but *unreachable*, and the only route to a number is a
+placeholder the app fills from confirmed fields.
+
+New probe `tools/metrics/probe/llm/explain-probe.ts` (`npm run probe:explain`)
+runs the real grammar, the real prompt builder and the real sanity pass over all
+ten notices — nine on the committed OCR text of their flat capture, notice 10 on
+its PDF because no photograph of it exists.
+
+### Result: shown 2, withheld 8, of 10
+
+The digit ban works perfectly and is worth nothing.
+
+| | |
+|---|---|
+| digits emitted by the model, all 10 notices | **0** |
+| placeholders emitted by the model, all 10 notices | **0** |
+| withheld as `incomplete` | **8** |
+| shown to the user | **2, and both are garbage** |
+
+### Failure 1 — the model never uses a placeholder. Not once.
+
+`word ::= placeholder | plain` makes `{deadline}` reachable, and the prompt names
+the available placeholders explicitly. Across ten notices the model emitted zero.
+A base instruct model has no language-prior reason to write `{deadline}` in the
+middle of a sentence, and one prompt line does not overcome that. **`substitute()`
+therefore had nothing to substitute on any notice.** The mechanism the guardrail
+rests on is, in practice, dead.
+
+### Failure 2 — forbidden digits produce a degeneration loop, not an abstention
+
+Notice 10, the approval, verbatim:
+
+> SAYS: …You need to keep your benefits and report any changes in your household
+> income before February **oubt oubt oubt oubt oubt** … (×83, to the token limit)
+
+The model reached "February 28, 2027". `2` was unreachable. No placeholder exists
+for a certification end date, so there was no legal way to say the true thing
+either. The sampler took the highest-probability legal token, which put it in a
+state where that token was again most likely, and it burned all 300 of
+`n_predict` there. It never reached `DO:`, `WHEN:` or `APPEAL:`, `parseSections`
+returned undefined, and the explanation was withheld.
+
+Eight of ten fail this way. Notice 02 loops on "September XX. ENTION Date is
+September XX." Notice 06 loops on "The letter is in Spanish." ×15.
+
+**Correction to the header comment in `explain-grammar.ts`:** it says a grammar
+with no null production "forces fabrication". Measured, this one does not
+fabricate — it *stalls*. That is the correct failure direction and a completely
+different problem, and it needs a different fix.
+
+### Failure 3 — the two that pass are the dangerous ones
+
+The sanity pass checks for unconfirmed **digits**, unfilled `{placeholders}`, and
+eligibility claims. Under a digit ban the model writes numbers as **letters**,
+and letters pass every one of those checks.
+
+Notice 04, shown to the user, all four sections:
+
+> SAYS: …you need to renew your Medi-Cal coverage by **October XXX XXX**.
+> DO: You have to renew your Medi-Cal coverage by October XXX XXX.
+> WHEN: You have to renew your Medi-Cal coverage by October XXX XXX.
+> APPEAL: If you disagree… you can appeal by October XXX XXX.
+
+Notice 05, shown to the user:
+
+> APPEAL: Rosa can ask for a hearing by calling **XXX-XXX-XXXX**.
+
+and it says "by October XX" for a hearing-by date that is **September 28**.
+
+`checkExplanation` returned `ok` for both. `\d+` cannot see `XXX`, and `XXX` is
+not `{deadline}`. **The guardrail measures the wrong thing: it asks whether an
+unconfirmed digit reached the text, when the question is whether the model tried
+to write a number at all.** Under a digit ban those are not the same question,
+and a digit check is blind by construction.
+
+### What this means
+
+The design intent — a date the user did not confirm should be structurally
+impossible, not merely caught — is right and worth keeping. The implementation
+achieves it by making the model unable to speak, and the check that was supposed
+to catch the remainder cannot see the failure mode the ban creates.
+
+Not fixed here. This is a product decision on a documented §4 guardrail and it is
+Devansh's to make. Recorded so it is made with the numbers in front of it.
+
+Directions, cheapest first, none of them measured yet:
+
+1. **Add the missing placeholders** (`{amount}`, `{certificationEnd}`,
+   `{reportWithin}`, `{hearingPhone}`) so there is always a legal way to say the
+   true thing. Does not address failure 1 — the model still has to choose them.
+2. **Extend the sanity pass to spelled-out and X-substituted numbers** — this one
+   is cheap, mechanical, and should happen regardless of what else is decided,
+   because failure 3 is live today.
+3. **Drop the digit ban; keep the sanity pass and make it the whole mechanism.**
+   Every number in the finished text must match a confirmed value or the
+   explanation is withheld. Weaker guarantee, honest one, and the model can write.
+4. **Two-stage:** generate freely, then have the check rewrite offending spans to
+   placeholders before display.
+
+### Caveats on these numbers
+
+macOS llama.cpp b10470, `--temp 0`, where the app uses llama.rn at temperature
+0.3 — same engine family, different build. This measures the grammar and the
+sanity pass, which are deterministic text processing; it says nothing about
+latency or on-device behaviour. `-no-cnv` is **not honoured** by this build, so
+the prompt went through Qwen's chat template here; `explain.ts` passes a bare
+prompt to `context.completion`, which does not. Worth checking whether the app
+should be using the chat template — an instruct model given a raw completion
+prompt is being used off-label.
+
+**`ask.sh` cannot be used for prose.** It finds the response via a sentinel at the
+end of the echoed prompt, and b10470 truncates a long echoed prompt, so the
+sentinel vanishes and the helper returns llama.cpp's own banner. The first run of
+this probe reported "16 digits emitted by the model" that were the build number
+in that banner. `explain-probe.ts` anchors on the grammar's own `SAYS:` literal
+instead.
+
+---
+
+## 2026-08-24 — Checklist, cross-reference, and four defects the screenshots found
+
+**AUTHORSHIP: Claude, app-side only. Nothing in `/src/extraction` was touched.**
+
+### Screenshots before code, and what they showed
+
+Ten screenshots in `screenshots/`, all driven through the real UI in the
+Simulator over real corpus photographs. Four defects came out of it that no test
+would have caught, because they are layout and copy:
+
+1. **Capture: "Choose a photo instead" overlaps the shutter button.**
+   `shutterRow` is `space-between` with `pickButton: { minWidth: 120 }` —
+   `minWidth` is a floor, not a cap, and the label at 16pt bodyStrong is far
+   wider than 120pt, so the row overflows its 338pt and the text runs under the
+   76pt shutter. **Not yet fixed.**
+2. **Capture: only the top two corner brackets render.** `guide` is
+   `absoluteFill` over the whole screen, so its bottom half sits behind
+   `cameraControls`. The document guide is half a guide. **Not yet fixed.**
+3. **Every full-screen sheet rendered its first line under the Dynamic Island.**
+   React Native's `Modal` is a separate view hierarchy and
+   `react-native-safe-area-context` does not carry insets across it, so the
+   `SafeAreaView` inside measured a zero top inset. Affected the existing
+   photo/text viewer on Notice Detail as well as the two new Checklist sheets.
+   **Fixed** — `Sheet` in `ui.tsx` re-provides `SafeAreaProvider` inside the
+   modal, which is the library's documented fix, and `Screen` grew `insetTop`.
+4. **Review says "Read clearly" over a date the user typed themselves.**
+   `effectiveRisk` returns `verified` for `source === 'manual'`, and the
+   verified+date branch renders "Read clearly" — which claims Carta read it off
+   the page. It did not; the user typed it. **Not yet fixed.**
+
+Also confirmed, not a defect: **Review requests notification permission before
+scheduling** and verifies with `listScheduled()`. The `OS reports 0` line in the
+self-test output is a self-test ordering artifact — it requests permission after
+scheduling — not the app path.
+
+Still unreachable: **the "this does not look right" invalid-value state on
+Review has no producer.** `review.tsx` branches on `field.invalid`; `scaffold.ts`
+never sets it. The red styling and its copy are dead until the cascade populates
+it. Left alone rather than faked — making the scaffold set it would be doing
+extraction work.
+
+### Checklist (SPEC §7 priority 5)
+
+Schema **v3**: `documents` and `requirements`, two tables not one, because a
+document outlives the requirement it was attached for — the pay stub this SAR 7
+asks for is the one the next notice will ask for. That is also what makes the
+Vault possible later without another migration.
+
+The rule the design is built around is CLAUDE.md §16. Every requirement records
+`origin`:
+
+- `letter` — the cascade read it off the page. Carta may say "the letter asks
+  for this". `seedFromLetter()` is the only writer and takes its list straight
+  from `ExtractionResult.requiredDocs`.
+- `user` — the person added it. Carta says "you added this" and nothing more.
+
+There is deliberately no code path that promotes one to the other, and
+`addUserRequirement` hard-codes `'user'` rather than taking it as a parameter.
+
+`content/doc_types.json` is a **vocabulary, not a rule**: twelve document types
+with descriptions, and nothing anywhere in it that maps a programme or an action
+type to a set of documents. A test asserts that — `doc_types` is the only
+non-underscore key, and a set of forbidden keys must not appear.
+
+The scaffold extractor produces no `requiredDocs`, so today the Checklist opens
+on its empty state and the user builds the list. That is the correct behaviour
+and not a degraded one: Carta must never assert that a programme requires a
+document it did not read.
+
+**`progressOf` lives in `src/lib/checklist.ts`, pure**, so the readiness rule is
+a bare-Node test. The rule worth the split: **`ready` is false for an empty
+checklist**. Zero of zero is arithmetically complete and is not readiness — an
+empty checklist means Carta does not know what the letter asks for, and telling
+someone they are ready to send a packet on that basis is the worst thing that
+screen could say. It is exactly what `resolved === total` alone would say.
+
+"Does not apply to me" is a first-class state, counted as resolved. A checklist
+that can only be completed tells someone with no employer that they can never be
+ready.
+
+### "Worth checking" (SPEC §2.1)
+
+`WorthChecking` renders `content/cross_reference.json` at the **bottom** of
+Notice Detail, below "Check it yourself" — it is the least urgent thing on a
+deadline tracker and nothing may take priority from the countdown. The three
+§4 rules are structural: the component takes exactly one selector (`program`)
+and cannot reach an eligibility input; the public-charge note renders inline
+above the list; `verified_on` renders per entry.
+
+Three things the first render exposed, all fixed:
+
+- The disclaimer was rendering its own schema instruction — the JSON value was
+  written as "Every rendering must carry: '…'" and that whole string reached the
+  screen. Split into `_disclaimer_rule` (documentation) and
+  `_disclaimer_required` (the sentence).
+- It reused `detail.verifiedOn`, which says "Office details checked on…" for
+  programmes. Own string now.
+- An identical date under all five entries was noise. Now one line for the
+  section, using the **oldest** entry's date, and a per-entry line only when it
+  differs. Oldest, not newest: a section is only as fresh as its stalest entry.
+
+**A validator caught a real mistake.** Running the disclaimer through
+`requirePopulationLevelPhrasing` failed the build on "find out if you qualify" —
+correctly. The disclaimer is the one string that has to say that; its job is to
+say Carta is *not* deciding. Exempted, for the same reason `basis` is.
+
+That also exposed a gap: the forbidden-phrasing list had three Spanish patterns
+and none of them covered "reúne/cumple los requisitos", the ordinary Spanish for
+"to qualify". The Spanish copy was being checked more loosely than the English.
+Added.
+
+### Spanish
+
+`what_es` on every cross-reference entry, `label_es`/`what_es` on every document
+type, plus `_disclaimer_required_es`, and both languages are **required at parse
+time** — an optional translation is one that quietly does not exist by ship.
+
+These are written for Carta, not taken from an agency translation. CLAUDE.md §9
+prefers CDSS's own wording, and for the cross-referenced programmes there is
+nothing to point at — they are not CDSS forms. For the document types there
+*is*: the translated SAR 7 (SAR 7 SP) and CF 377.6 name these items, and that
+wording should replace these strings. Both are now named by
+`npm run content:check`, which reports **10** outstanding items, and pinned in
+`tests/node/content.test.ts` so the list cannot grow silently.
+
+### Gates
+
+`npm run typecheck`, `npm run lint`, `npm test` — **181 tests, 13 suites, green.**
+Still absent and still worth naming: **`no-network.test.ts` does not exist and
+never has**, and `tests/app/` is empty, so the `jest-expo/ios` project
+contributes zero of those 181.
+
+---
+
+## 2026-08-24 (later) — The explanation guardrail, in three designs
+
+**AUTHORSHIP: Claude implemented and measured. The decision to drop the digit
+ban was Devansh's. Nothing in `/src/extraction` was touched.**
+
+> **Written-answer material.** This is one problem attacked three times, where
+> each fix was a reasonable response to the previous failure and the first two
+> made things worse in ways only measurement showed. The final answer was not a
+> better constraint. It was noticing the question was wrong.
+
+### The problem
+
+A 1.5B model writing a plain-language summary of a benefits letter must never
+put a date in front of someone that they did not confirm. CLAUDE.md §4,
+guardrail 3. The stakes are not abstract: a wrong deadline in a plain-language
+summary is *more* dangerous than a dense official one, because the whole point
+of the rewrite is that people believe it.
+
+### Design 1 — constrain the shape of the date (2026-08-20)
+
+GBNF: `\d{2}/\d{2}/\d{4}`. Constrain a date at the token level so a malformed
+one is structurally unreachable.
+
+**Two failures, both measured.**
+
+It accepted `00/00/0001` and `20/09/2026` — digit *counts* are not value
+*ranges*. And the serious one: on a notice with no deadline, the model emitted
+the notice date instead. The grammar had no production meaning "not stated", so
+there was no legal token sequence for abstaining, and the sampler had to emit
+*something*.
+
+> **A grammar with no null production converts every gap into a confident
+> fabrication.**
+
+The unconstrained model got that case right. The constrained one did not. That
+is the first counter-intuitive result: **adding a constraint made the output
+less truthful**, because the constraint removed the option of silence.
+
+### Design 2 — forbid digits entirely (2026-08-24 morning)
+
+If a well-formed date can still be a false date, make dates *impossible*:
+
+```
+char ::= [^0-9{}]        # no digit may ever be generated
+```
+
+Where a date belongs the model emits `{deadline}`, and the app substitutes the
+value the user confirmed. Guardrail 3 stops being a rule checked afterwards and
+becomes one that is unreachable.
+
+It reads as airtight. **First measurement over all ten corpus notices** (new
+probe, `npm run probe:explain`) — the numbers:
+
+| | |
+|---|---|
+| digits emitted by the model, all 10 notices | **0** |
+| placeholders emitted by the model, all 10 notices | **0** |
+| withheld as `incomplete` | **8 of 10** |
+| shown to the user | **2, and both were garbage** |
+
+**Failure A — the model never used a placeholder. Not once, on any notice.**
+`word ::= placeholder | plain` made `{deadline}` reachable and the prompt named
+the available placeholders explicitly. It emitted zero. A base instruct model
+has no language-prior reason to write `{deadline}` mid-sentence, and one line of
+prompt does not overcome that. **`substitute()` therefore had nothing to
+substitute, on any notice, ever.** The mechanism the entire guardrail rested on
+never executed a single time in production conditions.
+
+**Failure B — the ban produced degeneration, not abstention.** Notice 10, the
+approval, verbatim:
+
+> SAYS: …You need to keep your benefits and report any changes in your household
+> income before February **oubt oubt oubt oubt oubt** … (×83, to the token limit)
+
+The model reached "February 28, 2027". `2` was unreachable. No placeholder
+existed for a certification end date, so there was no legal way to say the true
+thing either. The sampler took the highest-probability legal token, which put it
+in a state where that token was again most likely, and it burned the entire
+budget there. It never reached `DO:` or `APPEAL:`, so `parseSections` returned
+undefined and the explanation was withheld. Eight of ten failed this way —
+notice 02 looping on "September XX. ENTION Date is September XX.", notice 06 on
+"The letter is in Spanish." ×15.
+
+**Failure C — the two that passed were the dangerous ones.** The sanity pass
+checked for unconfirmed **digits**, unfilled `{placeholders}`, and eligibility
+claims. Under a digit ban the model wrote numbers as **letters**, and letters
+pass all three. Shown to the user, notice 04, all four sections:
+
+> SAYS: …you need to renew your Medi-Cal coverage by **October XXX XXX**.
+> DO: You have to renew your Medi-Cal coverage by October XXX XXX.
+> WHEN: You have to renew your Medi-Cal coverage by October XXX XXX.
+> APPEAL: If you disagree… you can appeal by October XXX XXX.
+
+And notice 05: *"Rosa can ask for a hearing by calling **XXX-XXX-XXXX**"*, plus
+"by October XX" for a hearing-by date that is **September 28**.
+
+`checkExplanation` returned `ok` for both. `\d+` cannot see `XXX`; `XXX` is not
+`{deadline}`.
+
+> **The check measured the wrong thing. It asked "did an unconfirmed digit reach
+> the text?" when the question is "did the model try to write a number?" Under a
+> digit ban those stop being the same question — and the check was blind
+> precisely to the failure mode the ban itself created.**
+
+That is the second counter-intuitive result, and the sharper one: **a constraint
+and its backstop can be individually sound and jointly useless**, because the
+constraint changes the distribution the backstop was calibrated against.
+
+### Design 3 — stop asking the model for the number
+
+Both failures came from the same mistake, visible only in hindsight: *asking the
+model to produce a value the app already had, and then policing the answer.*
+
+The deadline is not something the model knows. It was extracted deterministically
+at 100% precision on every date the app schedules on (2026-08-20), and the user
+confirmed it on Review. **The app can simply render it.**
+
+So the explanation now has **no "by when" section at all**. Notice Detail renders
+that date from the confirmed field, above the explanation, and always did. The
+model writes only the three sections it can genuinely contribute to:
+
+```
+SAYS   — what the letter is telling them
+DO     — what they have to do
+APPEAL — how to disagree
+```
+
+Digits are allowed. There is no placeholder machinery, no substitution step, and
+nothing that can be left unfilled. The grammar is a **shape** — three labelled
+sections in a fixed order, so no heading renders empty — and makes no claim
+about truth. The sanity pass becomes a **net rather than the mechanism**: any
+date in the finished prose that is not among the dates the user confirmed
+withholds the whole explanation.
+
+### Result, same probe, same ten notices
+
+| design | shown | withheld | what the failures were |
+|---|---|---|---|
+| 2 — digit ban | 2 | 8 | degeneration loops; the 2 shown were `October XXX XXX` |
+| 3 — no `when`, digits allowed | **8** | **2** | both real unconfirmed dates |
+
+Notice 10, the same notice that produced `oubt` ×83:
+
+> SAYS: This letter is telling Samuel Bright that his CalFresh application has
+> been approved. He will receive **$412 per month** for benefits starting on
+> **August 15, 2026**. He needs to complete a Semi-Annual Eligibility Status
+> Report (SAR 7) before **February 28, 2027**, to keep receiving benefits.
+
+Every number correct and off the letter. **The model could always do this. The
+ban was the only thing stopping it.**
+
+**Both remaining withholdings are true positives**, which is the net working:
+
+- **Notice 07** — the model wrote *"the proof they asked for on September 14,
+  2026"*. That date is on no field of notice 07. It is the notice date of a
+  *different* corpus notice. **A real hallucination, caught.**
+- **Notice 10** — it wrote "February 28, 2027", the certification end date. That
+  is genuinely printed on the letter, but Carta does not extract it, so the user
+  never confirmed it. Withheld. Correct under the contract, which is about what
+  the *user confirmed*, not what exists on the page — and conservative in the
+  right direction.
+
+### Two smaller findings from building design 3
+
+**The grammar still needed a length bound, for a reason unrelated to truth.**
+The first version had `line ::= char+`, unbounded. 6 of 10 withheld as
+`incomplete` — the model spent the whole budget on `SAYS` and never reached
+`APPEAL`; notice 10 wrote 600 correct characters then repeated itself three
+times. Bounding in **sentences** (`sentence (" " sentence){0,2}`,
+`sentence ::= schar{1,180} punct`) rather than characters is deliberate: at
+`char{1,60}` the cut lands mid-sentence and the next section reads as a
+continuation of the previous one — measured, verbatim:
+`DO: Date, which is September 5, 2026. This means that the letter`. Ending only
+at a full stop cannot do that. With the bound: **8 of 10**, and no `incomplete`
+at all.
+
+**The confirmed set has to be the whole set.** Given only `deadline` and
+`hearingBy`, the check withheld a *correct* explanation of notice 04 because the
+model mentioned the coverage end date — a value that is on the letter, is
+extracted, and that the user confirmed two fields above the deadline on the same
+screen. Answering "no date the user did not confirm" with a partial view of what
+they confirmed turns it into "no date except one". Widening to all five
+confirmed date fields took it from 6 shown to 8.
+
+### Four bugs the new tests found in the new check
+
+Written as attacks on the check rather than confirmations of it, and all four
+were real:
+
+1. `#{3,}` and `\?{3,}` never fired — `\b` before `#` or `?` asserts the
+   *opposite* of what it looks like, because neither is a word character.
+2. `2026-09-05` was rejected against a confirmed "Saturday, September 5, 2026",
+   because the month is a digit in one and a word in the other. Month names now
+   resolve to numbers before comparison.
+3. `30 de septiembre de 2026` matched no date pattern at all — the shapes only
+   handled month-then-number, and the number leads in Spanish. A Spanish
+   explanation could have carried any date past the check.
+4. `parseSections` used `\s*`, which includes the newline — so a section with an
+   empty body consumed the line break and captured the **next** section's text.
+   `DO:` with nothing after it returned "APPEAL: Call." as the DO section and
+   reported the explanation complete.
+
+### Caveats on every number here
+
+macOS llama.cpp b10470, `--temp 0`; the app uses llama.rn at temperature 0.3 —
+same engine family, different build. This measures the grammar and the sanity
+pass, which are deterministic text processing. It says nothing about latency or
+on-device behaviour. `-no-cnv` is not honoured by this build, so the probe ran
+through Qwen's chat template while `explain.ts` passes a bare prompt to
+`context.completion`; whether the app should use the chat template is still
+open, and an instruct model on a raw completion prompt is being used off-label.
+
+Notice 10 has no photograph in the corpus, so its text is the PDF's rather than
+OCR. The other nine use the committed OCR of their flat capture.
+
+---
+
+## 2026-08-24 (later still) — The network test, and why `tests/app/` was empty
+
+**AUTHORSHIP: Claude. App-side tests and build plumbing.**
+
+### The `app` Jest project had never run a single test
+
+`jest.config.js` has declared two projects since week 2. The bare-Node one works
+and carries everything. The `jest-expo/ios` one had an empty `tests/app/`, so
+`npm test` reported green while covering **zero React components** — and the
+reason it was empty turns out not to be "nobody got round to it":
+
+```
+SyntaxError: node_modules/@react-native/jest-preset/jest/setup.js
+  value(id: TimeoutID): void  — Unexpected token, expected ","
+```
+
+React Native's own Jest setup is written in Flow. Stripping it needs
+`babel-preset-expo`, which was **not installed**, and there was **no
+`babel.config.js`**. Metro never needed one — Expo SDK 57 applies the preset to
+the app bundle by default — so the app built and ran perfectly while the test
+project could not parse its first file. The project could never have executed a
+test, and nothing said so.
+
+**Fifth instance of "configuring a thing is not verifying it happened"**
+(CLAUDE.md §13), and the most expensive so far: it hid the absence of the
+project's single most demonstrable privacy claim for two weeks.
+
+Fixed with `babel.config.js` and `babel-preset-expo` as a dev dependency.
+
+Two further traps behind it, both of which look like broken tests rather than
+missing configuration:
+
+- **React 19 will not flush a test render without `IS_REACT_ACT_ENVIRONMENT`**,
+  which `jest-expo`'s preset does not set. Symptom: `render()` returns an object
+  with no `toJSON` and every query fails with "`render` function has not been
+  called". Set in `tests/app/setup.ts`.
+- **`render` is ASYNC in `@testing-library/react-native` v14.** Without `await`
+  it returns a Promise and `screen` is never populated — same misleading error.
+
+### `no-network.test.ts` — SPEC §8.3
+
+The claim: no code path that touches notice data ever reaches the network. It is
+the strongest privacy statement Carta makes and it was pure prose until now.
+
+**Two halves, because neither is sufficient alone.**
+
+*Runtime.* `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource`,
+`navigator.sendBeacon`, and the `Networking` / `WebSocketModule` / `BlobModule`
+native modules underneath them are all replaced with functions that record the
+attempt and throw. Patching only the JS globals would be theatre — a library
+wanting to bypass them would call the bridge directly. Then the notice-data path
+runs over **all 79 corpus OCR records**: extraction, orientation, countdowns and
+the full reminder ladder, content-pack parsing, prompt construction, the sanity
+pass, checklist progress. Any attempt fails the build. Its limit is that it only
+proves the lines it executes.
+
+*Static.* Every module reachable from that path is read off disk as bytes and
+checked for any reference to a networking API — `fetch(`, `XMLHttpRequest`,
+`WebSocket`, `sendBeacon`, `downloadFileAsync`, `axios`, a hard-coded URL. This
+covers the branches a run does not take: an error handler that phones home, a
+reporter behind a flag. Its limit is that it cannot see through an indirection.
+
+`src/lib/llm/model.ts` — the one documented exception, the user-initiated
+wifi-gated model download — is excluded **by name**, so adding a second
+exception is a visible edit to that list rather than a silent one.
+
+**41 assertions.** Four of them test the test: if the monkeypatch silently
+failed, every other assertion would pass while proving nothing, so `fetch`,
+`XMLHttpRequest` and `WebSocket` are each provoked into throwing and the suite
+asserts that at least one native module was actually patched.
+
+**Verified by breaking it.** A `fetch('https://telemetry.example.com/...')` was
+injected into `daysUntil` in `urgency.ts` — squarely on the notice-data path —
+and both halves failed independently: the runtime patch threw with the URL in
+the message, and the static audit flagged the module. Reverted. A test that has
+never failed is a test nobody has checked.
+
+One refinement the static half needed: the URL pattern originally fired on
+`raw.startsWith('https://')` in `content/validate.ts` — the code that
+*validates* a provenance URL, not code that opens one. Requiring a host
+character after the slashes fixes it. A rule that cries wolf on its own
+enforcement is a rule someone eventually deletes.
+
+### Component tests — `tests/app/screens.test.tsx`
+
+Home, Review and Notice Detail. Deliberately not exhaustive; they hold the
+things that would be silently wrong on a screen and would fail no other check:
+
+- Home's empty state is the **empty** state and not a flash of it during the
+  first read — `undefined` means "not loaded", `[]` means "none", and rendering
+  the first as the second tells someone with four deadlines they have none.
+- The countdown tier, which is the whole product.
+- Home never renders a raw error string (`SQLITE_CORRUPT` must not reach a user).
+- The "no reminders set" warning appears — the most dangerous state this product
+  can be in is a deadline it is silently not going to remind anyone about.
+- Review flags name and case number regardless of confidence, and **no longer
+  claims "Read clearly" over a value the user typed**.
+- Notice Detail renders "by when" **from the confirmed field**, with the model
+  absent. If that ever comes from generated text the guardrail is gone.
+
+Assertions target **accessibility labels** where the component is one accessible
+element — the countdown is deliberately a single stop so a screen reader says
+"2 days left" rather than "2" then "days left". Testing the label rather than
+the glyph tests the thing the rubric actually scores.
+
+### UI fixes from the screenshots
+
+**Capture guide clipped** — the guide was `absoluteFill` over the whole screen,
+so its lower half sat behind the controls panel and only two corners were ever
+visible. A document guide with two corners does not read as a guide. Now a child
+of the camera view. Verified on the Simulator: four corners.
+
+**Capture shutter row overflow** — `pickButton: { minWidth: 120 }` in a
+`space-between` row. `minWidth` is a floor, not a cap: the 16pt label expanded
+past it, the row overflowed its 338pt, and "Choose a photo instead" ran under
+the shutter. The picker is now absolutely positioned with a `maxWidth` that
+stops 13pt clear of the shutter's left edge, so no label length can move the
+shutter. Verified on the Simulator.
+
+**"Read clearly" over a user-typed value** — `effectiveRisk` returns `verified`
+for `source === 'manual'`, which is *correct*: a value the user typed does not
+need re-checking. The bug was this screen reading "verified" as "Carta read this
+clearly off the page" — claiming a provenance the value does not have, and
+taking credit for the user's own work. **The fix belongs in the screen, not in
+`effectiveRisk`**: the risk answer was right and the screen misread it. Now
+gated on `field.source !== 'manual'`.
+
+Left alone as agreed: the invalid-value state on Review, which is dead UI until
+the cascade populates `field.invalid`, and `effectiveRisk` itself.
+
+### Gates
+
+**247 tests, 15 suites, across both Jest projects** — up from 181 in one.
+`npm run typecheck` and `npm run lint` clean.
+
+---
+
+## 2026-08-24 — The test project that could never have run
+
+**AUTHORSHIP: Claude found and fixed this.**
+
+> **Written-answer material.** The fifth instance of one specific mistake in this
+> project, and the most expensive: it hid the absence of the app's central
+> privacy claim for two weeks while every signal said the repo was healthy.
+
+### What was true
+
+`jest.config.js` has declared two Jest projects since week 2:
+
+- `node` — bare Node, for the extraction island and the corpus tools.
+- `app` — `jest-expo/ios`, for components, storage, and **`no-network.test.ts`,
+  which the config file names in a comment as the pipeline gate.**
+
+`npm test` reported green. 181 tests, 13 suites, every one of them from the
+`node` project. `tests/app/` was an empty directory.
+
+The natural reading — mine, and it is in an earlier entry — was "the app tests
+have not been written yet". That reading was wrong. When I tried to write the
+first one, this happened before a single test executed:
+
+```
+SyntaxError: node_modules/@react-native/jest-preset/jest/setup.js
+  value(id: TimeoutID): void  — Unexpected token, expected ","
+```
+
+React Native's own Jest setup file is written in **Flow**. Stripping Flow needs
+`babel-preset-expo`, which was **not in `package.json`**, and there was **no
+`babel.config.js` in the repo at all**.
+
+**The `app` project had never been capable of running a test.** Not "no tests
+were written for it" — no test *could* have run. Any test placed in
+`tests/app/` at any point in the last two weeks would have failed to parse.
+
+### Why nothing caught it
+
+Because **Metro does not need `babel.config.js`.** Expo SDK 57 applies
+`babel-preset-expo` to the app bundle by default, so:
+
+- `npx expo run:ios` built and launched. ✅
+- `npm run typecheck` passed. ✅
+- `npm run lint` passed. ✅
+- `npm test` printed **PASS** and a rising test count. ✅
+
+Every gate was green. The app ran on a phone. And one half of the test
+configuration was inert, silently, with no output distinguishing "this project
+ran zero tests" from "this project does not exist".
+
+Jest does not warn on a project that matches no test files. That is the whole
+gap: **a test project with no tests and a test project that cannot run tests
+produce identical output.**
+
+### Why this one mattered more than the others
+
+The four previous instances (CLAUDE.md §13) cost time. This one cost a claim.
+
+`no-network.test.ts` is the single most demonstrable thing Carta asserts — that
+no code path touching notice data ever reaches the network. It is named by
+filename in the README and in the video script. It was assigned to the `app`
+project. **It was assigned to a project that could not run it**, and the plan
+recorded it as "not written yet" rather than "not possible yet", which is a
+materially different problem with a materially different fix.
+
+Had the video been filmed on the current plan, it would have pointed at a
+filename in a project that had never executed.
+
+### The pattern, stated properly
+
+Four previous instances, all the same shape:
+
+1. `llama.rn`'s plugin adds memory entitlements only when `EAS_BUILD_PROFILE` is
+   set — declared in config, never applied locally.
+2. `expo-mlkit-ocr` is configured for ML Kit and runs Apple Vision — found by
+   reading `Podfile.lock`, not the README.
+3. Notification scheduling returns an id and the OS retains nothing without
+   authorisation — every layer reports success.
+4. A green `xcodebuild` log and an app that cannot launch at dyld time.
+
+And now: a Jest project that is configured, named in comments, referenced in the
+spec, and cannot parse its first file.
+
+> **Configuring a thing is not verifying it happened. The check has to be "did
+> it run and produce output I looked at", not "is the setting present".**
+
+The corollary this one adds, which the earlier four did not: **an absence is
+harder to see than a failure.** All four earlier cases eventually produced a
+visible symptom. This one produced *nothing at all* — and "nothing" is what a
+passing test project and a dead one both look like from the outside.
+
+### Fixed
+
+`babel.config.js` plus `babel-preset-expo` as a dev dependency. The file itself
+carries the explanation, because the next person to see a repo with no
+`babel.config.js` and a working build will reasonably conclude it is not needed.
+
+Two further traps sat directly behind it, both of which present as a broken test
+rather than as missing configuration:
+
+- React 19 refuses to flush a test render unless `IS_REACT_ACT_ENVIRONMENT` is
+  set, and `jest-expo`'s preset does not set it.
+- `render` is **async** in `@testing-library/react-native` v14.
+
+Both produce the identical, misleading message: **"`render` function has not
+been called"** — which points at the test, and the cause is in the config.
+
+`tests/app/` now holds 61 tests. `npm test` runs 247 across both projects.
+
+### What I would change about the process
+
+A green suite should have to say *which* projects ran. The line
+`Ran all test suites in 2 projects.` only appeared once the second project had
+a test in it — which is exactly backwards, since that is the moment it stopped
+mattering.
+
+
+---
+
+## 2026-08-24 — Writing the tests as attacks, and finding four bugs in the check
+
+**AUTHORSHIP: Claude.**
+
+> **Written-answer material.** A safety check is the one piece of code where
+> tests written to confirm it works are close to worthless, because a check that
+> silently passes everything satisfies every confirming test perfectly.
+
+### The setup
+
+The digit ban had just been removed. `checkExplanation` went from being a
+*backstop* — the grammar was supposed to make a fabricated date unreachable, so
+the check only had to catch what form could not express — to being **the only
+thing between an unconstrained 1.5B model and the screen**.
+
+That is a promotion, and it changes what the tests have to be. The old suite
+tested a helper. The new one has to test a guard.
+
+### The failure the old suite had already missed
+
+Worth stating plainly, because it is the reason for the change in approach.
+
+Under the digit ban, `checkExplanation` had tests. They passed. And this was
+shown to a user, on all four sections of notice 04:
+
+> *"you need to renew your Medi-Cal coverage by **October XXX XXX**"*
+
+Every test passed because every test asked "does the check accept a good
+explanation and reject an obviously bad one?" None asked "**what is the cheapest
+way to get a wrong number past this?**" The answer was: write the number as
+letters. `\d+` cannot see `XXX`.
+
+### The change
+
+Each test in the new suite is a specific route a wrong number could take to a
+screen, named as such. Not "accepts a valid date" but "rejects a *plausible*
+date that was not confirmed" — using `September 30`, which is the deadline of a
+different corpus notice, because a model that conflates two notices or reads the
+effective date instead of the return-by date produces exactly that.
+
+**Four of them failed on first run. All four were real bugs in the check, not in
+the tests.**
+
+**1. Two patterns never fired at all.** The letter-number check included:
+
+```js
+/\b(?:NN+|nn+|\?{3,}|#{3,})\b/
+```
+
+`\b` is a word boundary. `#` and `?` are not word characters, so `\b` before
+them asserts the *opposite* of what it looks like. `###-####` and `???` sailed
+through. This is a pattern that reads correctly, was written deliberately, and
+matched nothing — a confirming test using `XXX` would have passed and never
+touched it.
+
+**2. The check rejected the app's own confirmed date.** Notice Detail renders
+`Saturday, September 5, 2026`. Given `2026-09-05`, the check withheld it as
+unconfirmed — the month is a **word** in one and a **digit** in the other, so
+the two shared only `{5, 2026}`. The guard was rejecting the exact value the
+guard exists to permit. Month names now resolve to numbers before comparison.
+
+**3. A Spanish date format matched nothing.** This is the one worth the entry.
+
+```js
+/\b(?:january|…|septiembre|…)\b[^.,;:!?]{0,20}?\b\d{1,4}\b/gi
+```
+
+Spanish month names were in the alternation. It looks complete. But the pattern
+requires the **month name first and the number after it** — English order. In
+Spanish the number leads:
+
+> `30 de septiembre de 2026`
+
+That matched **no date pattern at all**, which does not mean "rejected". It
+means the text was scanned, no date was found in it, and the explanation was
+**passed as clean**. A Spanish explanation could have carried any date to a
+screen, including a fabricated one.
+
+The month names being present is what makes this bad. It is not an omission
+someone would spot in review — the file *looks* bilingual. It took an assertion
+written in Spanish to find it, and Spanish is half this app's audience
+(CLAUDE.md §1: Maria's primary language). Fixed by adding a number-then-month
+shape; both orders are now tested explicitly.
+
+**4. An empty section was reported as a complete explanation.** `parseSections`
+used:
+
+```js
+new RegExp(`${label}:\\s*([^\\n]*)`, 'i')
+```
+
+`\s` **includes the newline.** So given:
+
+```
+SAYS: Something.
+DO:
+APPEAL: Call your worker.
+```
+
+the `DO:` match consumed the line break and captured **`APPEAL: Call your
+worker.`** as the body of `DO`. All three sections "present", explanation
+reported complete, `APPEAL` rendered under the "what you must do" heading — and
+the real appeal text silently gone. Fixed with `[ \t]*`.
+
+This bug predates the redesign. It was in the file the whole time the digit ban
+was in place, and it never surfaced because under the ban the model almost never
+produced an empty section — it produced 300 tokens of `oubt` instead. **One bug
+was masking another.**
+
+### What generalises
+
+- **A safety check must be tested by trying to defeat it.** Tests that confirm
+  the happy path measure the author's imagination, and the author already
+  believed the code worked.
+- **The best test cases come from real failures.** `October XXX XXX` is in the
+  suite verbatim. It is not hypothetical; it reached a user.
+- **Test the guard in every language it guards.** Pattern (3) had Spanish month
+  names and no Spanish grammar. Bilingual-looking is not bilingual, and only an
+  assertion written in the second language finds the difference.
+- **A pattern that matches nothing fails silently and looks like success.**
+  Patterns (1) and (3) both had this shape. There is no error, no exception, no
+  log line — the text is scanned, nothing is found, and "nothing found" is
+  indistinguishable from "nothing wrong". Any regex used as a filter should have
+  at least one test that proves it *can* fire.
+- **Removing a bug can expose one that was hiding behind it** (4). Fixing the
+  loud failure is when to re-check the quiet paths, not when to stop looking.
+
+The same standard is why `no-network.test.ts` was verified by injecting a real
+`fetch` into `urgency.ts` and watching both halves fail before reverting it. A
+guard nobody has watched fail is a guard nobody has tested.
+
+
+---
+
+## 2026-08-24 — Vault, Where to Go, onboarding; and a race that first launch would always have hit
+
+**AUTHORSHIP: Claude, app-side. Nothing in `/src/extraction` was touched.**
+
+### The bug worth reading first
+
+Adding the onboarding gate to the root layout broke **first launch**, and it
+broke it in a way that would have reached a judge's phone.
+
+`getDatabase()` memoised the resolved handle:
+
+```ts
+if (database) return database;      // undefined until the FIRST open finishes
+```
+
+That guards nothing while an open is in flight. Two callers arriving together
+both see `undefined`, both `openDatabaseAsync`, and both run `migrate()`.
+`CREATE TABLE IF NOT EXISTS` survives being run twice. Migration v2's
+`ALTER TABLE notices DROP COLUMN recipient_name` does not — the second run
+throws *no such column*, the open rejects, and Home renders
+**"Carta could not open your notices"** on a brand-new install.
+
+The race has existed since v2. It had never fired because nothing had ever
+opened the database twice at once: every screen reads it, but screens mount one
+at a time. The onboarding gate reads a *setting* from the **root layout**, at
+the same moment Home reads the notice list — the first genuinely concurrent
+pair in the app's life.
+
+Three things make it worth an entry:
+
+1. **It only happens on first launch.** After the migrations complete, the
+   second run is a no-op and the app is fine forever. So it is invisible on
+   every device that has already run the app once — which is every device
+   anyone develops on.
+2. **It presents as the worst possible first impression**: a database error
+   before the user has done anything at all.
+3. **Nothing in the test suite could see it.** The DB path needs a device, and
+   this needs a device *and* a fresh install *and* two callers racing.
+
+Fixed by memoising the **promise**, not the handle, and clearing it on failure
+so a "Try again" tap can retry rather than being stuck with a cached rejection.
+
+> A cache keyed on "is it done yet" does not protect the window before it is
+> done. That window is exactly where concurrency lives.
+
+### Vault (SPEC §7, priority 7)
+
+Documents grouped by type, newest first, untyped last. Ages computed in local
+calendar days — `documentAge` sits next to `progressOf` in the pure module so
+it is a bare-Node test, and its DST case is tested in the **spring-forward**
+direction specifically: autumn's extra hour rounds harmlessly, spring's missing
+hour makes `Math.floor` report 30 for a document saved 31 days ago. Testing only
+one direction would have passed and shipped it.
+
+**The staleness warning is where §16 bites.** "This pay stub is 47 days old" is
+a fact Carta owns. *"…and most offices want the last 30"* is a rule about what
+an agency requires. So the second half is not in the screen and not in code: it
+lives in `offices.json` under `what_to_bring.freshness`, keyed on doc type, with
+its own `source_url`, `verified_on` and `confidence`, and it is surfaced by
+`npm run content:check` like every other sourced claim.
+
+It could not go in `doc_types.json`, which has a test asserting it never grows a
+key mapping a programme to a document — that file is a vocabulary and must stay
+one.
+
+**A document type with no entry gets its age and no judgement.** That asymmetry
+is the design and it is a test: `documentAge` must never return `stale: true`
+without a sourced limit. A default limit would convert "Carta has no source for
+this" into a confident claim about all twelve types at once.
+
+Two entries exist. `pay_stub` echoes the county's own "what to bring" wording
+and is marked `medium`. `bank_statement` is marked `low` with a TODO saying
+plainly that it is **not sourced** and must be cited or deleted.
+
+### Where to Go (SPEC §8, priority 8 — first to cut)
+
+Built to be cuttable: one route, one link from Home, deleting the file and its
+`<Stack.Screen>` removes it cleanly.
+
+Phones before addresses, because the pack's own sourced advice is that calling
+beats going and burying that under six addresses would be the app disagreeing
+with its own content. "Call to confirm" renders on **every** office next to its
+hours, not once at the top — `confirmHoursNote` is required by the parser, so an
+office cannot exist in the pack without one. "What to bring" prefers the active
+notice's checklist and labels the fallback list as generic when there is none.
+
+**And a defect the device check caught.** The "Not on this list" section was
+rendering `still_needed` verbatim — which is a work list written for whoever
+sources the content:
+
+> *"Not yet researched -- add name, address, phone, hours, languages, and what
+> they actually help with."*
+
+That was on screen, to a user. It is the **second** time a developer note has
+reached a user through a content pack: the first was `_disclaimer_required`,
+whose value was phrased as an instruction to the renderer ("Every rendering must
+carry: '…'") and was rendered including the instruction.
+
+> **A string in a content pack is user-facing unless proven otherwise.** Both
+> failures came from a JSON file mixing two audiences with nothing marking
+> which is which.
+
+`still_needed` now goes to `content:check`, where its audience actually is.
+
+### Onboarding
+
+Three screens — what Carta does, nothing leaves this phone, the model offer —
+with **Skip in the same place on every one**. Someone opening this app has often
+just been frightened by a letter; standing between them and the camera to
+explain a value proposition is the wrong trade every time. Skipping *completes*
+onboarding rather than deferring it, because skipping is a decision.
+
+The privacy screen says three checkable things rather than the word "private":
+read on this phone, never contacts your county or immigration, works in airplane
+mode — *"you can turn off wifi and try it"*, which is a claim the user can
+falsify in ten seconds and `no-network.test.ts` backs.
+
+**Two defects found on device, both mine:**
+
+- The last screen's button said **"Take a photo of a notice"** and went to Home.
+  A label that promises one thing and does another.
+- The model screen *described* the download and offered no way to accept it,
+  while the copy said "you can turn this on later in Settings" — **a screen that
+  does not exist yet**. That is placeholder copy pointing at a placeholder.
+
+Both fixed by making it a real offer: the primary button starts the actual
+download and leaves for Home. Deliberately **not awaited** — a gigabyte on a
+phone connection is minutes, and holding someone on an onboarding screen for it
+is the opposite of this screen's point.
+
+### i18n parity is now a build gate
+
+`tests/node/i18n.test.ts`. A key added to `en.json` and forgotten in `es.json`
+does not crash, does not warn, and does not fail a build — i18next silently
+falls back to English, so a Spanish speaker gets an English sentence mid-screen
+and nothing says so. Now checked: identical key sets, identical `{{placeholder}}`
+names, no blank Spanish, no long string left identical to its English, and
+`_one`/`_other` plural forms in pairs (a missing `_other` renders the key itself
+on screen for any count above one).
+
+### Spanish content — what I could and could not do
+
+**Could not:** replace the doc-type wording with CDSS's own. `cdss.ca.gov`
+returns a **302 to a dead host** for automated requests — exactly the block
+CLAUDE.md §13 documents — for both `SAR7.pdf` and `sar7a_sp.pdf`. Getting those
+forms is a manual browser step, like `tools/forms/fetch-forms.sh`. **I have not
+claimed otherwise anywhere in the pack**, and `_translation_blocker` in
+`doc_types.json` names the blocker so the next person does not rediscover it.
+
+**Did:** applied the three terms I *could* source, from San Mateo County's
+Spanish SAR 7 guide — **"servicios públicos"** for utilities (not the vaguer
+"servicios"), **"comprobante"/"prueba"** for proof, **"gastos médicos"** for
+medical expenses. And fixed orthography throughout: the Spanish had been written
+without accents, so "identificación", "teléfono", "niños", "crédito", "reúne"
+were all wrong. Accents are correct Spanish, not a sourcing question.
+
+### The ship-gate number went UP, and that is the honest direction
+
+**10 → 14.** Three of the four new entries are new claims (two freshness rules,
+the `still_needed` work list). The fourth is a **counting bug**:
+`outstandingVerifications` was never passed the doc-types pack at all, so
+`doc_types._translation_todo` had never been counted since the pack was created.
+The gate had been reporting a number lower than the truth.
+
+> An unverified translation the ship gate does not name is one that ships.
+
+Nothing was closed out, because nothing became verifiable — every remaining item
+needs a human at an agency source, which is what the gate is for.
+
+---
+
+## 2026-08-25 — The reminder ladder was a lie on every first install
+
+**AUTHORSHIP: Claude found this on a deliberate cold-start pass and fixed it.**
+
+> **The most serious defect found in this project.** Carta is a deadline
+> tracker. On a freshly installed device it saved the deadline, reported success
+> at every layer, showed the user a green screen — and scheduled nothing that
+> would ever fire.
+
+### What was measured
+
+Simulator **erased** (Erase All Content and Settings, not merely reinstalled),
+app installed fresh, one real corpus photograph through the real spine. The
+self-test log:
+
+```
+reminders scheduled: 4 [t7, t3, t1, day_of]
+OS reports 0 scheduled notification(s)
+notification permission (provisional): granted
+proof notification scheduled 5s out: cd72eff4-…
+OS now holds 1 scheduled notification(s)
+```
+
+And the database, read directly off the device with `sqlite3`:
+
+```
+t7|scheduled|1        ← state = 'scheduled', os_notification_id NOT NULL
+t3|scheduled|1
+t1|scheduled|1
+day_of|scheduled|1
+```
+
+**Four rows claiming to be scheduled, each holding an iOS notification id, and
+iOS holding none of them.**
+
+### Why every layer said it was fine
+
+1. `scheduleNotificationAsync` **succeeds without authorisation.** It accepts the
+   request, returns a real identifier, and iOS silently retains nothing. This is
+   documented in CLAUDE.md §11 and was still not enough.
+2. `recordScheduled` writes `state = 'scheduled'` because that is what the app
+   *asked for*. It never asked what it *got*.
+3. Home computes `remindersActive` from
+   `COUNT(*) FROM reminders WHERE state = 'scheduled'` → 4 → **no warning**.
+
+Home already has a "No reminders set" card, with copy, a real explanation and a
+button that opens iOS Settings. It was built precisely for this. **It could
+never fire**, because the only input it reads is a column nothing ever corrected.
+
+The app was even asking the right question already: `listScheduled()` was called
+straight after scheduling, and its result went into the diagnostic trace as
+`osHeld`. **The number was observed, printed, and thrown away.**
+
+### Two distinct bugs, and only one of them was the harness
+
+**(a) `selftest.tsx` requested permission at the END of the run**, after
+scheduling everything. So the acceptance harness — the thing whose whole purpose
+is to prove the spine works — was proving it against a state no real user is
+ever in. Its comment even asserted the opposite of the truth:
+
+> *"Scheduling is verifiable without display authorisation: iOS registers the
+> request either way, so this proves the ladder reached the OS."*
+
+That sentence is false and the cold-start run disproved it in one line. Fixed:
+permission is requested first, and the comment now records what was measured.
+
+**(b) Nothing reconciled the database against the OS.** This one is NOT
+harness-only. `review.tsx` has the ordering right — it asks permission before
+scheduling and refuses to schedule if refused — but it still wrote
+`state = 'scheduled'` for every reminder regardless of what iOS kept. Permission
+is not the only way to lose a notification: iOS caps pending notifications at 64
+per app, and a user with several notices and a full ladder will reach it.
+
+So the fix is not "ask permission earlier". It is **stop recording what we asked
+for as though it were what happened.**
+
+### The fix
+
+`reconcileWithOs(noticeId, osNotificationIds)` in `src/lib/db/reminders.ts`.
+Marks as `cancelled` every reminder whose id iOS is not actually holding, and
+returns how many were dropped. Called from Review and from the self-test, both
+of which already had the OS's answer in hand.
+
+`cancelled` rather than a new state, deliberately: from the user's point of view
+a reminder the OS never accepted and one that was cancelled are the same thing —
+it is not coming — and Home's existing warning already covers it. A third state
+would mean teaching every reader a distinction that changes nothing.
+
+### Verified after the fix, on a second erased device
+
+```
+notification permission (provisional): granted     ← first, now
+reminders scheduled: 4 [t7, t3, t1, day_of]        ← and no "OS DROPPED"
+OS reports 8 scheduled notification(s)
+```
+
+Database: `scheduled|8` across two notices, `user_version|3`. Nothing dropped,
+nothing misrecorded.
+
+### Why nothing caught it
+
+- **It only happens before notification permission exists** — i.e. on a real
+  first install, and never again.
+- **Every development device granted permission weeks ago.** The state is
+  unreachable without erasing the simulator.
+- **It is not an error.** No exception, no rejected promise, no failed
+  assertion. Four ids came back. The only signal was a *count in a log line*
+  that nobody was comparing to anything.
+
+It is the same shape as the `getDatabase` race found on the same pass, and the
+same shape as the four earlier entries in CLAUDE.md §13: **the system reported
+success and the success was not real.** The difference is that this one had a
+correct check already written, already running, and already printing the right
+number — and the number went into a diagnostic string instead of a decision.
+
+> **Observing a discrepancy is not handling it.** If code goes to the trouble of
+> asking what actually happened, the answer has to change something.
+
+### Regression tests
+
+`tests/app/db-first-launch.test.ts` — four cases covering "OS kept nothing",
+"OS kept some", "OS kept everything", and a reminder with no OS id at all.
+The same file holds the `getDatabase` race tests; both bugs came from the same
+cold-start pass and they belong together.
+
+### What this changes about how to test this app
+
+A device that has ever run Carta is not a device you can find first-launch bugs
+on. Both defects from this pass were invisible on a warm device and obvious
+within ninety seconds of an erased one. **`xcrun simctl erase` belongs in the
+routine before a phase boundary**, not as something done accidentally.

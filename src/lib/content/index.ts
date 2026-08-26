@@ -9,13 +9,15 @@
  */
 
 import crossReferenceRaw from '../../../content/cross_reference.json';
+import docTypesRaw from '../../../content/doc_types.json';
 import officesRaw from '../../../content/offices.json';
 
-import { parseCrossReferences, parseOffices } from './parse.ts';
-import type { CrossReferencePack, OfficesPack } from './types.ts';
+import { parseCrossReferences, parseDocTypes, parseOffices } from './parse.ts';
+import type { CrossReferencePack, DocTypesPack, OfficesPack } from './types.ts';
 
 let crossReferences: CrossReferencePack | undefined;
 let offices: OfficesPack | undefined;
+let docTypes: DocTypesPack | undefined;
 
 /** Parsed once and memoised — the packs are static and validation is not free. */
 export function loadCrossReferences(): CrossReferencePack {
@@ -26,6 +28,11 @@ export function loadCrossReferences(): CrossReferencePack {
 export function loadOffices(): OfficesPack {
   offices ??= parseOffices(officesRaw);
   return offices;
+}
+
+export function loadDocTypes(): DocTypesPack {
+  docTypes ??= parseDocTypes(docTypesRaw);
+  return docTypes;
 }
 
 export { CONFIRM_HOURS_NOTE, outstandingVerifications } from './parse.ts';
