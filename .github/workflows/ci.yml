@@ -1,0 +1,110 @@
+# Carta — continuous integration.
+#
+# AUTHORSHIP: Claude. App-side infrastructure.
+#
+# WHY THIS EXISTS
+# ---------------
+# Until this file, CLAUDE.md described several gates as things that "fail CI"
+# and there was no CI to fail. The gap was not academic: `npm test` was green on
+# one machine and red on any other, because tests/node/vault.test.ts asserts
+# calendar arithmetic that only behaves as claimed in a timezone that observes
+# DST, and the only machine ever running it was set to Pacific. A suite whose
+# result depends on the operator's system settings is not a suite.
+#
+# So the point of this file is not the badge. It is that the tests run somewhere
+# nobody has configured.
+#
+# The runner is Ubuntu, not macOS. The app project uses jest-expo/ios, which is
+# a set of mocks rather than a simulator, so it runs anywhere — and running it
+# on a machine that is deliberately unlike the development one is the whole
+# value. There is no build or device step here; the Xcode build is gated on
+# Apple Developer provisioning and belongs on a real machine.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: typecheck · lint · tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      # `npm ci` rather than `npm install`: the lockfile is the input, and a
+      # resolution that drifts under CI is a difference we want to see fail
+      # here rather than discover on a device. postinstall runs patch-package,
+      # which applies patches/expo-modules-jsi+57.0.4.patch.
+      - run: npm ci
+
+      - name: Typecheck (app, extraction island, tools)
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      # Both Jest projects. The node project covers /tools, /content and
+      # tests/node; the app project covers the screens and the pipeline gates,
+      # including no-network.test.ts (SPEC §8.4) — the flagship privacy test,
+      # which for weeks sat in a project that could not run at all.
+      - name: Tests
+        run: npm test
+
+  metrics:
+    name: metrics harness assertions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+
+      # This does not measure extraction accuracy — that needs an --extractor
+      # argument and is a deliberate, human-run measurement. What it checks are
+      # the harness's own rules, the ones that keep a reported number honest:
+      # real and synthetic captures never merge into one figure, a condition
+      # below MIN_IMAGES_FOR_RATE never renders as a percentage, and the
+      # corpus's internal date arithmetic still holds.
+      #
+      # Note for anyone running this locally: it REWRITES tools/metrics/out/.
+      # Committed METRICS.md was generated with an explicit --extractor, so a
+      # bare run here will show that file as modified. In CI the checkout is
+      # thrown away, so it does not matter; locally, restore it afterwards.
+      - name: Corpus and harness assertions
+        run: npm run metrics:check
+
+  content:
+    name: content gate (informational until freeze)
+    runs-on: ubuntu-latest
+    # Deliberately non-blocking. `content:check` exits non-zero while any
+    # sourcing item is open, and items are supposed to stay open until they are
+    # genuinely closed at the source — CLAUDE.md §16, "never close an item to
+    # make the number look better". Gating merges on it would create exactly
+    # that pressure, and a permanently red badge teaches everyone to ignore red.
+    # It runs so the open list is visible on every commit, and it must be zero
+    # before the submission is frozen.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Open sourcing items
+        run: npm run content:check

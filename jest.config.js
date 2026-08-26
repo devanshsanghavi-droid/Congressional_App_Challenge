@@ -13,11 +13,27 @@
  *          gates in /tests (including no-network.test.ts, SPEC §8.4). iOS
  *          because iOS is the primary target (CLAUDE.md).
  *
+ * TIMEZONE. Pinned below, not inherited. Carta's date semantics are local —
+ * a deadline is local midnight, an age is whole calendar days — so several
+ * tests are only meaningful inside a zone that observes DST. The spring-forward
+ * case in tests/node/vault.test.ts asserts that a naive millisecond division
+ * reports 30 where the calendar says 31; in UTC there is no lost hour, the
+ * naive version is also 31, and that assertion fails. It failed for weeks
+ * without anyone seeing it, because it only fails somewhere other than a
+ * machine set to Pacific — which, until CI existed, was nowhere.
+ *
+ * America/Los_Angeles because that is where the notices in the corpus are
+ * mailed from and where the app is used. `tests/node/timezone.test.ts` asserts
+ * the pin is actually in effect, so deleting this line fails a test rather than
+ * silently turning the DST case into a tautology.
+ *
  * Run both with `npm test`, or one with `npm run test:node` / `npm run test:app`.
  * The node project is the fast one — it needs no simulator and no camera, which
  * is what makes the golden-corpus loop (SPEC §8.2) quick enough to actually use
  * while iterating on templates.
  */
+
+process.env.TZ = 'America/Los_Angeles';
 
 /** @type {import('jest').Config} */
 module.exports = {

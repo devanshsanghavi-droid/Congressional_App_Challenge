@@ -96,7 +96,7 @@ program, an eligibility rule, or an application URL.
 
 - **It runs entirely on the phone.** A language model doing real work, offline, on a $0 budget, with no account and no server. Demonstrated by putting the phone in airplane mode for the whole demo.
 - **The appeal and aid-paid-pending clocks.** When a notice is a denial, reduction, or termination, Carta surfaces both the appeal deadline and the much shorter window to request a hearing **with benefits continued while the appeal is pending**. Almost nobody knows this rule exists. *(Never hardcode a number not sourced from current CDSS guidance — see §11.)*
-- **The readability gate.** CI fails if user-facing explanation content scores above 6th-grade Flesch–Kincaid. You are not claiming plain language; you are enforcing it.
+- **The readability gate.** CI fails if user-facing explanation content scores above 6th-grade Flesch–Kincaid. You are not claiming plain language; you are enforcing it. **Status 2026-08-26: not built.** CI exists now (`.github/workflows/ci.yml`) but there is no readability test in it, so this remains an intention rather than a gate — see CLAUDE.md §11.
 
 ---
 

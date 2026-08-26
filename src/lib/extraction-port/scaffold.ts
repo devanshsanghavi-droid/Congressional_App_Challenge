@@ -74,7 +74,17 @@ export function extract(input: ExtractionInput): ExtractionResult {
     /Effective Date|Coverage Ends Without Action|Recertification Effective|Benefits start/i,
   );
 
-  const caseMatch = /Case Number:?\s*([\w-]+)/i.exec(text);
+  // The colon is required, and the value must contain a digit.
+  //
+  // Without both, `/Case Number:?\s*([\w-]+)/` matches the prose "...or case
+  // numbers." and returns a case number of `"s"` — which the app then salts,
+  // hashes, and shows the user as the last four digits of their case. Found by
+  // tests/node/extraction-contract.test.ts feeding a page that deliberately
+  // contains no fields and asserting that nothing comes back.
+  const caseCandidate = /Case Number:\s*([\w-]+)/i.exec(text)?.[1];
+  const caseMatch = caseCandidate !== undefined && /\d/.test(caseCandidate)
+    ? caseCandidate
+    : undefined;
 
   // The recipient is found by COLUMN, not by line index.
   //
@@ -136,18 +146,30 @@ export function extract(input: ExtractionInput): ExtractionResult {
       ...(deadlineDate ? { deadlineDate } : {}),
       ...(noticeDate ? { noticeDate } : {}),
       ...(effectiveDate ? { effectiveDate } : {}),
-      ...(caseMatch?.[1] ? { caseNumber: field(caseMatch[1]) } : {}),
+      ...(caseMatch !== undefined ? { caseNumber: field(caseMatch) } : {}),
       ...(recipient ? { recipientName: field(recipient, recipientLine) } : {}),
       ...(program ? { programId: field(program) } : {}),
       ...(action ? { actionType: field(action) } : {}),
     },
-    // Honest: there is no redaction matcher in this file. The storage layer
-    // reads this flag and refuses to persist the OCR text while it is false.
+    // There is no redaction matcher in this file, so this is false. The storage
+    // layer reads the flag and refuses to persist OCR text while it is false;
+    // that refusal is the guarantee, and this is the only honest answer.
     //
-    // TEMPORARILY true to exercise the explanation path end to end in the
-    // Simulator — REVERT before this is anything but a local experiment. With
-    // it true the app stores OCR text that has never been through a redaction
-    // matcher, which is exactly what CLAUDE.md §3 rule 5 forbids.
-    redacted: true,
+    // REVERTED 2026-08-26. It had been `true` since fc33506 — flipped to
+    // exercise the explanation path in the Simulator, with a comment saying to
+    // revert it, and never reverted. For those weeks every confirmed notice
+    // wrote OCR text that had never been through a redaction matcher, which is
+    // precisely what CLAUDE.md §3 rule 5 forbids, in the feature the whole app
+    // is built to justify. Nothing failed: saveNotice()'s guard fires on
+    // `redacted: false`, so a scaffold that lies to it disarms it silently.
+    //
+    // Consequence to expect: the app now stores no OCR text, so the
+    // explanation path has nothing to read until the real redaction matcher
+    // lands in /src/extraction. That is the correct trade. A privacy guarantee
+    // that is false is worse than a feature that is absent.
+    //
+    // tests/node/extraction-contract.test.ts asserts this stays false while
+    // USING_SCAFFOLD is true, so it cannot drift back.
+    redacted: false,
   };
 }

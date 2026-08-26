@@ -375,13 +375,21 @@ app — treat a11y regressions as build breaks.
   `urgency.ts` and watching both halves fail.** Referenced by filename in the
   README and the video.
 - **Redaction tests** — SSN in 8 formats must never reach the DB or a file.
-- **Readability gate — NOT IMPLEMENTED as of 2026-08-25.** The intent is
+- **Readability gate — STILL NOT IMPLEMENTED as of 2026-08-26.** The intent is
   Flesch–Kincaid ≤ grade 6 on bundled English explanation content and
-  Fernández-Huerta for Spanish. **No such test exists, and this repo has no CI
-  at all** — no `.github/workflows`, so every "fails CI" in this document means
-  "fails `npm test` when someone runs it". Found while drafting the README,
+  Fernández-Huerta for Spanish. **No such test exists.** The reading level is
+  held by hand. Do not describe it as enforced. Found while drafting the README,
   because writing the claim down forced a check for the thing being claimed.
-  The reading level is currently held by hand. Do not describe it as enforced.
+- **CI exists as of 2026-08-26** — `.github/workflows/ci.yml`, Ubuntu, three
+  jobs: `verify` (typecheck, lint, both Jest projects) and `metrics` block;
+  `content` runs informationally, because `content:check` is meant to stay
+  non-zero until every sourcing item is genuinely closed and gating on it would
+  create pressure to close items early (§16). So "fails CI" in this document is
+  now true for anything `npm test`, `npm run typecheck` or `npm run lint`
+  covers — and still false for the readability gate above, which has no test to
+  run. **CI runs on Ubuntu on purpose.** It is the only machine involved that
+  nobody has configured; the first thing it caught was a suite that was green
+  only in a Pacific timezone.
 - **Metrics table** — `npm run metrics`. Per-field precision/recall by
   condition, for *both* the deterministic-only path and the model path. Goes in
   the README. Three rules it enforces structurally:

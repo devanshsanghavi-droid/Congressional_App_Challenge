@@ -4109,3 +4109,136 @@ went to **0|0|0|0|0**, with no encrypted image files left on disk.
 what it destroys. Relying on the schema to imply the list means the list changes
 whenever the schema does, silently, in the one code path where silence is worst.
 
+---
+
+## 2026-08-26 — Two green-on-one-machine bugs, and the CI that had never existed
+
+Session goal was to close everything that is not the extraction cascade. Two
+defects surfaced first, and they belong together: both were invisible for the
+same reason, which is that nothing in this project had ever run anywhere other
+than one Mac.
+
+### 1. `scaffold.ts` claimed redaction it had never done
+
+`extract()` in `src/lib/extraction-port/scaffold.ts` returned `redacted: true`.
+It had returned `redacted: true` since `fc33506`, the commit that created the
+file. Directly above it sat a comment saying so and instructing the reader to
+revert it before the file was anything but a local experiment:
+
+> TEMPORARILY true to exercise the explanation path end to end in the Simulator
+> — REVERT before this is anything but a local experiment.
+
+It was never reverted. In the weeks since, every notice the user confirmed wrote
+OCR text into the database that had never been through a redaction matcher —
+because there is no redaction matcher, in that file or anywhere else yet.
+
+**What makes it a member of the family.** `saveNotice()` is written correctly:
+
+```ts
+if (input.ocrText !== undefined && !input.redacted) {
+  throw new Error('refusing to store OCR text that has not been through the redaction matcher …');
+}
+```
+
+That guard is not a comment or a convention; it throws. It also fires on a
+*flag*, and the flag is supplied by the thing being guarded. A caller that lies
+does not trip the guard — it disarms it. Nothing threw, nothing logged, and the
+absence of an exception read exactly like a passing redaction.
+
+`INTERFACE.md` states the opposite of what the code did — *"The scaffold returns
+`false` and so the app currently stores no notice text at all"* — which is the
+third time in this project a comment has asserted the inverse of behaviour, and
+the reason nobody re-read the line.
+
+**The rule this leaves behind:** *a guard that takes the guarded party's word
+for it is a request, not a guard.* Where a caller can assert its own compliance,
+the assertion has to be checked against something the caller does not control,
+or the guard has to check the artifact itself.
+
+Fixed: `redacted: false`, honestly. The cost is real and worth paying — the app
+now stores no OCR text at all, so the explanation path has nothing to read until
+the redaction matcher lands in `/src/extraction`. A privacy guarantee that is
+false is worse than a feature that is absent.
+
+The regression guard is in `tests/node/extraction-contract.test.ts`, and it is
+written to die of natural causes: it asserts `redacted === false` only while
+`USING_SCAFFOLD` is true, and hands over to the general contract — *if you
+claim `redacted`, then an SSN in the text must come back as `containedSsn`* —
+the moment the cascade is wired. Verified by putting `redacted: true` back and
+watching nine assertions fail.
+
+**Also found by the same suite:** the scaffold's `/Case Number:?\s*([\w-]+)/i`
+matched the prose *"…or case numbers."* and returned a case number of `"s"`,
+which the app would then salt, hash, and display to the user as the last four
+digits of their case. The colon is now required and the value must contain a
+digit. It surfaced from an adversarial input — a page built to contain no fields
+at all, asserting that nothing comes back — which is the only kind of input that
+finds this class of bug, because every real notice has a case number on it.
+
+### 2. The suite was green in Pacific and red everywhere else
+
+`npm test` reported 331 passing. Run on a machine set to UTC, it was 330 and one
+failure: `tests/node/vault.test.ts`, the spring-forward DST case.
+
+The assertion that failed is the *contrast* line — the naive millisecond
+division that the test exists to argue against:
+
+```ts
+expect(documentAge(before, after).days).toBe(31);      // passes anywhere
+expect(Math.floor((after - before) / DAY)).toBe(30);   // only true where DST happens
+```
+
+The code under test was never wrong. The test encodes a claim about local
+calendar arithmetic, and in a zone with no spring-forward there is no lost hour,
+so the naive number is also 31 and the contrast disappears. The test was correct
+and its environment was assumed.
+
+Fixed by pinning `process.env.TZ = 'America/Los_Angeles'` in `jest.config.js` —
+the zone the corpus notices are mailed from — rather than by weakening the
+assertion. `tests/node/timezone.test.ts` then asserts the pin actually took
+effect, that the runtime resolved that zone, that the spring-forward transition
+is still real inside it, and that local midnight is not UTC midnight. That last
+one is the guard against a future "fix" that pins UTC and quietly turns every
+local-midnight test into a tautology. Verified by deleting the pin and watching
+all four fail alongside the original.
+
+### 3. There was no CI
+
+`.github/workflows` did not exist. CLAUDE.md §11 described the readability gate
+as something that "fails CI", and SPEC §5 said the same — a gate that fails a
+thing that does not exist. Both are corrected; the readability gate is still not
+built and is now marked as such in both files.
+
+`.github/workflows/ci.yml` runs typecheck, lint and both Jest projects on
+Ubuntu, plus the metrics harness's own logic assertions. `content:check` runs
+non-blocking on purpose: it exits non-zero while any sourcing item is open, and
+items are meant to stay open until they are genuinely closed at the source
+(§16). Gating merges on it would create pressure to close items early, and a
+permanently red badge teaches everyone to ignore red.
+
+**The point of CI here is not the badge.** It is that the tests run on a machine
+nobody configured. Both defects above were unfindable on the only computer that
+had ever run them, and the first one shipped to a public repository for weeks in
+the feature the entire app exists to justify.
+
+### What is now in place for the cascade
+
+`tests/node/extraction-contract.test.ts` — 24 assertions that run against
+whatever `adapter.ts` is wired to, so no edit is needed when the cascade lands.
+Almost every one is conditional in one direction: *if you return a value, it
+must satisfy this*, never *you must return a value*. Recall is the metrics
+harness's job and requiring it here would keep the file red for the whole time
+the cascade is being written. These guard the other failure mode — dates that
+are not ISO or not real days, `invalid` set with nothing to show, indexes past
+the end of the line array, an empty string standing in for "not found", the two
+appeal clocks collapsing into one number, an approval read as a termination, a
+value invented from a page that has none, and any answer that changes when the
+clock does.
+
+`docs/CASCADE.md` explains what a cascade is and the order to build one in.
+Written because "write the extraction cascade" is only a useful instruction to
+someone who already knows what the word means.
+
+**Suite: 542 tests, 23 suites, typecheck clean.** Lint was not verified this
+session — it needs a native binding that is not installed on the Linux VM the
+work was done from; CI will run it on Ubuntu.

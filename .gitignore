@@ -111,3 +111,6 @@ private/
 
 # The compiled Swift OCR producer. Rebuilt by `npm run corpus:ocr` on demand.
 /tools/metrics/ocr/.build/
+
+# Local tool settings, not part of the entry.
+.claude/
