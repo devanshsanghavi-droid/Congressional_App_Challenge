@@ -144,13 +144,123 @@ function isRealIsoDate(value: string): boolean {
   return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
 }
 
+/** A left-hand address block, with the right-hand metadata column interleaved
+ *  into reading order the way a real recogniser emits it. */
+const PAGE_ACCENTED = syntheticBoxed([
+  { text: 'COUNTY OF SANTA CLARA', x: 0.06, row: 0 },
+  { text: 'NOTICE OF ACTION', x: 0.06, row: 2 },
+  { text: 'JOSÉ MARTÍNEZ', x: 0.06, row: 5 },
+  { text: 'Case Number: 01-4472-9931', x: 0.60, row: 5 },
+  { text: '1428 STORY ROAD APT 12', x: 0.06, row: 6 },
+  { text: 'Worker ID: SC-2214', x: 0.60, row: 6 },
+  { text: 'SAN JOSE, CA 95122', x: 0.06, row: 7 },
+  { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 9 },
+]);
+
+const PAGE_MIXED_CASE = syntheticBoxed([
+  { text: 'County of Santa Clara', x: 0.06, row: 0 },
+  { text: 'Notice of Action', x: 0.06, row: 2 },
+  { text: 'Maria Reyes', x: 0.06, row: 5 },
+  { text: '1428 Story Road Apt 12', x: 0.06, row: 6 },
+  { text: 'San Jose, CA 95122', x: 0.06, row: 7 },
+  { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 9 },
+]);
+
+/**
+ * The sender's block, complete with its own CA ZIP, printed **above** the
+ * recipient's. This is the ordering the corpus never produces.
+ */
+const PAGE_SENDER_FIRST = syntheticBoxed([
+  { text: 'COUNTY OF SANTA CLARA', x: 0.06, row: 0 },
+  { text: 'SOCIAL SERVICES AGENCY', x: 0.06, row: 1 },
+  { text: '333 W JULIAN ST', x: 0.06, row: 2 },
+  { text: 'SAN JOSE, CA 95110', x: 0.06, row: 3 },
+  { text: 'NOTICE OF ACTION', x: 0.06, row: 6 },
+  { text: 'MARIA REYES', x: 0.06, row: 9 },
+  { text: '1428 STORY ROAD APT 12', x: 0.06, row: 10 },
+  { text: 'SAN JOSE, CA 95122', x: 0.06, row: 11 },
+  { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 13 },
+]);
+
+
+/**
+ * A page whose month is garbled and whose year is fine.
+ *
+ * The year used to be `20XX`, which meant this fixture was passing for the
+ * wrong reason: `DATE_PATTERN` requires four digits, so the *year* rejected it
+ * and nothing ever had to reject the month. That made it a guard against a
+ * failure it was not testing. With a real year, the garbled month is the only
+ * thing wrong, which is what it was always supposed to be checking.
+ *
+ * It matters now because prefix-matching months (`SEPTEMBURR` -> `sep`) is a
+ * change under consideration, and this is the input that would newly become
+ * dangerous. The guard has to exist before the change it guards against.
+ */
+const PAGE_GARBLED_MONTH = synthetic([
+  'Notice Date: SEPTEMBURR 45, 2026',
+  'SUBMIT BY: THE END OF THE MONTH',
+]);
+
+/**
+ * A month that reads cleanly and a day that cannot exist.
+ *
+ * `2026-09-45` is ISO-shaped, sorts correctly, and is not a day. A parser that
+ * builds the string from parts without asking the calendar produces it happily,
+ * and every downstream consumer — the countdown, the reminder ladder, the
+ * storage boundary that converts to epoch millis — will accept it and do
+ * something arbitrary. September 31 is the subtler sibling: one day past the
+ * end of a real month, which no digit-count check catches.
+ */
+const PAGE_IMPOSSIBLE_DAY = synthetic([
+  'Notice Date: SEPTEMBER 45, 2026',
+  'SUBMIT BY: SEPTEMBER 31, 2026',
+  'Effective Date: FEBRUARY 30, 2026',
+]);
+
+const PAGE_NO_FIELDS = synthetic([
+  'COUNTY OF SANTA CLARA',
+  'This page intentionally contains no dates, names or case numbers.',
+  'Thank you for reading.',
+]);
+
+const PAGE_EMPTY = synthetic([]);
+
+const PAGE_MINIMAL = synthetic(['Notice Date: JANUARY 5, 2026']);
+
+const PAGE_CASE_NUMBER = synthetic([
+  'COUNTY OF SANTA CLARA',
+  'Case Number: 01-4472-9931',
+  'Benefit Month: JULY 2026',
+]);
+
+/**
+ * Every synthetic page in this file, in one place.
+ *
+ * The sweep below asserts a property over *all* of them, and that promise is
+ * only true if new pages are added here rather than constructed inline. Tests
+ * that need a page take it from this list; that is the mechanism, not a
+ * convention — a page defined inline is a page the sweep cannot see, which is
+ * exactly how `isRealIsoDate` came to run only against corpus captures.
+ */
+const SYNTHETIC_PAGES: readonly (readonly [string, ExtractionInput])[] = [
+  ['minimal', PAGE_MINIMAL],
+  ['no fields', PAGE_NO_FIELDS],
+  ['empty', PAGE_EMPTY],
+  ['garbled month', PAGE_GARBLED_MONTH],
+  ['impossible day', PAGE_IMPOSSIBLE_DAY],
+  ['case number', PAGE_CASE_NUMBER],
+  ['accented name', PAGE_ACCENTED],
+  ['mixed-case name', PAGE_MIXED_CASE],
+  ['sender block first', PAGE_SENDER_FIRST],
+];
+
 // ---------------------------------------------------------------------------
 // Which extractor is under test
 // ---------------------------------------------------------------------------
 
 describe('the extractor under test is the one the app actually uses', () => {
   it('is reachable and returns a result', () => {
-    const result: ExtractionResult = extractNotice(synthetic(['Notice Date: JANUARY 5, 2026']));
+    const result: ExtractionResult = extractNotice(PAGE_MINIMAL);
     expect(result).toBeDefined();
     expect(typeof result.redacted).toBe('boolean');
   });
@@ -288,20 +398,14 @@ describe('the extractor is pure', () => {
 
 describe('nothing is invented', () => {
   it('finds no fields on a page with no fields', () => {
-    const result = extractNotice(
-      synthetic([
-        'COUNTY OF SANTA CLARA',
-        'This page intentionally contains no dates, names or case numbers.',
-        'Thank you for reading.',
-      ]),
-    );
+    const result = extractNotice(PAGE_NO_FIELDS);
     for (const [key, field] of entries(result.fields)) {
       expect(`${key}=${String(field.value)}`).toBe(`${key}=undefined`);
     }
   });
 
   it('finds no fields in an empty document', () => {
-    const result = extractNotice(synthetic([]));
+    const result = extractNotice(PAGE_EMPTY);
     expect(entries(result.fields).filter(([, f]) => f.value !== undefined)).toEqual([]);
   });
 
@@ -309,9 +413,7 @@ describe('nothing is invented', () => {
     // The GBNF finding, restated as a rule for the deterministic path: a slot
     // that must be filled gets filled with something. Absent is a legal answer;
     // `invalid` is a legal answer; a repaired guess is not.
-    const result = extractNotice(
-      synthetic(['Notice Date: SEPTEMBURR 45, 20XX', 'SUBMIT BY: THE END OF THE MONTH']),
-    );
+    const result = extractNotice(PAGE_GARBLED_MONTH);
     for (const key of DATE_FIELDS) {
       const field = result.fields[key];
       if (field?.value === undefined) continue;
@@ -408,9 +510,7 @@ describe('redaction is claimed only when it happened', () => {
   });
 
   it('does not report an SSN it did not see', () => {
-    const result = extractNotice(
-      synthetic(['COUNTY OF SANTA CLARA', 'Case Number: 01-4472-9931', 'Benefit Month: JULY 2026']),
-    );
+    const result = extractNotice(PAGE_CASE_NUMBER);
     if (result.containedSsn !== undefined) expect(result.containedSsn).toBe(false);
   });
 });
@@ -492,62 +592,24 @@ describe('an approval', () => {
  * person taps past.
  */
 describe('the recipient name is never a different name', () => {
-  /** A left-hand address block, with the right-hand metadata column interleaved
-   *  into reading order the way a real recogniser emits it. */
-  const accented = syntheticBoxed([
-    { text: 'COUNTY OF SANTA CLARA', x: 0.06, row: 0 },
-    { text: 'NOTICE OF ACTION', x: 0.06, row: 2 },
-    { text: 'JOSÉ MARTÍNEZ', x: 0.06, row: 5 },
-    { text: 'Case Number: 01-4472-9931', x: 0.60, row: 5 },
-    { text: '1428 STORY ROAD APT 12', x: 0.06, row: 6 },
-    { text: 'Worker ID: SC-2214', x: 0.60, row: 6 },
-    { text: 'SAN JOSE, CA 95122', x: 0.06, row: 7 },
-    { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 9 },
-  ]);
-
-  const mixedCase = syntheticBoxed([
-    { text: 'County of Santa Clara', x: 0.06, row: 0 },
-    { text: 'Notice of Action', x: 0.06, row: 2 },
-    { text: 'Maria Reyes', x: 0.06, row: 5 },
-    { text: '1428 Story Road Apt 12', x: 0.06, row: 6 },
-    { text: 'San Jose, CA 95122', x: 0.06, row: 7 },
-    { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 9 },
-  ]);
-
-  /**
-   * The sender's block, complete with its own CA ZIP, printed **above** the
-   * recipient's. This is the ordering the corpus never produces.
-   */
-  const senderFirst = syntheticBoxed([
-    { text: 'COUNTY OF SANTA CLARA', x: 0.06, row: 0 },
-    { text: 'SOCIAL SERVICES AGENCY', x: 0.06, row: 1 },
-    { text: '333 W JULIAN ST', x: 0.06, row: 2 },
-    { text: 'SAN JOSE, CA 95110', x: 0.06, row: 3 },
-    { text: 'NOTICE OF ACTION', x: 0.06, row: 6 },
-    { text: 'MARIA REYES', x: 0.06, row: 9 },
-    { text: '1428 STORY ROAD APT 12', x: 0.06, row: 10 },
-    { text: 'SAN JOSE, CA 95122', x: 0.06, row: 11 },
-    { text: 'Notice Date: SEPTEMBER 8, 2026', x: 0.06, row: 13 },
-  ]);
-
   it('has fixtures that still contain what they are testing', () => {
     // Guards the way this suite decays: someone tidies a fixture, the distractor
     // disappears, and three tests keep passing while testing nothing.
-    expect(accented.text).toMatch(/JOSÉ MARTÍNEZ/);
-    expect(mixedCase.text).toMatch(/Maria Reyes/);
-    expect(senderFirst.text.indexOf('CA 95110')).toBeLessThan(
-      senderFirst.text.indexOf('CA 95122'),
+    expect(PAGE_ACCENTED.text).toMatch(/JOSÉ MARTÍNEZ/);
+    expect(PAGE_MIXED_CASE.text).toMatch(/Maria Reyes/);
+    expect(PAGE_SENDER_FIRST.text.indexOf('CA 95110')).toBeLessThan(
+      PAGE_SENDER_FIRST.text.indexOf('CA 95122'),
     );
   });
 
   it('reads an accented name, or reads nothing — never the street or the county', () => {
-    const value = extractNotice(accented).fields.recipientName?.value;
+    const value = extractNotice(PAGE_ACCENTED).fields.recipientName?.value;
     if (value === undefined) return;
     expect(samePerson(value, 'JOSÉ MARTÍNEZ')).toBe(true);
   });
 
   it('reads a mixed-case name, or reads nothing', () => {
-    const value = extractNotice(mixedCase).fields.recipientName?.value;
+    const value = extractNotice(PAGE_MIXED_CASE).fields.recipientName?.value;
     if (value === undefined) return;
     expect(samePerson(value, 'Maria Reyes')).toBe(true);
   });
@@ -558,13 +620,13 @@ describe('the recipient name is never a different name', () => {
     // 22 characters, letters and spaces — it satisfies a name-shaped check. The
     // wrong answer here is well-formed, which is why a shape test alone cannot
     // catch it and why this is a test rather than a comment.
-    const value = extractNotice(senderFirst).fields.recipientName?.value;
+    const value = extractNotice(PAGE_SENDER_FIRST).fields.recipientName?.value;
     if (value === undefined) return;
     expect(samePerson(value, 'MARIA REYES')).toBe(true);
   });
 
   it('never returns an address line as a name, on any of the three', () => {
-    for (const page of [accented, mixedCase, senderFirst]) {
+    for (const page of [PAGE_ACCENTED, PAGE_MIXED_CASE, PAGE_SENDER_FIRST]) {
       const value = extractNotice(page).fields.recipientName?.value;
       if (value === undefined) continue;
       expect(value).not.toMatch(/^\d/);
@@ -572,5 +634,56 @@ describe('the recipient name is never a different name', () => {
       expect(value.toUpperCase()).not.toContain('AGENCY');
       expect(value.toUpperCase()).not.toContain('COUNTY OF');
     }
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Every date, on every page — not just the corpus captures
+// ---------------------------------------------------------------------------
+
+/**
+ * `isRealIsoDate` existed from the first version of this file and ran in exactly
+ * one place: a loop over the real captures. So a date produced from a *synthetic*
+ * page — every adversarial input in this file — was never calendar-checked. The
+ * corpus contains no impossible days, because it was generated from valid ones,
+ * which means the check was pointed away from the only inputs built to break it.
+ *
+ * That is the same shape as the `recipient_name` limit recorded in NOTES.md: a
+ * check that only runs against data which cannot fail it.
+ */
+describe('every extracted date is a real day, on synthetic pages too', () => {
+  it.each(SYNTHETIC_PAGES.map(([name, page]) => [name, page] as const))(
+    'on the %s page',
+    (_name, page) => {
+      for (const key of DATE_FIELDS) {
+        const value = extractNotice(page).fields[key]?.value;
+        if (value === undefined) continue;
+        // Two separate claims. ISO shape is what the storage boundary parses;
+        // a real calendar day is what stops "2026-09-45" reaching a countdown.
+        expect(`${key}: ${value}`).toMatch(/^\w+: \d{4}-\d{2}-\d{2}$/);
+        expect(`${key}: ${value} isRealDay=${isRealIsoDate(value)}`).toBe(
+          `${key}: ${value} isRealDay=true`,
+        );
+      }
+    },
+  );
+
+  it('never returns an impossible day from a page made of impossible days', () => {
+    // September 45, September 31 and February 30 all read cleanly as months.
+    // Whatever comes back must be absent, or flagged, or a day that exists.
+    for (const key of DATE_FIELDS) {
+      const field = extractNotice(PAGE_IMPOSSIBLE_DAY).fields[key];
+      if (field?.value === undefined) continue;
+      if (field.invalid !== undefined) continue;
+      expect(`${key}=${field.value}`).toBe(`${key}=${isRealIsoDate(field.value) ? field.value : 'a real day'}`);
+    }
+  });
+
+  it('has pages that actually contain dates, so the sweep is not vacuous', () => {
+    // Guards the failure where every page yields nothing and the sweep passes
+    // by never asserting anything.
+    const withDates = SYNTHETIC_PAGES.filter(([, page]) => /\d{4}/.test(page.text));
+    expect(withDates.length).toBeGreaterThanOrEqual(5);
   });
 });
