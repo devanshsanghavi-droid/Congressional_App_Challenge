@@ -4312,11 +4312,21 @@ is removed rather than tested against:
   `packageManager: npm@11.6.2`, so the pin lives in the repo and not only in the
   workflow. A machine that clones this repo now knows what it is supposed to run
   without reading a CI file.
-- `package-lock.json` regenerated **under npm 11**, the pinned resolver. Doing
-  this under npm 10 (as the first fix did) would have moved the drift to the
-  other side rather than removing it — npm 11 promptly deleted the two entries
-  npm 10 had added, which is the drift demonstrating itself in both directions
-  within one afternoon.
+- `package-lock.json` — **and this is where the plan met the evidence.** The
+  intent was to regenerate under npm 11, the pinned resolver, so the lockfile
+  would be authored by the tool that validates it. npm 11 promptly deleted the
+  two `@emnapi` entries npm 10 had added, which is the drift demonstrating
+  itself in both directions inside one afternoon. **That lockfile then failed
+  `npm ci` on Linux**, so the pin alone does not settle it.
+
+  Regenerating with `--os=linux --cpu=x64 --libc=glibc` produced a byte-identical
+  file, so npm 11 omits those entries on every platform, not just this one. The
+  lockfile that is actually installable is the **superset** — the npm 10 output,
+  which npm 11 also accepts, pruning one optional package without error.
+
+  So the committed lockfile is npm-10-authored on purpose. "Authored by the
+  pinned resolver" was the tidier principle; "installs under both resolvers" is
+  the true one, and where they disagreed the evidence won.
 
 **Ubuntu and UTC stay.** Those are the differences that found the DST bug: a
 different OS and a different timezone are properties this app genuinely has to
@@ -4328,4 +4338,22 @@ Not with `--dry-run`, and not in this tree. A **pristine clone into a temporary
 directory, with no `node_modules`, running a real `npm ci`** — the same method
 that reproduced the original failure under Node 22 before anything was changed.
 The reproduction failing first is what made the pass afterwards mean anything.
+
+**And then the lesson had to be applied twice.** That clean-clone check runs on
+macOS, and the failure being chased was on Linux — so it, too, was a check that
+could not see the thing it was checking. There is no Linux and no container
+runtime on this machine, so CI is the only Linux available and the push *is* the
+experiment. Confirmed by the shape of the result rather than a green tick: the
+failing runs died at 23s / 11s / 7s, and the passing run took 79s / 38s / 33s,
+which is the difference between `npm ci` aborting and the suite actually running.
+
+One process note worth keeping. The first attempt at this changed **three things
+at once** — Node version, `engines`/`packageManager`, and the lockfile — and when
+CI went red the failure could not be attributed to any of them. Isolating cost an
+extra round trip that changing one variable would have saved. `engines` and
+`packageManager` were then each cleared by a local experiment rather than an
+argument: there is no `.npmrc`, so `engine-strict` is off and `EBADENGINE` only
+warns; and setting `packageManager` to a version other than the running npm still
+exits 0, because npm does not enforce that field — corepack does, and `setup-node`
+does not enable it.
 
