@@ -493,8 +493,9 @@ is sideways. That cannot be caught in the Simulator, which has no camera.
 
 **2026-08-20 — the thin spine runs, verified in the Simulator.** Photo → OCR →
 orientation check → extract → save → reminders registered with iOS, over three
-real corpus photographs. `osHeld: 11`. Orientation anchors measured on device
-(0.207 / 0.215 upright, 0.651 inverted) match what the corpus harness predicted.
+real corpus photographs. `osHeld: 11`. Orientation anchors measured **in the
+Simulator** (0.207 / 0.215 upright, 0.651 inverted) match what the corpus harness
+predicted.
 **Four problems found doing it**, three of which would have shipped silently —
 the app could not launch at all, reminders were being scheduled into nothing,
 and the recipient name failed on every capture. All in NOTES.md; the build one
@@ -736,6 +737,15 @@ Devansh (an afternoon each).
   every time. Check the side effect before concluding a control is dead, and
   prefer `xcrun simctl openurl carta:///<route>` for navigation, which needs no
   tap at all.
+- **Never write "device" when you mean Simulator.** Swept 2026-08-26 and five
+  claims were wrong, including a NOTES heading reading *"Privacy changes verified
+  on device"* over a body that says the files were read out of the *simulator
+  container*, and a CLAUDE.md paragraph that said "verified in the Simulator" and
+  "measured on device" three lines apart. **Nothing in this project has ever run
+  on a physical iPhone.** The words are not interchangeable in a submission: a
+  judge reading "verified on device" is being told something untrue. Write
+  "Simulator" unless a phone was in your hand, and if you erase a Simulator say
+  "erased Simulator", not "erased device".
 - **Dynamic Type is a measurement, not a policy.** "Nothing sets
   `allowFontScaling={false}`" describes the code and says nothing about the
   result. Measured 2026-08-25: the uncapped 72pt countdown reached ~220pt at AX5

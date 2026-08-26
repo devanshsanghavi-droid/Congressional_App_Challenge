@@ -1690,7 +1690,7 @@ MARIA REYES on both upright captures.
 `na960x-angled-08` produced no deadline and **zero reminders**, while still
 extracting the case number, the programme and the action type.
 
-That is the predicted split holding on device: text-only matching survives
+That is the predicted split holding in the running app: text-only matching survives
 inversion, geometry-dependent matching does not. And the orientation check
 fired — `inverted`, anchor 0.651 — so the user is told to turn the page around
 before any of it matters. Scheduling nothing was correct: the alternative is
@@ -1865,7 +1865,11 @@ it* — but the cause was my own interrupted build, not the toolchain.
 
 ---
 
-## 2026-08-20 (later) — Privacy changes verified on device
+## 2026-08-20 (later) — Privacy changes verified in the Simulator
+
+> **Heading corrected 2026-08-26.** It read "verified on device" over a body that
+> says the files were read out of the *simulator container*. Nothing in this
+> entry ran on a phone.
 
 Re-ran the acceptance test on the clean build, then read the actual files out of
 the simulator container rather than trusting the code.
@@ -3546,7 +3550,7 @@ read on this phone, never contacts your county or immigration, works in airplane
 mode — *"you can turn off wifi and try it"*, which is a claim the user can
 falsify in ten seconds and `no-network.test.ts` backs.
 
-**Two defects found on device, both mine:**
+**Two defects found in the Simulator, both mine:**
 
 - The last screen's button said **"Take a photo of a notice"** and went to Home.
   A label that promises one thing and does another.
@@ -3688,7 +3692,7 @@ a reminder the OS never accepted and one that was cancelled are the same thing �
 it is not coming — and Home's existing warning already covers it. A third state
 would mean teaching every reader a distinction that changes nothing.
 
-### Verified after the fix, on a second erased device
+### Verified after the fix, on a second erased Simulator
 
 ```
 notification permission (provisional): granted     ← first, now
@@ -3943,7 +3947,10 @@ is the same shape as the reminder bug earlier today — the database and the OS
 holding different truths — so it is fixed the same way: ask the OS to forget,
 tell it again, record what it accepted.
 
-### Verified on the device
+### Verified in the Simulator
+
+*(Heading corrected 2026-08-26 — it read "on the device" and the body has always
+said Simulator.)*
 
 Erased Simulator, real notification authorisation. Settings renders; the model
 section reads 1.12 GB and offers the download; reminder timing persisted

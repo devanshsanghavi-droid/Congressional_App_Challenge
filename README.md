@@ -338,7 +338,7 @@ what was chosen and why, with the measurements rather than only the conclusions.
 |---|---|
 | `src/app/` | Screens (expo-router file-based routes) |
 | `src/lib/` | App-side, platform-aware code |
-| `src/extraction/` | The extraction cascade. Pure TS island — runs unchanged on device and in bare Node |
+| `src/extraction/` | The extraction cascade. Pure TS island — no platform imports, so the same code runs in the app and in bare Node against the corpus |
 | `content/` | Bundled, sourced JSON: programmes, offices, document types, cross-references |
 | `tools/corpus/` | The evaluation corpus and its ground truth |
 | `tools/metrics/` | The scoring harness |
