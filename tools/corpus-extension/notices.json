@@ -1,0 +1,659 @@
+{
+  "_purpose": "Labelled EXTENSION set. NOT part of the frozen corpus and never merged into its numbers.",
+  "_method": "Authored 2026-08-26, BLIND - written before any line of the extraction cascade existed, so no pattern here was chosen after seeing what the matcher does or does not catch. Committed in that state before the matcher was written; see git history.",
+  "_what_it_measures": "Extraction logic against names the frozen corpus does not contain: accented Latin capitals, Vietnamese tone marks, mixed case, and a hyphenated compound surname. Santa Clara County is heavily Latino and Vietnamese, and a corpus of ten unaccented all-caps names overstates recipient_name accuracy for exactly the households this app exists for.",
+  "_what_it_does_NOT_measure": "OCR. These are clean hand-authored lines with hand-authored boxes, not photographs. The OCR ceiling is 100% by construction. A number from this set is a claim about the parser and about nothing else, and it must never be quoted beside or merged with the photographed figure.",
+  "_geometry": "Boxes are normalised 0-1, top-left origin, matching ExtractionInput. The right-hand metadata column is deliberately interleaved into reading order between the address lines, which is what a real recogniser does and what breaks index-based address walks.",
+  "notices": [
+    {
+      "id": "ext-01-jose-ramirez",
+      "form": "CF 377.6",
+      "why": "Accented Spanish given name and surname (JOSÉ RAMÍREZ). Also carries the agency's own return address, with its own CA ZIP, ABOVE the recipient's block.",
+      "ground_truth": {
+        "recipient_name": "JOSÉ RAMÍREZ",
+        "case_number": "01-7734-2081",
+        "program": "CalFresh",
+        "action_type": "info_request",
+        "form_id": "CF 377.6",
+        "notice_date": "2026-10-02",
+        "deadline_date": "2026-10-16"
+      },
+      "lines": [
+        {
+          "text": "COUNTY OF SANTA CLARA",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.05,
+            "w": 0.2385,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SOCIAL SERVICES AGENCY",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.072,
+            "w": 0.249,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "333 W JULIAN ST",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.094,
+            "w": 0.1755,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SAN JOSE, CA 95110",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.116,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "CF 377.6 (Rev. 8/13)",
+          "confidence": 1,
+          "box": {
+            "x": 0.72,
+            "y": 0.05,
+            "w": 0.2,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "INFORMATION / VERIFICATION NEEDED",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.182,
+            "w": 0.3645,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "CalFresh",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.204,
+            "w": 0.102,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "JOSÉ RAMÍREZ",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.27,
+            "w": 0.144,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Case Number: 01-7734-2081",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.27,
+            "w": 0.2805,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "1892 ALUM ROCK AVE APT 7",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.292,
+            "w": 0.27,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Worker ID: SC-4471",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.292,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SAN JOSÉ, CA 95116",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.314,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Phone: (408) 758-3401",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.314,
+            "w": 0.2385,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Notice Date",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.358,
+            "w": 0.1335,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "OCTOBER 2, 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.34,
+            "y": 0.358,
+            "w": 0.1755,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SEND THESE ITEMS BY: OCTOBER 16, 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.402,
+            "w": 0.4065,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "We need more information before we can finish working on your CalFresh case.",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.446,
+            "w": 0.816,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "ITEMS NEEDED",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.49,
+            "w": 0.144,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Proof of earned income - all pay stubs from the last 30 days",
+          "confidence": 1,
+          "box": {
+            "x": 0.08,
+            "y": 0.512,
+            "w": 0.648,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Proof of housing cost - lease, rent receipt, or mortgage statement",
+          "confidence": 1,
+          "box": {
+            "x": 0.08,
+            "y": 0.534,
+            "w": 0.711,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Proof of identity - driver license, state ID, or passport",
+          "confidence": 1,
+          "box": {
+            "x": 0.08,
+            "y": 0.556,
+            "w": 0.6165,
+            "h": 0.016
+          }
+        }
+      ]
+    },
+    {
+      "id": "ext-02-nguyen-thi-lan",
+      "form": "SAR 7",
+      "why": "Vietnamese name with tone marks and mixed case (Nguyễn Thị Lan). NFD-decomposable, unlike Đ.",
+      "ground_truth": {
+        "recipient_name": "Nguyễn Thị Lan",
+        "case_number": "01-5519-3376",
+        "program": "CalFresh/CalWORKs",
+        "action_type": "recert_due",
+        "form_id": "SAR 7",
+        "notice_date": "2026-10-08",
+        "deadline_date": "2026-11-05"
+      },
+      "lines": [
+        {
+          "text": "STATE OF CALIFORNIA",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.05,
+            "w": 0.2175,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "HEALTH AND HUMAN SERVICES AGENCY",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.072,
+            "w": 0.354,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SANTA CLARA COUNTY",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.094,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SAR 7 (Rev. 5/25)",
+          "confidence": 1,
+          "box": {
+            "x": 0.74,
+            "y": 0.05,
+            "w": 0.18,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SEMI-ANNUAL ELIGIBILITY STATUS REPORT",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.16,
+            "w": 0.4065,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "CalFresh / CalWORKs",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.182,
+            "w": 0.2175,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Nguyễn Thị Lan",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.248,
+            "w": 0.165,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Case Number: 01-5519-3376",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.248,
+            "w": 0.2805,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "3401 SENTER RD APT 12",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.27,
+            "w": 0.2385,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Worker ID: SC-2288",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.27,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SAN JOSE, CA 95111",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.292,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Phone: (408) 758-3401",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.292,
+            "w": 0.2385,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Notice Date",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.336,
+            "w": 0.1335,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "OCTOBER 8, 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.34,
+            "y": 0.336,
+            "w": 0.1755,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "YOU MUST COMPLETE, SIGN, AND RETURN THIS FORM.",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.38,
+            "w": 0.501,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SUBMIT BY: NOVEMBER 5, 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.424,
+            "w": 0.3015,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Report Month: OCTOBER 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.446,
+            "w": 0.291,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Benefit Month: DECEMBER 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.34,
+            "y": 0.446,
+            "w": 0.312,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SECTION 3 - PROOF YOU MUST SEND",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.49,
+            "w": 0.3435,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "All paycheck stubs received last month",
+          "confidence": 1,
+          "box": {
+            "x": 0.08,
+            "y": 0.512,
+            "w": 0.417,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Current rent receipt or lease agreement",
+          "confidence": 1,
+          "box": {
+            "x": 0.08,
+            "y": 0.534,
+            "w": 0.4275,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Most recent utility bill",
+          "confidence": 1,
+          "box": {
+            "x": 0.08,
+            "y": 0.556,
+            "w": 0.27,
+            "h": 0.016
+          }
+        }
+      ]
+    },
+    {
+      "id": "ext-03-ana-maria-delgado-cruz",
+      "form": "NA 960X SAR",
+      "why": "Hyphenated compound surname with an accent, in mixed case (Ana María Delgado-Cruz). Also the only extension notice with both appeal clocks printed.",
+      "ground_truth": {
+        "recipient_name": "Ana María Delgado-Cruz",
+        "case_number": "01-8842-1160",
+        "program": "CalFresh",
+        "action_type": "discontinuance",
+        "form_id": "NA 960X SAR",
+        "notice_date": "2026-09-21",
+        "effective_date": "2026-10-15",
+        "aid_paid_pending_deadline": "2026-10-01",
+        "appeal_deadline": "2026-12-20"
+      },
+      "lines": [
+        {
+          "text": "STATE OF CALIFORNIA",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.05,
+            "w": 0.2175,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "NOTICE OF ACTION",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.094,
+            "w": 0.186,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "NA 960X SAR (Rev. 10/24)",
+          "confidence": 1,
+          "box": {
+            "x": 0.72,
+            "y": 0.05,
+            "w": 0.2,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Ana María Delgado-Cruz",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.182,
+            "w": 0.249,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Case Number: 01-8842-1160",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.182,
+            "w": 0.2805,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "755 WILLOW ST",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.204,
+            "w": 0.1545,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Worker ID: SC-3390",
+          "confidence": 1,
+          "box": {
+            "x": 0.6,
+            "y": 0.204,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SAN JOSE, CA 95125",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.226,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Notice Date",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.27,
+            "w": 0.1335,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Effective Date",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.292,
+            "w": 0.165,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "SEPTEMBER 21, 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.36,
+            "y": 0.27,
+            "w": 0.207,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "OCTOBER 15, 2026",
+          "confidence": 1,
+          "box": {
+            "x": 0.36,
+            "y": 0.292,
+            "w": 0.186,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "YOUR CALFRESH BENEFITS WILL STOP ON OCTOBER 15, 2026.",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.336,
+            "w": 0.5745,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "If you ask for a hearing before OCTOBER 1, 2026 your benefits stay the same",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.38,
+            "w": 0.8055,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "until a judge decides.",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.402,
+            "w": 0.249,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "You may ask for a state hearing within 90 days of the date of this notice.",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.446,
+            "w": 0.795,
+            "h": 0.016
+          }
+        },
+        {
+          "text": "Regulation: MPP 63-504",
+          "confidence": 1,
+          "box": {
+            "x": 0.06,
+            "y": 0.49,
+            "w": 0.249,
+            "h": 0.016
+          }
+        }
+      ]
+    }
+  ]
+}
