@@ -131,42 +131,61 @@ entries, and every notification still queued with iOS.
 
 ## Accuracy
 
-<!-- ---------------------------------------------------------------------------
-     PLACEHOLDER — DO NOT SHIP THIS SECTION AS-IS.
-
-     Fill it by running, against the committed OCR cache:
-
-         npm run metrics -- --extractor src/extraction/index.ts
-
-     which writes tools/metrics/out/METRICS.md. Copy the per-condition tables
-     from there. The harness enforces three rules and the README must not
-     undo them:
-
-       1. Real captures and synthetic degradations are NEVER merged into one
-          number. They are different claims about different things.
-       2. Conditions are the rows, not the average.
-       3. Every figure is reported beside the OCR ceiling, so a miss is
-          attributable to extraction or to the recogniser.
-
-     The corpus supports a *rate* claim for flat (n=8) and creased (n=5) only.
-     Everything else is an existence proof and the report refuses to print it
-     as a percentage — do not print it as one here either.
-     --------------------------------------------------------------------------- -->
-
-**To be filled when the extraction cascade lands.**
-
 Carta is evaluated against a committed corpus of **10 fictional notices, 23 real
-captures** printed and photographed across nine physical conditions, and **56
-synthetic degradations**. No real person's notice was ever used.
+captures** printed and photographed across nine physical conditions, and 56
+synthetic degradations. No real person's notice was ever used.
 
-| | real captures | synthetic |
-|---|---|---|
-| OCR ceiling | 97.9% | 62.5% |
-| deterministic extraction | _pending_ | _pending_ |
-| deterministic + model | _pending_ | _pending_ |
+The cascade was developed against notices **01–07**, with **08–10 held out** —
+their text, their ground truth and their failures were not looked at while it was
+written. Both numbers are reported, because a single blended figure hides exactly
+what a holdout exists to reveal.
 
-Two findings from building the corpus that are worth stating regardless of the
-final numbers:
+**Core fields**, real photographed captures only (`recipient_name`, `program`,
+`action_type`, `case_number` and the five dates):
+
+| | notices | captures | OCR ceiling | precision | recall |
+|---|---|---|---|---|---|
+| **In-sample** (01–07) | 7 | 21 | 97.7% | **96.9%** | **87.9%** |
+| **Held out** (08–10) | 3 | 2 | 100% | 6 of 7 | 6 of 12 |
+
+**Read the held-out row as counts, not rates.** Two images is below the harness's
+own `MIN_IMAGES_FOR_RATE`, which refuses to print a percentage for any condition
+that thin — printing one here would be applying a standard to this table that the
+rest of the report rejects.
+
+### What the gap means, stated plainly
+
+The in-sample figure is **not independent**. The cascade was written by someone
+who had read `tools/metrics/probe/`, a working extractor fitted to all ten
+notices. **The held-out figure is the one to trust**, and the distance between the
+two is the honest measure of how much was fitted rather than generalised.
+
+Some of that gap is deliberate. The probe's form identifiers for the held-out
+notices — `SSA-8202`, `HCV-AR-101` — were **left out** of the cascade's tables on
+purpose, so `form_id`, `program` and `agency` score zero on those notices. Copying
+them across would have raised the number while measuring nothing except whether
+they had been copied.
+
+Full per-field tables, per condition and beside the OCR ceiling, are in
+`tools/metrics/out/METRICS.md`. Real captures and synthetic degradations are never
+merged into one figure.
+
+### The corpus cannot measure everything
+
+All ten ground-truth recipient names are unaccented and upper-case, so a
+`recipient_name` figure measured on the corpus alone overstates accuracy for a
+county that is heavily Latino and Vietnamese. A separate **extension set** of
+three authored notices — `JOSÉ RAMÍREZ`, `Nguyễn Thị Lan`,
+`Ana María Delgado-Cruz` — covers that gap and scores **100% precision, 100%
+recall**.
+
+That number measures the **parser and nothing else**: the pages are hand-authored,
+so their OCR ceiling is 100% by construction and the figure is not comparable to a
+photographed one. It is reported beside the corpus number, never merged into it,
+and the corpus itself was left frozen so every measurement taken before it remains
+comparable. See `tools/corpus-extension/README.md`.
+
+Two findings from building the corpus that hold regardless of the numbers:
 
 - **Blur is uncapturable on an iPhone.** Deep Fusion sharpens document text after
   capture, so blur and noise had to be synthesised while skew, crease, shadow and
@@ -176,7 +195,14 @@ final numbers:
   creased" is *not available* from this corpus, and the report says so rather than
   dressing a flat table up as a gradient.
 
----
+### Known limitation
+
+On a skewed capture the two columns of a form drift apart vertically, and a label
+can pair with the value from an adjacent row — on `mc210-dimangle-13` the label
+`Coverage Ends Without Action` pairs with the notice date rather than the coverage
+end date. The row tolerance in `geometry.ts` is deliberately **not** tuned to fix
+that one image, because tuning a constant against a development notice makes the
+in-sample figure mean less without making the app better.
 
 ## Accessibility
 

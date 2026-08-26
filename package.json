@@ -21,6 +21,8 @@
     "corpus:ocr": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/ocr/run-ocr.ts",
     "metrics": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/run.ts",
     "metrics:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/run.ts --check",
+    "metrics:split": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/split-report.ts --extractor src/extraction/index.ts",
+    "metrics:extension": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/extension-report.ts --extractor src/extraction/index.ts",
     "probe": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/compare.ts",
     "probe:errors": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/errors.ts",
     "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/content-check.ts",
