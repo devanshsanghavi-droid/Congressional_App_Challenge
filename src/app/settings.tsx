@@ -54,10 +54,17 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, Divider, Muted, Screen, Section } from '@/components/ui';
-import { SETTINGS, getStringSetting, setStringSetting } from '@/lib/db/settings';
+import {
+  SETTINGS,
+  getBooleanSetting,
+  getStringSetting,
+  setBooleanSetting,
+  setStringSetting,
+} from '@/lib/db/settings';
+import { formatRememberedTraces, hasTraces } from '@/lib/diagnostics/last-trace';
 import i18n, { SUPPORTED_LANGUAGES } from '@/lib/i18n';
 import type { SupportedLanguage } from '@/lib/i18n';
 import { MODELS, deleteModel, downloadModel, formatBytes, modelFile } from '@/lib/llm/model';
@@ -66,6 +73,9 @@ import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
 import { DEFAULT_REMINDER_HOUR, REMINDER_HOURS, isReminderHour } from '@/lib/urgency';
 import type { ReminderHour } from '@/lib/urgency';
 import { wipeEverything } from '@/lib/wipe';
+// TEMPORARY DIAGNOSTIC — 2026-08-26. Remove once the notification-state
+// question is settled. Reads iOS back; changes nothing.
+import * as Notifications from 'expo-notifications';
 
 const MODEL = MODELS['qwen2.5-1.5b-instruct-q4_k_m'];
 
@@ -115,6 +125,65 @@ export default function SettingsScreen() {
   const [modelError, setModelError] = useState<string>();
   const [wipe, setWipe] = useState<Wipe>('idle');
   const [wipeFailed, setWipeFailed] = useState<readonly string[]>([]);
+
+  // TEMPORARY DIAGNOSTIC — the raw permission record, not the boolean derived
+  // from it. The app says reminders cannot be set while iOS Settings shows
+  // notifications ON, and the recorded suspicion is that `granted` is false for
+  // provisional authorisation (iOS status 3) while expo maps only authorized
+  // (2) to granted. Print the value rather than reason about it.
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const [perm, setPerm] = useState<string>('reading…');
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const on = await getBooleanSetting(SETTINGS.showDiagnostics);
+        if (!cancelled) setShowDiagnostics(on);
+      } catch {
+        // Off is the safe default and is already what state holds.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const toggleDiagnostics = useCallback((next: boolean) => {
+    setShowDiagnostics(next);
+    void setBooleanSetting(SETTINGS.showDiagnostics, next).catch(() => {
+      // Applied for this session either way.
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!showDiagnostics) return;
+    void (async () => {
+      try {
+        const p = await Notifications.getPermissionsAsync();
+        const ios = (p as { ios?: Record<string, unknown> }).ios;
+        setPerm(
+          [
+            `granted        = ${String(p.granted)}`,
+            `canAskAgain    = ${String(p.canAskAgain)}`,
+            `status         = ${String(p.status)}`,
+            `ios.status     = ${String(ios?.['status'])}`,
+            `ios.allowsAlert= ${String(ios?.['allowsAlert'])}`,
+            `ios.allowsSound= ${String(ios?.['allowsSound'])}`,
+            '',
+            'IosAuthorizationStatus:',
+            `  NOT_DETERMINED=${Notifications.IosAuthorizationStatus.NOT_DETERMINED}`,
+            `  DENIED        =${Notifications.IosAuthorizationStatus.DENIED}`,
+            `  AUTHORIZED    =${Notifications.IosAuthorizationStatus.AUTHORIZED}`,
+            `  PROVISIONAL   =${Notifications.IosAuthorizationStatus.PROVISIONAL}`,
+            `  EPHEMERAL     =${String(Notifications.IosAuthorizationStatus.EPHEMERAL)}`,
+          ].join('\n'),
+        );
+      } catch (error) {
+        setPerm(`threw: ${String(error)}`);
+      }
+    })();
+  }, [showDiagnostics]);
 
   useEffect(() => {
     let cancelled = false;
@@ -306,6 +375,33 @@ export default function SettingsScreen() {
         </Card>
       </Section>
 
+      <Section title={t('settings.diagnosticsTitle')}>
+        <Card>
+          <View style={styles.toggleRow}>
+            <Text style={styles.toggleLabel}>{t('settings.diagnosticsToggle')}</Text>
+            <Switch
+              value={showDiagnostics}
+              onValueChange={toggleDiagnostics}
+              accessibilityLabel={t('settings.diagnosticsToggle')}
+            />
+          </View>
+          <Muted>{t('settings.diagnosticsWhat')}</Muted>
+
+          {showDiagnostics ? (
+            <>
+              <Divider />
+              <Text style={styles.exactTitle}>notification permission</Text>
+              <Text selectable style={styles.mono}>{perm}</Text>
+              <Divider />
+              <Text style={styles.exactTitle}>last captures</Text>
+              <Text selectable style={styles.mono}>
+                {hasTraces() ? formatRememberedTraces() : 'no captures recorded yet'}
+              </Text>
+            </>
+          ) : null}
+        </Card>
+      </Section>
+
       <Section title={t('settings.wipeTitle')}>
         <Card>
           <Body>{t('settings.wipeWhat')}</Body>
@@ -389,4 +485,13 @@ const styles = StyleSheet.create({
   },
   problemTitle: { ...type.subheading, color: color.red },
   exactTitle: { ...type.label, color: color.text },
+  mono: { fontFamily: 'Menlo', fontSize: 11, color: color.textMuted },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: touchTarget,
+    gap: space.md,
+  },
+  toggleLabel: { ...type.body, color: color.text, flexShrink: 1 },
 });

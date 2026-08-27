@@ -34,6 +34,17 @@ export const SETTINGS = {
   onboardingDone: 'onboardingDone',
 
   /**
+   * Show the diagnostics section in Settings.
+   *
+   * **Default off, and deliberately a stored setting rather than `__DEV__`.**
+   * A development build has `__DEV__` true, so a `__DEV__` gate is no gate at
+   * all for the person actually using the app — diagnostic output sat in the
+   * middle of the capture result screen, above the fold, in exactly the build
+   * used for demos. This is off until someone turns it on.
+   */
+  showDiagnostics: 'showDiagnostics',
+
+  /**
    * The interface language, when the user has chosen one.
    *
    * **Absent by default, and that is different from 'en'.** Absent means "follow
@@ -63,11 +74,15 @@ export type SettingKey = (typeof SETTINGS)[keyof typeof SETTINGS];
  * false. The boolean API predates the string one and is the easier of the two
  * to reach for by habit.
  */
-export type BooleanSettingKey = typeof SETTINGS.deleteSourceImage | typeof SETTINGS.onboardingDone;
+export type BooleanSettingKey =
+  | typeof SETTINGS.deleteSourceImage
+  | typeof SETTINGS.onboardingDone
+  | typeof SETTINGS.showDiagnostics;
 
 const DEFAULTS: Readonly<Record<BooleanSettingKey, boolean>> = {
   deleteSourceImage: true,
   onboardingDone: false,
+  showDiagnostics: false,
 };
 
 export async function getBooleanSetting(key: BooleanSettingKey): Promise<boolean> {

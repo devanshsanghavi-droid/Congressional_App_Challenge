@@ -364,6 +364,9 @@
     "wipeConfirmBody": "Cada aviso, documento y recordatorio se perderá. Esto no se puede deshacer.",
     "wipeConfirmAction": "Borrar todo",
     "wipePartialTitle": "No se borró todo",
-    "wipePartialBody": "Carta no pudo terminar: {{steps}}. Intente otra vez, y si sigue fallando puede borrar la aplicación, lo cual quita todo."
+    "wipePartialBody": "Carta no pudo terminar: {{steps}}. Intente otra vez, y si sigue fallando puede borrar la aplicación, lo cual quita todo.",
+    "diagnosticsTitle": "Diagnóstico",
+    "diagnosticsToggle": "Mostrar detalles técnicos",
+    "diagnosticsWhat": "Información técnica sobre las últimas fotos, para resolver problemas. Desactivado de forma predeterminada. No contiene nada del texto de sus cartas."
   }
 }

@@ -364,6 +364,9 @@
     "wipeConfirmBody": "Every notice, document and reminder will be gone. This cannot be undone.",
     "wipeConfirmAction": "Delete everything",
     "wipePartialTitle": "Not everything was deleted",
-    "wipePartialBody": "Carta could not finish: {{steps}}. Try again, and if it keeps failing you can delete the app itself, which removes all of it."
+    "wipePartialBody": "Carta could not finish: {{steps}}. Try again, and if it keeps failing you can delete the app itself, which removes all of it.",
+    "diagnosticsTitle": "Diagnostics",
+    "diagnosticsToggle": "Show diagnostic details",
+    "diagnosticsWhat": "Technical information about the last few captures, for troubleshooting. Off by default. It contains no text from your letters."
   }
 }
