@@ -14,9 +14,9 @@
  */
 
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AppState, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, EmptyState, ErrorState, Screen } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
@@ -24,6 +24,7 @@ import type { Notice } from '@/lib/db/notices';
 import { listActiveNotices } from '@/lib/db/notices';
 import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
 import { countdownDate } from '@/lib/urgency';
+import { resyncDroppedReminders } from '@/lib/reschedule';
 import type { NoticeDates } from '@/lib/urgency';
 
 /** The dates a notice counts down on, in the shape `urgency.ts` expects. */
@@ -50,12 +51,39 @@ export default function HomeScreen() {
   const load = useCallback(() => {
     setNow(Date.now());
     setFailed(false);
-    listActiveNotices().then(setNotices).catch(() => setFailed(true));
+    void (async () => {
+      // Before listing: if permission was granted since these notices were
+      // saved, put back the reminders that were dropped when it was refused.
+      // No-ops when nothing is stranded, and never prompts.
+      try {
+        await resyncDroppedReminders();
+      } catch {
+        // A resync failure must never stop the list from rendering. The warning
+        // card stays up, which is the honest state if the resync did not run.
+      }
+      try {
+        setNotices(await listActiveNotices());
+      } catch {
+        setFailed(true);
+      }
+    })();
   }, []);
 
   // On focus, not on mount: Review replaces this screen after a save, and a
   // stale list would make a successful save look like it failed.
   useFocusEffect(useCallback(() => void load(), [load]));
+
+  // And on app foreground, which focus does NOT cover. The card's own button
+  // sends the user to iOS Settings to grant permission; coming back from there
+  // backgrounds and re-activates the app without this screen ever losing focus,
+  // so `useFocusEffect` alone would leave the warning up until the user
+  // navigated somewhere and back.
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') load();
+    });
+    return () => subscription.remove();
+  }, [load]);
 
   const capture = (
     <Button

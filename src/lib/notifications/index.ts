@@ -72,6 +72,19 @@ export async function requestPermission(options: PermissionOptions = {}): Promis
   return requested.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL;
 }
 
+/**
+ * Is notification authorisation already granted? **Never prompts.**
+ *
+ * `requestPermission()` will ask iOS to show the system prompt when it can, so
+ * it is the wrong thing to call from a background resync — it would surface a
+ * permission dialog on app foreground, out of any context the user initiated.
+ * This only reads what iOS already holds.
+ */
+export async function hasPermission(): Promise<boolean> {
+  const existing = await Notifications.getPermissionsAsync();
+  return existing.granted;
+}
+
 export interface ScheduledResult {
   readonly tier: string;
   readonly fireAt: number;
