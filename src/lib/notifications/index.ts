@@ -20,7 +20,8 @@
 import * as Notifications from 'expo-notifications';
 
 import i18n from '../i18n/index.ts';
-import type { NoticeDates, ScheduledReminder } from '../urgency.ts';
+import type { ActionType, NoticeDates, ScheduledReminder } from '../urgency.ts';
+import { reminderBody } from '../reminder-content.ts';
 import { daysUntil, remindersFor } from '../urgency.ts';
 
 /**
@@ -92,29 +93,33 @@ export interface ScheduledResult {
   readonly osNotificationId: string;
 }
 
-function bodyFor(reminder: ScheduledReminder, deadlineMs: number, programName?: string): {
-  title: string;
-  body: string;
-} {
+function bodyFor(
+  reminder: ScheduledReminder,
+  deadlineMs: number,
+  programName: string | undefined,
+  actionType: ActionType | undefined,
+  documents: readonly string[],
+): { title: string; body: string } {
   const days = daysUntil(deadlineMs, reminder.fireAt);
   const program = programName ?? i18n.t('notifications.yourBenefits');
 
+  // The aid-paid-pending tier keeps its own body. It is the one reminder whose
+  // action is not "send the form" — it is "ask for a hearing before this date
+  // or the money stops while you wait" — and that is already stated plainly.
   if (reminder.urgent) {
     return {
       title: i18n.t('notifications.urgentTitle'),
       body: i18n.t('notifications.urgentBody', { program, count: days }),
     };
   }
+
+  // Carries what to do and what to send, rather than telling the user to open
+  // the app and find out. See src/lib/reminder-content.ts for why.
+  const body = reminderBody(actionType, documents);
   if (days === 0) {
-    return {
-      title: i18n.t('notifications.dueTodayTitle', { program }),
-      body: i18n.t('notifications.dueTodayBody'),
-    };
+    return { title: i18n.t('notifications.dueTodayTitle', { program }), body };
   }
-  return {
-    title: i18n.t('notifications.dueTitle', { program, count: days }),
-    body: i18n.t('notifications.dueBody'),
-  };
+  return { title: i18n.t('notifications.dueTitle', { program, count: days }), body };
 }
 
 /**
@@ -131,15 +136,27 @@ export async function scheduleForNotice(options: {
   nowMs?: number;
   /** Local hour to fire at. Defaults to the ladder's own default (9am). */
   hour?: number;
+  /** Minutes past that hour. */
+  minute?: number;
+  /** Drives the action sentence in the body. */
+  actionType?: ActionType;
+  /** Documents the letter asked for, already resolved to labels. */
+  documents?: readonly string[];
 }): Promise<ScheduledResult[]> {
   const now = options.nowMs ?? Date.now();
-  const reminders = remindersFor(options.dates, now, options.hour);
+  const reminders = remindersFor(options.dates, now, options.hour, options.minute);
   const target = options.dates.deadlineDate ?? options.dates.aidPaidPendingDeadline;
   if (target === undefined) return [];
 
   const scheduled: ScheduledResult[] = [];
   for (const reminder of reminders) {
-    const { title, body } = bodyFor(reminder, target, options.programName);
+    const { title, body } = bodyFor(
+      reminder,
+      target,
+      options.programName,
+      options.actionType,
+      options.documents ?? [],
+    );
     const osNotificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title,

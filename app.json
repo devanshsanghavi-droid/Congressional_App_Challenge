@@ -88,7 +88,8 @@
           "photosPermission": "Carta needs to open a photo you already took of a benefit notice. It reads the letter on this phone and never adds anything to your photo library.",
           "cameraPermission": "Carta uses the camera to photograph your benefit notice. Photos stay on this phone and are never uploaded."
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

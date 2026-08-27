@@ -70,8 +70,12 @@ import type { SupportedLanguage } from '@/lib/i18n';
 import { MODELS, deleteModel, downloadModel, formatBytes, modelFile } from '@/lib/llm/model';
 import { rescheduleAllNotices } from '@/lib/reschedule';
 import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
-import { DEFAULT_REMINDER_HOUR, REMINDER_HOURS, isReminderHour } from '@/lib/urgency';
-import type { ReminderHour } from '@/lib/urgency';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+  DEFAULT_REMINDER_HOUR,
+  DEFAULT_REMINDER_MINUTE,
+  isReminderTime,
+} from '@/lib/urgency';
 import { wipeEverything } from '@/lib/wipe';
 // TEMPORARY DIAGNOSTIC — 2026-08-26. Remove once the notification-state
 // question is settled. Reads iOS back; changes nothing.
@@ -104,7 +108,11 @@ export default function SettingsScreen() {
   const [language, setLanguage] = useState<SupportedLanguage>(
     () => (i18n.language.split('-')[0] as SupportedLanguage) ?? 'en',
   );
-  const [hour, setHour] = useState<ReminderHour>(DEFAULT_REMINDER_HOUR);
+  const [reminderAt, setReminderAt] = useState<Date>(() => {
+    const d = new Date();
+    d.setHours(DEFAULT_REMINDER_HOUR, DEFAULT_REMINDER_MINUTE, 0, 0);
+    return d;
+  });
   const [hasModel, setHasModel] = useState(() => modelFile(MODEL).exists);
   const [progress, setProgress] = useState<number>();
   const [modelError, setModelError] = useState<string>();
@@ -174,9 +182,15 @@ export default function SettingsScreen() {
     let cancelled = false;
     void (async () => {
       try {
-        const stored = await getStringSetting(SETTINGS.reminderHour);
-        const parsed = stored === undefined ? NaN : Number.parseInt(stored, 10);
-        if (!cancelled && isReminderHour(parsed)) setHour(parsed);
+        const h = await getStringSetting(SETTINGS.reminderHour);
+        const m = await getStringSetting(SETTINGS.reminderMinute);
+        const hour = h === undefined ? NaN : Number.parseInt(h, 10);
+        const minute = m === undefined ? 0 : Number.parseInt(m, 10);
+        if (!cancelled && isReminderTime(hour, minute)) {
+          const next = new Date();
+          next.setHours(hour, minute, 0, 0);
+          setReminderAt(next);
+        }
       } catch {
         // The default hour is a good hour. A read failure is not worth a banner.
       }
@@ -210,15 +224,26 @@ export default function SettingsScreen() {
    * exact shape of the reminder bug found on 2026-08-25, where the database and
    * the OS disagreed and only the database was consulted.
    */
-  const chooseHour = useCallback((next: ReminderHour) => {
-    setHour(next);
+  /**
+   * Change the reminder time, then rebuild every scheduled reminder.
+   *
+   * The reschedule is the whole point. Reminders already registered with iOS
+   * carry the fire time they were created with, so writing the setting alone
+   * would change what this screen says and nothing about when the phone
+   * actually buzzes.
+   */
+  const chooseTime = useCallback((next: Date) => {
+    setReminderAt(next);
+    const hour = next.getHours();
+    const minute = next.getMinutes();
     void (async () => {
       try {
-        await setStringSetting(SETTINGS.reminderHour, String(next));
-        await rescheduleAllNotices(next);
+        await setStringSetting(SETTINGS.reminderHour, String(hour));
+        await setStringSetting(SETTINGS.reminderMinute, String(minute));
+        await rescheduleAllNotices(hour, minute);
       } catch {
         // Leave the old reminders in place rather than cancelling into nothing:
-        // a reminder at the wrong hour still fires, and none does not.
+        // a reminder at the wrong time still fires, and none does not.
       }
     })();
   }, []);
@@ -338,14 +363,22 @@ export default function SettingsScreen() {
       <Section title={t('settings.reminderTitle')}>
         <Card>
           <Muted>{t('settings.reminderWhat')}</Muted>
-          {REMINDER_HOURS.map((option) => (
-            <Choice
-              key={option}
-              label={t(`settings.hour.${option}`)}
-              selected={hour === option}
-              onPress={() => chooseHour(option)}
+          {/* A real picker, not a list of presets. It also settles the time
+              format question for free: the native control follows iOS Settings
+              > General > Date & Time > 24-Hour Time and the device locale, so
+              nothing here hardcodes either form. */}
+          <View style={styles.toggleRow}>
+            <Text style={styles.toggleLabel}>{t('settings.reminderAt')}</Text>
+            <DateTimePicker
+              value={reminderAt}
+              mode="time"
+              display="compact"
+              accessibilityLabel={t('settings.reminderAt')}
+              onChange={(_event, date) => {
+                if (date) chooseTime(date);
+              }}
             />
-          ))}
+          </View>
         </Card>
       </Section>
 

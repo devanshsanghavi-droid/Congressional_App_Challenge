@@ -66,7 +66,7 @@
     "checkThis": "Please check this",
     "checkThisWhy": "Carta often gets this one wrong in a way that still looks right.",
     "readClearly": "Read clearly",
-    "notFound": "Not found — tap to add",
+    "notFound": "Not found. Tap to add",
     "machineRead": "Read by Carta from your photo",
     "edit": "Edit",
     "done": "Done",
@@ -100,7 +100,7 @@
     "noRemindersTitle": "Saved, but no reminders",
     "noRemindersBody": "Carta saved this notice, but it cannot remind you because notifications are turned off. Turn them on in Settings to get reminders before your deadline.",
     "saveFailedTitle": "Carta could not save this",
-    "saveFailedBody": "Nothing was lost — your photo and the fields are still here. Try Save again.",
+    "saveFailedBody": "Nothing was lost: your photo and the fields are still here. Try Save again.",
     "nothingTitle": "Nothing to check right now",
     "nothingBody": "This screen shows what Carta read from a photo. Take a photo of a notice to see it.",
     "saveHint": "Saves this notice and sets reminders",
@@ -131,7 +131,14 @@
     "urgentBody_one": "{{count}} day left to ask for a hearing and keep {{program}} while you wait.",
     "urgentBody_other": "{{count}} days left to ask for a hearing and keep {{program}} while you wait.",
     "proofTitle": "Carta is set up",
-    "proofBody": "This is the reminder you just set for {{program}}."
+    "proofBody": "This is the reminder you just set for {{program}}.",
+    "doRecert": "Send the form back so your benefits continue.",
+    "doInfoRequest": "Send the papers they asked for.",
+    "doAppeal": "Ask for a hearing if you disagree.",
+    "doGeneric": "Check the letter and act before the date.",
+    "sendList": "Send: {{items}}.",
+    "andMore_one": "And 1 more.",
+    "andMore_other": "And {{count}} more."
   },
   "common": {
     "cancel": "Cancel",
@@ -152,11 +159,11 @@
     "letterDated": "The letter is dated {{date}}.",
     "mustDoWithDeadline": "Send back what the letter asks for before the date below. If you cannot, call your worker before that date and tell them.",
     "mustDoNoDeadline": "This letter does not give you a date to act by. Read it carefully, and call your worker if anything is unclear.",
-    "mustDoApproval": "Nothing. This letter is good news — you do not need to do anything.",
+    "mustDoApproval": "Nothing. This letter is good news, so you do not need to do anything.",
     "deadlineIs": "{{date}}",
     "noDeadlineFound": "Carta did not find a date on this letter. If you can see one, open the notice and add it.",
     "keepBenefitsTitle": "To keep your benefits while you appeal",
-    "keepBenefitsBody": "If you ask for a hearing before {{date}}, your benefits can stay the same until the hearing is decided. Confirm this with your county — Carta is not legal advice.",
+    "keepBenefitsBody": "If you ask for a hearing before {{date}}, your benefits can stay the same until the hearing is decided. Confirm this with your county. Carta is not legal advice.",
     "takesEffect": "The change takes effect {{date}}.",
     "appealBy": "You have until {{date}} to ask for a hearing.",
     "stateHearings": "State hearings line",
@@ -189,8 +196,8 @@
     "action": "Explain this in plain words",
     "loading": "Getting ready…",
     "writing": "Writing…",
-    "machineLabel": "Written by Carta on this phone, from the words in your photo. It can be wrong — the original is below.",
-    "notDownloaded": "Carta can rewrite this letter in plain words, on this phone. Turn it on in Settings — it is a one-time download and needs wifi.",
+    "machineLabel": "Written by Carta on this phone, from the words in your photo. It can be wrong, so the original is below.",
+    "notDownloaded": "Carta can rewrite this letter in plain words, on this phone. Turn it on in Settings. It is a one-time download and needs wifi.",
     "withheldTitle": "Carta did not show its explanation",
     "withheldBody": "Carta checked its own writing and something did not match your letter, so it is not showing it. Read the original below instead.",
     "withheldReason": "Reason: {{reason}}",
@@ -214,7 +221,7 @@
     "emptyBody": "The letter may list papers to send back. Add them here so Carta can help you keep track.",
     "addSomething": "Add something to bring",
     "addTitle": "What do you need to bring?",
-    "addBody": "Pick what the letter asks for. Carta is not saying these are required — only the letter can say that.",
+    "addBody": "Pick what the letter asks for. Carta is not saying these are required; only the letter can say that.",
     "progress": "{{done}} of {{total}} done",
     "progressBody": "Attach each one, or mark it if it does not apply to you.",
     "readyTitle": "You're ready",
@@ -277,7 +284,7 @@
   },
   "where": {
     "title": "Where to go",
-    "intro": "These work without internet. Call before you travel — hours change.",
+    "intro": "These work without internet. Call before you travel, because hours change.",
     "callFirst": "Try calling first",
     "callNumber": "Call {{number}}",
     "accessibilityTitle": "Interpreters and help filling out forms",
@@ -307,7 +314,7 @@
     "notNow": "Not now",
     "stepOf": "Step {{step}} of {{total}}",
     "whatTitle": "Carta remembers your deadline",
-    "whatBody": "Take a photo of a letter about your benefits. Carta reads the date off it and reminds you before it passes — so a form does not get missed while you are working.",
+    "whatBody": "Take a photo of a letter about your benefits. Carta reads the date off it and reminds you before it passes, so a form does not get missed while you are working.",
     "privateTitle": "Nothing leaves this phone",
     "privateBody": "Carta does not have an account, a server, or a way to send your letter anywhere.",
     "privatePoint1": "Your letter is read on this phone, not online.",
@@ -321,10 +328,10 @@
     "modelLater": "You can turn this on later in Settings. Nothing is missing without it.",
     "download": "Download it (about 1 GB)",
     "downloadHint": "Starts the download and takes you to Carta. It keeps going in the background.",
-    "alreadyHave": "Already downloaded — start using Carta",
+    "alreadyHave": "Already downloaded. Start using Carta",
     "modelSize": "Download size: about {{size}}.",
     "downloadFailedTitle": "The download did not finish",
-    "downloadFailedBody": "Nothing is wrong with Carta — everything works without this. You can try again later in Settings."
+    "downloadFailedBody": "Nothing is wrong with Carta: everything works without this. You can try again later in Settings."
   },
   "settings": {
     "title": "Settings",
@@ -334,7 +341,7 @@
       "es": "Español"
     },
     "modelTitle": "Plain-language explanations",
-    "modelWhat": "Carta can rewrite a letter in plain words, on this phone. It is optional — everything else works without it.",
+    "modelWhat": "Carta can rewrite a letter in plain words, on this phone. It is optional, and everything else works without it.",
     "modelSize": "One-time download, about {{size}}. Use wifi.",
     "modelAbsent": "Not downloaded yet.",
     "modelDownload": "Download it (about {{size}})",
@@ -344,15 +351,9 @@
     "modelDelete": "Delete the download",
     "modelDeleteHint": "Frees the space. You can download it again later.",
     "modelFailedTitle": "The download did not finish",
-    "modelFailedBody": "Nothing is wrong with Carta — everything works without this. Check wifi and try again.",
+    "modelFailedBody": "Nothing is wrong with Carta: everything works without this. Check wifi and try again.",
     "reminderTitle": "When reminders arrive",
     "reminderWhat": "Carta reminds you before a deadline. Pick the time of day that works.",
-    "hour": {
-      "8": "Early morning (8:00)",
-      "9": "Morning (9:00)",
-      "12": "Midday (12:00)",
-      "18": "Evening (18:00)"
-    },
     "privacyTitle": "What Carta keeps, and where",
     "privacyStored": "Everything Carta reads stays on this phone. There is no account and no server.",
     "privacyPhoto": "The photo of your letter is deleted once Carta has read it.",
@@ -370,6 +371,7 @@
     "wipePartialBody": "Carta could not finish: {{steps}}. Try again, and if it keeps failing you can delete the app itself, which removes all of it.",
     "diagnosticsTitle": "Diagnostics",
     "diagnosticsToggle": "Show diagnostic details",
-    "diagnosticsWhat": "Technical information about the last few captures, for troubleshooting. Off by default. It contains no text from your letters."
+    "diagnosticsWhat": "Technical information about the last few captures, for troubleshooting. Off by default. It contains no text from your letters.",
+    "reminderAt": "Remind me at"
   }
 }

@@ -58,18 +58,28 @@ export interface ScheduledReminder {
  */
 export const DEFAULT_REMINDER_HOUR = 9;
 
-/**
- * The hours Settings offers. Deliberately a short list of whole hours rather
- * than a time picker: this is a decision made once, and every extra degree of
- * freedom here is a decision the user has to make about an app they opened
- * because they were frightened by a letter.
- */
-export const REMINDER_HOURS = [8, 9, 12, 18] as const;
-export type ReminderHour = (typeof REMINDER_HOURS)[number];
+/** Minutes past the hour, by default none. */
+export const DEFAULT_REMINDER_MINUTE = 0;
 
-/** Narrow an arbitrary stored value back to an offered hour. */
-export function isReminderHour(value: number): value is ReminderHour {
-  return (REMINDER_HOURS as readonly number[]).includes(value);
+/**
+ * Settings offers a real time picker rather than a short list of preset hours.
+ *
+ * The presets were the original design, on the reasoning that every extra degree
+ * of freedom is a decision asked of someone who opened the app because a letter
+ * frightened them. Using it on a phone disproved that: "morning" and "evening"
+ * are not the shape of a real day, and the whole promise of this product is a
+ * reminder that is actually seen. Somebody who starts a shift at 6:45 needs
+ * 6:15, and no list of four is going to contain it.
+ */
+export function isReminderTime(hour: number, minute: number): boolean {
+  return (
+    Number.isInteger(hour) &&
+    Number.isInteger(minute) &&
+    hour >= 0 &&
+    hour <= 23 &&
+    minute >= 0 &&
+    minute <= 59
+  );
 }
 
 /** Days before the deadline that the standard ladder fires on. */
@@ -128,8 +138,8 @@ export function countdownTier(dates: NoticeDates, nowMs: number): CountdownTier 
   return 'green';
 }
 
-/** `hour` local on the day `daysBefore` days ahead of `targetMs`. */
-function fireTime(targetMs: number, daysBefore: number, hour: number): number {
+/** `hour`:`minute` local on the day `daysBefore` days ahead of `targetMs`. */
+function fireTime(targetMs: number, daysBefore: number, hour: number, minute: number): number {
   const target = new Date(targetMs);
   // setDate() rather than subtracting milliseconds: across a DST change the
   // arithmetic version lands an hour off, and these fire at a stated wall-clock
@@ -139,6 +149,7 @@ function fireTime(targetMs: number, daysBefore: number, hour: number): number {
     target.getMonth(),
     target.getDate() - daysBefore,
     hour,
+    minute,
   ).getTime();
 }
 
@@ -153,19 +164,20 @@ export function remindersFor(
   dates: NoticeDates,
   nowMs: number,
   hour: number = DEFAULT_REMINDER_HOUR,
+  minute: number = DEFAULT_REMINDER_MINUTE,
 ): ScheduledReminder[] {
   const reminders: ScheduledReminder[] = [];
 
   if (dates.deadlineDate !== undefined) {
     for (const { tier, daysBefore } of LADDER) {
-      const fireAt = fireTime(dates.deadlineDate, daysBefore, hour);
+      const fireAt = fireTime(dates.deadlineDate, daysBefore, hour, minute);
       if (fireAt > nowMs) reminders.push({ tier, fireAt, urgent: false });
     }
   }
 
   if (dates.aidPaidPendingDeadline !== undefined) {
     for (const daysBefore of URGENT_LADDER) {
-      const fireAt = fireTime(dates.aidPaidPendingDeadline, daysBefore, hour);
+      const fireAt = fireTime(dates.aidPaidPendingDeadline, daysBefore, hour, minute);
       if (fireAt > nowMs) reminders.push({ tier: 'appeal_urgent', fireAt, urgent: true });
     }
   }

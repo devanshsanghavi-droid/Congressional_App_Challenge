@@ -53,6 +53,13 @@ jest.mock('../../src/lib/db/notices.ts', () => ({
   }),
 }));
 
+// reschedule.ts composes this to put the letter's documents in the reminder
+// body; the resync contract is about WHICH notices get rescheduled, not what
+// the notification says, so it is stubbed to an empty list.
+jest.mock('../../src/lib/reminder-documents.ts', () => ({
+  letterDocuments: () => Promise.resolve([]),
+}));
+
 jest.mock('../../src/lib/db/settings.ts', () => ({
   SETTINGS: { reminderHour: 'reminderHour' },
   getStringSetting: (...args: unknown[]) => mockGetStringSetting(...args),

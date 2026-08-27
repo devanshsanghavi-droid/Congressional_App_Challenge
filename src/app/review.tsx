@@ -37,6 +37,8 @@ import { getBooleanSetting, SETTINGS } from '@/lib/db/settings';
 import { isoToLocalMs } from '@/lib/dates';
 import { recordScheduled, reconcileWithOs } from '@/lib/db/reminders';
 import { listScheduled, requestPermission, scheduleForNotice } from '@/lib/notifications';
+import { letterDocuments } from '@/lib/reminder-documents';
+import { reminderTime } from '@/lib/reschedule';
 import { useCaptureStore } from '@/lib/store/capture';
 import { startTrace } from '@/lib/diagnostics/trace';
 import { rememberTrace } from '@/lib/diagnostics/last-trace';
@@ -160,9 +162,18 @@ export default function ReviewScreen() {
       // first launch, before they have seen what the app does, gets declined.
       const granted = await recorder.step('schedule', async () => {
         if (!(await requestPermission())) return { value: false, detail: { permission: 'denied' } };
+        // The reminder carries what to do and what to send. `seedFromLetter`
+        // ran above, so the requirements are already in the database by now.
+        const { hour, minute } = await reminderTime();
         const scheduled = await scheduleForNotice({
           noticeId: id,
           dates: dates as Parameters<typeof scheduleForNotice>[0]['dates'],
+          hour,
+          minute,
+          ...(fields.actionType?.value
+            ? { actionType: fields.actionType.value as ActionType }
+            : {}),
+          documents: await letterDocuments(id),
           ...(fields.programId?.value ? { programName: fields.programId.value } : {}),
         });
         await recordScheduled(id, scheduled);

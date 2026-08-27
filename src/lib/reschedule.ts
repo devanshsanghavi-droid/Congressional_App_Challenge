@@ -23,9 +23,15 @@
 import { cancel, hasPermission, scheduleForNotice } from './notifications/index.ts';
 import { markCancelled, pendingOsIds, recordScheduled } from './db/reminders.ts';
 import { datesOf, listActiveNotices } from './db/notices.ts';
+import { letterDocuments } from './reminder-documents.ts';
 import type { Notice } from './db/notices.ts';
 import { SETTINGS, getStringSetting } from './db/settings.ts';
-import { countdownDate, DEFAULT_REMINDER_HOUR, isReminderHour } from './urgency.ts';
+import {
+  countdownDate,
+  DEFAULT_REMINDER_HOUR,
+  DEFAULT_REMINDER_MINUTE,
+  isReminderTime,
+} from './urgency.ts';
 
 /**
  * Rebuild every notice's reminder ladder at a new hour.
@@ -47,7 +53,7 @@ import { countdownDate, DEFAULT_REMINDER_HOUR, isReminderHour } from './urgency.
  * Returns how many notices were rescheduled. A notice whose deadline has already
  * passed produces an empty ladder and is counted as done, not as a failure.
  */
-async function rescheduleOne(notice: Notice, hour: number): Promise<void> {
+async function rescheduleOne(notice: Notice, hour: number, minute: number): Promise<void> {
   const existing = await pendingOsIds(notice.id);
   if (existing.length > 0) await cancel(existing);
   await markCancelled(notice.id);
@@ -56,25 +62,31 @@ async function rescheduleOne(notice: Notice, hour: number): Promise<void> {
     noticeId: notice.id,
     dates: datesOf(notice),
     hour,
+    minute,
+    actionType: notice.actionType,
+    documents: await letterDocuments(notice.id),
     ...(notice.programId === undefined ? {} : { programName: notice.programId }),
   });
   if (scheduled.length > 0) await recordScheduled(notice.id, scheduled);
 }
 
-export async function rescheduleAllNotices(hour: number): Promise<number> {
+export async function rescheduleAllNotices(hour: number, minute = 0): Promise<number> {
   const notices = await listActiveNotices();
-  for (const notice of notices) await rescheduleOne(notice, hour);
+  for (const notice of notices) await rescheduleOne(notice, hour, minute);
   return notices.length;
 }
 
-/** The reminder hour the user chose, or the default. Never throws. */
-async function reminderHour(): Promise<number> {
+/** The reminder time the user chose, or the default. Never throws. */
+export async function reminderTime(): Promise<{ hour: number; minute: number }> {
+  const fallback = { hour: DEFAULT_REMINDER_HOUR, minute: DEFAULT_REMINDER_MINUTE };
   try {
-    const stored = await getStringSetting(SETTINGS.reminderHour);
-    const parsed = stored === undefined ? Number.NaN : Number.parseInt(stored, 10);
-    return isReminderHour(parsed) ? parsed : DEFAULT_REMINDER_HOUR;
+    const h = await getStringSetting(SETTINGS.reminderHour);
+    const m = await getStringSetting(SETTINGS.reminderMinute);
+    const hour = h === undefined ? Number.NaN : Number.parseInt(h, 10);
+    const minute = m === undefined ? 0 : Number.parseInt(m, 10);
+    return isReminderTime(hour, minute) ? { hour, minute } : fallback;
   } catch {
-    return DEFAULT_REMINDER_HOUR;
+    return fallback;
   }
 }
 
@@ -118,7 +130,7 @@ export async function resyncDroppedReminders(): Promise<number> {
   );
   if (stranded.length === 0) return 0;
 
-  const hour = await reminderHour();
-  for (const notice of stranded) await rescheduleOne(notice, hour);
+  const { hour, minute } = await reminderTime();
+  for (const notice of stranded) await rescheduleOne(notice, hour, minute);
   return stranded.length;
 }

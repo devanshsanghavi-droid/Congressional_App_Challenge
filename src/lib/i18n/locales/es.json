@@ -66,7 +66,7 @@
     "checkThis": "Por favor revise esto",
     "checkThisWhy": "Carta se equivoca aquí a menudo, y el error parece correcto.",
     "readClearly": "Se leyó bien",
-    "notFound": "No se encontró — toque para agregar",
+    "notFound": "No se encontró. Toque para agregar",
     "machineRead": "Leído por Carta de su foto",
     "edit": "Editar",
     "done": "Listo",
@@ -100,7 +100,7 @@
     "noRemindersTitle": "Guardado, pero sin recordatorios",
     "noRemindersBody": "Carta guardó este aviso, pero no puede recordarle porque las notificaciones están apagadas. Actívelas en Ajustes para recibir recordatorios antes de su fecha límite.",
     "saveFailedTitle": "Carta no pudo guardar esto",
-    "saveFailedBody": "No se perdió nada — su foto y los datos siguen aquí. Intente Guardar otra vez.",
+    "saveFailedBody": "No se perdió nada: su foto y los datos siguen aquí. Intente Guardar otra vez.",
     "nothingTitle": "No hay nada que revisar ahora",
     "nothingBody": "Esta pantalla muestra lo que Carta leyó de una foto. Tome una foto de un aviso para verlo.",
     "saveHint": "Guarda este aviso y pone recordatorios",
@@ -131,7 +131,14 @@
     "urgentBody_one": "Queda {{count}} día para pedir una audiencia y mantener {{program}} mientras espera.",
     "urgentBody_other": "Quedan {{count}} días para pedir una audiencia y mantener {{program}} mientras espera.",
     "proofTitle": "Carta está lista",
-    "proofBody": "Este es el recordatorio que acaba de poner para {{program}}."
+    "proofBody": "Este es el recordatorio que acaba de poner para {{program}}.",
+    "doRecert": "Entregue el formulario para que sus beneficios continúen.",
+    "doInfoRequest": "Envíe los papeles que le pidieron.",
+    "doAppeal": "Pida una audiencia si no está de acuerdo.",
+    "doGeneric": "Revise la carta y actúe antes de la fecha.",
+    "sendList": "Envíe: {{items}}.",
+    "andMore_one": "Y 1 más.",
+    "andMore_other": "Y {{count}} más."
   },
   "common": {
     "cancel": "Cancelar",
@@ -152,11 +159,11 @@
     "letterDated": "La carta tiene fecha del {{date}}.",
     "mustDoWithDeadline": "Entregue lo que pide la carta en la fecha de abajo o antes, para continuar recibiendo beneficios. Si no puede, llame a su trabajador antes de esa fecha y dígale.",
     "mustDoNoDeadline": "Esta carta no le da una fecha para actuar. Léala con cuidado y llame a su trabajador si algo no está claro.",
-    "mustDoApproval": "Nada. Esta carta es buena noticia — no tiene que hacer nada.",
+    "mustDoApproval": "Nada. Esta carta es buena noticia, así que no tiene que hacer nada.",
     "deadlineIs": "{{date}}",
     "noDeadlineFound": "Carta no encontró una fecha en esta carta. Si usted ve una, abra el aviso y agréguela.",
     "keepBenefitsTitle": "Para mantener sus beneficios mientras apela",
-    "keepBenefitsBody": "Si pide una audiencia antes del {{date}}, sus beneficios pueden seguir igual hasta que se decida la audiencia. Confirme esto con su condado — Carta no es asesoría legal.",
+    "keepBenefitsBody": "Si pide una audiencia antes del {{date}}, sus beneficios pueden seguir igual hasta que se decida la audiencia. Confirme esto con su condado. Carta no es asesoría legal.",
     "takesEffect": "El cambio entra en vigor el {{date}}.",
     "appealBy": "Tiene hasta el {{date}} para pedir una audiencia.",
     "stateHearings": "Línea de audiencias del estado",
@@ -189,8 +196,8 @@
     "action": "Explicar esto en palabras sencillas",
     "loading": "Preparando…",
     "writing": "Escribiendo…",
-    "machineLabel": "Escrito por Carta en este teléfono, con las palabras de su foto. Puede estar mal — el original está abajo.",
-    "notDownloaded": "Carta puede reescribir esta carta en palabras sencillas, en este teléfono. Actívelo en Ajustes — es una descarga de una sola vez y necesita wifi.",
+    "machineLabel": "Escrito por Carta en este teléfono, con las palabras de su foto. Puede estar mal, por eso el original está abajo.",
+    "notDownloaded": "Carta puede reescribir esta carta en palabras sencillas, en este teléfono. Actívelo en Ajustes. Es una descarga de una sola vez y necesita wifi.",
     "withheldTitle": "Carta no mostró su explicación",
     "withheldBody": "Carta revisó lo que escribió y algo no coincidía con su carta, así que no lo muestra. Lea el original abajo.",
     "withheldReason": "Razón: {{reason}}",
@@ -277,7 +284,7 @@
   },
   "where": {
     "title": "A dónde ir",
-    "intro": "Esto funciona sin internet. Llame antes de viajar — los horarios cambian.",
+    "intro": "Esto funciona sin internet. Llame antes de viajar, porque los horarios cambian.",
     "callFirst": "Intente llamar primero",
     "callNumber": "Llamar al {{number}}",
     "accessibilityTitle": "Intérpretes y ayuda para llenar formularios",
@@ -307,7 +314,7 @@
     "notNow": "Ahora no",
     "stepOf": "Paso {{step}} de {{total}}",
     "whatTitle": "Carta recuerda su fecha límite",
-    "whatBody": "Tome una foto de una carta sobre sus beneficios. Carta lee la fecha y le avisa antes de que pase — para que no se pierda un formulario mientras usted está trabajando.",
+    "whatBody": "Tome una foto de una carta sobre sus beneficios. Carta lee la fecha y le avisa antes de que pase, para que no se pierda un formulario mientras usted está trabajando.",
     "privateTitle": "Nada sale de este teléfono",
     "privateBody": "Carta no tiene cuenta, ni servidor, ni forma de enviar su carta a ningún lado.",
     "privatePoint1": "Su carta se lee en este teléfono, no en internet.",
@@ -321,10 +328,10 @@
     "modelLater": "Puede activarlo después en Ajustes. No le falta nada sin esto.",
     "download": "Descargarlo (alrededor de 1 GB)",
     "downloadHint": "Empieza la descarga y lo lleva a Carta. Sigue en segundo plano.",
-    "alreadyHave": "Ya está descargado — empezar a usar Carta",
+    "alreadyHave": "Ya está descargado. Empezar a usar Carta",
     "modelSize": "Tamaño de la descarga: alrededor de {{size}}.",
     "downloadFailedTitle": "La descarga no terminó",
-    "downloadFailedBody": "Carta no tiene ningún problema — todo funciona sin esto. Puede intentarlo más tarde en Ajustes."
+    "downloadFailedBody": "Carta no tiene ningún problema: todo funciona sin esto. Puede intentarlo más tarde en Ajustes."
   },
   "settings": {
     "title": "Ajustes",
@@ -347,12 +354,6 @@
     "modelFailedBody": "Carta está bien: todo funciona sin esto. Revise el wifi e intente otra vez.",
     "reminderTitle": "Cuándo llegan los recordatorios",
     "reminderWhat": "Carta le recuerda antes de una fecha límite. Escoja la hora del día que le sirva.",
-    "hour": {
-      "8": "Temprano en la mañana (8:00)",
-      "9": "Mañana (9:00)",
-      "12": "Mediodía (12:00)",
-      "18": "Tarde (18:00)"
-    },
     "privacyTitle": "Qué guarda Carta, y dónde",
     "privacyStored": "Todo lo que Carta lee se queda en este teléfono. No hay cuenta ni servidor.",
     "privacyPhoto": "La foto de su carta se borra en cuanto Carta la ha leído.",
@@ -370,6 +371,7 @@
     "wipePartialBody": "Carta no pudo terminar: {{steps}}. Intente otra vez, y si sigue fallando puede borrar la aplicación, lo cual quita todo.",
     "diagnosticsTitle": "Diagnóstico",
     "diagnosticsToggle": "Mostrar detalles técnicos",
-    "diagnosticsWhat": "Información técnica sobre las últimas fotos, para resolver problemas. Desactivado de forma predeterminada. No contiene nada del texto de sus cartas."
+    "diagnosticsWhat": "Información técnica sobre las últimas fotos, para resolver problemas. Desactivado de forma predeterminada. No contiene nada del texto de sus cartas.",
+    "reminderAt": "Recordarme a las"
   }
 }

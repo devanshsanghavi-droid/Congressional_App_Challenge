@@ -62,6 +62,9 @@ export const SETTINGS = {
    * only failure this product cannot afford.
    */
   reminderHour: 'reminderHour',
+
+  /** Minutes past the hour reminders fire at, as a decimal string. */
+  reminderMinute: 'reminderMinute',
 } as const;
 
 export type SettingKey = (typeof SETTINGS)[keyof typeof SETTINGS];

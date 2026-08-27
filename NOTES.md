@@ -4892,3 +4892,71 @@ own claim inverts it. A regex with `\b` before `#` matches nothing. In every cas
 the machinery keeps running and reports the same green it reported when it was
 working.
 
+---
+
+## 2026-08-26 — The device session, and the thing only a phone could tell us
+
+Carta ran on a physical iPhone 16 Pro (iOS 26.6) for the first time. Five of six
+planned checks passed; the sixth was skipped as impractical.
+
+| | result |
+|---|---|
+| **A. Permission transition** | Warning appears when notifications are off, and **clears by itself** on return from iOS Settings without navigating. The `AppState` listener earned its place: `useFocusEffect` alone would not have fired, because coming back from Settings re-activates the app without Home ever losing focus. |
+| **B. Native camera** | Focus, tap-to-focus and pinch zoom all good on a close-up page. |
+| **C. Extraction** | Correct on a real photograph. |
+| **D. Library path** | Reaches Review through the same `runCapturePipeline`. No fork. |
+| **E. Reminder timing** | Set without error. The "off by default" text seen alongside it was the Diagnostics toggle's own description, confirmed by reading the string rather than assuming. |
+| **F. Live banner** | Skipped, impractical timing. A verified banner already exists from the cold-start run. |
+
+### What the phone found that nothing else had
+
+**The reminder notification carried none of the information the app already
+had.** It said:
+
+```
+CalFresh: 3 days left
+Open Carta to see what to send.
+```
+
+A notification about a notification. Which form, and what to put in the
+envelope, were one screen away in the app and the reminder pointed at them
+instead of carrying them.
+
+This is not a bug in any ordinary sense. Nothing threw, no test could have
+failed, every string was correct, the copy was reviewed and the i18n parity gate
+was green. It is a **product** defect, and it is only visible from the position
+of someone standing at a bus stop with a phone buzzing in their pocket. A
+reminder that costs an unlock, a launch and two taps before it says anything has
+failed at the one job this entire product exists to do.
+
+Fixed by composing the body from what the letter itself asked for: the action
+first (so the collapsed lock-screen line is useful on its own), then the
+documents. It reports and never prescribes — every document named came off the
+user's own letter with `origin: 'letter'`, so §16 holds.
+
+> **The gap between "the app is correct" and "the app is useful" is not visible
+> from inside the repository.** Every finding in this session that mattered came
+> from holding the phone: the camera that could not focus, the picker button
+> nobody could see, the navigation with no way back, the reminder that said
+> nothing. None of them would ever have failed a test, because each one was
+> working exactly as written.
+
+### Also changed, from the same session
+
+- **Time format** now follows the device. The reminder picker is the native iOS
+  control, so it honours Settings > General > Date & Time > 24-Hour Time and the
+  locale without the app hardcoding either form.
+- **A real time picker** replaced four preset hours. The presets were justified
+  on the grounds that every extra decision is a burden on a frightened user;
+  using the app disproved it. "Morning" and "evening" are not the shape of a real
+  day, and someone starting a shift at 6:45 needs 6:15.
+- **Every em dash removed** from user-facing English and Spanish, with
+  `tests/node/no-em-dash.test.ts` to stop them coming back. Thirteen English and
+  ten Spanish strings had drifted in. Replacements are per sentence, never a
+  hyphen, which would just be a worse dash.
+- **A third instance of the same layering mistake:** `reminder-content.ts`
+  reached into `db/` and dragged `expo-sqlite` into the bare-Node test project,
+  breaking suites unrelated to the change. Split into a pure composer and a
+  fetching half. The rule keeps proving itself: **a module the test project
+  imports must not touch a store.**
+
