@@ -16,7 +16,7 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppState, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AppState, Linking, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, EmptyState, ErrorState, Screen } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
@@ -117,22 +117,16 @@ export default function HomeScreen() {
         {/* Reachable before the first notice too: "where do I go" is a question
             someone has on day one, often before they have a letter to scan. */}
         <View style={styles.moreRow}>
-          <Pressable
+          <Button
+            title={t('where.title')}
+            variant="secondary"
             onPress={() => router.push('/where')}
-            accessibilityRole="button"
-            accessibilityLabel={t('where.title')}
-            style={styles.moreLink}
-          >
-            <Text style={styles.moreText}>{t('where.title')}</Text>
-          </Pressable>
-          <Pressable
+          />
+          <Button
+            title={t('settings.title')}
+            variant="secondary"
             onPress={() => router.push('/settings')}
-            accessibilityRole="button"
-            accessibilityLabel={t('settings.title')}
-            style={styles.moreLink}
-          >
-            <Text style={styles.moreText}>{t('settings.title')}</Text>
-          </Pressable>
+          />
         </View>
         <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
       </Screen>
@@ -184,34 +178,21 @@ export default function HomeScreen() {
       {/* Below-the-line screens (CLAUDE.md §10, priorities 7 and 8), placed
           last and styled quietly on purpose. Home is the countdown; these are
           two text links under it, and cutting either is deleting one line. */}
+      {/* Buttons, not text links. These were three accent-coloured words in a
+          row with a correct 44pt target and the visual weight of a footnote —
+          the person this was built for tapped Expo's dev-tools gear twice
+          looking for Settings, because Settings did not look like anything you
+          could press. The disclaimer now sits BELOW them: it is legally
+          required, but it was separating navigation from content and that is
+          part of why the row read as fine print. */}
       <View style={styles.moreRow}>
-        <Pressable
-          onPress={() => router.push('/vault')}
-          accessibilityRole="button"
-          accessibilityLabel={t('vault.title')}
-          style={styles.moreLink}
-        >
-          <Text style={styles.moreText}>{t('vault.title')}</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => router.push('/where')}
-          accessibilityRole="button"
-          accessibilityLabel={t('where.title')}
-          style={styles.moreLink}
-        >
-          <Text style={styles.moreText}>{t('where.title')}</Text>
-        </Pressable>
-        {/* Settings has to be reachable from Home and nowhere else would do:
-            four strings across onboarding and Notice Detail tell the user to
-            come here, and until 2026-08-25 there was no here to come to. */}
-        <Pressable
+        <Button title={t('vault.title')} variant="secondary" onPress={() => router.push('/vault')} />
+        <Button title={t('where.title')} variant="secondary" onPress={() => router.push('/where')} />
+        <Button
+          title={t('settings.title')}
+          variant="secondary"
           onPress={() => router.push('/settings')}
-          accessibilityRole="button"
-          accessibilityLabel={t('settings.title')}
-          style={styles.moreLink}
-        >
-          <Text style={styles.moreText}>{t('settings.title')}</Text>
-        </Pressable>
+        />
       </View>
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
     </Screen>
@@ -219,7 +200,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  moreRow: { flexDirection: 'row', gap: space.lg, paddingTop: space.sm },
+  moreRow: { gap: space.sm, paddingTop: space.sm },
   moreLink: { minHeight: touchTarget, justifyContent: 'center' },
   moreText: { ...type.bodyStrong, color: color.accent },
 

@@ -28,11 +28,9 @@
   },
   "capture": {
     "title": "Photograph the notice",
-    "instruction": "Lay the letter flat and fit the whole page in the frame.",
     "permissionTitle": "Carta needs the camera",
     "permissionBody": "Carta uses the camera to read your notice. Photos stay on this phone.",
     "permissionGrant": "Allow camera",
-    "shutter": "Take photo",
     "reading": "Reading the letter…",
     "retake": "Take it again",
     "usePhoto": "Use this photo",
@@ -47,7 +45,6 @@
     "failedTitle": "Carta could not read that",
     "copyTrace": "Copy details",
     "traceCopied": "Copied",
-    "pickInstead": "Choose a photo instead",
     "errorAcquire": "The camera did not return a photo. Try again.",
     "errorResize": "Carta could not open that photo. Try taking it again.",
     "errorOcr": "Carta could not read any writing. Try again with more light, and fit the whole page in the frame.",
@@ -56,7 +53,12 @@
     "errorSave": "Carta could not save this notice. Try again.",
     "errorSchedule": "Carta saved the notice but could not set reminders.",
     "readingBody": "Carta is finding the dates and the case number. This takes a few seconds.",
-    "previewAlt": "The photo you just took"
+    "previewAlt": "The photo you just took",
+    "takePhoto": "Take a photo",
+    "chooseLibrary": "Choose from library",
+    "chooseTitle": "Photograph the notice",
+    "chooseBody": "Use your camera to take a photo of the letter, or pick one you already have. Photos stay on this phone.",
+    "cancelToHome": "Cancel"
   },
   "review": {
     "title": "Check what Carta read",
@@ -104,7 +106,8 @@
     "saveHint": "Saves this notice and sets reminders",
     "datePlaceholder": "YYYY-MM-DD",
     "editValue": "{{label}}, currently {{value}}. Tap to change.",
-    "addValue": "{{label}}, not found. Tap to add."
+    "addValue": "{{label}}, not found. Tap to add.",
+    "discard": "Discard this photo"
   },
   "notice": {
     "daysLeft_one": "{{count}} day left",

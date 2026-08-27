@@ -28,11 +28,9 @@
   },
   "capture": {
     "title": "Tome una foto del aviso",
-    "instruction": "Ponga la carta plana y muestre toda la página.",
     "permissionTitle": "Carta necesita la cámara",
     "permissionBody": "Carta usa la cámara para leer su aviso. Las fotos se quedan en este teléfono.",
     "permissionGrant": "Permitir la cámara",
-    "shutter": "Tomar foto",
     "reading": "Leyendo la carta…",
     "retake": "Tomar otra foto",
     "usePhoto": "Usar esta foto",
@@ -47,7 +45,6 @@
     "failedTitle": "Carta no pudo leer eso",
     "copyTrace": "Copiar detalles",
     "traceCopied": "Copiado",
-    "pickInstead": "Escoger una foto",
     "errorAcquire": "La cámara no dio una foto. Intente otra vez.",
     "errorResize": "Carta no pudo abrir esa foto. Intente tomarla otra vez.",
     "errorOcr": "Carta no encontró ninguna letra. Intente otra vez con más luz y muestre toda la página.",
@@ -56,7 +53,12 @@
     "errorSave": "Carta no pudo guardar este aviso. Intente otra vez.",
     "errorSchedule": "Carta guardó el aviso pero no pudo poner recordatorios.",
     "readingBody": "Carta está buscando las fechas y el número de caso. Esto toma unos segundos.",
-    "previewAlt": "La foto que acaba de tomar"
+    "previewAlt": "La foto que acaba de tomar",
+    "takePhoto": "Tomar una foto",
+    "chooseLibrary": "Elegir de la galería",
+    "chooseTitle": "Fotografíe el aviso",
+    "chooseBody": "Use la cámara para tomar una foto de la carta, o escoja una que ya tenga. Las fotos se quedan en este teléfono.",
+    "cancelToHome": "Cancelar"
   },
   "review": {
     "title": "Revise lo que Carta leyó",
@@ -104,7 +106,8 @@
     "saveHint": "Guarda este aviso y pone recordatorios",
     "datePlaceholder": "AAAA-MM-DD",
     "editValue": "{{label}}, ahora dice {{value}}. Toque para cambiar.",
-    "addValue": "{{label}}, no se encontró. Toque para agregar."
+    "addValue": "{{label}}, no se encontró. Toque para agregar.",
+    "discard": "Descartar esta foto"
   },
   "notice": {
     "daysLeft_one": "Queda {{count}} día",

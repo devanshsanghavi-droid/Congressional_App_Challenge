@@ -79,6 +79,19 @@ export default function ReviewScreen() {
     }));
   }, []);
 
+  /** Abandon this capture: bin the temporary photo, clear the store, go Home. */
+  const discard = useCallback(() => {
+    if (pending) {
+      try {
+        discardCapture(pending.photoUri);
+      } catch {
+        // A cache file we could not delete is not worth blocking the exit.
+      }
+    }
+    clear();
+    router.replace('/');
+  }, [pending, clear, router]);
+
   const save = useCallback(async () => {
     if (!pending) return;
     setSaving(true);
@@ -215,6 +228,17 @@ export default function ReviewScreen() {
             busy={saving}
             onPress={() => void save()}
             accessibilityHint={t('review.saveHint')}
+          />
+          {/* The only other footer in the app that offered a single forward
+              action and no way out. Someone who photographs a letter and then
+              decides not to keep it should not have to save it to escape — and
+              the plaintext camera file is deleted on the way, rather than left
+              in the cache because the user changed their mind. */}
+          <Button
+            title={t('review.discard')}
+            variant="secondary"
+            disabled={saving}
+            onPress={discard}
           />
           <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
         </>

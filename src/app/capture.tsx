@@ -16,14 +16,12 @@
  */
 
 import { useRouter } from 'expo-router';
-import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as Clipboard from 'expo-clipboard';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 
-import { File, Paths } from 'expo-file-system';
 
 import { CaptureError, runCapturePipeline } from '@/lib/capture/pipeline';
 import type { CaptureOutcome } from '@/lib/capture/pipeline';
@@ -31,16 +29,14 @@ import { STAGE_HELP, formatTrace } from '@/lib/diagnostics/trace';
 import type { CaptureTrace } from '@/lib/diagnostics/trace';
 import { useCaptureStore } from '@/lib/store/capture';
 import { Body, Button, Card, ErrorState, Muted, Screen } from '@/components/ui';
-import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
+import { color, radius, space, type } from '@/lib/theme/tokens';
 
-type Phase = 'camera' | 'working' | 'done' | 'failed';
+type Phase = 'choose' | 'working' | 'done' | 'failed' | 'denied';
 
 export default function CaptureScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const camera = useRef<CameraView>(null);
-  const [permission, requestPermission] = useCameraPermissions();
-  const [phase, setPhase] = useState<Phase>('camera');
+  const [phase, setPhase] = useState<Phase>('choose');
   const [outcome, setOutcome] = useState<CaptureOutcome>();
   const [failure, setFailure] = useState<{ trace: CaptureTrace; message: string }>();
   const [copied, setCopied] = useState(false);
@@ -65,10 +61,38 @@ export default function CaptureScreen() {
     }
   }, [t]);
 
+  /**
+   * Apple's own camera, via `launchCameraAsync`.
+   *
+   * The custom `expo-camera` preview was replaced on 2026-08-26 after it was
+   * used on a real phone: it could not focus on a page unless you backed away
+   * from it, and it had no zoom. That gap is not tunable — `expo-camera`
+   * exposes no tap-to-focus API at all, so the single most important control
+   * for photographing a letter was unavailable at any price. It was also
+   * completely unconfigured: no autofocus prop, and `takePictureAsync()` called
+   * with no options, so every shot was default quality.
+   *
+   * The system camera brings continuous autofocus, tap-to-focus, pinch zoom,
+   * flash and exposure, and every user already knows how to drive it. The
+   * framing guide is the only thing lost, and a guide is worth less than focus.
+   *
+   * Still never to the camera roll (CLAUDE.md §3 rule 7): this returns a URI in
+   * the app's own cache and the pipeline copies from there.
+   */
   const takePhoto = useCallback(async () => {
-    // Never to the camera roll (CLAUDE.md §3 rule 7) — the sandbox URI only.
-    const shot = await camera.current?.takePictureAsync();
-    if (shot) await run(shot.uri, 'camera');
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permission.granted) {
+      setPhase('denied');
+      return;
+    }
+    const shot = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      // No editing UI, same reason as the library path: cropping the page is how
+      // someone accidentally cuts off the deadline.
+      allowsEditing: false,
+      quality: 1,
+    });
+    if (!shot.canceled && shot.assets[0]) await run(shot.assets[0].uri, 'camera');
   }, [run]);
 
   const pickPhoto = useCallback(async () => {
@@ -98,45 +122,23 @@ export default function CaptureScreen() {
     setCopied(true);
   }, []);
 
+  /**
+   * Out of the flow entirely, back to Home.
+   *
+   * Every footer on this screen has one. Before 2026-08-26 the result screen
+   * offered only "Use this photo" and "Take it again" — two ways forward and no
+   * way out — and a real user on a real phone could not get back, because the
+   * only escape was the system chevron in the top-left corner and the footer is
+   * where the thumb goes.
+   */
+  const cancel = useCallback(() => router.replace('/'), [router]);
+
   const reset = useCallback(() => {
     setOutcome(undefined);
     setFailure(undefined);
     setCopied(false);
-    setPhase('camera');
+    setPhase('choose');
   }, []);
-
-  /**
-   * DEV ONLY — run the pipeline on a staged file and go straight to Review.
-   *
-   * The Simulator cannot be tapped, so the only way to look at a *populated*
-   * Review screen is to drive Capture to it. Write a filename into
-   * `Documents/dev-autocapture.txt` and the file of that name in
-   * `Documents/selftest/` goes through the real pipeline and proceeds.
-   * Removed with the other dev affordances before freeze.
-   */
-  useEffect(() => {
-    if (!__DEV__) return;
-    const marker = new File(Paths.document, 'dev-autocapture.txt');
-    if (!marker.exists) return;
-    const name = marker.textSync().trim();
-    marker.delete();
-    const staged = new File(Paths.document, `selftest/${name}`);
-    if (!staged.exists) return;
-    const timer = setTimeout(() => void run(staged.uri, 'picker'), 0);
-    return () => clearTimeout(timer);
-  }, [run]);
-
-  // Auto-proceed once the dev run finishes, so Review is reachable without a tap.
-  useEffect(() => {
-    if (!__DEV__ || phase !== 'done' || !outcome || outcome.trace.source !== 'picker') return;
-    const marker = new File(Paths.document, 'dev-autoproceed.txt');
-    if (!marker.exists) return;
-    marker.delete();
-    const timer = setTimeout(proceed, 0);
-    return () => clearTimeout(timer);
-  }, [phase, outcome, proceed]);
-
-  if (!permission) return <View style={styles.cameraScreen} />;
 
   if (phase === 'working') {
     // OCR takes 1.7-2.8s on real captures, which is long enough that silence
@@ -155,7 +157,14 @@ export default function CaptureScreen() {
 
   if (phase === 'failed' && failure) {
     return (
-      <Screen footer={<Button title={t('capture.retake')} onPress={reset} />}>
+      <Screen
+        footer={
+          <>
+            <Button title={t('capture.retake')} onPress={reset} />
+            <Button title={t('capture.cancelToHome')} variant="secondary" onPress={cancel} />
+          </>
+        }
+      >
         <ErrorState title={t('capture.failedTitle')} body={failure.message} />
         {/* The trace carries no notice content — stage names, timings, counts —
             so offering it to copy is safe. Behind a button rather than on
@@ -183,6 +192,7 @@ export default function CaptureScreen() {
               />
             ) : null}
             <Button title={t('capture.retake')} variant="secondary" onPress={reset} />
+            <Button title={t('capture.cancelToHome')} variant="quiet" onPress={cancel} />
           </>
         }
       >
@@ -213,19 +223,15 @@ export default function CaptureScreen() {
     );
   }
 
-  if (!permission.granted) {
+  if (phase === 'denied') {
     return (
       <Screen
         footer={
           <>
-            <Button title={t('capture.permissionGrant')} onPress={() => void requestPermission()} />
-            {/* Declining is not a dead end — that is the whole point of a
-                second way in. */}
-            <Button
-              title={t('capture.pickInstead')}
-              variant="secondary"
-              onPress={() => void pickPhoto()}
-            />
+            {/* Declining the camera is not a dead end - that is the point of a
+                second way in, and it is a full-size button, not a text link. */}
+            <Button title={t('capture.chooseLibrary')} onPress={() => void pickPhoto()} />
+            <Button title={t('capture.cancelToHome')} variant="secondary" onPress={cancel} />
           </>
         }
       >
@@ -236,57 +242,28 @@ export default function CaptureScreen() {
   }
 
   return (
-    <View style={styles.cameraScreen}>
-      <View style={styles.cameraFrame}>
-        <CameraView ref={camera} style={StyleSheet.absoluteFill} facing="back" />
-      {/* A document guide, not a crop. Carta wants the whole sheet — the frame
-          is there to tell the user what to aim at, never to cut anything off.
-          It is decorative, so it is hidden from screen readers.
-
-          It lives INSIDE the camera view rather than over the whole screen.
-          As a sibling filling the screen its lower half sat behind the controls
-          panel and only the top two corners were ever visible — a document
-          guide with two corners does not read as a guide at all. */}
-      <View pointerEvents="none" style={styles.guide} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        <View style={styles.guideCornerTopLeft} />
-        <View style={styles.guideCornerTopRight} />
-        <View style={styles.guideCornerBottomLeft} />
-        <View style={styles.guideCornerBottomRight} />
-        </View>
-      </View>
-      <View style={styles.cameraControls}>
-        <Text style={styles.instruction}>{t('capture.instruction')}</Text>
-        {/* The shutter is centred by the row; the picker is placed OVER the row
-            rather than in it. The previous version put both in a
-            `space-between` row and gave the picker `minWidth: 120` — but
-            `minWidth` is a floor, not a cap, so the 16pt label expanded past it,
-            the row overflowed its 338pt, and the text ran under the shutter.
-            Taking the picker out of the layout flow means no label length can
-            move the shutter. */}
-        <View style={styles.shutterRow}>
-          <Pressable
-            onPress={() => void takePhoto()}
-            accessibilityRole="button"
-            accessibilityLabel={t('capture.shutter')}
-            style={({ pressed }) => [styles.shutter, pressed && styles.shutterPressed]}
-          >
-            <View style={styles.shutterInner} />
-          </Pressable>
-        </View>
-        <Pressable
-          onPress={() => void pickPhoto()}
-          accessibilityRole="button"
-          accessibilityLabel={t('capture.pickInstead')}
-          style={styles.pickButton}
-        >
-          <Text style={styles.pickButtonText} numberOfLines={2}>
-            {t('capture.pickInstead')}
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+    <Screen
+      footer={
+        <>
+          {/* Two equal buttons. The library path used to be a small text link
+              beside a 76pt shutter, which made it invisible in practice - the
+              person it was built for could not find it while using the app. */}
+          <Button title={t('capture.takePhoto')} onPress={() => void takePhoto()} />
+          <Button
+            title={t('capture.chooseLibrary')}
+            variant="secondary"
+            onPress={() => void pickPhoto()}
+          />
+          <Button title={t('capture.cancelToHome')} variant="quiet" onPress={cancel} />
+        </>
+      }
+    >
+      <Text style={styles.permissionTitle}>{t('capture.chooseTitle')}</Text>
+      <Body>{t('capture.chooseBody')}</Body>
+    </Screen>
   );
 }
+
 
 const styles = StyleSheet.create({
   centre: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.lg, padding: space.xl },
@@ -308,100 +285,16 @@ const styles = StyleSheet.create({
 
   permissionTitle: { ...type.title, color: color.text },
 
-  cameraScreen: { flex: 1, backgroundColor: '#000' },
   /** The preview, and the only thing the guide is allowed to overlay. */
-  cameraFrame: { flex: 1 },
 
   // A document-shaped guide with four corner brackets. Decorative and
   // non-interactive: it sits over the preview to say "fit the page in here",
   // and never crops.
-  guide: {
-    ...StyleSheet.absoluteFill,
-    margin: space.xl,
-  },
-  guideCornerTopLeft: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: 40,
-    height: 40,
-    borderTopWidth: 3,
-    borderLeftWidth: 3,
-    borderColor: 'rgba(255,255,255,0.75)',
-    borderTopLeftRadius: radius.md,
-  },
-  guideCornerTopRight: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 40,
-    height: 40,
-    borderTopWidth: 3,
-    borderRightWidth: 3,
-    borderColor: 'rgba(255,255,255,0.75)',
-    borderTopRightRadius: radius.md,
-  },
-  guideCornerBottomLeft: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: 40,
-    height: 40,
-    borderBottomWidth: 3,
-    borderLeftWidth: 3,
-    borderColor: 'rgba(255,255,255,0.75)',
-    borderBottomLeftRadius: radius.md,
-  },
-  guideCornerBottomRight: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 40,
-    height: 40,
-    borderBottomWidth: 3,
-    borderRightWidth: 3,
-    borderColor: 'rgba(255,255,255,0.75)',
-    borderBottomRightRadius: radius.md,
-  },
 
-  cameraControls: {
-    padding: space.lg,
-    paddingBottom: space.xl,
-    gap: space.sm,
-    backgroundColor: color.surface,
-  },
-  instruction: { ...type.body, color: color.textMuted, textAlign: 'center' },
 
-  shutterRow: { alignItems: 'center' },
-  shutter: {
-    width: 76,
-    height: 76,
-    borderRadius: 38,
-    borderWidth: 4,
-    borderColor: color.text,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  shutterPressed: { opacity: 0.7 },
-  shutterInner: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: color.text,
-  },
   /**
    * Absolutely positioned, left of the centred shutter, with a right edge that
    * stops clear of it: 402pt screen, 76pt shutter centred, so the shutter's left
    * edge is at 163. Ending at 150 leaves a 13pt gutter no label can cross.
    */
-  pickButton: {
-    position: 'absolute',
-    left: space.lg,
-    right: undefined,
-    bottom: space.xl,
-    maxWidth: 150 - space.lg,
-    minHeight: touchTarget,
-    justifyContent: 'center',
-  },
-  pickButtonText: { ...type.bodyStrong, color: color.accent },
 });

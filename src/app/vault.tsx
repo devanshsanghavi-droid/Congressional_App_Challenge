@@ -183,10 +183,13 @@ export default function VaultScreen() {
         );
       })}
 
+      {/* `replace`, not `push`. Pushing Home onto the stack put a second copy
+          above the first, so Home appeared with a back chevron and the stack
+          grew every time someone came through here. */}
       <Button
         title={t('vault.addFromNotice')}
         variant="secondary"
-        onPress={() => router.push('/')}
+        onPress={() => router.replace('/')}
       />
       <Caption>{t('vault.storedHere')}</Caption>
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
