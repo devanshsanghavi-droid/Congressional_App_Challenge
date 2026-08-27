@@ -222,8 +222,6 @@ describe('the privacy statement is the one from NOTES.md', () => {
       .replace(/\/\*[\s\S]*?\*\//g, ' ')
       .replace(/\/\/[^\n]*/g, ' ');
 
-  const settingsRaw = (): string =>
-    readFileSync(join(REPO, 'src', 'app', 'settings.tsx'), 'utf8');
 
   it('renders the exact sentence, not a comfortable rounding of it', () => {
     // Pins the string that actually RENDERS, not a copy of it in the TSX. There
