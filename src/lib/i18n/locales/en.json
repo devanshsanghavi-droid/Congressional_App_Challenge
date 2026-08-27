@@ -355,7 +355,7 @@
     "privacyPhoto": "The photo of your letter is deleted once Carta has read it.",
     "privacyNetwork": "The only thing Carta ever downloads is the optional file above. Nothing about your letter is ever sent anywhere.",
     "privacyExactTitle": "Exactly what is stored",
-    "privacyExact": "The text of the letter is encrypted with AES-256-GCM under a key that never leaves the device; the case number is never stored, only a salted hash and the last four digits; the deadline dates, the programme, and the recipient's name are stored in plaintext so the app can sort, display and correct them, and the photograph is a plain file inside the app sandbox.",
+    "privacyExact": "The text of the letter and the recipient's name are encrypted with AES-256-GCM under a key that never leaves the device; the case number is never stored, only a salted hash and the last four digits; the photograph is deleted once the text has been read, and kept encrypted under the same key if you turn that off; and the dates, the programme and the form type are stored in plaintext so the app can sort, display and correct them.",
     "wipeTitle": "Delete everything",
     "wipeWhat": "Removes every notice, every document, every reminder and the key that unlocks them. This cannot be undone.",
     "wipeAction": "Delete everything",

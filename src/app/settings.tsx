@@ -80,35 +80,20 @@ import * as Notifications from 'expo-notifications';
 const MODEL = MODELS['qwen2.5-1.5b-instruct-q4_k_m'];
 
 /**
- * The privacy statement, **verbatim from NOTES.md (2026-08-20)**.
+ * The privacy statement lives in `settings.privacyExact` (en/es) and **nowhere
+ * else**.
  *
- * That entry established that "the database is encrypted" is *false*: the model
- * is field-level, so the OCR text is AES-256-GCM ciphertext and the case number
- * is a salted hash plus last 4 — but the recipient name, the dates, the
- * programme and the photo file are plaintext. It then wrote "the honest
- * one-sentence version", and this is that sentence, unedited.
+ * It used to be duplicated here as a `PRIVACY_SENTENCE` constant as well, which
+ * is precisely how it drifted: the sentence claimed the recipient's name was
+ * stored in plaintext and the photograph was a plain file, and by 2026-08-26
+ * neither was true — migration v2 drops the `recipient_name` column and the name
+ * moved into the encrypted payload, and the photo is deleted by default and
+ * encrypted under the notice key when kept.
  *
- * CLAUDE.md §11: *"Never say 'the database is encrypted' — say what is actually
- * true, which is still strong because none of it leaves the phone."* Settings is
- * exactly where someone goes to check that claim, so it is the last place a
- * comfortable paraphrase belongs.
- *
- * **A reading-level exception, made deliberately.** CLAUDE.md §10 requires all
- * copy at ≤6th grade and this sentence is nowhere near it. So it does not carry
- * the section: three plain sentences above it say what matters — it stays on the
- * phone, the photo is deleted, nothing is ever sent — and this sits underneath
- * them under its own heading, for the reader who wants the precise claim. Plain
- * copy first, exact copy available, neither one softened into the other.
- *
- * `tests/app/settings-strings.test.ts` pins it against NOTES.md so a later edit
- * cannot quietly round it up to "everything is encrypted".
+ * Both drifts *understated* the app, which is why nothing looked wrong. A claim
+ * with two homes has no home. `tests/node/settings-strings.test.ts` pins the
+ * rendered string against NOTES.md so the two cannot separate again.
  */
-export const PRIVACY_SENTENCE =
-  'The text of the letter is encrypted with AES-256-GCM under a key that never ' +
-  'leaves the device; the case number is never stored, only a salted hash and ' +
-  "the last four digits; the deadline dates, the programme, and the recipient's " +
-  'name are stored in plaintext so the app can sort, display and correct them, ' +
-  'and the photograph is a plain file inside the app sandbox.';
 
 type Wipe = 'idle' | 'working' | 'partial';
 

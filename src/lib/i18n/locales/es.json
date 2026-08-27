@@ -355,7 +355,7 @@
     "privacyPhoto": "La foto de su carta se borra en cuanto Carta la ha leído.",
     "privacyNetwork": "Lo único que Carta descarga es el archivo opcional de arriba. Nada de su carta se envía a ningún lado.",
     "privacyExactTitle": "Exactamente qué se guarda",
-    "privacyExact": "El texto de la carta se cifra con AES-256-GCM con una clave que nunca sale del dispositivo; el número de caso nunca se guarda, solo un hash con sal y los últimos cuatro dígitos; las fechas límite, el programa y el nombre de la persona se guardan sin cifrar para que la aplicación pueda ordenarlos, mostrarlos y corregirlos, y la fotografía es un archivo simple dentro del área de la aplicación.",
+    "privacyExact": "El texto de la carta y el nombre de la persona se cifran con AES-256-GCM con una clave que nunca sale del dispositivo; el número de caso nunca se guarda, solo un hash con sal y los últimos cuatro dígitos; la fotografía se borra en cuanto se ha leído el texto, y se guarda cifrada con la misma clave si usted desactiva eso; y las fechas, el programa y el tipo de formulario se guardan sin cifrar para que la aplicación pueda ordenarlos, mostrarlos y corregirlos.",
     "wipeTitle": "Borrar todo",
     "wipeWhat": "Quita cada aviso, cada documento, cada recordatorio y la clave que los abre. Esto no se puede deshacer.",
     "wipeAction": "Borrar todo",

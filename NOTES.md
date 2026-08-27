@@ -1502,7 +1502,7 @@ disk in `carta.db`.
 | `agency` | **plaintext** | the issuing office |
 | `form_id` | **plaintext** | "SAR 7", "NA 960X SAR" |
 | `action_type` | **plaintext** | queried on; drives the countdown and the ladder |
-| **`recipient_name`** | **PLAINTEXT** | see below — this is the one to be clear about |
+| ~~**`recipient_name`**~~ | **COLUMN DROPPED (migration v2)** | superseded 2026-08-26: the name moved into the encrypted `ocr_ref` payload and the column is dropped. The prose below is kept as the record of the decision at the time. |
 | `notice_date` | **plaintext** | epoch millis |
 | `effective_date` | **plaintext** | epoch millis |
 | `deadline_date` | **plaintext** | epoch millis; **indexed**, Home orders by it |
@@ -1512,7 +1512,7 @@ disk in `carta.db`.
 | `case_last4` | **plaintext, truncated** | last 4 characters only |
 | `extraction_source` | plaintext | provenance label |
 | `contained_ssn` | plaintext | a 0/1 flag, not the SSN |
-| `image_ref` | plaintext **path** | app-sandbox URI. The path is plaintext; **the photo file itself is not encrypted** |
+| `image_ref` | plaintext **path** | app-sandbox URI. **Superseded 2026-08-26: the photo is deleted by default, and encrypted under the notice key when kept.** The path is still plaintext. |
 | `ocr_ref` | **AES-256-GCM ciphertext** | the recognised text of the letter |
 | `status`, `locale` | plaintext | |
 
@@ -1554,11 +1554,31 @@ case number, and it is not covered by our key.
 
 ### So the honest one-sentence version
 
-> The text of the letter is encrypted with AES-256-GCM under a key that never
+> **⚠️ SUPERSEDED 2026-08-26. The current sentence is below; this one is kept
+> because it is what the app renders in the video only if nobody re-checks it,
+> which is exactly what happened.**
+>
+> ~~The text of the letter is encrypted with AES-256-GCM under a key that never
 > leaves the device; the case number is never stored, only a salted hash and
 > the last four digits; the deadline dates, the programme, and the recipient's
 > name are stored in plaintext so the app can sort, display and correct them,
-> and the photograph is a plain file inside the app sandbox.
+> and the photograph is a plain file inside the app sandbox.~~
+
+**Current, as of 2026-08-26** — and this is the string `settings.privacyExact`
+renders and `PRIVACY_SENTENCE` pins:
+
+> The text of the letter and the recipient's name are encrypted with AES-256-GCM
+> under a key that never leaves the device; the case number is never stored, only
+> a salted hash and the last four digits; the photograph is deleted once the text
+> has been read, and kept encrypted under the same key if you turn that off; and
+> the dates, the programme and the form type are stored in plaintext so the app
+> can sort, display and correct them.
+
+**Both drifts understated the app**, which is the interesting part — the copy was
+*more* pessimistic than the code, so nothing looked wrong and no user was misled
+in the dangerous direction. It was still a claim nobody had re-checked, and a
+privacy statement that is not re-checked is a privacy statement you cannot
+defend on camera.
 
 That is a weaker claim than "everything is encrypted" and it is the true one.
 It is still meaningfully stronger than every alternative in this space, because

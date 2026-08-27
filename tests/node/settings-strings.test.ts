@@ -226,13 +226,24 @@ describe('the privacy statement is the one from NOTES.md', () => {
     readFileSync(join(REPO, 'src', 'app', 'settings.tsx'), 'utf8');
 
   it('renders the exact sentence, not a comfortable rounding of it', () => {
-    const source = settingsRaw();
+    // Pins the string that actually RENDERS, not a copy of it in the TSX. There
+    // used to be a `PRIVACY_SENTENCE` constant duplicating it; that duplication
+    // is how the sentence drifted from the code, so the constant is gone and
+    // this reads the i18n value the screen renders.
+    const source = strings('en').get('settings.privacyExact') ?? '';
+    // Updated 2026-08-26. The previous fragments pinned a sentence that had
+    // drifted: it said the recipient's name was plaintext (migration v2 drops
+    // that column and the name is in the encrypted payload) and that the
+    // photograph was a plain file (it is deleted by default, encrypted when
+    // kept). This test failing is what caught it, which is the whole point of
+    // pinning prose against the code that implements it.
     for (const fragment of [
       'encrypted with AES-256-GCM',
+      "the recipient's name are encrypted",
       'the case number is never stored',
       'only a salted hash and',
-      'are stored in plaintext',
-      'a plain file inside the app sandbox',
+      'the photograph is deleted once the text has been read',
+      'kept encrypted under the same key',
     ]) {
       expect(source).toContain(fragment);
     }
@@ -249,7 +260,7 @@ describe('the privacy statement is the one from NOTES.md', () => {
 
   it('still exists word for word in NOTES.md', () => {
     const notes = readFileSync(join(REPO, 'NOTES.md'), 'utf8');
-    expect(notes).toContain('The text of the letter is encrypted with AES-256-GCM');
-    expect(notes).toContain('the photograph is a plain file inside the app sandbox');
+    expect(notes).toContain("The text of the letter and the recipient's name are encrypted");
+    expect(notes).toContain('kept encrypted under the same key if you turn that off');
   });
 });
