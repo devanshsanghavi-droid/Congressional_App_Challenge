@@ -4837,3 +4837,58 @@ failure branch, so a *successful* capture surfaces nothing.
 > it, it is a log file being written to `/dev/null` at the cost of a function
 > call and a false sense of coverage.
 
+---
+
+## 2026-08-26 — The verification chain contained a check that could not fail
+
+The sharpest instance of this project's recurring theme, because it was not in
+the app. It was in the thing that checks the app.
+
+I pushed `79e21ab` with `tsc` failing. The gate I was using:
+
+```bash
+npm run typecheck 2>&1 | tail -2 && npm run lint 2>&1 | tail -2 && npm test
+```
+
+**A pipeline's exit status is the exit status of its *last* command.** `tail`
+succeeds at printing whatever it was given, including a compiler error, so
+`$?` was 0 and `&&` continued. The error was printed on my screen, in the output
+I had just read, and the chain ran on regardless.
+
+### Why this one is the sharpest
+
+Every other entry in this file is a check that could not fail *about the
+product*: a wipe that implied its table list, a validator pointed only at data
+that could not break it, a plugin that was never registered, instrumentation
+nobody read. This one is a check that could not fail **about the checks**.
+
+It is also the cheapest possible failure to avoid and the hardest to notice,
+because it looks *more* careful than the alternative. Piping to `tail` is
+something you do to keep output readable — a tidiness habit — and it silently
+converts a gate into a print statement. The command reads as rigour and behaves
+as decoration.
+
+And note what did *not* save me: the error was visible. I read the output. Being
+shown the failure was not enough, because the shape of the command told me it had
+already been handled.
+
+> **A gate you cannot see fail is not a gate.** Before trusting one, break the
+> thing it guards and confirm it goes red. If that is inconvenient, the gate is
+> probably not wired up.
+
+### The fix, and the general form
+
+```bash
+npm run typecheck > /tmp/tc.log 2>&1; echo "typecheck=$?"
+```
+
+Redirect to a file and test the status, or `set -o pipefail`. Both are one
+token longer than the broken version.
+
+The general rule, which now covers five instances in this file: **whenever a
+result is passed through something, ask what the something does to failure.** A
+pipe drops it. A `catch` that logs swallows it. A boolean derived from a caller's
+own claim inverts it. A regex with `\b` before `#` matches nothing. In every case
+the machinery keeps running and reports the same green it reported when it was
+working.
+
