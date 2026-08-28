@@ -137,6 +137,17 @@ export default function NoticeDetailScreen() {
   const action = t(`review.actions.${notice.actionType}`, { defaultValue: notice.actionType });
   const locale = i18n.language;
 
+  /**
+   * The language the explanation answers in.
+   *
+   * The letter's own, except for a bilingual page, which is both — there the
+   * app's language is the only sensible answer. Told to the model rather than
+   * inferred by it: measured 2026-08-28, a 1.5B model obeyed every structural
+   * instruction and ignored "reply in the same language as the letter".
+   */
+  const explanationLanguage =
+    notice?.locale === undefined || notice.locale === 'bilingual' ? locale : notice.locale;
+
   return (
     <Screen>
       {/* Deadline and action first. Prose comes after. */}
@@ -235,6 +246,7 @@ export default function NoticeDetailScreen() {
             office={notice.agency ?? t('detail.yourOffice')}
             actionType={notice.actionType}
             noticeText={originalText}
+            language={explanationLanguage}
             {...(notice.deadlineDate === undefined
               ? {}
               : { deadline: longDate(notice.deadlineDate, locale) })}

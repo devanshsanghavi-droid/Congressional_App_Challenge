@@ -203,7 +203,11 @@
     "withheldReason": "Reason: {{reason}}",
     "failedTitle": "Carta could not write an explanation",
     "failedBody": "Nothing is wrong with your notice. You can read the original below.",
-    "goToSettings": "Open Settings"
+    "goToSettings": "Open Settings",
+    "approvalSays": "This letter is good news. Your benefits have been approved.",
+    "approvalDo": "Nothing right now. Keep this letter, and watch for the renewal form before your certification period ends.",
+    "approvalAppeal": "If you disagree with the amount, you can ask for a state hearing. The letter says how long you have.",
+    "approvalWritten": "Written by the Carta team, not generated. The dates and amounts above come from your letter."
   },
   "worthChecking": {
     "title": "Worth checking",

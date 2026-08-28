@@ -1,0 +1,19 @@
+{
+  "startedAt": "2026-08-28T18:27:45.228Z",
+  "results": [
+    {
+      "id": "01",
+      "language": "en",
+      "predictedTokens": 142,
+      "tokensPerSecond": 41.2003340128487,
+      "text": "SAYS: This letter is telling Maria Reyes that she needs to complete, sign, and return a form by September 5, 2026. If she doesn't, her benefits might be delayed, reduced, or stopped. She needs to attach copies of paycheck stubs, current rent receipt or lease agreement, and most recent utility bill.\nDO: She should complete, sign, and return the form by September 5, 2026. If she can't return the form by that date, she should contact her worker before that date.\nAPPEAL: If Maria Reyes disagrees with the decision, she should contact her worker before September 5, 2026."
+    },
+    {
+      "id": "06",
+      "language": "es",
+      "predictedTokens": 119,
+      "tokensPerSecond": 33.05937575008667,
+      "text": "SAYS: This letter is telling them that they need to fill out and send back a form by September 5, 2026. If they don't, their benefits might be delayed, reduced, or suspended. If they can't send the form on time, they should contact their worker before that date.\nDO: They need to fill out the form and send it back by the September 5, 2026 deadline.\nAPPEAL: If they disagree with the decision, they should contact their worker before the September 5, 2026 deadline."
+    }
+  ]
+}

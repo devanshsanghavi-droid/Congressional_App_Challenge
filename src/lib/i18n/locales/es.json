@@ -203,7 +203,11 @@
     "withheldReason": "Razón: {{reason}}",
     "failedTitle": "Carta no pudo escribir una explicación",
     "failedBody": "Su aviso está bien. Puede leer el original abajo.",
-    "goToSettings": "Abrir Ajustes"
+    "goToSettings": "Abrir Ajustes",
+    "approvalSays": "Esta carta es buena noticia. Sus beneficios fueron aprobados.",
+    "approvalDo": "Nada por ahora. Guarde esta carta y esté pendiente del formulario de renovación antes de que termine su período de certificación.",
+    "approvalAppeal": "Si no está de acuerdo con la cantidad, puede pedir una audiencia estatal. La carta dice cuánto tiempo tiene.",
+    "approvalWritten": "Escrito por el equipo de Carta, no generado. Las fechas y cantidades de arriba vienen de su carta."
   },
   "worthChecking": {
     "title": "Vale la pena revisar",

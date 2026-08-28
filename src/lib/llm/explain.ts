@@ -49,6 +49,8 @@ export interface ExplainRequest {
    */
   readonly deadline?: string;
   readonly hearingBy?: string;
+  /** Language to answer in. Told to the model rather than inferred by it. */
+  readonly language?: string;
   /**
    * **Every** date the user confirmed on Review, rendered as the screen shows
    * it — notice date, effective date, appeal deadline, all of them, not just
@@ -97,6 +99,7 @@ export async function explain(
       actionType: request.actionType,
       ...(request.deadline === undefined ? {} : { deadline: request.deadline }),
       ...(request.hearingBy === undefined ? {} : { hearingBy: request.hearingBy }),
+      ...(request.language === undefined ? {} : { language: request.language }),
       noticeText: request.noticeText,
     });
 

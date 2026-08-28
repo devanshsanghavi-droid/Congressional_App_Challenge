@@ -46,6 +46,40 @@ export function Explanation(props: Omit<ExplainRequest, 'spec'>) {
     void explain({ ...props, spec: SPEC }, setStatus);
   }, [props]);
 
+  /**
+   * An approval is explained in writing, not by the model.
+   *
+   * Three reasons, in order of weight:
+   *
+   * 1. **The sanity pass withholds it anyway.** Measured on the phone
+   *    2026-08-28: on the corpus approval the model wrote "starting on
+   *    August 15, 2026" — correct, printed on the page, and rejected, because
+   *    every date is traced to the *confirmed* set and an approval has no
+   *    confirmed dates to trace to. So the generated path renders nothing.
+   * 2. **The alternative weakens the guard.** Allowing dates that merely appear
+   *    in the OCR text would make "traceable to the page" the standard instead
+   *    of "confirmed by the user", and the OCR text is a machine reading of a
+   *    photograph — the thing the confirmation step exists to check. It would
+   *    trade a real safety property for one screen.
+   * 3. **There is nothing to generate.** An approval says: you are approved,
+   *    here is the amount, here is when it starts, here is your hearing right.
+   *    Carta already has all four as confirmed fields and Notice Detail already
+   *    renders them. A language model adds a paraphrase and a risk.
+   *
+   * This is not a stub. It is the same information, written once, correctly, by
+   * a person — and it needs no download.
+   */
+  if (props.actionType === 'approval') {
+    return (
+      <View style={styles.offer}>
+        <Body>{t('explain.approvalSays')}</Body>
+        <Body>{t('explain.approvalDo')}</Body>
+        <Body>{t('explain.approvalAppeal')}</Body>
+        <Caption>{t('explain.approvalWritten')}</Caption>
+      </View>
+    );
+  }
+
   // Not downloaded is not an error. It is the ordinary state for most users and
   // the app is complete without it, so it says what the feature is and offers
   // it — it does not apologise.

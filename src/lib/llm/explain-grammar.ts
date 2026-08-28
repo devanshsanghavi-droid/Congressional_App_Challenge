@@ -218,6 +218,20 @@ export function buildExplanationTurns(facts: {
   deadline?: string;
   hearingBy?: string;
   noticeText: string;
+  /**
+   * The language to answer in, as a BCP-47-ish prefix: `'es'` or `'en'`.
+   *
+   * **Told, never inferred.** Measured on the phone 2026-08-28: the system turn
+   * said "Reply in the same language as the letter" and the model answered a
+   * Spanish notice in fluent English. It obeyed every structural instruction in
+   * the same breath — three sections, right order, right content — and ignored
+   * the one that required it to first work out what language the letter was in.
+   *
+   * The caller knows. `Notice.locale` is stored at save time, and for a
+   * bilingual page the app's own language is the right answer rather than the
+   * letter's, because such a page is both.
+   */
+  language?: string;
 }): ChatTurn[] {
   const dates: string[] = [];
   if (facts.deadline !== undefined) dates.push(`The date they must act by is ${facts.deadline}.`);
@@ -245,7 +259,9 @@ export function buildExplanationTurns(facts: {
       ? ['- This letter gives no date to act by. Do not invent one.']
       : dates.map((line) => `- ${line}`)),
     '',
-    'Reply in the same language as the letter.',
+    // Named, not inferred, and placed last so it is the most recent instruction
+    // before the letter arrives.
+    facts.language?.startsWith('es') === true ? 'Reply in Spanish.' : 'Reply in English.',
   ].join('\n');
 
   const user = [
