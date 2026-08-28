@@ -4960,3 +4960,92 @@ user's own letter with `origin: 'letter'`, so §16 holds.
   fetching half. The rule keeps proving itself: **a module the test project
   imports must not touch a store.**
 
+---
+
+## 2026-08-28 — The model runs on the phone, and it is fast. The week 1 gate is closed.
+
+`initLlama` executed for the first time in this project's history, on the iPhone
+16 Pro. Raw output in `docs/llm-device-probe.json`.
+
+| | measured | predicted | verdict |
+|---|---|---|---|
+| model load | **9.1 s** | — | one-off, on first explanation |
+| prompt | **575 tokens** | 550–620 | as predicted |
+| prefill | **1311 ms → 439 tok/s** | — | Metal, unmistakably |
+| time to first token | **1334 ms** | 1–2 s | **ship**, gate 1 |
+| generation | **37.0 tok/s** | 20–40 | **stop optimising**, gate 2 |
+| total | **2.7 s** | 10–15 s | far better |
+
+Against the decision tree agreed months ago: gate 1 is *"<3 s ship"*, gate 2 is
+*"≥6 tok/s outruns the real reader"*. Both cleared with room. The lever ladder —
+prompt caching, region selection, shorter output, 0.5B — **is not needed and
+should not be built.**
+
+**Neither failure hypothesis was right.** Time to first token was 1.3 s, not the
+10 s+ that would mean CPU, and 439 tok/s prefill is not a number a CPU produces.
+Generation was 37 tok/s, not the sub-5 that would mean wrong quantization or
+throttling.
+
+### The entitlement was not needed
+
+This is a **Build A** binary: `extended-virtual-addressing` is stripped, and so
+is `increased-memory-limit`. A 1.04 GB Q4_K_M model loaded and ran anyway.
+
+That contradicts the assumption recorded on 2026-08-20 and repeated since — that
+the entitlement was required for a ~1 GB GGUF and that the paid account was
+blocking the benchmark. **Build B is unnecessary and should not be built.** The
+entitlement is presumably a margin for larger models or longer contexts, not a
+floor for this one.
+
+Worth being precise about what this does and does not prove: it ran once, at
+`n_ctx: 4096`, on a 16 Pro with 8 GB of RAM. It says nothing about an older
+phone with less memory, and the model stays an optional download for that reason.
+
+### But the output is wrong, and that is the real finding
+
+```
+SAYS: What the letter is telling them.
+DO: What they have to do. If nothing, say so.
+APPEAL: How to disagree with the decision. RULES: Only use dates and amounts
+that appear in the letter below. Do not calculate a date.
+```
+
+**The model echoed the prompt's own instruction template back**, verbatim,
+including the word `RULES:`. It never looked at the letter. 55 tokens, clean EOS,
+grammar satisfied — because `EXPLANATION_GRAMMAR` constrains the *shape* and this
+has exactly the right shape. Three labelled sections in order. Perfect, and
+empty.
+
+This is the GBNF lesson arriving from a third direction. A grammar with no null
+production fabricated dates; a digit ban made the model write numbers as words;
+now a grammar that specifies structure is satisfied by a copy of the structure's
+own description. **The grammar cannot tell instruction from content**, and it was
+never going to.
+
+The likely cause is prompt construction rather than the model: `buildExplanationPrompt`
+puts the section descriptions and the rules in the same undifferentiated block as
+the letter, ending with a bare `EXPLANATION:`. A 1.5B instruct model handed that
+continues the most recent pattern it can see, which is the template. It needs the
+chat template — a system turn for the instructions and a user turn for the letter
+— rather than one flat string.
+
+**That is a real bug in a shipping path and it is not fixed here.** The
+performance question was the one being asked; this is the answer to a question
+nobody had asked yet, and it is the more important of the two. The explanation
+feature does not work on device today.
+
+> **A fast wrong answer is still wrong.** Every number above says the feature is
+> viable. The one field nobody would have looked at — the generated text — says
+> it does not currently work. Measuring the thing you set out to measure is not
+> the same as looking at what came back.
+
+### Method note
+
+The `carta://` deep link does not work on a physical device: the Expo dev client
+claims the scheme and swallows the URL, so `carta:///llmprobe` silently did
+nothing twice while the app sat on Home. It works in the Simulator, which is
+where every previous use of it was. The probe had to be driven from the root
+layout instead. **`xcrun devicectl device info files` and `copy from` do work**,
+and reading the container is how the model download and the result were both
+confirmed.
+

@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-08-28T17:50:48.909Z",
+  "device": {
+    "entitlement": "build-a-no-extended-virtual-addressing"
+  },
+  "download": {
+    "alreadyPresent": true,
+    "bytes": 1117320736
+  },
+  "load": {
+    "ok": true,
+    "seconds": 9.092
+  },
+  "completion": {
+    "promptTokens": 575,
+    "predictedTokens": 55,
+    "timeToFirstTokenMs": 1334,
+    "promptMs": 1310.711,
+    "promptPerSecond": 438.69319781401083,
+    "predictedMs": 1487.775,
+    "tokensPerSecond": 36.96795550402447,
+    "totalMs": 2696,
+    "stoppedEos": true,
+    "truncated": false,
+    "text": "SAYS: What the letter is telling them.\nDO: What they have to do. If nothing, say so.\nAPPEAL: How to disagree with the decision. RULES: Only use dates and amounts that appear in the letter below. Do not calculate a date."
+  }
+}
