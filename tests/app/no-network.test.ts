@@ -50,7 +50,7 @@ import { countdownDate, countdownTier, isUrgent, remindersFor } from '../../src/
 import type { ActionType } from '../../src/lib/urgency';
 import { parseCrossReferences, parseDocTypes, parseOffices } from '../../src/lib/content/parse';
 import { checkExplanation, parseSections } from '../../src/lib/llm/explain-check';
-import { buildExplanationPrompt } from '../../src/lib/llm/explain-grammar';
+import { buildExplanationTurns } from '../../src/lib/llm/explain-grammar';
 import { progressOf } from '../../src/lib/checklist';
 
 const REPO_ROOT = join(__dirname, '..', '..');
@@ -231,14 +231,14 @@ describe('the notice-data path over the whole corpus', () => {
     // The model is local. Building the prompt and running the sanity pass must
     // not reach for a hosted endpoint (CLAUDE.md §3 rule 2).
     for (const record of records.slice(0, 10)) {
-      const prompt = buildExplanationPrompt({
+      const turns = buildExplanationTurns({
         program: 'CalFresh',
         office: 'Santa Clara County',
         actionType: 'recert_due',
         deadline: 'Saturday, September 5, 2026',
         noticeText: record.lines.map((l) => l.text).join('\n'),
       });
-      expect(prompt.length).toBeGreaterThan(0);
+      expect(turns.length).toBeGreaterThan(0);
     }
     parseSections('SAYS: a.\nDO: b.\nAPPEAL: c.');
     checkExplanation('Send it by September 5, 2026.', ['Saturday, September 5, 2026']);

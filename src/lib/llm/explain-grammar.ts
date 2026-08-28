@@ -166,3 +166,96 @@ export function buildExplanationPrompt(facts: {
     'EXPLANATION:',
   ].join('\n');
 }
+
+/** One turn of a chat, in the shape `llama.rn` expects. */
+export interface ChatTurn {
+  readonly role: 'system' | 'user' | 'assistant';
+  readonly content: string;
+}
+
+/**
+ * The explanation prompt as **chat turns**, which is what the model was trained on.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THIS REPLACED THE FLAT STRING
+ * ---------------------------------------------------------------------------
+ * Measured on the phone, 2026-08-28. `buildExplanationPrompt` produced one
+ * undifferentiated block — role, section descriptions, rules, then the letter,
+ * then a bare `EXPLANATION:` — and the model **echoed the instruction template
+ * back verbatim**, `RULES:` included, without ever reading the letter:
+ *
+ *     SAYS: What the letter is telling them.
+ *     DO: What they have to do. If nothing, say so.
+ *     APPEAL: How to disagree with the decision. RULES: Only use dates...
+ *
+ * That is not a capability failure. Qwen2.5-Instruct is trained on ChatML, and
+ * handed a flat block it does what a base model does: continues the most recent
+ * pattern it can see. The most recent pattern was a list of labelled sections,
+ * so it produced more labelled sections. It was completing, not answering.
+ *
+ * Split into turns, each carrying one job:
+ *
+ *   - **system** — who it is, the three sections, the rules. Instructions the
+ *     model must follow but must never reproduce.
+ *   - **user** — the letter, and nothing else. Content to be acted on.
+ *   - **assistant** — opened empty by `add_generation_prompt`, so generation
+ *     begins where an answer belongs rather than after a colon.
+ *
+ * The separation is the fix. In a flat string "explain this letter" and the
+ * letter are the same kind of text and the model cannot tell them apart; the
+ * chat template marks them with the special tokens the model was trained to
+ * read, and instruction stops looking like content.
+ *
+ * **`llama.rn` applies the template itself** from the GGUF metadata — the
+ * `messages` parameter with `add_generation_prompt` — so nothing here
+ * hand-rolls `<|im_start|>`. Hard-coding those tokens would mean this file
+ * silently produced the wrong format the day the model changed.
+ */
+export function buildExplanationTurns(facts: {
+  program: string;
+  office: string;
+  actionType: string;
+  deadline?: string;
+  hearingBy?: string;
+  noticeText: string;
+}): ChatTurn[] {
+  const dates: string[] = [];
+  if (facts.deadline !== undefined) dates.push(`The date they must act by is ${facts.deadline}.`);
+  if (facts.hearingBy !== undefined) {
+    dates.push(`To keep benefits during an appeal they must ask by ${facts.hearingBy}.`);
+  }
+
+  const system = [
+    'You explain government benefits letters to someone who is worried and busy.',
+    'Write at a sixth-grade reading level. Short sentences. No jargon.',
+    '',
+    'Answer with exactly three sections, in this order, each on its own line:',
+    'SAYS: what this letter is telling them.',
+    'DO: what they have to do. If nothing, say so.',
+    'APPEAL: how to disagree with the decision.',
+    '',
+    'Rules:',
+    '- Only use dates and amounts that appear in the letter. Do not calculate a date.',
+    '- Never say the reader is not eligible, or does not qualify. You cannot know that.',
+    '- Only say things the letter says. Do not add advice it does not contain.',
+    // Written as an instruction about the answer rather than a heading, because
+    // a heading is the shape the model copied last time.
+    '- Write about this specific letter. Never repeat these instructions back.',
+    ...(dates.length === 0
+      ? ['- This letter gives no date to act by. Do not invent one.']
+      : dates.map((line) => `- ${line}`)),
+    '',
+    'Reply in the same language as the letter.',
+  ].join('\n');
+
+  const user = [
+    `This is a ${facts.actionType.replace(/_/g, ' ')} about ${facts.program}, from ${facts.office}.`,
+    '',
+    facts.noticeText.slice(0, 3000),
+  ].join('\n');
+
+  return [
+    { role: 'system', content: system },
+    { role: 'user', content: user },
+  ];
+}

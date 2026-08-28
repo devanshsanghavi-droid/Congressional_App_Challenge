@@ -5049,3 +5049,83 @@ layout instead. **`xcrun devicectl device info files` and `copy from` do work**,
 and reading the container is how the model download and the result were both
 confirmed.
 
+---
+
+## 2026-08-28 (later) — The chat template fixes it, and the third GBNF lesson
+
+`buildExplanationTurns` replaces the flat prompt. `llama.rn` takes a `messages`
+array with `add_generation_prompt: true` and applies the chat template from the
+GGUF's own metadata, so **nothing here hand-rolls `<|im_start|>`** — hard-coding
+those tokens would silently produce the wrong format the day the model changed.
+
+Three turns, each carrying one job: **system** for the role, the sections and the
+rules; **user** for the letter and nothing else; **assistant** opened empty for
+the model to complete into.
+
+That separation is the whole fix. In a flat string, "explain this letter" and the
+letter itself are the same kind of text and the model cannot tell them apart. The
+chat template marks them with the tokens the model was trained to read, and
+instruction stops looking like content.
+
+### Four notices, real output
+
+Raw in `docs/llm-device-probe-2.json`. Every one produced a genuine explanation
+of its own letter, named the right person, and echoed nothing.
+
+| notice | prompt | out | tok/s | TTFT | verdict |
+|---|---|---|---|---|---|
+| 01 SAR 7 | 598 | 150 | 40.3 | 1101 ms | deadline **and** the consequence of missing it |
+| 02 discontinuance | 509 | 195 | 36.1 | 906 ms | stop date **and** the Sept 18 hearing window |
+| 06 Spanish | 493 | 78 | 28.8 | 962 ms | correct content, **wrong language** |
+| 10 approval | 350 | 115 | 34.7 | 700 ms | no invented deadline; **withheld anyway** |
+
+Notice 02 is the one worth reading twice. It found the stop date *and* the
+aid-paid-pending window, kept them apart, and attached each to the right
+consequence — which is the distinction this project has spent the most care on.
+
+### Two real defects, and one of them is the guard working
+
+**Notice 06 answered in English about a Spanish letter.** The system turn says
+"Reply in the same language as the letter" and a 1.5B model did not obey it. The
+content is right; the language is not, and for the user this app is built for
+that makes it useless. The likely fix is to stop asking the model to infer and
+instead state the language directly in the system turn, from the notice's own
+`locale` field, which Carta already stores. **Not fixed here.**
+
+**Notice 10 was withheld by the sanity pass, and correctly.** The model wrote
+*"within 90 days of the date of this notice"* — which is on the page, but "90
+days" reads as a date reference and the check traces every date back to the
+confirmed set. The approval has no confirmed dates, so it fails closed.
+
+This is the behaviour that was designed for: **the model did not fabricate, and
+the guard withheld anyway.** Failing closed on an approval is the right direction
+to fail. It also means the explanation feature will show nothing on approval
+notices, which is a product decision to make deliberately rather than discover.
+
+### The third GBNF lesson
+
+```
+no null production   ->  fabricated the missing value
+digit ban            ->  wrote numbers as words, and looped
+structural grammar   ->  satisfied by an echo of the template itself
+```
+
+The first probe returned three labelled sections in the right order, clean EOS,
+grammar satisfied — and it was a copy of the instructions. **A grammar constrains
+shape. Shape is not meaning, and every failure so far has been correctly
+shaped.**
+
+The grammar is kept. It does its actual job well: the sections always exist, in
+order, so the screen never has an empty heading. What it cannot do is notice that
+the words inside them are the wrong words, and nothing structural ever will.
+That is why `explain-check.ts` runs on the finished text, and why it caught
+notice 10 today.
+
+### Method note
+
+`devicectl device info files` takes `--username`; `devicectl device copy from`
+takes `--user`. Passing the wrong one fails the *command*, and my polling loop
+counted that as "file not found" — so a run that had finished in 20 seconds
+looked like a three-minute hang. Check the exit status of the probe, not just its
+output. Same shape as the tail-pipe bug, three days apart.
+

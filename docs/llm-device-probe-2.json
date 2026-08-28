@@ -1,0 +1,54 @@
+{
+  "startedAt": "2026-08-28T18:14:48.491Z",
+  "promptFormat": "chat-turns-via-llama.rn-messages",
+  "results": [
+    {
+      "id": "01",
+      "label": "SAR 7 recertification",
+      "expect": "a deadline and the documents to send",
+      "promptTokens": 598,
+      "predictedTokens": 150,
+      "timeToFirstTokenMs": 1101,
+      "tokensPerSecond": 40.34497644525791,
+      "totalMs": 4645,
+      "stoppedEos": true,
+      "text": "SAYS: This letter is telling Maria Reyes about her CalFresh/CalWORKs benefits. It's asking her to fill out and send back a form by September 5, 2026. If she doesn't send it by that date, her benefits might be delayed, reduced, or stopped.\nDO: Maria Reyes needs to fill out the form, sign it, and send it back by September 5, 2026. If she can't send it by that date, she should contact her worker before then.\nAPPEAL: If Maria Reyes is not happy with the decision, she can ask for a review. She should do this by contacting her worker before September 5, 2026."
+    },
+    {
+      "id": "02",
+      "label": "NA 960X discontinuance",
+      "expect": "the appeal and the aid-paid-pending window",
+      "promptTokens": 509,
+      "predictedTokens": 195,
+      "timeToFirstTokenMs": 906,
+      "tokensPerSecond": 36.14981149263684,
+      "totalMs": 5440,
+      "stoppedEos": true,
+      "text": "SAYS: This letter is telling Maria Reyes that her CalFresh benefits will stop on September 30, 2026. Maria Reyes needs to return the Semi-Annual Eligibility Status Report (SAR 7) with all required proof before September 30, 2026, to keep her benefits without a new application. If Maria Reyes thinks this action is wrong, she can ask for a state hearing before September 18, 2026.\nDO: Maria Reyes needs to return the SAR 7 with all required proof before September 30, 2026, to keep her benefits without a new application. If she thinks this action is wrong, she can ask for a state hearing before September 18, 2026.\nAPPEAL: If Maria Reyes thinks this action is wrong, she can ask for a state hearing before September 18, 2026."
+    },
+    {
+      "id": "06",
+      "label": "SAR 7 Spanish",
+      "expect": "Spanish output",
+      "promptTokens": 493,
+      "predictedTokens": 78,
+      "timeToFirstTokenMs": 962,
+      "tokensPerSecond": 28.76254673913845,
+      "totalMs": 2762,
+      "stoppedEos": true,
+      "text": "SAYS: This letter is telling them that they need to fill out a form about their income and send it back by September 5, 2026.\nDO: They have to fill out the form, sign it, and send it back by the date mentioned.\nAPPEAL: If they don't send the form back by the date, they can ask for a review."
+    },
+    {
+      "id": "10",
+      "label": "NA 960 approval",
+      "expect": "NO invented deadline",
+      "promptTokens": 350,
+      "predictedTokens": 115,
+      "timeToFirstTokenMs": 700,
+      "tokensPerSecond": 34.69746675303821,
+      "totalMs": 3358,
+      "stoppedEos": true,
+      "text": "SAYS: This letter is telling Samuel Bright that his CalFresh application has been approved. He will receive $412 per month, starting on August 15, 2026. He must report any changes in household income within 10 days or face a loss of benefits.\nDO: Samuel Bright should keep his benefits and report any changes in household income within 10 days.\nAPPEAL: If Samuel Bright is unhappy with the benefit amount, he can ask for a state hearing within 90 days of the date of this notice."
+    }
+  ]
+}

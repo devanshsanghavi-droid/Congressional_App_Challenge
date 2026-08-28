@@ -21,7 +21,7 @@ import { initLlama, releaseAllLlama } from 'llama.rn';
 import type { LlamaContext } from 'llama.rn';
 
 import { modelFile, type ModelSpec } from './model.ts';
-import { EXPLANATION_GRAMMAR, buildExplanationPrompt } from './explain-grammar.ts';
+import { EXPLANATION_GRAMMAR, buildExplanationTurns } from './explain-grammar.ts';
 import { checkExplanation, parseSections } from './explain-check.ts';
 import type { ExplanationSections } from './explain-check.ts';
 
@@ -91,7 +91,7 @@ export async function explain(
       n_gpu_layers: 99,
     });
 
-    const prompt = buildExplanationPrompt({
+    const messages = buildExplanationTurns({
       program: request.program,
       office: request.office,
       actionType: request.actionType,
@@ -103,7 +103,12 @@ export async function explain(
     let partial = '';
     const result = await context.completion(
       {
-        prompt,
+        // `messages`, not `prompt`: llama.rn applies the chat template from the
+        // GGUF's own metadata. Handed a flat string the model continued the
+        // nearest pattern it could see, which was the instruction template, and
+        // echoed it back instead of reading the letter. Measured 2026-08-28.
+        messages,
+        add_generation_prompt: true,
         // Three sections of prose rather than four, and none of them spends
         // tokens dodging a digit it is not allowed to write.
         n_predict: 260,
