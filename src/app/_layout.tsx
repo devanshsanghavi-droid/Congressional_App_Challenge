@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 // screen renders. Nothing in the app should read a user-facing string before
 // this module has run.
 import i18n, { SUPPORTED_LANGUAGES } from '@/lib/i18n';
+import { devSeed } from '@/lib/dev-seed';
 import { SETTINGS, getBooleanSetting, getStringSetting } from '@/lib/db/settings';
 
 /**
@@ -80,6 +81,11 @@ function useOnboardingGate(): void {
 export default function RootLayout() {
   const { t } = useTranslation();
   useSavedLanguage();
+  // Web preview only — a no-op on iOS and Android, where `dev-seed.ts` wins.
+  // Delete with dev/web-preview/ before the freeze.
+  useEffect(() => {
+    void devSeed();
+  }, []);
   useOnboardingGate();
 
   return (
