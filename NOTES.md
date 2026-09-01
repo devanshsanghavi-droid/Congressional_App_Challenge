@@ -5273,3 +5273,69 @@ current?".
 
 Battery: the dev server idles at **0.2% CPU**, measured, which is the point of
 using a browser rather than the Simulator.
+---
+
+## 2026-09-01 — The reminder time picker does not render on iOS. Unresolved.
+
+Ran the app on the Simulator (iPhone 17 Pro, iOS 26) to look at the new Home
+layout. Home is correct: the grouped nav list, the chevrons and the card depth
+all render as they did in the browser.
+
+**Settings is broken.** "Remind me at" is followed by empty space. No control, no
+error, no crash — the reminder time cannot be set at all.
+
+The cause is that `RNDateTimePicker` resolves to React Native's **Unimplemented
+component placeholder** at runtime. That placeholder is itself zero-sized, which
+is why the screen shows nothing rather than showing the word; it only became
+visible after giving the element an explicit size and a background colour.
+
+### What has been ruled out, with evidence
+
+- **Not the web preview.** The iOS bundle contains **0** references to
+  `dev/web-preview/` and 8 to the real package.
+- **Not a layout collapse.** Given an explicit 130x38 the placeholder appears in
+  full — the element is in the tree and correctly sized.
+- **Not dirty DerivedData.** `rm -rf` and a full clean rebuild changed nothing.
+- **Not missing from codegen.** `RCTThirdPartyComponentsProvider.mm` lists
+  `RNDateTimePicker` -> `RNDateTimePickerComponentView`, alongside RNScreens and
+  safe-area which both work.
+- **Not missing from the build.** `ios/fabric/RNDateTimePickerComponentView.mm`
+  compiles, `libRNDateTimePicker.a` is 2.9 MB, and `-ObjC` and
+  `-lRNDateTimePicker` are both in the app target's `OTHER_LDFLAGS`.
+
+So it is built, linked and registered, and still unimplemented at runtime. The
+remaining suspicion is the New Architecture (`newArchEnabled: true`) plus this
+package version under RN 0.86, but that is a hypothesis and has not been tested.
+
+### Two wrong diagnoses, and why the second one was worse
+
+First guess was a zero-width native view in a `space-between` row. Plausible, and
+wrong — I "fixed" it twice and wrote a confident comment explaining a fix that
+fixed nothing. Both are reverted.
+
+Second guess was dirty DerivedData, on the strength of `nm` reporting **7**
+`OBJC_CLASS_` symbols in `libRNDateTimePicker.a` and **0** in the app binary.
+That evidence was worthless: the same command reports **0** ObjC classes for
+*every* pod in the binary, including RNScreens, SQLite and SecureStore, which
+demonstrably work. **The control was never run before the conclusion was drawn.**
+A measurement that returns zero for the thing you are testing and zero for the
+thing you know works is not evidence, and it cost a clean rebuild to disprove.
+
+> Two hypotheses, two confident explanations, both wrong, and the second one
+> supported by a number. The runtime told the truth in one screenshot — the word
+> `Unimplemented` — and everything after that was archaeology that should have
+> started there.
+
+### What this costs, stated plainly
+
+The reminder hour cannot be set on iOS, on the phone as well as the Simulator.
+The picker was added on 2026-08-28 and was never confirmed to render — the check
+made at the time was that the pod appeared in `Podfile.lock` and that the build
+succeeded, which is the same mistake as the four already in CLAUDE.md §13:
+**configuring a thing is not verifying it happened.** A green build log proves
+nothing; launch it and look at the screen.
+
+The four preset hours it replaced did work. Reverting to them is the safe move
+if this is not solved quickly, and it costs the argument that a real day is not
+shaped like four buttons.
+
