@@ -253,6 +253,52 @@ export function Divider() {
   return <View style={styles.divider} />;
 }
 
+/**
+ * A grouped list of destinations — one card, one row each.
+ *
+ * Replaces three full-width outlined buttons stacked in a column. They were
+ * buttons for a good reason (as three accent-coloured words they read as a
+ * footnote, and the person this was built for tapped Expo's dev-tools gear
+ * twice looking for Settings) but three identical boxes gave secondary
+ * navigation the same visual weight as the primary action, and the bottom of
+ * Home turned into a wall of outlines.
+ *
+ * A row keeps everything that finding bought — a full-width target well over
+ * 44pt, a chevron saying it goes somewhere, a pressed state — while reading as
+ * one grouped object instead of three competing ones.
+ *
+ * The chevron is drawn from two borders rather than a glyph: there is no icon
+ * library here, and a text arrow lands differently in every font and gets read
+ * aloud by the screen reader. It is marked decorative; the row carries the
+ * label.
+ */
+export function NavList({
+  items,
+}: {
+  items: readonly { readonly key: string; readonly title: string; readonly onPress: () => void }[];
+}) {
+  return (
+    <View style={styles.navList}>
+      {items.map((item, index) => (
+        <Pressable
+          key={item.key}
+          onPress={item.onPress}
+          accessibilityRole="button"
+          accessibilityLabel={item.title}
+          style={({ pressed }) => [
+            styles.navRow,
+            index > 0 && styles.navRowDivided,
+            pressed && styles.navRowPressed,
+          ]}
+        >
+          <Text style={styles.navLabel}>{item.title}</Text>
+          <View style={styles.chevron} importantForAccessibility="no" accessibilityElementsHidden />
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: color.background },
   scrollContent: { padding: space.lg, gap: space.lg, flexGrow: 1 },
@@ -272,8 +318,51 @@ const styles = StyleSheet.create({
     borderColor: color.border,
     padding: space.lg,
     gap: space.sm,
+    // A hairline alone left the cards flat against a warm background. The
+    // shadow is deliberately near-invisible: enough to lift the card off the
+    // page, not enough to become decoration competing with the countdown.
+    shadowColor: '#1A1A1A',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
   cardPressed: { backgroundColor: color.accentSoft },
+
+  navList: {
+    backgroundColor: color.surface,
+    borderRadius: radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.border,
+    overflow: 'hidden',
+    shadowColor: '#1A1A1A',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  navRow: {
+    minHeight: touchTarget + space.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: space.lg,
+    paddingVertical: space.md,
+    gap: space.md,
+  },
+  navRowDivided: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: color.border },
+  navRowPressed: { backgroundColor: color.accentSoft },
+  // Prose, so it scales with Dynamic Type without a cap (CLAUDE.md §13).
+  navLabel: { ...type.bodyStrong, color: color.text, flexShrink: 1 },
+  /** Two borders of a square, turned 45 degrees. Decorative. */
+  chevron: {
+    width: 9,
+    height: 9,
+    borderRightWidth: 2,
+    borderTopWidth: 2,
+    borderColor: color.textFaint,
+    transform: [{ rotate: '45deg' }],
+  },
 
   button: {
     minHeight: touchTarget,

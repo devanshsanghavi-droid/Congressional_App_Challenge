@@ -19,11 +19,13 @@
  * lives in `localStorage` rather than the settings table on purpose: the preview
  * must not add a key to the app's own settings schema.
  */
-const SEED_VERSION = '2';
 import { SETTINGS, getBooleanSetting, setBooleanSetting } from '@/lib/db/settings.ts';
 import { listActiveNotices, saveNotice } from '@/lib/db/notices.ts';
 import { wipeEverything } from '@/lib/wipe.ts';
 import type { ExtractedNotice } from '@/lib/extraction-port/port.ts';
+
+/** Bump after editing SEEDS — see the note above. */
+const SEED_VERSION = '2';
 
 /** Every seeded field is "confirmed by the user", which is what saving means. */
 function confirmed(value: string) {

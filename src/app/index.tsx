@@ -18,7 +18,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, Linking, StyleSheet, Text, View } from 'react-native';
 
-import { Body, Button, Caption, Card, EmptyState, ErrorState, Screen } from '@/components/ui';
+import { Body, Button, Caption, Card, EmptyState, ErrorState, NavList, Screen } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
 import type { Notice } from '@/lib/db/notices';
 import { listActiveNotices } from '@/lib/db/notices';
@@ -178,20 +178,22 @@ export default function HomeScreen() {
       {/* Below-the-line screens (CLAUDE.md §10, priorities 7 and 8), placed
           last and styled quietly on purpose. Home is the countdown; these are
           two text links under it, and cutting either is deleting one line. */}
-      {/* Buttons, not text links. These were three accent-coloured words in a
-          row with a correct 44pt target and the visual weight of a footnote —
-          the person this was built for tapped Expo's dev-tools gear twice
-          looking for Settings, because Settings did not look like anything you
-          could press. The disclaimer now sits BELOW them: it is legally
-          required, but it was separating navigation from content and that is
-          part of why the row read as fine print. */}
+      {/* Rows, not text links, and not three separate buttons either. As three
+          accent-coloured words this had a correct 44pt target and the visual
+          weight of a footnote — the person this was built for tapped Expo's
+          dev-tools gear twice looking for Settings. Three full-width outlined
+          buttons fixed that and cost something else: secondary navigation ended
+          up carrying the same weight as the primary action. A grouped list
+          keeps the affordance and gives the weight back. The disclaimer sits
+          BELOW it: legally required, but it was separating navigation from
+          content and that is part of why the row read as fine print. */}
       <View style={styles.moreRow}>
-        <Button title={t('vault.title')} variant="secondary" onPress={() => router.push('/vault')} />
-        <Button title={t('where.title')} variant="secondary" onPress={() => router.push('/where')} />
-        <Button
-          title={t('settings.title')}
-          variant="secondary"
-          onPress={() => router.push('/settings')}
+        <NavList
+          items={[
+            { key: 'vault', title: t('vault.title'), onPress: () => router.push('/vault') },
+            { key: 'where', title: t('where.title'), onPress: () => router.push('/where') },
+            { key: 'settings', title: t('settings.title'), onPress: () => router.push('/settings') },
+          ]}
         />
       </View>
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>

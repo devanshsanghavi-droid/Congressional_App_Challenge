@@ -45,7 +45,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { color, space, tone, type } from '@/lib/theme/tokens';
+import { color, radius, space, tone, type } from '@/lib/theme/tokens';
 import type { CountdownTone } from '@/lib/theme/tokens';
 import { countdownDate, countdownTier, daysUntil } from '@/lib/urgency';
 import type { NoticeDates } from '@/lib/urgency';
@@ -94,9 +94,16 @@ export function Countdown({
   // No date to count down to. Says so plainly rather than showing a zero, which
   // would read as "due today" — the most dangerous possible misreading.
   if (target === undefined) {
+    // A status, not a countdown — so it is sized like one.
+    //
+    // This used to take `wrapLarge`, which is padding built around a 72pt
+    // number. With two small words in it the approval card carried a tall empty
+    // rectangle and read as a card that had failed to load. There is no
+    // deadline here and nothing to dominate with: a chip states the fact and
+    // gives the programme name back the top of the card.
     return (
       <View
-        style={[styles.wrap, big ? styles.wrapLarge : styles.wrapCompact]}
+        style={[styles.wrap, styles.noDeadline, { backgroundColor: palette.bg }]}
         accessibilityRole="text"
         accessibilityLabel={t('notice.noDeadline')}
       >
@@ -170,6 +177,13 @@ export function Countdown({
 
 const styles = StyleSheet.create({
   wrap: { alignItems: 'flex-start', justifyContent: 'center', borderRadius: 12 },
+  /** Chip-sized. Only ever holds two words, so it is padded for two words. */
+  noDeadline: {
+    paddingVertical: space.sm,
+    paddingHorizontal: space.md,
+    borderRadius: radius.pill,
+    alignSelf: 'flex-start',
+  },
   wrapLarge: { paddingVertical: space.lg, paddingHorizontal: space.lg, gap: 0 },
   wrapCompact: { paddingVertical: space.sm, paddingHorizontal: space.md, gap: 2 },
 
