@@ -5339,3 +5339,49 @@ The four preset hours it replaced did work. Reverting to them is the safe move
 if this is not solved quickly, and it costs the argument that a real day is not
 shaped like four buttons.
 
+---
+
+## 2026-09-01 (later) — The real iOS screen in the side panel, for a tenth of a core
+
+`dev/sim-view/` — a headless Simulator streamed into the editor's side panel.
+`npm run sim:boot` then `npm run sim:view`.
+
+The web preview renders react-native-web, which is fast, free, and **not what
+iOS draws**. The time picker is the proof: fine in the browser, a zero-sized
+`Unimplemented` placeholder on the phone. A preview that cannot show that class
+of defect cannot be the only thing consulted before calling a screen done. So
+there are now two, and they answer different questions.
+
+### Why it is nearly free, measured rather than asserted
+
+**The device does not need its window.** `simctl boot` without opening
+Simulator.app leaves a fully working device: `simctl io screenshot` returns real
+frames, `openurl` still routes, `ui` still sets Dynamic Type. Quitting
+Simulator.app while it owns the device shuts the device down — but booting
+without it never gives it away in the first place. With no window there is
+nothing for WindowServer to composite, and the runtime does not appear in
+`top`'s first fifteen processes.
+
+Frames are **pulled, not pushed**: one capture per request, no background loop,
+and the Page Visibility API stops the loop when the panel is hidden — zero, not
+"less". Measured: **~130 ms capture, ~20 ms downscale, 186–202 ms round trip**,
+292 KB down to 29–60 KB at 760px. At the default 2 s interval that is about
+**a tenth of one core while visible**.
+
+A note on the numbers: `ps` reported the viewer at 0.1% and the runtime at
+0.5–1.2%, but `pcpu` is a lifetime average and understates a bursty job. The
+frame timing above is the honest figure.
+
+### What it can and cannot do
+
+Navigation is by deep link — `simctl` cannot synthesise a touch and `idb` is not
+installed, so **there is no tapping**. It is a viewer, not a remote control.
+That suits this repo, which already prefers `openurl` because synthetic taps in
+the Simulator helper land ~50pt above the target.
+
+The size dropdown drives `simctl ui content_size`, which is the sweep that found
+the 220pt countdown. **Reload JS after changing it** — React Native does not
+re-run layout when Dynamic Type changes at runtime, and the result looks exactly
+like a broken layout without being one. Confirmed still true here: AX5 reflows
+correctly after a reload, and `Countdown`'s cap holds.
+

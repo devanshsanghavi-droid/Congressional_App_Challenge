@@ -28,7 +28,9 @@
     "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/content-check.ts",
     "probe:llm": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/long-tail.ts",
     "probe:explain": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/metrics/probe/llm/explain-probe.ts",
-    "web": "expo start --web --port 8083"
+    "web": "expo start --web --port 8083",
+    "sim:boot": "xcrun simctl boot \"iPhone 17 Pro\" || true",
+    "sim:view": "node dev/sim-view/server.js"
   },
   "comments": {
     "overrides": "We do not ship a web build (SPEC.md §10 forbids a web version), but expo-router's dev tooling (@expo/router-server, @expo/ui) still pulls react-dom transitively. Left alone npm resolves it to a newer react-dom that demands a newer react than React Native 0.86.2 ships with. Pinning it here keeps one React version in the tree."
