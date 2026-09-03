@@ -114,3 +114,6 @@ private/
 
 # Local tool settings, not part of the entry.
 .claude/
+
+# Vendored dev tooling for dev/sim-view (prebuilt idb + venv). Not source.
+dev/sim-view/vendor/

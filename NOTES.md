@@ -5385,3 +5385,38 @@ re-run layout when Dynamic Type changes at runtime, and the result looks exactly
 like a broken layout without being one. Confirmed still true here: AX5 reflows
 correctly after a reload, and `Countdown`'s cap holds.
 
+---
+
+## 2026-09-03 — sim-view is interactive: real taps on a headless simulator
+
+Clicking the phone image in the panel now taps the app. Drag scrolls, the
+trackpad wheel scrolls, and the toolbar box types into whatever field the app
+has focused. Verified end to end: clicking "Your papers" on Home opened the
+Vault empty state, and a drag scrolled Settings to "Delete everything".
+
+**`simctl` cannot synthesise a touch** — confirmed by reading its full
+subcommand list, not by assuming. The tool that can is `idb`.
+
+Getting it was the interesting part. `brew install facebook/fb/idb-companion`
+refuses to run: Homebrew wants the Command Line Tools updated first, which needs
+a password. But the project publishes a **prebuilt** `idb-companion.macos-arm64`
+on its GitHub release alongside a SHA-256, so `dev/sim-view/setup.sh` downloads
+it, **verifies the checksum before unpacking**, and puts it in `vendor/` with the
+Python client in a local venv. Nothing system-wide, no sudo, and `vendor/` is
+gitignored — it is 94 MB of tooling, not source.
+
+Cost is unchanged: `idb_companion` idles at 0.0% and the viewer at 0.2%. The
+device is still headless; adding input did not add a window.
+
+### The one design decision worth recording
+
+Coordinates go over the wire **normalised 0..1** and become device points on the
+server, which asks `idb describe` for the point size once at startup. The
+alternative — mapping in the page against a hard-coded 402x874 — would have
+worked today and broken silently the first time anyone booted a different
+iPhone, or resized the panel, or changed the downscale width. Three things that
+all vary, feeding one constant that would have been wrong.
+
+`idb describe` also reports density 3.0 and 1206x2622 px, which is where the
+scale factor comes from rather than being inferred from the device name.
+

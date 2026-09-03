@@ -4,6 +4,7 @@
 `src/lib/diagnostics/`.**
 
 ```bash
+npm run sim:setup    # once — fetches idb into vendor/ (gitignored)
 npm run sim:boot     # boots the device headless — do NOT open Simulator.app
 npm run sim:view     # http://127.0.0.1:8090
 ```
@@ -22,7 +23,7 @@ They answer different questions and you want both.
 |---|---|---|
 | renders | react-native-web | **real UIKit / Fabric** |
 | edit loop | instant, fast refresh | fast refresh + a ≤2s frame delay |
-| tapping | yes | **no** — deep links only |
+| tapping | yes | **yes** — click, drag, scroll, type |
 | tells you the truth about native views | **no** | yes |
 
 The reminder time picker is the case that justifies the second row: it rendered
@@ -46,11 +47,24 @@ tenth of one core**, and nothing at all while paused.
 
 ## Controls
 
-Route buttons and the free-text path box use `simctl openurl`, because `simctl`
-cannot synthesise a touch and `idb` is not installed. **There is no tapping** —
-this is a viewer, not a remote control. Navigation by deep link is what this
-repo already prefers anyway (CLAUDE.md: taps in the Simulator helper land ~50pt
-above the target).
+**Click the phone screen and it taps. Drag to scroll, or use the trackpad
+wheel.** Type into the box in the toolbar and Enter sends the keystrokes to
+whatever field the app has focused.
+
+`simctl` cannot synthesise a touch, so input goes through `idb_companion` —
+the official prebuilt v1.5.2, SHA-256 verified against the published checksum,
+unpacked into `vendor/` with its Python client in a local venv. Nothing is
+installed system-wide and nothing needed sudo. `npm run sim:setup` does it and
+is safe to re-run.
+
+Coordinates are sent **normalised 0..1** and converted to device points on the
+server, which reads the point size from `idb describe` at startup. Nothing
+assumes 402x874, so booting a different iPhone just works.
+
+A drag becomes a swipe, and longer drags get a longer duration so the content
+lands where you aimed instead of flinging past it. The route buttons still use
+`simctl openurl`, because jumping straight to a screen is quicker than tapping
+to it.
 
 The size dropdown drives `simctl ui content_size` — the Dynamic Type sweep that
 found the 220pt countdown. **Press "Reload JS" after changing it**: React Native
