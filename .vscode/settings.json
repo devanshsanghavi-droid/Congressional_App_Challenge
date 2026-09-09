@@ -3,5 +3,29 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
+  },
+
+  // Roughly 3 GB of this repo is generated or vendored and none of it is worth
+  // watching. A file watcher holds an FSEvents subscription per directory, so
+  // node_modules and Pods alone are tens of thousands of them.
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/ios/Pods/**": true,
+    "**/ios/build/**": true,
+    "**/dev/sim-view/vendor/**": true,
+    "**/tools/corpus/ocr/**": true,
+    "**/tools/metrics/out/**": true,
+    "**/.git/objects/**": true,
+    "**/.expo/**": true
+  },
+
+  // Same set, kept out of search so a find-in-files does not walk 1.7 GB.
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/ios/Pods": true,
+    "**/ios/build": true,
+    "**/dev/sim-view/vendor": true,
+    "**/tools/corpus/ocr": true,
+    "**/.expo": true
   }
 }

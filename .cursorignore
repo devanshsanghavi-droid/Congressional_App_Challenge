@@ -1,0 +1,12 @@
+# Keeps Cursor's codebase indexing off generated and vendored trees.
+# ~3 GB of this repo is not source: node_modules, CocoaPods, the vendored idb
+# tooling, the committed OCR cache. Indexing it costs memory in the renderer and
+# buys nothing, because none of it is code anyone here writes.
+node_modules/
+ios/Pods/
+ios/build/
+dev/sim-view/vendor/
+tools/corpus/ocr/
+tools/metrics/out/
+.expo/
+*.gguf
