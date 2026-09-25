@@ -18,7 +18,7 @@ import { checkOrientation, shouldWarnUpsideDown } from '../ocr/orientation.ts';
 import type { OrientationCheck } from '../ocr/orientation.ts';
 import { recognize } from '../ocr/recognize.ts';
 import type { OcrResult } from '../ocr/types.ts';
-import { extractNotice } from '../extraction-port/adapter.ts';
+import { extractNotice, redactText } from '../extraction-port/adapter.ts';
 import type { ExtractionResult } from '../extraction-port/port.ts';
 import { startTrace } from '../diagnostics/trace.ts';
 import type { CaptureTrace, TraceRecorder } from '../diagnostics/trace.ts';
@@ -90,6 +90,21 @@ async function runStages(
     };
   });
 
+  // REDACT, second in the pipeline as CLAUDE.md §5 draws it. Until 2026-09-24
+  // only the cascade's private copy of the text was redacted: the text this
+  // function returned, which Review saved, had never been through the matcher.
+  // From here on every consumer, the store, the hand-off and the database, sees
+  // the redacted page. The lines keep their raw text; they are used for
+  // geometry in memory and are never written.
+  const page = await recorder.step('redact', async () => {
+    const redaction = redactText(ocr.text);
+    return {
+      value: { ...ocr, text: redaction.text },
+      // Whether, not what: the trace is meant to be safe to paste anywhere.
+      detail: { containedSsn: redaction.containedSsn },
+    };
+  });
+
   const orientation = await recorder.step('orientation', async () => {
     const check = checkOrientation(ocr.lines);
     return {
@@ -109,7 +124,7 @@ async function runStages(
   const extraction = await recorder.step('extract', async () => {
     const result = extractNotice({
       lines: ocr.lines,
-      text: ocr.text,
+      text: page.text,
       width: ocr.width,
       height: ocr.height,
       nowMs: Date.now(),
@@ -132,7 +147,7 @@ async function runStages(
 
   return {
     photoUri,
-    ocr,
+    ocr: page,
     orientation,
     upsideDown: shouldWarnUpsideDown(orientation),
     extraction,

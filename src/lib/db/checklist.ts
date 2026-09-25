@@ -205,6 +205,27 @@ export async function attachDocument(
 }
 
 /**
+ * Store a document that belongs to no requirement: a copy of a form as it was
+ * mailed. The Vault shows it like any other document; no checklist row points
+ * at it. The row is written with an empty `image_ref` and filled in by
+ * `setDocumentImageRef` once the encrypted file exists, as `attachDocument`'s
+ * callers do.
+ */
+export async function addDocument(document: { docType?: string; label?: string }): Promise<string> {
+  const db = await getDatabase();
+  const id = newId('d');
+  await db.runAsync(
+    `INSERT INTO documents (id, captured_at, doc_type, label, image_ref) VALUES (?, ?, ?, ?, ?)`,
+    id,
+    Date.now(),
+    document.docType ?? null,
+    document.label ?? null,
+    '',
+  );
+  return id;
+}
+
+/**
  * Point a document row at its encrypted file.
  *
  * Two steps rather than one for the same reason `saveNotice` + `setImageRef`

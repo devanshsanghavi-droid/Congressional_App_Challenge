@@ -31,6 +31,10 @@ import type {
   OutstandingVerification,
   PhoneNumber,
   PublicChargeNote,
+  ExpectedLetterRule,
+  SecondChanceRule,
+  TimelineAnchor,
+  TimelinesPack,
 } from './types.ts';
 import {
   ContentError,
@@ -384,6 +388,7 @@ export function outstandingVerifications(
   crossRefs: CrossReferencePack,
   offices: OfficesPack,
   docTypes?: DocTypesPack,
+  timelines?: TimelinesPack,
 ): OutstandingVerification[] {
   const out: OutstandingVerification[] = [];
 
@@ -450,7 +455,133 @@ export function outstandingVerifications(
   for (const office of offices.ssaLocations) consider(`offices: ssa / ${office.id}`, office);
   for (const office of offices.countyLocations) consider(`offices: county / ${office.id}`, office);
 
+  // Timeline rules make dated claims about what a household can still do, which
+  // is the highest-stakes kind of content this app has. Every one that is not
+  // confirmed at a primary source is named here, and so is the Spanish.
+  if (timelines !== undefined) {
+    for (const rule of timelines.secondChances) consider(`timelines: ${rule.id}`, rule);
+    for (const rule of timelines.expectedLetters) consider(`timelines: ${rule.id}`, rule);
+    if (timelines.translationTodo !== undefined) {
+      out.push({ where: 'timelines: Spanish', reason: timelines.translationTodo, confidence: 'medium' });
+    }
+  }
+
   // Deduplicate: an entry reached through a $ref appears under several programmes.
   const seen = new Set<string>();
   return out.filter((item) => (seen.has(item.where) ? false : (seen.add(item.where), true)));
+}
+
+// -------------------------------------------------------------------- timelines
+
+const ANCHORS: readonly TimelineAnchor[] = ['effective_date', 'notice_date', 'deadline_date'];
+const ACTIONS: readonly string[] = ['approval', 'denial', 'reduction', 'discontinuance', 'info_request', 'recert_due'];
+
+function strings(value: unknown, where: string, allowed?: readonly string[]): string[] {
+  const list = arr(value, where).map((v, i) => requireString(v, `${where}[${i}]`));
+  if (list.length === 0) throw new ContentError(where, 'must not be empty');
+  if (allowed) {
+    for (const v of list) {
+      if (!allowed.includes(v)) throw new ContentError(where, `"${v}" is not one of ${allowed.join(', ')}`);
+    }
+  }
+  return list;
+}
+
+function anchorOf(value: unknown, where: string): TimelineAnchor {
+  const raw = requireString(value, where);
+  if (!ANCHORS.includes(raw as TimelineAnchor)) {
+    throw new ContentError(where, `anchor "${raw}" is not one of ${ANCHORS.join(', ')}`);
+  }
+  return raw as TimelineAnchor;
+}
+
+function wholeNumber(value: unknown, where: string, min: number, max: number): number {
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < min || value > max) {
+    throw new ContentError(where, `expected a whole number from ${min} to ${max}`);
+  }
+  return value;
+}
+
+/** The Sourced fields every timeline rule shares, plus its own words and where they come from. */
+function sourcedRule(raw: Json, where: string) {
+  const todoVerify = optionalString(raw['TODO_verify'], `${where}.TODO_verify`);
+  return {
+    sourceUrl: requireSourceUrl(raw['source_url'], `${where}.source_url`),
+    verifiedOn: requireIsoDate(raw['verified_on'], `${where}.verified_on`),
+    confidence: requireConfidence(raw['confidence'], `${where}.confidence`),
+    ruleText: requireString(raw['rule_text'], `${where}.rule_text`),
+    sourceName: requireString(raw['source_name'], `${where}.source_name`),
+    sourceKind: requireString(raw['source_kind'], `${where}.source_kind`),
+    ...(todoVerify === undefined ? {} : { todoVerify }),
+  };
+}
+
+function parseSecondChance(value: unknown, where: string): SecondChanceRule {
+  const raw = obj(value, where);
+  const offset = obj(raw['offset'], `${where}.offset`);
+  const hasDays = offset['days'] !== undefined;
+  const hasMonths = offset['months'] !== undefined;
+  if (hasDays === hasMonths) throw new ContentError(`${where}.offset`, 'give exactly one of days or months');
+  const validThrough =
+    raw['valid_through'] === undefined ? undefined : requireIsoDate(raw['valid_through'], `${where}.valid_through`);
+  const requiresText =
+    raw['requires_text'] === undefined ? undefined : strings(raw['requires_text'], `${where}.requires_text`);
+  return {
+    id: requireString(raw['id'], `${where}.id`),
+    programs: strings(raw['programs'], `${where}.programs`),
+    actionTypes: strings(raw['action_types'], `${where}.action_types`, ACTIONS),
+    ...(requiresText === undefined ? {} : { requiresText }),
+    anchor: anchorOf(raw['anchor'], `${where}.anchor`),
+    offset: hasDays
+      ? { days: wholeNumber(offset['days'], `${where}.offset.days`, 1, 400) }
+      : { months: wholeNumber(offset['months'], `${where}.offset.months`, 1, 24) },
+    ...(validThrough === undefined ? {} : { validThrough }),
+    title: requireString(raw['title'], `${where}.title`),
+    titleEs: requireString(raw['title_es'], `${where}.title_es`),
+    en: requireString(raw['en'], `${where}.en`),
+    es: requireString(raw['es'], `${where}.es`),
+    condition: requireString(raw['condition'], `${where}.condition`),
+    conditionEs: requireString(raw['condition_es'], `${where}.condition_es`),
+    ...sourcedRule(raw, where),
+  };
+}
+
+function parseExpectedLetter(value: unknown, where: string): ExpectedLetterRule {
+  const raw = obj(value, where);
+  const from = wholeNumber(raw['expect_from_month'], `${where}.expect_from_month`, 0, 24);
+  const by = wholeNumber(raw['expect_by_month'], `${where}.expect_by_month`, 1, 25);
+  if (by <= from) throw new ContentError(where, 'expect_by_month must come after expect_from_month');
+  return {
+    id: requireString(raw['id'], `${where}.id`),
+    programs: strings(raw['programs'], `${where}.programs`),
+    formIds: strings(raw['form_ids'], `${where}.form_ids`),
+    actionTypes: strings(raw['action_types'], `${where}.action_types`, ACTIONS),
+    anchor: anchorOf(raw['anchor'], `${where}.anchor`),
+    expectFromMonth: from,
+    expectByMonth: by,
+    askAfterDays: wholeNumber(raw['ask_after_days'], `${where}.ask_after_days`, 0, 60),
+    title: requireString(raw['title'], `${where}.title`),
+    titleEs: requireString(raw['title_es'], `${where}.title_es`),
+    ...sourcedRule(raw, where),
+  };
+}
+
+/**
+ * Parse `content/timelines.json`. Throws on anything malformed or unsourced: a
+ * timeline rule with no source would put an invented date in front of someone
+ * deciding whether they can still keep their food benefits.
+ */
+export function parseTimelines(raw: unknown): TimelinesPack {
+  const root = obj(raw, 'timelines');
+  const secondChances = arr(root['second_chances'], 'timelines.second_chances').map((v, i) =>
+    parseSecondChance(v, `timelines.second_chances[${i}]`),
+  );
+  const expectedLetters = arr(root['expected_letters'], 'timelines.expected_letters').map((v, i) =>
+    parseExpectedLetter(v, `timelines.expected_letters[${i}]`),
+  );
+  const ids = [...secondChances, ...expectedLetters].map((r) => r.id);
+  const duplicate = ids.find((id, i) => ids.indexOf(id) !== i);
+  if (duplicate !== undefined) throw new ContentError('timelines', `duplicate rule id "${duplicate}"`);
+  const translationTodo = optionalString(root['_translation_todo'], 'timelines._translation_todo');
+  return { secondChances, expectedLetters, ...(translationTodo === undefined ? {} : { translationTodo }) };
 }

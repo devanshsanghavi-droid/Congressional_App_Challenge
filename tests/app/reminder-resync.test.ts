@@ -60,6 +60,16 @@ jest.mock('../../src/lib/reminder-documents.ts', () => ({
   letterDocuments: () => Promise.resolve([]),
 }));
 
+// Second-chance reminders and "did it come?" questions are rebuilt alongside
+// the ladders. Neither is under test here, and both reach SQLite.
+jest.mock('../../src/lib/db/followups.ts', () => ({
+  listFollowups: () => Promise.resolve([]),
+  followupTier: (ruleId: string) => `followup:${ruleId}`,
+}));
+jest.mock('../../src/lib/expected-letters.ts', () => ({
+  rescheduleAsks: () => Promise.resolve(),
+}));
+
 jest.mock('../../src/lib/db/settings.ts', () => ({
   SETTINGS: { reminderHour: 'reminderHour' },
   getStringSetting: (...args: unknown[]) => mockGetStringSetting(...args),

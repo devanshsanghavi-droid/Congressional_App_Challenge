@@ -21,6 +21,7 @@ import {
   parseCrossReferences,
   parseDocTypes,
   parseOffices,
+  parseTimelines,
 } from '../src/lib/content/parse.ts';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,7 +31,8 @@ const read = (name: string): unknown =>
 const crossRefs = parseCrossReferences(read('cross_reference.json'));
 const offices = parseOffices(read('offices.json'));
 const docTypes = parseDocTypes(read('doc_types.json'));
-const outstanding = outstandingVerifications(crossRefs, offices, docTypes);
+const timelines = parseTimelines(read('timelines.json'));
+const outstanding = outstandingVerifications(crossRefs, offices, docTypes, timelines);
 
 if (outstanding.length === 0) {
   console.log('\ncontent: everything is verified at the agency source.\n');

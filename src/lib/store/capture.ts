@@ -28,6 +28,12 @@ export interface PendingCapture {
    * happen on that screen, not this one.
    */
   readonly trace: CaptureTrace;
+  /**
+   * Set when the letter came from a helper's phone rather than this camera.
+   * There is no photo then (`photoUri` is empty), and Review shows the four
+   * digits so the family can check them against the helper's screen.
+   */
+  readonly handoffCheckCode?: string;
 }
 
 interface CaptureStore {

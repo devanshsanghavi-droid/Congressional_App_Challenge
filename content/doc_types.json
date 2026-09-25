@@ -84,6 +84,13 @@
       "what_es": "Una tarjeta, carta o aviso de una agencia de inmigración."
     },
     {
+      "id": "sent_form",
+      "label": "Copy of a form you mailed",
+      "label_es": "Copia de un formulario que envió",
+      "what": "A photo of a filled-in form, taken the day you mailed it.",
+      "what_es": "Una foto de un formulario lleno, tomada el día que lo envió."
+    },
+    {
       "id": "other",
       "label": "Something else",
       "label_es": "Otra cosa",

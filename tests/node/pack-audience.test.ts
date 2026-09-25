@@ -46,7 +46,7 @@ import { join } from 'node:path';
 
 import { REPO_ROOT } from '../../tools/metrics/corpus.ts';
 
-const PACKS = ['cross_reference.json', 'offices.json', 'doc_types.json'];
+const PACKS = ['cross_reference.json', 'offices.json', 'doc_types.json', 'timelines.json', 'forms/carta-demo-sar7.json'];
 
 /**
  * Non-underscore keys whose values address whoever maintains the content, not
@@ -85,7 +85,10 @@ const DEVELOPER_NOTE: readonly { pattern: RegExp; what: string }[] = [
   { pattern: /\b(?:every|each) rendering\b/i, what: 'an instruction about how to render' },
   { pattern: /\brenders? inline\b|\bnever behind a link\b/i, what: 'a rendering instruction' },
   { pattern: /\bsee (?:CLAUDE\.md|SPEC|NOTES)\b/i, what: 'a reference to project docs' },
-  { pattern: /\bsection \d+\b|\b§\d+\b/i, what: 'a spec section reference' },
+  // A spec section, not a statute. "California Welfare and Institutions Code
+  // section 10951" is the provenance a timeline rule is required to show; the
+  // name of the code in front of it is what tells the two apart.
+  { pattern: /(?<!\b(?:Code|MPP|Regulations|CFR)\s)\bsection \d+\b|\b§\d+\b/i, what: 'a spec section reference' },
   { pattern: /\bmanual browser step\b|\bblocks (?:agent|automated)\b/i, what: 'tooling notes' },
 ];
 
@@ -122,6 +125,10 @@ function userFacingStrings(node: Json, path: string, out: { path: string; text: 
       // the provenance mechanism working, and scanning it for English idiom
       // finds only noise.
       if (key.endsWith('_url')) continue;
+      // A form template's anchors are the printed words of the blank form,
+      // matched against OCR to line a photo up. Never rendered, and
+      // "SECTION 1 - INCOME" is the form talking, not a spec reference.
+      if (key === 'anchors') continue;
       userFacingStrings(value, path === '' ? key : `${path}.${key}`, out);
     }
   }

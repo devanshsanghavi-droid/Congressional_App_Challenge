@@ -61,7 +61,16 @@ module.exports = {
             plugins: ['@babel/plugin-transform-modules-commonjs'],
           },
         ],
+        // The @noble cryptography packages ship as ES modules only (v2), and the
+        // hand-off protocol is tested here in bare Node. Same treatment as the
+        // TypeScript above minus the type stripping: modules to CommonJS, and
+        // nothing else touches them.
+        '^.+/node_modules/@noble/.+\\.js$': [
+          'babel-jest',
+          { babelrc: false, configFile: false, plugins: ['@babel/plugin-transform-modules-commonjs'] },
+        ],
       },
+      transformIgnorePatterns: ['/node_modules/(?!@noble/)'],
       moduleFileExtensions: ['ts', 'js', 'json'],
     },
 

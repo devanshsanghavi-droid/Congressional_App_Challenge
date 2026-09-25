@@ -1,0 +1,67 @@
+[
+ {
+  "name": "good-flat",
+  "photographed": false,
+  "answers": {
+   "q1": "yes",
+   "q2": "no",
+   "q3": "no"
+  },
+  "signed": true,
+  "date": "9/2/2026"
+ },
+ {
+  "name": "good-photo",
+  "photographed": true,
+  "answers": {
+   "q1": "yes",
+   "q2": "no",
+   "q3": "no"
+  },
+  "signed": true,
+  "date": "9/2/2026"
+ },
+ {
+  "name": "no-signature-photo",
+  "photographed": true,
+  "answers": {
+   "q1": "no",
+   "q2": "no",
+   "q3": "no"
+  },
+  "signed": false,
+  "date": "9/3/2026"
+ },
+ {
+  "name": "early-date-photo",
+  "photographed": true,
+  "answers": {
+   "q1": "yes",
+   "q2": "yes",
+   "q3": "no"
+  },
+  "signed": true,
+  "date": "8/28/2026"
+ },
+ {
+  "name": "unanswered-photo",
+  "photographed": true,
+  "answers": {
+   "q1": "yes",
+   "q2": null,
+   "q3": "both"
+  },
+  "style": {
+   "q1": "tick"
+  },
+  "signed": true,
+  "date": "9/1/2026"
+ },
+ {
+  "name": "blank-photo",
+  "photographed": true,
+  "answers": {},
+  "signed": false,
+  "date": null
+ }
+]

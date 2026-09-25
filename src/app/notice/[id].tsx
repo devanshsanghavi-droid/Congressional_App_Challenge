@@ -25,26 +25,32 @@
  * than no address.
  */
 
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, Divider, ErrorState, Muted, Screen, Section, Sheet } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
 import { Explanation } from '@/components/Explanation';
+import { SecondChances } from '@/components/SecondChances';
 import { WorthChecking } from '@/components/WorthChecking';
-import { loadOffices } from '@/lib/content';
+import { loadFormTemplates, loadOffices } from '@/lib/content';
 import { listRequirements, progressOf } from '@/lib/db/checklist';
 import type { ChecklistProgress } from '@/lib/db/checklist';
 import type { AppealsInfo } from '@/lib/content/types';
-import { decryptCaptureForDisplay, discardDecryptedPreviews } from '@/lib/db/images';
+import { decryptCaptureForDisplay, decryptDocumentForDisplay, discardDecryptedPreviews } from '@/lib/db/images';
 import { getNotice, getNoticeRecipientName, getNoticeText } from '@/lib/db/notices';
 import type { Notice } from '@/lib/db/notices';
+import { listSentCopies } from '@/lib/db/sent';
+import type { SentCopy } from '@/lib/db/sent';
+import { sameFormId } from '@/lib/formcheck/template';
+import { removeNotice } from '@/lib/remove-notice';
 import { color, radius, space, type } from '@/lib/theme/tokens';
+import type { NoticeFacts } from '@/lib/timelines';
 import type { NoticeDates } from '@/lib/urgency';
 
-type Viewing = 'none' | 'photo' | 'text';
+type Viewing = 'none' | 'photo' | 'text' | 'sent';
 
 function datesOf(notice: Notice): NoticeDates {
   return {
@@ -80,6 +86,8 @@ export default function NoticeDetailScreen() {
   const [checklist, setChecklist] = useState<ChecklistProgress>();
   const [failed, setFailed] = useState(false);
   const [now] = useState(() => Date.now());
+  const [sentCopies, setSentCopies] = useState<SentCopy[]>([]);
+  const [sentUri, setSentUri] = useState<string>();
 
   useEffect(() => {
     let cancelled = false;
@@ -118,6 +126,63 @@ export default function NoticeDetailScreen() {
     setPhotoUri(await decryptCaptureForDisplay(id));
     setViewing('photo');
   }, [id]);
+
+  // On focus: coming back from the form check is how a new copy appears.
+  useFocusEffect(
+    useCallback(() => {
+      void listSentCopies(id)
+        .then(setSentCopies)
+        .catch(() => setSentCopies([]));
+    }, [id]),
+  );
+
+  // Irreversible, so iOS's own confirmation, with the destructive button styled
+  // as one. Before this existed a letter scanned by mistake could only be
+  // removed by "Delete everything".
+  const confirmRemove = useCallback(() => {
+    Alert.alert(t('detail.removeTitle'), t('detail.removeBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('detail.removeConfirm'),
+        style: 'destructive',
+        onPress: () => {
+          void removeNotice(id).then(() => router.replace('/'));
+        },
+      },
+    ]);
+  }, [id, router, t]);
+
+  const showSentCopy = useCallback(async (copy: SentCopy) => {
+    setSentUri(await decryptDocumentForDisplay(copy.documentId));
+    setViewing('sent');
+  }, []);
+
+  // Memoised so the second-chance section does not recompute on every render.
+  const facts: NoticeFacts | undefined = useMemo(
+    () =>
+      notice === undefined
+        ? undefined
+        : {
+            actionType: notice.actionType,
+            ...(notice.programId === undefined ? {} : { programId: notice.programId }),
+            ...(notice.formId === undefined ? {} : { formId: notice.formId }),
+            ...(notice.effectiveDate === undefined ? {} : { effectiveDate: notice.effectiveDate }),
+            ...(notice.noticeDate === undefined ? {} : { noticeDate: notice.noticeDate }),
+            ...(notice.deadlineDate === undefined ? {} : { deadlineDate: notice.deadlineDate }),
+            ...(originalText === undefined ? {} : { text: originalText }),
+          },
+    [notice, originalText],
+  );
+
+  // Only for a form Carta has a blank copy of; anything else would be a button
+  // that ends in "Carta can't check this form yet".
+  const canCheckForm = useMemo(() => {
+    try {
+      return loadFormTemplates().some((tpl) => sameFormId(notice?.formId, tpl.formId));
+    } catch {
+      return false;
+    }
+  }, [notice]);
 
   if (failed) {
     return (
@@ -207,6 +272,10 @@ export default function NoticeDetailScreen() {
         ) : null}
       </Section>
 
+      {/* Right under "by when": what happens if that date is missed. Renders
+          nothing unless a sourced rule applies to this letter. */}
+      {facts ? <SecondChances noticeId={id} facts={facts} nowMs={now} /> : null}
+
       <Divider />
 
       {/* Between "by when" and the model's rewrite, because "what do I have to
@@ -235,6 +304,32 @@ export default function NoticeDetailScreen() {
       </Section>
 
       <Divider />
+
+      {canCheckForm || sentCopies.length > 0 ? (
+        <>
+          <Section title={t('formcheck.sectionTitle')}>
+            {canCheckForm ? (
+              <>
+                <Body>{t('formcheck.sectionBody')}</Body>
+                <Button
+                  title={t('formcheck.open')}
+                  variant="secondary"
+                  accessibilityHint={t('formcheck.openHint')}
+                  onPress={() => router.push(`/formcheck/${id}`)}
+                />
+              </>
+            ) : null}
+            {sentCopies.map((copy) => (
+              <View key={copy.id} style={styles.sent}>
+                <Body>{t('formcheck.sentCopy', { date: longDate(copy.sentAt, locale) })}</Body>
+                <Button title={t('formcheck.seeCopy')} variant="quiet" onPress={() => void showSentCopy(copy)} />
+              </View>
+            ))}
+          </Section>
+
+          <Divider />
+        </>
+      ) : null}
 
       {/* On demand, behind a tap. The four sections above are the app's own and
           do not wait on inference; this offers the model's rewrite underneath
@@ -347,6 +442,14 @@ export default function NoticeDetailScreen() {
           It renders nothing at all when the programme has no entries. */}
       <WorthChecking program={notice.programId} />
 
+      <Divider />
+      <Button
+        title={t('detail.remove')}
+        variant="danger"
+        onPress={confirmRemove}
+        accessibilityHint={t('detail.removeHint')}
+      />
+
       <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
 
       <Sheet
@@ -356,6 +459,9 @@ export default function NoticeDetailScreen() {
       >
         {viewing === 'photo' && photoUri ? (
           <Image source={{ uri: photoUri }} style={styles.photo} accessibilityLabel={t('detail.photoAlt')} />
+        ) : null}
+        {viewing === 'sent' && sentUri ? (
+          <Image source={{ uri: sentUri }} style={styles.photo} accessibilityLabel={t('formcheck.seeCopy')} />
         ) : null}
         {viewing === 'text' && originalText ? (
           <>
@@ -390,5 +496,6 @@ const styles = StyleSheet.create({
   linkText: { ...type.bodyStrong, color: color.accent },
 
   photo: { width: '100%', height: 520, resizeMode: 'contain', borderRadius: radius.md },
+  sent: { gap: space.xs },
   originalText: { ...type.body, color: color.text, fontFamily: 'Courier', lineHeight: 22 },
 });

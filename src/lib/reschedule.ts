@@ -20,18 +20,18 @@
  * declared purpose rather than an accident of where it was typed.
  */
 
-import { cancel, hasPermission, scheduleForNotice } from './notifications/index.ts';
+import { cancel, hasPermission, scheduleForNotice, scheduleOnce } from './notifications/index.ts';
 import { markCancelled, pendingOsIds, recordScheduled } from './db/reminders.ts';
 import { datesOf, listActiveNotices } from './db/notices.ts';
 import { letterDocuments } from './reminder-documents.ts';
 import type { Notice } from './db/notices.ts';
-import { SETTINGS, getStringSetting } from './db/settings.ts';
-import {
-  countdownDate,
-  DEFAULT_REMINDER_HOUR,
-  DEFAULT_REMINDER_MINUTE,
-  isReminderTime,
-} from './urgency.ts';
+import { countdownDate } from './urgency.ts';
+import { reminderTime } from './reminder-time.ts';
+import { listFollowups, followupTier } from './db/followups.ts';
+import { loadTimelines } from './content/index.ts';
+import { followupContent } from './followup-content.ts';
+import { followupFireTime } from './timelines.ts';
+import { rescheduleAsks } from './expected-letters.ts';
 
 /**
  * Rebuild every notice's reminder ladder at a new hour.
@@ -68,27 +68,35 @@ async function rescheduleOne(notice: Notice, hour: number, minute: number): Prom
     ...(notice.programId === undefined ? {} : { programName: notice.programId }),
   });
   if (scheduled.length > 0) await recordScheduled(notice.id, scheduled);
+
+  // The second-chance reminders the person asked for. `pendingOsIds` above
+  // cancelled them along with the ladder; a change of reminder time must move
+  // them, not drop them.
+  const rules = loadTimelines().secondChances;
+  for (const followup of await listFollowups(notice.id)) {
+    const rule = rules.find((r) => r.id === followup.ruleId);
+    const fireAt = followupFireTime(followup.targetDate, Date.now(), hour, minute);
+    if (!rule || fireAt === undefined) continue;
+    const osNotificationId = await scheduleOnce({
+      ...followupContent(rule, followup.targetDate),
+      fireAt,
+      data: { noticeId: notice.id, tier: followupTier(rule.id) },
+    });
+    await recordScheduled(notice.id, [{ tier: followupTier(rule.id), fireAt, urgent: false, osNotificationId }]);
+  }
 }
 
 export async function rescheduleAllNotices(hour: number, minute = 0): Promise<number> {
   const notices = await listActiveNotices();
   for (const notice of notices) await rescheduleOne(notice, hour, minute);
+  // And every "did your letter come?", which belongs to no ladder.
+  await rescheduleAsks();
   return notices.length;
 }
 
-/** The reminder time the user chose, or the default. Never throws. */
-export async function reminderTime(): Promise<{ hour: number; minute: number }> {
-  const fallback = { hour: DEFAULT_REMINDER_HOUR, minute: DEFAULT_REMINDER_MINUTE };
-  try {
-    const h = await getStringSetting(SETTINGS.reminderHour);
-    const m = await getStringSetting(SETTINGS.reminderMinute);
-    const hour = h === undefined ? Number.NaN : Number.parseInt(h, 10);
-    const minute = m === undefined ? 0 : Number.parseInt(m, 10);
-    return isReminderTime(hour, minute) ? { hour, minute } : fallback;
-  } catch {
-    return fallback;
-  }
-}
+// Lives in its own module so the feature schedulers can read it without
+// importing this file, which imports them.
+export { reminderTime } from './reminder-time.ts';
 
 /**
  * Re-schedule reminders that were dropped because permission was refused.

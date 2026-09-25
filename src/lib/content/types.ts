@@ -190,3 +190,63 @@ export interface DocTypesPack {
   /** Set while the Spanish is still awaiting CDSS wording and a human read. */
   readonly translationTodo?: string;
 }
+
+/** The confirmed notice field a timeline rule counts from. */
+export type TimelineAnchor = 'effective_date' | 'notice_date' | 'deadline_date';
+
+/**
+ * A date a notice implies but does not print: a window to restore benefits, the
+ * last day to claim good cause, the outer limit on a late hearing request.
+ *
+ * `Sourced` like every other rule in the packs, and the rule's own words travel
+ * with it (`ruleText`) so the screen can show exactly what the date comes from.
+ * CLAUDE.md §16: the model never computes these; this data does, and only from a
+ * field the user confirmed.
+ */
+export interface SecondChanceRule extends Sourced {
+  readonly id: string;
+  /** Programme names as they appear on a notice ("CalFresh", "Medi-Cal"). */
+  readonly programs: readonly string[];
+  readonly actionTypes: readonly string[];
+  /** Applies only when the notice text contains one of these (any). */
+  readonly requiresText?: readonly string[];
+  readonly anchor: TimelineAnchor;
+  readonly offset: { readonly days: number } | { readonly months: number };
+  /** Last anchor date the rule covers, for rules from a time-limited waiver. */
+  readonly validThrough?: IsoDate;
+  readonly title: string;
+  readonly titleEs: string;
+  readonly en: string;
+  readonly es: string;
+  readonly condition: string;
+  readonly conditionEs: string;
+  readonly ruleText: string;
+  readonly sourceName: string;
+  readonly sourceKind: string;
+}
+
+/** The next letter a notice implies is coming, so Carta can ask whether it came. */
+export interface ExpectedLetterRule extends Sourced {
+  readonly id: string;
+  readonly programs: readonly string[];
+  readonly formIds: readonly string[];
+  readonly actionTypes: readonly string[];
+  readonly anchor: TimelineAnchor;
+  /** Calendar months after the anchor's month: the letter comes on or after the 1st of this one... */
+  readonly expectFromMonth: number;
+  /** ...and before the 1st of this one. */
+  readonly expectByMonth: number;
+  /** Days after `expectByMonth` begins before asking, for the mail. */
+  readonly askAfterDays: number;
+  readonly title: string;
+  readonly titleEs: string;
+  readonly ruleText: string;
+  readonly sourceName: string;
+  readonly sourceKind: string;
+}
+
+export interface TimelinesPack {
+  readonly secondChances: readonly SecondChanceRule[];
+  readonly expectedLetters: readonly ExpectedLetterRule[];
+  readonly translationTodo?: string;
+}

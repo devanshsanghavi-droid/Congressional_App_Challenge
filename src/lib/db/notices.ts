@@ -304,3 +304,15 @@ export async function findRelatedNotices(caseHash: string, excludeId: string): P
   );
   return rows.map(toNotice);
 }
+
+/**
+ * Delete one notice. Its requirements, reminders, follow-ups, forecasts and sent
+ * copies go with it (ON DELETE CASCADE, foreign keys on per connection). Photos
+ * the person attached as documents stay: they are the Vault's, not the letter's.
+ * The caller cancels the OS notifications and removes the stored capture first;
+ * see `remove-notice.ts`.
+ */
+export async function deleteNotice(id: string): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync('DELETE FROM notices WHERE id = ?', id);
+}

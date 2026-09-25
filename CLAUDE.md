@@ -256,8 +256,20 @@ src/lib/urgency.ts       countdown tier + reminder ladder (SPEC 6/7), pure.
                          The reminder hour is a parameter, not a constant.
 src/lib/checklist.ts     checklist + Vault rules, pure. `ready` is false when
                          empty; `documentAge` is never stale without a source.
-src/lib/capture/pipeline.ts   ONE traced path: OCR -> orientation -> extract.
-                              Camera, picker and self-test all call it.
+src/lib/capture/pipeline.ts   ONE traced path: OCR -> REDACT -> orientation ->
+                              extract. Camera, picker and self-test all call it.
+
+src/lib/formcheck/       "Before you mail it": homography.ts (DLT + RANSAC),
+                         align.ts (OCR lines to template anchors), ink.ts,
+                         written-date.ts, template.ts, check.ts - all pure and
+                         tested in Node. pixels.ts is the one app-side file.
+content/forms/           form templates as DATA (the demo SAR 7 only, so far)
+src/lib/timelines.ts     second-chance dates + expected letters, pure, driven
+                         by content/timelines.json (every rule quoted + sourced)
+src/lib/expected-letters.ts, second-chance-reminders.ts   their orchestration
+src/lib/handoff/protocol.ts   phone-to-phone: X25519 + HKDF + AES-GCM over QR
+                              frames, pure, randomness injected
+src/app/formcheck/[id].tsx, src/app/handoff/{send,receive}.tsx
 src/lib/diagnostics/     stage trace with timings; copyable, carries no notice
                          content. Dev only, delete before freeze.
 src/lib/content/         bundled content packs, validated on parse
@@ -483,6 +495,17 @@ three genuinely new claims plus one counting bug (doc types were never passed to
 the gate). **CDSS Spanish form wording could not be applied — cdss.ca.gov blocks
 automated requests**, so the doc-type Spanish is Carta's own and the pack says so.
 
+**2026-09-24/25 — four new features, unbranded in the UI.** "Before you mail
+it" (form check on a filled SAR 7, plus a dated encrypted copy of what was
+mailed), "If your benefits stop" (sourced second-chance dates), "Letters on the
+way" (forecast + "did it come?"), and "Get a letter from a helper's phone"
+(encrypted QR hand-off). Schema v4. **713 tests, 28 suites.** All verified in
+the Simulator except the two-phone hand-off, which needs two real phones. The
+state's-own-translation feature was NOT built (no sourceable official
+Vietnamese/Chinese wording; SPEC §10 is en+es). **Found an SSN bug on the way:
+Review had been saving unredacted OCR text since week 2** — see §13 and NOTES.md.
+JOURNAL.md holds the key points, the panel results and the current script.
+
 **NEXT — the camera path has never run.** Everything proven so far is
 downstream of a file a script put on disk. `DEVICE-TEST.md` is the tap-by-tap
 script for the physical phone: camera, picker, a real inverted capture, and the
@@ -652,6 +675,13 @@ Devansh (an afternoon each).
   Verified against a real Metro bundle, not assumed.
 - **Configuring a thing is not verifying it happened.** This shape has caused
   four separate errors here. Read the generated artifact.
+- **A flag is not a fact.** The cascade redacted its own private copy of the
+  page, returned `redacted: true`, and Review saved the recogniser's ORIGINAL
+  text on the strength of that flag, from week 2 until 2026-09-24. Every test
+  passed: they checked the schema and the matcher, never the text on its way to
+  `saveNotice`. Redaction is now a pipeline stage, and the write gate and the
+  hand-off each run the matcher again. When a boolean vouches for data, test the
+  data.
 - **A corpus re-stage deletes the OCR cache.** It lives at `tools/corpus/ocr/`,
   inside the directory that gets `rm -rf`'d when notices are reshot. Restore it
   from git, then `npm run corpus:ocr -- --only <pattern>` for the images that

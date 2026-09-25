@@ -20,7 +20,14 @@
 // project has no moduleNameMapper on purpose, and the metrics harness imports
 // this island by file path — both resolve a relative path and neither resolves
 // the alias.
-import { extract as cascadeExtract } from '../../extraction/index.ts';
+import { extract as cascadeExtract, redactText } from '../../extraction/index.ts';
 import type { Extractor } from './port.ts';
 
 export const extractNotice: Extractor = cascadeExtract as unknown as Extractor;
+
+/**
+ * The page text with every SSN-shaped run replaced. The cascade redacts its own
+ * copy, but that copy is not returned, so anything the app keeps or sends has to
+ * come through here (CLAUDE.md §3 rule 5).
+ */
+export { redactText };

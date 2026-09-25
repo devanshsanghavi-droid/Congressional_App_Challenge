@@ -283,6 +283,24 @@ describe('no module in the notice-data path names a networking API', () => {
     'src/lib/llm/explain.ts',
     'src/lib/llm/explain-check.ts',
     'src/lib/llm/explain-grammar.ts',
+    // 2026-09-24. The form check reads a photo of a filled-in form; the
+    // timelines, forecasts and follow-up reminders work from confirmed notices;
+    // and the hand-off moves a letter between two phones through their cameras
+    // alone. That last one is the only feature where notice data leaves the
+    // phone at all, so its screens are named here too, not just its protocol.
+    'src/lib/formcheck',
+    'src/lib/handoff',
+    'src/lib/timelines.ts',
+    'src/lib/expected-letters.ts',
+    'src/lib/second-chance-reminders.ts',
+    'src/lib/followup-content.ts',
+    'src/lib/reminder-time.ts',
+    'src/lib/remove-notice.ts',
+    'src/lib/reschedule.ts',
+    'src/app/formcheck',
+    'src/app/handoff',
+    'src/components/QrCode.tsx',
+    'src/components/QrScanner.tsx',
   ];
 
   const FORBIDDEN: readonly { pattern: RegExp; what: string }[] = [
@@ -302,7 +320,7 @@ describe('no module in the notice-data path names a networking API', () => {
 
   function filesUnder(relative: string): string[] {
     const absolute = join(REPO_ROOT, relative);
-    if (relative.endsWith('.ts')) return [absolute];
+    if (/\.tsx?$/.test(relative)) return [absolute];
     const out: string[] = [];
     const walk = (dir: string): void => {
       for (const entry of readdirSync(dir, { withFileTypes: true })) {

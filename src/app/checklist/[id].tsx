@@ -48,6 +48,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, EmptyState, ErrorState, Muted, Screen, Sheet } from '@/components/ui';
 import { loadDocTypes } from '@/lib/content';
+import { SENT_FORM_DOC_TYPE } from '@/lib/db/sent';
 import type { DocType } from '@/lib/content/types';
 import {
   addUserRequirement,
@@ -384,7 +385,9 @@ function AddSheet({
 
   let types: readonly DocType[] = [];
   try {
-    types = loadDocTypes().all;
+    // A copy of a mailed form is something Carta saves, never something a
+    // letter asks for, so it is not offered as a requirement.
+    types = loadDocTypes().all.filter((d) => d.id !== SENT_FORM_DOC_TYPE);
   } catch {
     types = [];
   }

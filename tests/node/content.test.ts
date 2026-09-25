@@ -24,6 +24,7 @@ import {
   parseDocTypes,
   parseCrossReferences,
   parseOffices,
+  parseTimelines,
 } from '../../src/lib/content/parse.ts';
 import {
   ContentError,
@@ -42,8 +43,12 @@ const loadCrossReferences = (): ReturnType<typeof parseCrossReferences> =>
   parseCrossReferences(read('cross_reference.json'));
 const loadOffices = (): ReturnType<typeof parseOffices> => parseOffices(read('offices.json'));
 const loadDocTypes = (): ReturnType<typeof parseDocTypes> => parseDocTypes(read('doc_types.json'));
+const loadTimelines = (): ReturnType<typeof parseTimelines> => parseTimelines(read('timelines.json'));
+// Every pack the ship gate reads, the same four `npm run content:check` passes.
+// A pack left out of this call is a pack whose open items this test never sees:
+// that happened once already, to doc_types (see below).
 const outstanding = (): ReturnType<typeof outstandingVerifications> =>
-  outstandingVerifications(loadCrossReferences(), loadOffices(), loadDocTypes());
+  outstandingVerifications(loadCrossReferences(), loadOffices(), loadDocTypes(), loadTimelines());
 
 describe('content packs load and validate', () => {
   it('loads both packs without throwing', () => {
@@ -236,6 +241,17 @@ describe('the ship gate — what a human still has to confirm', () => {
     'offices: ssa / ssa-cottle',
     'offices: ssa / ssa-downtown',
     'offices: ssa / ssa-fontaine',
+    // Added 2026-09-24 with content/timelines.json. Two restore windows are
+    // high confidence, each quoted from a primary source (the county handbook's
+    // reinstatement waiver, and 42 CFR 435.916 with the county's cure period).
+    // These three lean on a secondary source or on an assumption about the
+    // anchor date, and say which in their TODO_verify.
+    'timelines: calfresh_good_cause_late_report',
+    'timelines: hearing_good_cause_outer_limit',
+    'timelines: calfresh_renewal_after_sar7',
+    // Carta's own Spanish, as with doc_types: cdss.ca.gov is not reachable from
+    // here, so there was no official translation to copy.
+    'timelines: Spanish',
   ];
 
   it('reports exactly the known outstanding items', () => {

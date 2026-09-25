@@ -56,7 +56,28 @@ const IDB = join(HERE, 'vendor', 'idbenv', 'bin', 'idb');
 const COMPANION = join(HERE, 'vendor', 'idb_companion');
 const GRPC_PORT = 10882;
 
-const DEVICE = process.env.CARTA_SIM_UDID ?? 'booted';
+/**
+ * The booted simulator's real UDID. `simctl` accepts the word "booted" and idb
+ * does not: given `--udid booted` it looks for a companion by that name, finds
+ * none, and falls back to spawning one from /usr/local/bin, which is not
+ * installed here. So the word is resolved once, at start, to the actual id.
+ */
+function bootedUdid() {
+  if (process.env.CARTA_SIM_UDID) return process.env.CARTA_SIM_UDID;
+  try {
+    const out = require('node:child_process').execFileSync('xcrun', ['simctl', 'list', 'devices', 'booted', '-j'], {
+      encoding: 'utf8',
+    });
+    for (const devices of Object.values(JSON.parse(out).devices)) {
+      const booted = devices.find((d) => d.state === 'Booted');
+      if (booted) return booted.udid;
+    }
+  } catch {
+    /* fall through */
+  }
+  return 'booted';
+}
+const DEVICE = bootedUdid();
 const BUNDLE = 'com.devansh-s.carta';
 const PORT = Number(process.env.CARTA_SIM_PORT ?? 8090);
 /** Panel width in CSS pixels; 2x for a crisp image without paying for full res. */

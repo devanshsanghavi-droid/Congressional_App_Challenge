@@ -65,6 +65,11 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
     // Foreign keys are OFF by default in SQLite and must be set per connection.
     // Without this, deleting a notice orphans its reminders instead of cascading.
     await db.execAsync('PRAGMA foreign_keys = ON');
+    // Deleted rows are overwritten, not just unlinked. Without this a deleted
+    // notice's name and dates stay in free pages of the file until SQLite reuses
+    // them, which matters most for a helper handing a family's letter to the
+    // family's own phone and then removing it from theirs.
+    await db.execAsync('PRAGMA secure_delete = ON');
     await migrate(db);
     database = db;
     return db;
@@ -120,6 +125,9 @@ export async function deleteAllData(): Promise<void> {
 export const WIPED_TABLES = [
   'requirements',
   'reminders',
+  'followups',
+  'expected_letters',
+  'sent_copies',
   'documents',
   'notices',
   'settings',

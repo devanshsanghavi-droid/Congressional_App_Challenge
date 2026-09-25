@@ -195,3 +195,26 @@ export async function listScheduled(): Promise<Notifications.NotificationRequest
   return Notifications.getAllScheduledNotificationsAsync();
 }
 
+
+/**
+ * One notification at one time, for the things that are not a deadline ladder:
+ * a second-chance date someone asked to be reminded of, or "did your letter
+ * come?". Returns the OS id so the caller can record and later cancel it.
+ */
+export async function scheduleOnce(options: {
+  title: string;
+  body: string;
+  fireAt: number;
+  data: Record<string, string>;
+}): Promise<string> {
+  return Notifications.scheduleNotificationAsync({
+    content: { title: options.title, body: options.body, data: options.data },
+    trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: new Date(options.fireAt) },
+  });
+}
+
+/** `hour`:`minute` local time on the calendar day of `dayMs`. */
+export function atHour(dayMs: number, hour: number, minute: number): number {
+  const d = new Date(dayMs);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate(), hour, minute).getTime();
+}

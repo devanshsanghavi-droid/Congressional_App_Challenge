@@ -35,6 +35,27 @@ So the countdown is the largest thing on the screen, and the plain-language
 explanation exists to earn trust in it — "12 days" is worth nothing unless you
 believe the app read your letter correctly.
 
+## Beyond the deadline
+
+Four things a reminder cannot do, added 2026-09-24/25. Plain names in the app,
+all offline, all verified in the iOS Simulator (not yet on a phone):
+
+- **Before you mail it.** Photograph a filled-in SAR 7. Carta lines it up with
+  the blank form (a homography fitted by RANSAC from the printed lines) and rings
+  a blank YES/NO question, a missing signature, or a date before the report month
+  ends, quoting the form's own rule. It never says "complete". It then keeps a
+  dated, encrypted copy of what was mailed. *Works on this project's
+  demonstration SAR 7 only; the county's layout needs its own template.*
+- **If your benefits stop.** The ways back a stop notice does not print (the
+  CalFresh 30-day restore, the good-cause month, the Medi-Cal 90-day cure), each
+  quoted from its source with "ask your county to confirm".
+- **Letters on the way.** A SAR 7 implies a renewal notice about five months
+  later; if that month passes with nothing scanned, Carta asks whether it came.
+- **Get a letter from a helper's phone.** A navigator confirms a letter with the
+  family and passes it to the family's phone through the two cameras: X25519,
+  HKDF and AES-256-GCM over QR frames, no network, nothing kept on the helper's
+  phone. *Not yet run between two real phones.*
+
 ---
 
 ## Architecture
@@ -123,6 +144,10 @@ is still meaningfully stronger than the alternatives, because **none of it leave
 the phone** — which is the property that actually protects someone.
 
 Also: an SSN is redacted before the first write, in eight formats, with tests.
+**Until 2026-09-24 that was not true of the scan text Review saved**: the
+extractor redacted its own copy and the original was stored. It is now a pipeline
+stage, re-run at every write and every phone-to-phone hand-off, with a test that
+fails on the old code (NOTES.md, 2026-09-24/25).
 Captured images are never written to the camera roll. "Delete everything" in
 Settings erases the database, the image files, the cached previews, the keychain
 entries, and every notification still queued with iOS.

@@ -131,3 +131,13 @@ export async function markCancelled(noticeId: string): Promise<void> {
     noticeId,
   );
 }
+
+/** Mark one tier of one notice's reminders cancelled, leaving the rest of its ladder alone. */
+export async function markTierCancelled(noticeId: string, tier: string): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync(
+    "UPDATE reminders SET state = 'cancelled' WHERE notice_id = ? AND tier = ? AND state = 'scheduled'",
+    noticeId,
+    tier,
+  );
+}

@@ -18,7 +18,7 @@ export const DATABASE_NAME = 'carta.db';
  * Bumped whenever the statements below change. `migrate()` runs everything
  * above the stored version, so migrations are additive and ordered.
  */
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export const MIGRATIONS: readonly (readonly string[])[] = [
   // v1 — the thin spine: a notice, and the reminders scheduled from it.
@@ -139,6 +139,53 @@ export const MIGRATIONS: readonly (readonly string[])[] = [
     // The Vault, later, groups documents by type and sorts by age.
     `CREATE INDEX IF NOT EXISTS idx_documents_type ON documents(doc_type, captured_at)`,
   ],
+
+  // v4 — what happens around the deadline, not only at it.
+  //
+  // Three tables, each hanging off a notice so deleting the notice removes them.
+  [
+    // A second-chance date the person asked to be reminded about. The reminder
+    // itself lives in `reminders` like every other; this row is what lets a
+    // change of reminder time rebuild it, because the date it counts to is not
+    // a column on the notice (it is worked out from one).
+    `CREATE TABLE IF NOT EXISTS followups (
+       id           TEXT PRIMARY KEY,
+       notice_id    TEXT NOT NULL REFERENCES notices(id) ON DELETE CASCADE,
+       rule_id      TEXT NOT NULL,
+       target_date  INTEGER NOT NULL,
+       created_at   INTEGER NOT NULL,
+       UNIQUE (notice_id, rule_id)
+     )`,
+
+    // A letter a confirmed notice implies is coming, so Carta can ask whether
+    // it came. `state`: 'expected' | 'arrived' | 'not_arrived' | 'online'.
+    // A forecast never becomes a deadline: nothing counts down to `ask_on`.
+    `CREATE TABLE IF NOT EXISTS expected_letters (
+       id                  TEXT PRIMARY KEY,
+       source_notice_id    TEXT NOT NULL REFERENCES notices(id) ON DELETE CASCADE,
+       rule_id             TEXT NOT NULL,
+       expect_from         INTEGER NOT NULL,
+       expect_by           INTEGER NOT NULL,
+       ask_on              INTEGER NOT NULL,
+       state               TEXT NOT NULL,
+       matched_notice_id   TEXT,
+       os_notification_id  TEXT,
+       created_at          INTEGER NOT NULL,
+       UNIQUE (source_notice_id, rule_id)
+     )`,
+    `CREATE INDEX IF NOT EXISTS idx_expected_state ON expected_letters(state, ask_on)`,
+
+    // A dated copy of a filled-in form the person photographed before mailing.
+    // The image is a `documents` row like any other, so the Vault shows it; this
+    // links it to the notice it answered.
+    `CREATE TABLE IF NOT EXISTS sent_copies (
+       id           TEXT PRIMARY KEY,
+       notice_id    TEXT NOT NULL REFERENCES notices(id) ON DELETE CASCADE,
+       document_id  TEXT NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
+       sent_at      INTEGER NOT NULL
+     )`,
+    `CREATE INDEX IF NOT EXISTS idx_sent_notice ON sent_copies(notice_id, sent_at)`,
+  ],
 ];
 
 /** What a checklist row is waiting on. */
@@ -213,4 +260,34 @@ export interface ReminderRow {
   urgent: number;
   os_notification_id: string | null;
   state: string;
+}
+
+export type ExpectedLetterState = 'expected' | 'arrived' | 'not_arrived' | 'online';
+
+export interface FollowupRow {
+  id: string;
+  notice_id: string;
+  rule_id: string;
+  target_date: number;
+  created_at: number;
+}
+
+export interface ExpectedLetterRow {
+  id: string;
+  source_notice_id: string;
+  rule_id: string;
+  expect_from: number;
+  expect_by: number;
+  ask_on: number;
+  state: string;
+  matched_notice_id: string | null;
+  os_notification_id: string | null;
+  created_at: number;
+}
+
+export interface SentCopyRow {
+  id: string;
+  notice_id: string;
+  document_id: string;
+  sent_at: number;
 }

@@ -20,10 +20,11 @@ import { AppState, Linking, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, EmptyState, ErrorState, NavList, Screen } from '@/components/ui';
 import { Countdown } from '@/components/Countdown';
+import { LettersOnTheWay } from '@/components/LettersOnTheWay';
 import type { Notice } from '@/lib/db/notices';
 import { listActiveNotices } from '@/lib/db/notices';
 import { color, radius, space, touchTarget, type } from '@/lib/theme/tokens';
-import { countdownDate } from '@/lib/urgency';
+import { countdownDate, daysUntil } from '@/lib/urgency';
 import { resyncDroppedReminders } from '@/lib/reschedule';
 import type { NoticeDates } from '@/lib/urgency';
 
@@ -117,6 +118,13 @@ export default function HomeScreen() {
         {/* Reachable before the first notice too: "where do I go" is a question
             someone has on day one, often before they have a letter to scan. */}
         <View style={styles.moreRow}>
+          {/* The family's phone is usually empty when a helper hands a letter
+              over, so the way in has to be here and not only under a list. */}
+          <Button
+            title={t('handoff.receiveNav')}
+            variant="secondary"
+            onPress={() => router.push('/handoff/receive')}
+          />
           <Button
             title={t('where.title')}
             variant="secondary"
@@ -137,7 +145,11 @@ export default function HomeScreen() {
     <Screen footer={capture}>
       {notices.map((notice) => {
         const dates = datesOf(notice);
-        const hasDeadline = countdownDate(dates) !== undefined;
+        // A deadline still ahead. One that has passed has no reminders because
+        // there is nothing left to remind about, and blaming notifications for
+        // that sent people to iOS Settings to fix something that was not broken.
+        const target = countdownDate(dates);
+        const hasDeadline = target !== undefined && daysUntil(target, now) >= 0;
         const program = notice.programId ?? t('common.unknownProgram');
         const action = t(`review.actions.${notice.actionType}`, { defaultValue: notice.actionType });
 
@@ -187,11 +199,15 @@ export default function HomeScreen() {
           keeps the affordance and gives the weight back. The disclaimer sits
           BELOW it: legally required, but it was separating navigation from
           content and that is part of why the row read as fine print. */}
+      {/* Below every countdown, never above one: a forecast is not a deadline. */}
+      <LettersOnTheWay nowMs={now} />
+
       <View style={styles.moreRow}>
         <NavList
           items={[
             { key: 'vault', title: t('vault.title'), onPress: () => router.push('/vault') },
             { key: 'where', title: t('where.title'), onPress: () => router.push('/where') },
+            { key: 'handoff', title: t('handoff.receiveNav'), onPress: () => router.push('/handoff/receive') },
             { key: 'settings', title: t('settings.title'), onPress: () => router.push('/settings') },
           ]}
         />

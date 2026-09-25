@@ -30,6 +30,7 @@ import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 
 import type { ExtractedNotice, FieldKey } from '@/lib/extraction-port/port';
 import { FIELD_ORDER, effectiveRisk, fieldNeedingAttention } from '@/lib/extraction-port/port';
+import { redactText } from '@/lib/extraction-port/adapter';
 import { saveNotice, setImageRef } from '@/lib/db/notices';
 import { seedFromLetter } from '@/lib/db/checklist';
 import { discardCapture, storeCaptureEncrypted } from '@/lib/db/images';
@@ -39,6 +40,7 @@ import { recordScheduled, reconcileWithOs } from '@/lib/db/reminders';
 import { listScheduled, requestPermission, scheduleForNotice } from '@/lib/notifications';
 import { letterDocuments } from '@/lib/reminder-documents';
 import { reminderTime } from '@/lib/reschedule';
+import { afterNoticeSaved } from '@/lib/expected-letters';
 import { useCaptureStore } from '@/lib/store/capture';
 import { startTrace } from '@/lib/diagnostics/trace';
 import { rememberTrace } from '@/lib/diagnostics/last-trace';
@@ -59,6 +61,7 @@ export default function ReviewScreen() {
   const router = useRouter();
   const pending = useCaptureStore((s) => s.pending);
   const clear = useCaptureStore((s) => s.clear);
+  const setPending = useCaptureStore((s) => s.setPending);
 
   const [fields, setFields] = useState<ExtractedNotice>(() => pending?.extraction.fields ?? {});
   const [saving, setSaving] = useState(false);
@@ -83,7 +86,7 @@ export default function ReviewScreen() {
 
   /** Abandon this capture: bin the temporary photo, clear the store, go Home. */
   const discard = useCallback(() => {
-    if (pending) {
+    if (pending && pending.photoUri !== '') {
       try {
         discardCapture(pending.photoUri);
       } catch {
@@ -105,12 +108,17 @@ export default function ReviewScreen() {
     try {
 
       const id = await recorder.step('save', async () => {
+        // The write gate (CLAUDE.md §3 rule 5). The pipeline already redacted
+        // this text, and a hand-off redacts what it receives, but this is the
+        // line that writes, so it runs the matcher itself rather than trusting
+        // every path that can fill the store to have done it.
+        const safe = pending.extraction.redacted ? redactText(pending.ocr.text) : undefined;
         const noticeId = await saveNotice({
           fields,
           // The scaffold extractor has no redaction matcher and says so, which is
           // why the OCR text is withheld rather than stored unredacted.
           redacted: pending.extraction.redacted,
-          ...(pending.extraction.redacted ? { ocrText: pending.ocr.text } : {}),
+          ...(safe ? { ocrText: safe.text, containedSsn: safe.containedSsn } : {}),
           locale: i18n.language,
         });
         return { value: noticeId, detail: { redacted: pending.extraction.redacted } };
@@ -133,6 +141,9 @@ export default function ReviewScreen() {
       // encrypting the text and not the image would protect the copy and leave
       // the original.
       await recorder.step('encrypt-image', async () => {
+        // A letter from a helper's phone arrives as confirmed fields and text,
+        // never as a photo, so there is nothing to keep or delete.
+        if (pending.photoUri === '') return { value: undefined, detail: { kept: false, handoff: true } };
         if (await getBooleanSetting(SETTINGS.deleteSourceImage)) {
           // Default: the photo's job ended when the text came out of it (SPEC §5).
           discardCapture(pending.photoUri);
@@ -202,9 +213,13 @@ export default function ReviewScreen() {
         Alert.alert(t('review.noRemindersTitle'), t('review.noRemindersBody'));
       }
 
+      // The letter this one implies is coming next, and whether this one is a
+      // letter Carta was already waiting for. Never throws: a forecast must not
+      // be able to lose the notice that was just confirmed.
+      await afterNoticeSaved(id);
 
-        clear();
-        router.replace('/');
+      clear();
+      router.replace('/');
     } catch (error) {
       // A save that fails must not leave the button spinning forever, and the
       // user must be told rather than left looking at a screen that did
@@ -218,6 +233,14 @@ export default function ReviewScreen() {
       setSaving(false);
     }
   }, [pending, fields, clear, router, i18n.language, t]);
+
+  /** For a helper: move this letter to the family's phone instead of saving it here. */
+  const sendInstead = useCallback(() => {
+    if (!pending) return;
+    // The fields as corrected on this screen, not as first read.
+    setPending({ ...pending, extraction: { ...pending.extraction, fields } });
+    router.push('/handoff/send');
+  }, [pending, fields, setPending, router]);
 
   if (!pending) {
     // Reached by opening Review with nothing in flight — a reload, or coming
@@ -251,10 +274,27 @@ export default function ReviewScreen() {
             disabled={saving}
             onPress={discard}
           />
+          {/* A helper's phone should not keep a family's letter. Offered only
+              for a photo taken here: a letter that just arrived from another
+              phone is the family's, and it goes no further. */}
+          {pending.handoffCheckCode === undefined ? (
+            <Button
+              title={t('handoff.give')}
+              variant="quiet"
+              disabled={saving}
+              onPress={sendInstead}
+              accessibilityHint={t('handoff.giveHint')}
+            />
+          ) : null}
           <Caption>{t('disclaimer.notLegalAdvice')}</Caption>
         </>
       }
     >
+      {pending.handoffCheckCode !== undefined ? (
+        <View style={styles.handoff} accessibilityRole="alert">
+          <Body>{t('handoff.reviewBanner', { code: pending.handoffCheckCode })}</Body>
+        </View>
+      ) : null}
       <Body>{t('review.intro')}</Body>
 
       {FIELD_ORDER.map((key) => {
@@ -367,6 +407,13 @@ export default function ReviewScreen() {
 
 const styles = StyleSheet.create({
   emptyTitle: { ...type.title, color: color.text },
+  handoff: {
+    padding: space.md,
+    borderRadius: radius.md,
+    backgroundColor: color.accentSoft,
+    borderWidth: 1,
+    borderColor: color.accent,
+  },
 
   field: {
     gap: space.sm,

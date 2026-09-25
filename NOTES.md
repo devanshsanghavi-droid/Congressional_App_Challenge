@@ -5420,3 +5420,140 @@ all vary, feeding one constant that would have been wrong.
 `idb describe` also reports density 3.0 and 1206x2622 px, which is where the
 scale factor comes from rather than being inferred from the device name.
 
+
+## 2026-09-24/25 — Four new features, one privacy bug found on the way, one feature not built
+
+Built from the feature research of 2026-09-24 (five candidates, scored by a
+simulated panel). Named plainly in the app, not branded: the research names
+("Red Pen", "Clock Map", "Ghost Letters", "Hand-Off Beam") appear nowhere a user
+can see them.
+
+### What was built
+
+| In the app | Where | What it does |
+|---|---|---|
+| **Before you mail it** | Notice Detail, SAR 7 letters only | Photograph the filled-in form. Carta lines it up with the blank form, looks inside every YES/NO box, along the signature line, and reads the handwritten date against the report month. Rings each spot on the photo, green or red, and quotes the form's own rule for each. Never says "complete". |
+| **Save a copy of what I'm mailing** | End of the form check | A dated, encrypted photo of exactly what went in the envelope, filed in Your papers and linked from the letter. The useful half of "Sealed Envelope"; the cryptographic-receipt half was cut. |
+| **If your benefits stop** | Notice Detail, under "By when" | The ways back a stop notice implies but does not print: the CalFresh 30-day restore window, the good-cause month, the Medi-Cal 90-day cure, the 180-day outer limit on a hearing. Each with the rule word for word, its source and the day it was checked. A reminder only if the person taps for one. |
+| **Letters on the way** | Home, below every countdown | A confirmed SAR 7 implies a renewal notice about five months later. A quiet line until the month has passed with nothing scanned; then "Did it come?" with came / scan it / not yet / never came / online. "Never came" shows the county's numbers. |
+| **Get a letter from a helper's phone** | Home (and its empty state); Review for the helper | A navigator confirms a letter with the family, then sends it to the family's phone through the two cameras: X25519 + HKDF-SHA256 + AES-256-GCM over a loop of numbered QR frames, a four-digit check code on both screens, the family re-confirms on their own Review, and the helper's phone keeps nothing. |
+
+### The form check, measured
+
+Seven fixtures in `tests/fixtures/formcheck/`: one flat scan and five simulated
+phone photos of a fictional demonstration SAR 7 (perspective, uneven light,
+blur), plus one photograph of a DIFFERENT SAR 7 layout. OCR by the same Apple
+Vision build as the corpus. All seven read exactly as drawn; the other layout is
+refused as `different_form`. About 10 ms per check in Node after decoding.
+
+Calibration numbers, because they are why the thresholds are what they are:
+
+- **Empty boxes first read 0.14–0.17 ink on angled photos.** A few pixels of
+  alignment error put the printed border inside the measured area. Snapping each
+  box to its own printed border and measuring the inner 60% brought every empty
+  box to **0.000**. Marked boxes read **0.40–0.63**. Threshold 0.06.
+- **Signatures 0.053–0.064 against at most 0.0034 blank.** A blank signature
+  area first picked up the printed rule the same way; each writing area is now
+  measured above its own rule. Threshold 0.008.
+- **A false positive on the other layout.** The corpus SAR 7 prints "Did your
+  address change? NO" roughly where the demo form prints question 3, and at the
+  alignment's 0.82 similarity the check judged a box that is not on that page.
+  Fixed twice over: labels must match at 0.9, and the page must carry the demo
+  footer.
+
+In the Simulator, through the real screen and iOS Vision: the half-finished form
+got "Look again at 2 things" (question 2 blank, question 3 both boxes), the
+finished one "Everything Carta checked looks done", and the saved copy landed on
+disk as ciphertext.
+
+**What this does not show.** These are synthetic photographs of a fictional form.
+Accuracy on real phones and real handwriting has not been measured, and the real
+CalSAWS SAR 7 has no template yet: `differentFormBody` says so to the user. A
+template is data (`content/forms/`), so adding one is a content task, not a code
+change.
+
+### The dates, sourced
+
+Every rule in `content/timelines.json` quotes its source verbatim, and
+`content:check` now lists the four that are not high confidence (15 items, up
+from 11). Two are high confidence: the Santa Clara reinstatement waiver ("within
+30 days of the date the household became ineligible", through June 30, 2027) and
+the Medi-Cal 90-day cure (42 CFR 435.916(a)(3)(iii), plus the county's cure
+period page). The good-cause month rests on LSNC's CalFresh guide quoting MPP
+63-508.644, and the 180-day hearing limit on W&I §10951 counted from the notice
+date: both flagged `TODO_verify`. The renewal forecast assumes a 12-month
+certification, which is why "not yet, ask me later" exists. Medi-Cal renewal
+packets are **not** forecast: the only timing found was "informational MC forms
+… at least 60 days prior", which is not enough to ask anyone about a missing
+letter.
+
+### Found on the way: SSNs were being saved
+
+**CLAUDE.md §3 rule 5 was broken, and had been since week 2 (fc33506).** The
+cascade redacts its own copy of the page and reports `redacted: true`, but that
+copy is never returned. Review then saved the recogniser's **original** text on
+the strength of the flag. Any letter that printed an SSN wrote it to the
+database: encrypted, but present. Nothing caught it because the privacy tests
+checked the schema and the matcher, and no test followed the text from the
+pipeline to `saveNotice`.
+
+Found because the hand-off was about to send the same text to another phone.
+Fixed in three places, deliberately redundant: a `redact` stage in the capture
+pipeline right after OCR (where the architecture diagram always said it was),
+the matcher run again at Review's write, and again on every hand-off, sending
+and receiving. `screens.test.tsx` now hands Review unredacted text on purpose
+and asserts no SSN reaches `saveNotice`. **Verified by putting the old line back
+and watching the test fail.**
+
+Existing installs may still hold SSNs in notices saved before this fix. They are
+inside the AES-GCM envelope and never left the phone, but "never persist" was
+not true, and the honest statement is that it is true from this commit on.
+
+### Also found
+
+- **Home blamed notifications for a deadline that had passed.** A letter saved
+  after its due date has nothing to remind about, so `reminder_count` is 0, and
+  the card said notifications were off while two notifications sat in iOS. The
+  warning now needs a deadline still ahead. Test added.
+- **sim-view could not start**: it passed the word `booted` to idb, which wants a
+  real UDID and fell back to a companion path that is not installed. It now
+  resolves the UDID at start.
+- `useLastNotificationResponse` does not exist on web, which crashed the web
+  preview at the root layout. Chosen once at load, so hook order is stable.
+- **`removeNotice` had no caller.** It was written for a helper deleting a letter
+  after handing it over, but the final hand-off never saves the letter on the
+  helper's phone. Rather than delete it, it now backs "Remove this letter" on
+  Notice Detail, behind iOS's destructive confirmation: until now a letter
+  scanned by mistake could only go with "Delete everything".
+
+### Not built: the state's own translations ("Rosetta")
+
+Scored well (4 best-five votes), not built. It needs the state's own Vietnamese
+and Chinese wording for each form revision, and that cannot be sourced from here:
+cdss.ca.gov blocks automated requests, and the Vietnamese PDFs that were fetched
+extract as garbled legacy-encoded text. SPEC §10 limits Carta to English and
+Spanish, and the only form with a template is fictional. Machine translation
+labelled as such would have been possible, but it is exactly what the feature
+was meant to replace.
+
+Also not built, with the panel's reasons: Needs Your Eyes (the guarantee cannot
+be delivered, and Review already risk-tiers fields), Family Voice (does not play
+on a silenced phone, and a recorded voice broke the one-network-call rule as
+designed), Is This Really the County? (could flag the county's real texts, and
+applied CalFresh's replacement cap to cash aid), and The 80-Hour Ledger (two of
+its legal rules were wrong, the target family is exempt, and "under 80 hours"
+reads as a verdict).
+
+### Numbers
+
+713 tests across 28 suites, both projects green; typecheck and lint clean. Four
+new dependencies, all pure JavaScript (no native rebuild): `jpeg-js`,
+`qrcode-generator`, `@noble/curves`, `@noble/hashes`. Schema v4 with
+`PRAGMA secure_delete = ON`. The migration ran on the Simulator's existing
+database on first launch.
+
+**Never run on a physical iPhone:** the form check, the hand-off, and the new
+notification paths. The hand-off in particular has never crossed between two
+phones; the protocol is tested end to end in Node, the receiver's code was
+decoded from a Simulator screenshot by OpenCV, and a full-size 330-character
+frame decodes at 600 to 1110 px, but that is not the same thing.

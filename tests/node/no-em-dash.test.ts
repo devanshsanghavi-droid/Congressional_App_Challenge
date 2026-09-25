@@ -24,7 +24,7 @@ import { join } from 'node:path';
 import { REPO_ROOT } from '../../tools/metrics/corpus.ts';
 
 const LOCALES = ['en', 'es'] as const;
-const PACKS = ['cross_reference.json', 'offices.json', 'doc_types.json'] as const;
+const PACKS = ['cross_reference.json', 'offices.json', 'doc_types.json', 'timelines.json', 'forms/carta-demo-sar7.json'] as const;
 
 /** U+2014 em dash and U+2013 en dash. */
 const DASHES = /[—–]/;

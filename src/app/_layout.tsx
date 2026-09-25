@@ -1,6 +1,7 @@
 import { Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import * as Notifications from 'expo-notifications';
+import { useEffect, useRef } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -78,9 +79,45 @@ function useOnboardingGate(): void {
   }, [router]);
 }
 
+/**
+ * Open the right screen when a reminder is tapped.
+ *
+ * A deadline reminder carries its notice id and opens that notice; a "did it
+ * come?" question carries the forecast's id and opens Home, where the question
+ * is waiting. `useLastNotificationResponse` covers a tap that launched the app
+ * as well as one that arrived while it was open. Each response is handled once:
+ * the hook keeps returning the last one on every render.
+ */
+// Chosen once at load, so the hook order never changes between renders. The
+// web build (dev/web-preview only) has no notification responses at all.
+const useLastResponse: () => Notifications.NotificationResponse | null | undefined =
+  typeof Notifications.useLastNotificationResponse === 'function'
+    ? Notifications.useLastNotificationResponse
+    : () => undefined;
+
+function useNotificationTaps(): void {
+  const router = useRouter();
+  const response = useLastResponse();
+  const handled = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (!response) return;
+    const key = `${response.notification.request.identifier}:${response.notification.date}`;
+    if (handled.current === key) return;
+    handled.current = key;
+    const data = response.notification.request.content.data as Record<string, unknown> | null | undefined;
+    const noticeId = data?.['noticeId'];
+    if (typeof noticeId === 'string' && noticeId !== '') {
+      router.push({ pathname: '/notice/[id]', params: { id: noticeId } });
+      return;
+    }
+    if (typeof data?.['expectedId'] === 'string') router.navigate('/');
+  }, [response, router]);
+}
+
 export default function RootLayout() {
   const { t } = useTranslation();
   useSavedLanguage();
+  useNotificationTaps();
   // Web preview only — a no-op on iOS and Android, where `dev-seed.ts` wins.
   // Delete with dev/web-preview/ before the freeze.
   useEffect(() => {
@@ -105,6 +142,9 @@ export default function RootLayout() {
         <Stack.Screen name="vault" options={{ title: t('vault.title') }} />
         <Stack.Screen name="where" options={{ title: t('where.title') }} />
         <Stack.Screen name="settings" options={{ title: t('settings.title') }} />
+        <Stack.Screen name="formcheck/[id]" options={{ title: t('formcheck.title') }} />
+        <Stack.Screen name="handoff/send" options={{ title: t('handoff.sendTitle') }} />
+        <Stack.Screen name="handoff/receive" options={{ title: t('handoff.receiveTitle') }} />
         {/* No header: onboarding provides its own Skip, and a back chevron into
             a half-finished onboarding is not a state worth having. */}
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />

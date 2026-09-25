@@ -28,6 +28,7 @@
 // broken test rather than a missing await.
 import { render, screen, waitFor, fireEvent } from '@testing-library/react-native';
 import React from 'react';
+import { Alert } from 'react-native';
 
 import '../../src/lib/i18n';
 
@@ -87,9 +88,45 @@ jest.mock('../../src/lib/diagnostics/last-trace', () => ({ rememberTrace: jest.f
 
 jest.mock('../../src/lib/db/images', () => ({
   decryptCaptureForDisplay: jest.fn(),
+  decryptDocumentForDisplay: jest.fn(),
   discardDecryptedPreviews: jest.fn(),
   storeCaptureEncrypted: jest.fn(),
+  storeDocumentEncrypted: jest.fn(),
   discardCapture: jest.fn(),
+}));
+
+// The sections added on 2026-09-24 each read their own table. What they show is
+// covered by the node tests over their pure halves; here they only need to load.
+const mockListWaiting = jest.fn().mockResolvedValue([]);
+jest.mock('../../src/lib/db/expected', () => ({
+  listWaiting: (...a: unknown[]) => mockListWaiting(...a),
+}));
+jest.mock('../../src/lib/expected-letters', () => ({
+  afterNoticeSaved: jest.fn().mockResolvedValue(undefined),
+  answerExpected: jest.fn().mockResolvedValue(undefined),
+  isDue: () => false,
+  letterTitle: (rule: { title: string }) => rule.title,
+  ruleFor: () => undefined,
+  rescheduleAsks: jest.fn().mockResolvedValue(undefined),
+}));
+jest.mock('../../src/lib/db/followups', () => ({
+  listFollowups: jest.fn().mockResolvedValue([]),
+  followupTier: (ruleId: string) => `followup:${ruleId}`,
+}));
+jest.mock('../../src/lib/db/sent', () => ({
+  SENT_FORM_DOC_TYPE: 'sent_form',
+  listSentCopies: jest.fn().mockResolvedValue([]),
+  saveSentCopy: jest.fn(),
+}));
+const mockRemoveNotice = jest.fn().mockResolvedValue(undefined);
+jest.mock('../../src/lib/remove-notice', () => ({
+  removeNotice: (...a: unknown[]) => mockRemoveNotice(...a),
+}));
+const mockRemindedRuleIds = jest.fn().mockResolvedValue(new Set());
+jest.mock('../../src/lib/second-chance-reminders', () => ({
+  remindBefore: jest.fn(),
+  cancelBefore: jest.fn(),
+  remindedRuleIds: (...a: unknown[]) => mockRemindedRuleIds(...a),
 }));
 
 // The model is a ~1 GB optional download; a test must never look for it.
@@ -169,6 +206,17 @@ describe('Home', () => {
     // The SQL orders these; this asserts the screen does not reorder them.
     const countdowns = screen.getAllByLabelText(/days left/i);
     expect(countdowns[0]?.props.accessibilityLabel).toMatch(/^2 /);
+  });
+
+  it('does not blame notifications for a deadline that has already passed', async () => {
+    // Nothing is scheduled for a date in the past, so reminder_count is 0 for a
+    // reason that has nothing to do with permission. Found 2026-09-25 by saving
+    // a SAR 7 whose due date had passed and watching Home say notifications
+    // were off while two notifications sat scheduled in iOS.
+    mockListActiveNotices.mockResolvedValue([noticeAt(-3, { remindersActive: false })]);
+    await render(<HomeScreen />);
+    await screen.findByText(/CalFresh/);
+    expect(screen.queryByText(/No reminders set/i)).toBeNull();
   });
 
   /**
@@ -251,6 +299,64 @@ describe('Review', () => {
     await render(<ReviewScreen />);
     expect(screen.getByText(/No deadline found/i)).toBeTruthy();
   });
+
+  /**
+   * CLAUDE.md §3 rule 5, found broken on 2026-09-24. The cascade redacted its
+   * own copy of the page and reported `redacted: true`, and Review then saved
+   * the recogniser's ORIGINAL text on the strength of that flag. Every capture
+   * that printed an SSN wrote it to the database, encrypted but present. The
+   * pipeline now redacts before anything sees the text, and this screen runs
+   * the matcher again at the write, so this test hands it unredacted text on
+   * purpose: whatever filled the store, the SSN must not reach `saveNotice`.
+   */
+  it('never saves an SSN, even when the text it was handed still has one', async () => {
+    const { saveNotice } = jest.requireMock('../../src/lib/db/notices') as { saveNotice: jest.Mock };
+    saveNotice.mockClear();
+    saveNotice.mockResolvedValue('n_new');
+    useCaptureStore.setState({
+      pending: {
+        photoUri: '',
+        ocr: {
+          text: 'NOTICE OF ACTION\nSSN: 123-45-6789\nAlso 987 65 4321 on file\nDue September 5, 2026',
+          lines: [],
+          width: 1,
+          height: 1,
+          engine: 'apple-vision',
+        },
+        extraction: { fields: { deadlineDate: { value: '2026-09-05', source: 'regex', confidence: 1 } }, redacted: true },
+        trace: { id: 't', startedAt: 0, source: 'camera', stages: [] },
+      } as never,
+    });
+    await render(<ReviewScreen />);
+    fireEvent.press(screen.getByLabelText('Save and set reminders'));
+    await waitFor(() => expect(saveNotice).toHaveBeenCalled());
+    const input = saveNotice.mock.calls[0]?.[0] as { ocrText?: string; containedSsn?: boolean };
+    expect(input.ocrText).toBeDefined();
+    expect(input.ocrText).not.toMatch(/123-45-6789|987 65 4321/);
+    expect(input.ocrText).toContain('[SSN REMOVED]');
+    expect(input.containedSsn).toBe(true);
+  });
+
+  it('offers a helper the way to send the letter on instead of keeping it', async () => {
+    pending({ deadlineDate: { value: '2026-09-05', source: 'regex', confidence: 1 } });
+    await render(<ReviewScreen />);
+    expect(screen.getByLabelText('Send to another phone instead')).toBeTruthy();
+  });
+
+  it('shows the check code on a letter that came from a helper, and no way to send it on again', async () => {
+    useCaptureStore.setState({
+      pending: {
+        photoUri: '',
+        ocr: { text: '', lines: [], width: 0, height: 0, engine: 'handoff' },
+        extraction: { fields: { deadlineDate: { value: '2026-09-05', source: 'regex' } }, redacted: false },
+        trace: { id: 't', startedAt: 0, source: 'handoff', stages: [] },
+        handoffCheckCode: '4821',
+      } as never,
+    });
+    await render(<ReviewScreen />);
+    expect(screen.getByText(/Check code: 4821/)).toBeTruthy();
+    expect(screen.queryByLabelText('Send to another phone instead')).toBeNull();
+  });
 });
 
 // --------------------------------------------------------- Notice Detail
@@ -260,6 +366,21 @@ describe('Notice Detail', () => {
     mockRouteParams = { id: 'n_1' };
     mockGetNoticeText.mockResolvedValue('NOTICE OF ACTION');
     mockGetNoticeRecipientName.mockResolvedValue('MARIA REYES');
+  });
+
+  it('removes one letter only after the person confirms', async () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    mockRemoveNotice.mockClear();
+    mockGetNotice.mockResolvedValue(noticeAt(12));
+    await render(<NoticeDetailScreen />);
+    fireEvent.press(await screen.findByLabelText('Remove this letter'));
+    expect(alert).toHaveBeenCalledWith('Remove this letter?', expect.any(String), expect.any(Array));
+    expect(mockRemoveNotice).not.toHaveBeenCalled();
+    const buttons = alert.mock.calls[0]?.[2] as { text: string; onPress?: () => void }[];
+    buttons.find((b) => b.text === 'Remove')?.onPress?.();
+    await waitFor(() => expect(mockRemoveNotice).toHaveBeenCalledWith('n_1'));
+    expect(mockReplace).toHaveBeenCalledWith('/');
+    alert.mockRestore();
   });
 
   it('renders the four fixed headings in order', async () => {

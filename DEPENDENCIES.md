@@ -43,7 +43,8 @@ library.
 
 | Package | Version | Licence | What it does here |
 |---|---|---|---|
-| `expo-camera` | 57.0.3 | MIT | Photographing notices. |
+| `expo-camera` | 57.0.3 | MIT | **QR scanning for the phone-to-phone hand-off only**, through iOS's own barcode detector. It no longer photographs notices: that moved to the system camera via `expo-image-picker` on 2026-08-26, because `expo-camera` has no tap-to-focus and could not focus on a page at reading distance. A QR code on another phone's screen does not need it. |
+| `jpeg-js` | 0.4.4 | BSD-3-Clause | Decodes a photo's pixels in JavaScript for the form check, which measures ink inside each answer box and along the signature line. `expo-image-manipulator` resizes but never exposes pixels, so the photo is downscaled to a cache JPEG, decoded here, and the cache file deleted. Pure JS: no native module, no rebuild. |
 | `expo-image-manipulator` | 57.0.9 | MIT | Resize and EXIF-rotate before OCR. Note: it cannot grayscale, adjust contrast, or deskew — see NOTES.md, 2026-08-11. |
 | `expo-mlkit-ocr` | 0.2.7 | MIT | The OCR module. Returns text with blocks, lines, words and bounding boxes; used off the shelf, since the user confirms every field. **The name is not the engine.** On Android it is Google ML Kit Text Recognition v2 (`com.google.mlkit:text-recognition:16.0.1`). On iOS, at the plugin's default `iosEngine: "auto"`, it installs no ML Kit pod and compiles Apple Vision instead — verified in `ios/Podfile.lock`, the podspec's `EXPO_MLKIT_OCR_DISABLE_MLKIT` switch, `plugins/withMlkitSimulatorArm64Fix.js`, and the `#if canImport` in the module source. Since iOS is the primary target, **the shipping recogniser on the demo phone is Apple Vision.** |
 
@@ -60,6 +61,9 @@ confirms every field.*
 | `expo-sqlite` | 57.0.1 | MIT | The local database. All notice data lives here and nowhere else. Sensitive columns are encrypted at the field level with a key from `expo-secure-store` — SQLCipher was cut as unnecessary complexity for an equivalent privacy guarantee. |
 | `expo-secure-store` | 57.0.1 | MIT | Holds the database encryption key in the iOS Keychain / Android Keystore. |
 | `expo-crypto` | 57.0.1 | MIT | CSPRNG and SHA-256. Generates the AES key and the per-install case-number salt, and hashes case numbers so the number itself is never stored (CLAUDE.md §3 rule 5). Digest and random only — it has no cipher. |
+| `@noble/curves` | 2.4.0 | MIT | X25519 key agreement for the phone-to-phone hand-off: each phone makes a one-time key pair, and the shared secret never crosses the air. Same author and audit lineage as `@noble/ciphers`; pure JS. |
+| `@noble/hashes` | 2.4.0 | MIT | HKDF-SHA256, which turns the hand-off's shared secret into its AES-256-GCM key and into the four-digit check code both phones show. |
+| `qrcode-generator` | 2.0.4 | MIT | Draws the hand-off's QR codes on the phone, as a GIF data URI so one frame is one native image view rather than a thousand React views. Pure JS, no network. |
 | `@noble/ciphers` | 2.3.0 | MIT | AES-256-GCM for field-level encryption of notice text. Audited, zero dependencies, pure JS, so it runs under Hermes with no native module. Authenticated: a tampered ciphertext throws rather than decrypting to plausible garbage. Chosen over hand-rolling AES, and over SQLCipher which was cut in the v2 re-scope. |
 | `expo-file-system` | 57.0.2 | MIT | Reads and writes captured images inside the app sandbox. Never the camera roll. |
 

@@ -28,6 +28,7 @@ export type StageName =
   | 'acquire'
   | 'resize'
   | 'ocr'
+  | 'redact'
   | 'orientation'
   | 'extract'
   | 'save'
@@ -47,7 +48,7 @@ export interface StageRecord {
 export interface CaptureTrace {
   readonly id: string;
   readonly startedAt: number;
-  readonly source: 'camera' | 'picker' | 'selftest';
+  readonly source: 'camera' | 'picker' | 'selftest' | 'handoff';
   readonly stages: readonly StageRecord[];
   /** The first stage that failed, if any. */
   readonly failedAt?: StageName;
@@ -146,6 +147,10 @@ export const STAGE_HELP: Readonly<Record<StageName, string>> = {
   acquire: 'capture.errorAcquire',
   resize: 'capture.errorResize',
   ocr: 'capture.errorOcr',
+  // Pure string work over text already read; it cannot fail on a real page. If
+  // it ever does, the honest message is the extraction one: the page could not
+  // be processed, and nothing was kept.
+  redact: 'capture.errorExtract',
   orientation: 'capture.errorOrientation',
   extract: 'capture.errorExtract',
   save: 'capture.errorSave',

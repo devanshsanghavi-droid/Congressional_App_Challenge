@@ -38,6 +38,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Body, Button, Caption, Card, EmptyState, ErrorState, Muted, Screen, Sheet } from '@/components/ui';
 import { loadDocTypes, loadOffices } from '@/lib/content';
+import { SENT_FORM_DOC_TYPE } from '@/lib/db/sent';
 import type { DocType, DocumentFreshness } from '@/lib/content/types';
 import { documentAge, groupDocuments } from '@/lib/checklist';
 import { listDocuments } from '@/lib/db/checklist';
@@ -177,8 +178,12 @@ export default function VaultScreen() {
             })}
 
             {/* No rule for this type is a real answer and the screen says so,
-                rather than leaving silence to be read as approval. */}
-            {rule === undefined ? <Caption>{t('vault.noFreshnessRule')}</Caption> : null}
+                rather than leaving silence to be read as approval. Except for a
+                copy of a form already mailed: it is a record, not proof anyone
+                will ask for, so how recent it is has no bearing. */}
+            {rule === undefined && group.docType !== SENT_FORM_DOC_TYPE ? (
+              <Caption>{t('vault.noFreshnessRule')}</Caption>
+            ) : null}
           </Card>
         );
       })}
