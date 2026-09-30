@@ -499,12 +499,24 @@ automated requests**, so the doc-type Spanish is Carta's own and the pack says s
 it" (form check on a filled SAR 7, plus a dated encrypted copy of what was
 mailed), "If your benefits stop" (sourced second-chance dates), "Letters on the
 way" (forecast + "did it come?"), and "Get a letter from a helper's phone"
-(encrypted QR hand-off). Schema v4. **713 tests, 28 suites.** All verified in
+(encrypted QR hand-off). Schema v4. **713 tests, 28 suites** that day; **752**
+after the 2026-09-29 audit (below). All verified in
 the Simulator except the two-phone hand-off, which needs two real phones. The
 state's-own-translation feature was NOT built (no sourceable official
 Vietnamese/Chinese wording; SPEC §10 is en+es). **Found an SSN bug on the way:
 Review had been saving unredacted OCR text since week 2** — see §13 and NOTES.md.
 JOURNAL.md holds the key points, the panel results and the current script.
+
+**2026-09-29 — the claims about the tests were audited before the video used
+them.** Three did not hold. Each is fixed and tested:
+- SSN removal was asserted for 2 formats, not 8.
+- The privacy test skipped every screen; it now scans all of `src/` except
+  `llm/model.ts`.
+- A masked SSN on Social Security letters reached Review as a case number.
+
+**752 tests, 28 suites**, CI green. Held-out core precision is now 6 of 6 (was
+6 of 7: the wrong answer *was* the leaked SSN), disclosed in the README.
+VIDEO-SCRIPT.md is the panel-tested script, with staging notes.
 
 **NEXT — the camera path has never run.** Everything proven so far is
 downstream of a file a script put on disk. `DEVICE-TEST.md` is the tap-by-tap
@@ -682,6 +694,12 @@ Devansh (an afternoon each).
   `saveNotice`. Redaction is now a pipeline stage, and the write gate and the
   hand-off each run the matcher again. When a boolean vouches for data, test the
   data.
+- **Audit a claim about the tests before anyone repeats it.** On 2026-09-29, 3 of
+  19 claims the video was about to make about this suite were not backed by it.
+  Examples: the "8 SSN formats" checked a flag rather than the removal, and the
+  "privacy test" never read a screen. One of the gaps hid a real SSN leak. A test
+  suite is also a claim, and the same rule applies to it: verify the thing, not
+  the description of the thing.
 - **A corpus re-stage deletes the OCR cache.** It lives at `tools/corpus/ocr/`,
   inside the directory that gets `rm -rf`'d when notices are reshot. Restore it
   from git, then `npm run corpus:ocr -- --only <pattern>` for the images that

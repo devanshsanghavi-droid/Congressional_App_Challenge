@@ -1,6 +1,6 @@
 # Carta: the journal
 
-*Last updated 2026-09-25.* One place for the key points: what Carta is, who it
+*Last updated 2026-09-29.* One place for the key points: what Carta is, who it
 helps, what it does now, how it is built, what has been measured, what has not,
 how it did in front of the simulated judges, and the video script that did best.
 The dated decision log with every number is `NOTES.md`; the rules for working in
@@ -125,9 +125,11 @@ uses the plain names in quotes, with no brand names.
   compiling.
 - **Deterministic first.** The fields come from a cascade of patterns, word lists
   and page geometry, not the model. On real photographed letters: 96.9%
-  precision and 87.9% recall on the notices it was built with; on three it had
-  never seen, 6 of the 7 values it filled in were right, and it left the other
-  fields blank rather than guess. 100% precision on every date it schedules on.
+  precision and 87.9% recall on the notices it was built with; on the two
+  held-out letters it had never seen (notice 10 of the held-out three was never
+  photographed), all 6 values it filled in were right, and it left the other 6
+  blank rather than guess. (It was 6 of 7 until 2026-09-29: the one wrong answer
+  was a masked SSN read as a case number, a privacy bug fixed that day.) 100% precision on every date it schedules on.
   The 1.5B model made those fields worse, so it is kept away from them.
 - **The form check** is a homography (the transform that maps the blank form onto
   a tilted photo) fitted by DLT and RANSAC from matching printed lines. Then it
@@ -149,7 +151,8 @@ uses the plain names in quotes, with no brand names.
   The only network call in the app is the optional model download.
 - **Dates are counted in calendar days**, never milliseconds, because across a
   daylight-saving change `(a - b) / 86400000` is 90.04 days, not 90.
-- **713 tests across 28 suites**, typecheck and lint clean, in CI on Ubuntu.
+- **752 tests across 28 suites**, typecheck and lint clean, in CI on Ubuntu.
+  §12 explains what they cover and why they are worth showing.
 
 ## 6. Rules that never bend
 
@@ -186,8 +189,16 @@ uses the plain names in quotes, with no brand names.
 - **Found and fixed on 2026-09-24: SSNs were being saved.** Review had been storing
   the unredacted scan text since week 2, inside the encryption but present. It is
   fixed three ways, with a test that fails on the old code.
-- **Other open items:** the corpus's notice 05 may be mislabelled; the OCR module
-  never sets recognition languages; the 25 million figure is unverified.
+- **Found and fixed on 2026-09-29: a masked SSN offered as a case number.** Social
+  Security letters print the number where a case number goes. The case-number
+  reader took it from the unredacted lines, so it reached Review and its last four
+  were stored. It was also the one wrong answer on the held-out letters. It is
+  fixed, tested, and disclosed in the README.
+- **Other open items:**
+  - the corpus's notice 05 may be mislabelled;
+  - the OCR module never sets recognition languages;
+  - the 25 million figure: the 2026-09-29 fact-checker reported that KFF's tracker
+    says "over 25 million", but confirm it yourself once.
 
 ## 8. Where Carta stands among similar tools
 
@@ -231,6 +242,50 @@ rather than using a fountain code, and the form check runs on a demonstration
 form, not the county's. Read the 50.3 as a score for the plan, not for what
 ships.
 
+### The script panels (2026-09-29)
+
+The script was then judged on its own, in three rounds. All the judges were
+simulated, and each round was blind and order-rotated. There were four personas:
+a Silicon Valley engineering manager, a San Jose benefits-nonprofit director, a
+high-school CS teacher, and a national Top Apps reviewer.
+
+1. **Old script against a first rewrite, 8 judges.** Split 4–4 for the district
+   panel, and 6–2 for the rewrite nationally. The rewrite scored higher on coding
+   (8.3 vs 6.5) but lower on user experience (6.8 vs 7.8), because its testing
+   section had pushed the app off the screen.
+2. **Three new rewrites, each fact-checked, then ranked by 8 judges.** The
+   "five-second" rewrite leads every section with what the family gets. It ranked
+   first with 6 of the 8 judges and was picked for national by all 8. By Borda
+   count (a ranking point score) it got 22 of a possible 24. The district-focused
+   rewrite came second, with the best topic fit (9.1). The first rewrite came
+   last with every judge.
+3. **The winner with the judges' consensus grafts, against the winner as it was,
+   8 judges.** 8–0 for the grafted version, on both district and national. Mean
+   scores: idea 8.4, originality 8.0, UX 8.0, coding 8.1, impact 8.4, fit 9.0,
+   against 8.3, 8.0, 7.4, 7.3, 7.8 and 7.1.
+
+The consensus grafts:
+- restore "more than half who leave are likely still eligible";
+- name San Jose and Santa Clara County in the close;
+- say that fixed rules, not the AI model, read the dates;
+- add an accessibility caption and a CA-16 end card.
+
+**Three adversarial fact-checks** then went over the result: statistics, app
+behaviour, and tests. They found errors that had been sitting in the fact sheet
+and the journal:
+- the held-out letters were **two**, not three;
+- the 23 photos cover **9** notices, not 10;
+- the reminder names the programme, not the form;
+- the family confirms dates and names, not the list of papers.
+
+They also found the three test-suite gaps and the case-number SSN leak that §12
+describes.
+
+A last blind check, 4 judges, compared the corrected script with the 8–0
+version. It came out even: 3–1 district, 2–2 national, all low confidence. So
+the corrections cost nothing measurable, and a producer's timing check cut about
+40 more words for a safe margin under 3:00.
+
 ## 10. What didn't make the cut, and why
 
 Ten candidate features were researched and scored. Four were built, one was
@@ -251,89 +306,236 @@ built in part, and five were not.
 
 ## 11. The video script
 
-The current script, copied from `VIDEO-SCRIPT.md` on 2026-09-25. It is built on
-the card that placed first in the re-score and leads its demo with the form
-check. Your first two sentences are unchanged. About 430 spoken words, 2:42 to
-2:52. The "Do not say", "Do not film" and "Verify before publishing" lists are in
-`VIDEO-SCRIPT.md` and matter as much as the script.
+The current script, copied from `VIDEO-SCRIPT.md` on 2026-09-29. It is the
+winner of the script panels in §9, with every fact-check correction applied, and
+it opens with your two sentences unchanged.
 
-### 0:00 – 0:14 · The statistic
+It is about 2:50 at a normal pace: 365 written words, 378 with the numbers said
+aloud. `VIDEO-SCRIPT.md` also holds the staging notes (several shots need letters
+re-dated for the shoot day), the optional cuts, and the "Do not say" and "Verify
+before publishing" lists. Those matter as much as the script.
 
-> **Shot:** black card, the two figures set in type.
+### 0:00 – 0:18 · The statistic
+
+> **Shot:** slow push-in on a printed benefit letter, dense and grey, with the two
+> figures set in type over it. Small type the first time a letter appears:
+> *Sample letter, not a real person's*. Source caption: **KFF Medicaid Enrollment
+> and Unwinding Tracker**. Delivery: pause after "reason", and say K, F, F as
+> three letters.
 
 "During the 2023 to 2024 Medicaid unwinding, about 25 million people lost
 coverage. Among states that reported a reason, KFF found 69 percent were dropped
 for paperwork, not because anyone found them ineligible."
 
-### 0:14 – 0:30 · Why it matters here
+### 0:18 – 0:37 · Why it matters here
 
-> **Shot:** `ENROLLMENT` struck through, `RETENTION` beneath it.
+> **Shot:** the same letter on a table, an iPhone held over it. One unbroken
+> take: the photo, a thumb confirming the date on Review, and the page becoming
+> Home, the countdown (**14 days**, see the staging notes) filling the screen.
+> Hold one beat. Source caption: **California Policy Lab**.
 
-"In California, families are six times more likely to leave CalFresh in a month
-when paperwork is due, and more than half who leave are likely still eligible.
-Every benefits app I found is built for enrollment. Carta is built for
-retention."
+"In California, households are six times more likely to leave CalFresh, the
+state's food aid, in a month when paperwork is due. More than half who leave are
+likely still eligible. Most benefits tools help people apply. Carta helps them
+stay."
 
-### 0:30 – 0:55 · What it does
+### 0:37 – 0:56 · The deadline, remembered
 
-> **Shot:** Capture → Review → Home. Hold on the countdown for a beat. Cut to
-> the lock-screen reminder.
+> **Shot:** a different angle from the cold take: a close-up of Review, the
+> fields filled in from the photo, a thumb confirming the deadline. Cut to the
+> lock screen: the real reminder from the ladder, long-pressed open so the list
+> of papers shows ("CalFresh: 14 days left · Send the form back... Send: ...").
 
-"Photograph the letter. Carta reads it on the phone, finds the deadline buried
-in the third paragraph, and has you confirm it first, because this is a legal
-document. Then it does what a chatbot can't: it remembers. Home
-is a countdown, and weeks later the reminder names the form and what goes in the
-envelope."
+"Carta reads the letter on the phone, strips out the Social Security number, and
+looks for the deadline. The family confirms every date and name first. Then
+Carta does what a chatbot doesn't: it remembers, and the reminder lists the
+papers the letter asked for."
 
-### 0:55 – 1:30 · Before you mail it
+### 0:56 – 1:17 · Before you mail it
 
-> **Shot:** airplane mode on. Photograph the filled-in form: red rings appear on
-> question 2 and question 3 with "Look again at 2 things before you mail it".
-> Fix the boxes, shoot again: every ring green. Tap "Save a copy of what I'm
-> mailing".
+> **Shot:** caption **Blank boxes, a missing signature, an early date: caught
+> before mailing**. Airplane mode on. Photograph the printed demonstration SAR 7
+> (footer: "CARTA DEMONSTRATION COPY"), filled in by hand with every fault the
+> caption names: question 2 blank, question 3 with both boxes, no signature, and
+> a date inside the report month. The rings land on the photo, red on each, with
+> "Look again at 4 things before you mail it". Jump cut: fix them, shoot again,
+> every ring turns green. **Hold two seconds with no narration.** Tap "Save a copy
+> of what I'm mailing" and hold on the confirmation.
 
-"A quarter of people who tried to renew were told their documents were
-incomplete. So before the envelope is sealed, Carta checks the form. It lines
-the photo up with the blank form and checks every yes-or-no box, the signature
-and the date. One question is blank; another has both boxes marked.
-It quotes the form's own rule and never says 'complete'. The county decides the
-rest. Fix it, shoot again, and it goes green. Then it saves a dated copy of
-exactly what you mailed."
+"Carta can check one form so far: its demonstration copy of the six-month
+report. It lines a photo up with the blank form, circles what needs fixing, and
+never tells you the form is complete; the county decides that."
 
-### 1:30 – 2:00 · After the deadline, and before the letter
+### 1:17 – 1:46 · If benefits stop, and if a letter never comes
 
 > **Shot:** a stop notice's "If your benefits stop" card, then "Where this comes
-> from" with the rule word for word. Cut to Home: "Letters on the way", then the
-> "Did it come?" card.
+> from", pushed in on the source line (Santa Clara County's CalFresh handbook and
+> the checked-on date). During the survey line, a plain title card with the source
+> caption **DHCS Medi-Cal Disenrollment Survey**. Then Home: "Letters on the way"
+> ("Your CalFresh renewal notice"), the "Did it come?" card, "It never came" and
+> the county's phone numbers.
 
-"If benefits do stop, the letter prints the stop date, not the way back. Carta
-works it out from sourced rules, like 30 days to turn the form in so CalFresh
-can restart, and says to confirm with your county. It also
-watches for the letter that never comes. In the state's survey of people dropped
-from Medi-Cal, 47 percent said they never got a renewal form. When the month for
-the next letter passes with nothing scanned, Carta asks: did it come?"
+"If benefits stop anyway, Carta shows time limits the letter doesn't print, like
+30 days to turn in what was missing so CalFresh may start again, all marked 'ask
+your county to confirm'. Nearly half of the people surveyed after losing
+Medi-Cal said they never got a renewal form. After a six-month report, Carta
+expects the CalFresh renewal notice, and if it is late, asks: did it come?"
 
-### 2:00 – 2:15 · The helper
+### 1:46 – 2:12 · Tested like it matters
 
-> **Shot:** the helper's phone looping the QR code, the four-digit check code
-> beside it. (Two phones face to face only once this has worked on two real
-> phones; see "Do not film".)
+> **Shot:** the terminal, the summary lines only, `Tests: 752 passed, 752 total`,
+> for one beat. Then five captions, one at a time, about five seconds each, over
+> the test output and the test files (never over phone footage: the tests run on
+> a computer):
+> **752 tests · run automatically on every update** ·
+> **Internet cut off · 79 recorded scans replayed · every source file checked** ·
+> **A network call planted on purpose: caught**, over that test failing red with
+> the call planted, then green without it (re-create the plant for filming, then
+> revert it) ·
+> **Social Security numbers stripped, written 8 ways · deadlines checked across
+> daylight saving** ·
+> **"You may qualify" wording blocked by a test · 42 tests that test the tests**.
 
-"A navigator helping a family can confirm the letter with them, then pass it to
-the family's phone through the two cameras: encrypted, offline, and the helper's
-phone keeps nothing."
+"A wrong date can cost a family its food, so every update runs 752 tests. The
+privacy test cuts off the internet and fails if anything handling a letter tries
+to go online; it caught a network call planted on purpose. Others make sure a
+Social Security number, written eight ways, is stripped from the saved text."
 
-### 2:15 – 2:45 · How it's built, and the close
+### 2:12 – 2:33 · It leaves a blank rather than guess
 
-> **Shot:** the no-network test running green, then the metrics table, then
-> Home with the disclaimer legible.
+> **Shot:** Review with one field left empty and a thumb typing it in. Then a still
+> frame, held at least six seconds, with two rows: **Letters it was built with:
+> 96.9% of key details it filled in right · 87.9% found** · **2 letters it never
+> saw: 6 of 6 key details it filled in right · 6 of 12 found, the rest left
+> blank**. Small line under both: *scored on a Mac with Apple's text recognition ·
+> 23 phone photos of fictional letters*. End on "In plain words" beside the
+> original English letter, its machine-generated label visible.
 
-"All of it runs on the phone, and a test fails if anything reaches the network.
-The reading is mostly deterministic: 96.9 percent precision on the letters it
-was built with. On three it had never seen, six of seven answers were right, and
-it left the rest blank rather than guess. An on-device language model only
-rewrites the letter in plain words; it is never trusted with a date.
+"On two letters it had never seen, every key detail it filled in was right, and
+the rest it left blank rather than guess. The optional AI model only rewrites
+the letter in plain words; dates are read by fixed rules."
 
-Carta works in English and Spanish, never contacts an agency, and is not legal
-advice. It exists so that paperwork is never the reason a family loses food or
-health care."
+### 2:33 – 2:51 · The close
+
+> **Shot:** Home in Spanish, then in English, with the disclaimer legible.
+> Caption: **Text grows with iPhone text size · screen-reader labels**. End card:
+> **Carta · Congressional App Challenge 2026 · CA-16**.
+
+"Carta works in English and Spanish, never contacts an agency, and is not legal
+advice. It was made for families in San Jose and Santa Clara County, so that
+paperwork is never the reason a family loses food or health care."
+
+## 12. The 752 tests, and why they are worth showing off
+
+*Counted from the full run on 2026-09-29, and audited claim by claim against the
+Jest output, the test files and CI by an independent checker. It was 713 that
+morning. The audit found three claims the suite did not yet back, and fixing them
+took it to 752:*
+- *SSN removal was asserted for only 2 of the 8 formats. 8 tests were added.*
+- *The privacy test skipped every screen. It now scans every source file, which
+  added 26 tests.*
+- *An SSN could reach Review as a case number, a real bug. It was fixed, with 5
+  tests added.*
+
+**752 automated tests in 28 suites, 0 failing, and the run prints nothing but
+the results.** They run in two environments:
+- bare Node: 23 suites, 597 tests;
+- a simulated iPhone React Native environment that renders real screens: 5 suites,
+  155 tests.
+
+CI re-runs typecheck, lint and every test on a clean Ubuntu machine on every
+push to `main` and every pull request; the last run was green. On this Mac, with
+a warm cache, the whole suite takes about 3 seconds by Jest's own timer.
+
+### What they protect
+
+| What | Tests | Suites |
+|---|---|---|
+| Reading the letter right | 296 | extraction contract 234, orientation 29, real-iPhone orientation 7, extraction island 17, extraction port 9 |
+| Measuring honestly | 51 | metrics scoring 25, corpus integrity 26 |
+| Privacy and security | 121 | no-network 96, privacy 10, hand-off 15 |
+| Dates and reminders | 90 | urgency 17, notice mapping 7, timelines 27, timezone 4, vault 13, reminder resync 8, first launch 14 |
+| The form check | 48 | form check 48 |
+| Honest, safe words | 102 | content 22, pack audience 26, explanation check 19, no em dash 9, Settings strings 11, i18n 6, checklist 9 |
+| Screens and accessibility | 44 | screens 25, countdown scaling 12, trace 7 |
+| **Total** | **752** | **28 suites** |
+
+### The ones to name out loud
+
+- **The privacy test cuts off the network (96 tests).**
+  - It booby-traps `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource`,
+    `sendBeacon` and React Native's native networking modules so that any call
+    throws.
+  - With the traps set, it runs extraction and the upside-down check over all 79
+    recorded scans (23 real photos, 56 with simulated damage).
+  - Separately, it reads every other source file in the app, 82 of them, and
+    fails on any network API or hard-coded URL. Each file is its own test. The
+    one file it skips, by name, is the optional AI model download.
+  - A `fetch` planted in the Review screen was caught. Before 2026-09-29 the
+    test only scanned a hand-picked list of pipeline modules, and it would have
+    missed that.
+  - Four tests prove the traps really throw.
+  - It was itself checked by planting a real network call in the deadline code
+    and watching both halves fail.
+- **184 contract checks on 23 real photographs.** Every photo must satisfy 8 rules:
+  every date is a real calendar day, every field names where it came from, no
+  empty strings pretending to be answers, and so on.
+- **The eight SSN formats (18 tests), plus the case number (5).**
+  - For each of 8 ways a Social Security number appears (dashed, spaced, nine bare
+    digits, labelled, "Social Security Number:", non-breaking hyphens, masked
+    `XXX-XX-6789`, and Spanish "Numero de Seguro Social"), the digits must be gone
+    from the saved text. The case number, the phone number and the date on the
+    same page must survive.
+  - A screen-level test feeds Review all 8 at once, on purpose, and checks that
+    none reaches the database.
+  - When the redactor was deliberately broken to flag SSNs without removing them,
+    9 tests failed.
+  - Social Security letters print the number where a case number goes. 5 tests
+    make sure a masked SSN is never offered as the case number, including on
+    every real photograph. Removing the fix fails 4 of them.
+- **Daylight saving.**
+  - Countdowns and the date conversion at the storage boundary are tested across
+    both clock changes; the reminder ladder across the November one.
+  - The suite is pinned to Los Angeles time, and a 4-test suite proves the pin
+    works. It includes a guard against anyone "fixing" a failure by switching to
+    UTC.
+- **Tests of the tests (42, by a strict count).** Their only job is to prove other
+  checks can fail, or are not passing on nothing: "the poison is actually poison",
+  "the audit can actually fire" (every banned phrase pattern must catch its own
+  example), "has strings to check, so a pass is not vacuous", and the timezone
+  suite.
+- **The measuring tools are tested too (51).** 25 tests check the scorer's
+  arithmetic (a date one day off is wrong, a missing answer is not a wrong one).
+  26 check the corpus itself: every photo on disk is mapped, and the story linking
+  notices 01 and 02 is consistent.
+- **Real iPhone photos.** Upside-down detection is tested on OCR from four photos
+  taken on an iPhone 16 Pro, not only on generated images.
+- **Ethics as tests.**
+  - "You may qualify" wording is rejected in English and Spanish.
+  - The AI rewrite may not state any date the family did not confirm, and may not
+    say they are ineligible.
+  - Developer notes can never reach a user's screen.
+  - English and Spanish must match key for key (453 strings each).
+- **Accessibility as a test.** Only the countdown number may cap how large text
+  grows. A test scans every other file for anything that would stop text growing.
+- **Regression tests named after real bugs:**
+  - the "October XXX XXX" string that once reached a user;
+  - "Not yet researched -- add name, address, phone", which once rendered on
+    Where to Go;
+  - the first-launch database race;
+  - Home blaming notifications for a deadline that had already passed;
+  - the SSN bug.
+- **Held-out honesty.** Accuracy is reported separately for letters the code was
+  built against and for letters it never saw. The report refuses to print a
+  percentage from fewer than 3 photos.
+
+### How to say it without overclaiming
+
+- **Say** "Carta runs 752 tests". Do not say "I wrote 752 tests": the README
+  discloses that the code, tests included, was written substantially with AI
+  assistance. What was yours is the testing standard: prove a test can fail, hold
+  letters out, test on a clean machine, and turn every bug into a test.
+- **Say** "run on every update". It runs on pushes to `main` and on pull requests.
+- **Say** "replays 79 recorded scans". Do not say 79 real scans (23 are real
+  photos) or "runs every step on every scan".
+- **Update the count at filming time** to whatever the terminal shows.

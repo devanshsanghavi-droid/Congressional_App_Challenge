@@ -5557,3 +5557,74 @@ notification paths. The hand-off in particular has never crossed between two
 phones; the protocol is tested end to end in Node, the receiver's code was
 decoded from a Simulator screenshot by OpenCV, and a full-size 330-character
 frame decodes at 600 to 1110 px, but that is not the same thing.
+
+## 2026-09-29 — Auditing what we were about to say about the tests: three gaps, one privacy bug
+
+The video was going to flex the test suite, so every claim it would make about
+the tests was handed to an independent checker (a subagent reading the Jest JSON,
+the test files, CI and this log) before it could reach a script. Three claims did
+not hold. Fixing them took the suite from 713 to 752 tests.
+
+**1. SSN removal was asserted for 2 formats, not 8.** The 8-format tests in
+`extraction-contract.test.ts` checked the *flag* (`redacted` implies
+`containedSsn`), not that the digits were gone. A one-off probe showed removal
+worked. Now 8 tests require the digits to be absent from the saved text in every
+format, with the case number, the phone and the date on the same page intact.
+Review's screen test feeds all 8 at once. Breaking the redactor to flag without
+removing fails 9 tests.
+
+**2. The privacy test never looked at the screens.** Its static half read a
+hand-picked list of pipeline modules. Capture, Review, Home, Notice Detail, the
+Vault and every component were outside it, so "fails if anything handling a
+letter reaches the network" was true only of what someone had remembered to
+list. It now reads all of `src/` (82 files, each its own test) and excludes
+exactly one file, `src/lib/llm/model.ts`, by name. Two guard tests hold that
+shape. A `fetch` planted in `review.tsx` is caught.
+
+**3. A masked SSN reached Review as a case number.** Social Security letters
+print the number where a case number goes ("Case Number: XXX-XX-4821",
+corpus notice 08). `findCaseNumber` reads raw OCR lines, not the redacted text,
+so the SSN was offered on Review and, if saved, its last four were stored next
+to the salted hash. That breaks CLAUDE.md §3 rule 5 in the form the redactor's
+own doc comment warns about: "the last four plus a name and an address is not
+anonymous". The reader now refuses anything the SSN matcher recognises. 5 tests;
+removing the fix fails 4.
+
+**It changed a published number, and that is disclosed.** The leaked SSN was the
+one wrong answer on the held-out letters, whose true case number is blank.
+Held-out core precision goes 6 of 7 → 6 of 6; recall is unchanged at 6 of 12;
+in-sample is unchanged (96.9% / 87.9%). It was found by looking at a held-out
+result, so the fix is deliberately a general privacy rule, not something fitted
+to notice 08. The README says all of this beside the table.
+
+**Also:** Review's save test ran into a mock missing `reconcileWithOs` and
+printed a failed save and two `act()` warnings into every run. The output would
+have been on camera. The save now completes inside `act`, and a full run prints
+nothing but results. CI was green on 744e469 with 752.
+
+### The audit also corrected the docs
+
+- The held-out set is **2** photographed letters, not 3. Notice 10 has no photo.
+  The README row now reads "3 (2 photographed)", and the journal said "three"
+  until today.
+- The 23 real photos cover 9 notices, not 10.
+- The reminder names the programme ("CalFresh: 14 days left"), not the form.
+- The family confirms dates, names and fields on Review, but not the list of
+  papers, which reaches the reminder unconfirmed.
+
+### The script, by panel
+
+Three rounds of blind, order-rotated simulated judging (JOURNAL.md §9) and
+three adversarial fact-checks produced the current VIDEO-SCRIPT.md. The first
+cheap A/B round showed position bias: all four judges picked whichever script
+they read second. From then on every panel rotated order. The winning structure
+leads each section with what the family gets. The testing flex survived as one
+28-second section with five captions, after judges docked a 34-second test
+montage for pushing the app off screen.
+
+### Housekeeping
+
+The Simulator had been left booted for four days with its render and Metal
+helpers, plus an `idb_companion` that sim-view spawned detached with `--udid
+booted`. Both were stopped. sim-view now resolves the real UDID (2026-09-24).
+Its companion still outlives the viewer, so stop it by hand after a session.
