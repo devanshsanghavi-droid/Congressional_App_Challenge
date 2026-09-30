@@ -171,12 +171,22 @@ what a holdout exists to reveal.
 | | notices | captures | OCR ceiling | precision | recall |
 |---|---|---|---|---|---|
 | **In-sample** (01–07) | 7 | 21 | 97.7% | **96.9%** | **87.9%** |
-| **Held out** (08–10) | 3 | 2 | 100% | 6 of 7 | 6 of 12 |
+| **Held out** (08–10) | 3 (2 photographed) | 2 | 100% | 6 of 6 | 6 of 12 |
 
 **Read the held-out row as counts, not rates.** Two images is below the harness's
 own `MIN_IMAGES_FOR_RATE`, which refuses to print a percentage for any condition
 that thin — printing one here would be applying a standard to this table that the
 rest of the report rejects.
+
+**This row read 6 of 7 until 2026-09-29, and the change is disclosed rather than
+quietly taken.** The one wrong value was a masked Social Security number
+(`XXX-XX-4821`) that the case-number reader lifted from the SSA letter, notice
+08, whose true case number is blank. That was a privacy bug as well as a wrong
+answer: the SSN's last four were being stored. It was found by an audit that
+looked at a held-out result, so the fix is deliberately general, not fitted to
+that page: the case-number reader now refuses anything the SSN matcher
+recognises, on every letter. Recall did not move (6 of 12), and the in-sample
+row did not change.
 
 ### What the gap means, stated plainly
 

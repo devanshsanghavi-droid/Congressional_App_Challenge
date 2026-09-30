@@ -263,45 +263,22 @@ describe('the notice-data path over the whole corpus', () => {
  */
 describe('no module in the notice-data path names a networking API', () => {
   /**
-   * Directories the pipeline is built from. `src/lib/llm/model.ts` is the one
-   * documented exception in the whole app — the user-initiated, wifi-gated
-   * model download — and it is excluded BY NAME so that adding a second
-   * exception is a visible edit to this list rather than a silent one.
+   * All of src/. `src/lib/llm/model.ts` is the one documented exception in the
+   * whole app — the user-initiated, wifi-gated model download — and it is
+   * excluded BY NAME below so that adding a second exception is a visible edit
+   * to that list rather than a silent one.
    */
-  const ROOTS = [
-    'src/extraction',
-    'src/lib/capture',
-    'src/lib/content',
-    'src/lib/db',
-    'src/lib/extraction-port',
-    'src/lib/ocr',
-    'src/lib/notifications',
-    'src/lib/diagnostics',
-    'src/lib/urgency.ts',
-    'src/lib/dates.ts',
-    'src/lib/checklist.ts',
-    'src/lib/llm/explain.ts',
-    'src/lib/llm/explain-check.ts',
-    'src/lib/llm/explain-grammar.ts',
-    // 2026-09-24. The form check reads a photo of a filled-in form; the
-    // timelines, forecasts and follow-up reminders work from confirmed notices;
-    // and the hand-off moves a letter between two phones through their cameras
-    // alone. That last one is the only feature where notice data leaves the
-    // phone at all, so its screens are named here too, not just its protocol.
-    'src/lib/formcheck',
-    'src/lib/handoff',
-    'src/lib/timelines.ts',
-    'src/lib/expected-letters.ts',
-    'src/lib/second-chance-reminders.ts',
-    'src/lib/followup-content.ts',
-    'src/lib/reminder-time.ts',
-    'src/lib/remove-notice.ts',
-    'src/lib/reschedule.ts',
-    'src/app/formcheck',
-    'src/app/handoff',
-    'src/components/QrCode.tsx',
-    'src/components/QrScanner.tsx',
-  ];
+  const ROOTS = ['src/extraction', 'src/lib', 'src/app', 'src/components'];
+
+  /**
+   * Widened 2026-09-29 from a hand-picked list of pipeline modules to all of
+   * src/. The narrow list left out every screen and component, and screens
+   * handle letter data too (Capture, Review, Home, Notice Detail, the Vault),
+   * so "fails if anything handling a letter reaches the network" was only true
+   * of the modules someone had remembered to list. Now the exceptions are what
+   * is listed, and there is exactly one.
+   */
+  const EXCLUDED = ['src/lib/llm/model.ts'];
 
   const FORBIDDEN: readonly { pattern: RegExp; what: string }[] = [
     { pattern: /\bfetch\s*\(/, what: 'fetch()' },
@@ -326,17 +303,31 @@ describe('no module in the notice-data path names a networking API', () => {
       for (const entry of readdirSync(dir, { withFileTypes: true })) {
         const path = join(dir, entry.name);
         if (entry.isDirectory()) walk(path);
-        else if (/\.tsx?$/.test(entry.name) && !entry.name.endsWith('.test.ts')) out.push(path);
+        else if (/\.tsx?$/.test(entry.name) && !/\.test\.tsx?$/.test(entry.name)) out.push(path);
       }
     };
     walk(absolute);
     return out;
   }
 
-  const files = ROOTS.flatMap(filesUnder);
+  const files = ROOTS.flatMap(filesUnder).filter(
+    (f) => !EXCLUDED.includes(f.replace(`${REPO_ROOT}/`, '')),
+  );
 
   it('found the modules to check', () => {
     expect(files.length).toBeGreaterThan(15);
+  });
+
+  it('excludes exactly one file, the model download, and that file exists', () => {
+    expect(EXCLUDED).toEqual(['src/lib/llm/model.ts']);
+    expect(ROOTS.flatMap(filesUnder).map((f) => f.replace(`${REPO_ROOT}/`, ''))).toContain('src/lib/llm/model.ts');
+  });
+
+  it('covers the screens, not only the pipeline', () => {
+    const names = files.map((f) => f.replace(`${REPO_ROOT}/`, ''));
+    for (const screen of ['src/app/review.tsx', 'src/app/capture.tsx', 'src/app/index.tsx', 'src/app/notice/[id].tsx']) {
+      expect(names).toContain(screen);
+    }
   });
 
   it.each(files.map((f) => [f.replace(`${REPO_ROOT}/`, ''), f]))('%s', (_name, path) => {

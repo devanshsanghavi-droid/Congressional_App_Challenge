@@ -26,7 +26,7 @@
 // without `await` returns a Promise, `screen` is never populated, and every
 // query fails with "`render` function has not been called" — which reads as a
 // broken test rather than a missing await.
-import { render, screen, waitFor, fireEvent } from '@testing-library/react-native';
+import { act, render, screen, waitFor, fireEvent } from '@testing-library/react-native';
 import React from 'react';
 import { Alert } from 'react-native';
 
@@ -78,7 +78,12 @@ jest.mock('../../src/lib/db/settings', () => ({
   getBooleanSetting: jest.fn().mockResolvedValue(true),
   SETTINGS: { deleteSourceImage: 'deleteSourceImage' },
 }));
-jest.mock('../../src/lib/db/reminders', () => ({ recordScheduled: jest.fn() }));
+jest.mock('../../src/lib/db/reminders', () => ({
+  recordScheduled: jest.fn(),
+  // What the OS kept, read back after scheduling. Without it a Review save
+  // throws after the notice is written and the test run prints the failure.
+  reconcileWithOs: jest.fn().mockResolvedValue(0),
+}));
 jest.mock('../../src/lib/notifications', () => ({
   requestPermission: jest.fn().mockResolvedValue(true),
   scheduleForNotice: jest.fn().mockResolvedValue([]),
@@ -317,7 +322,20 @@ describe('Review', () => {
       pending: {
         photoUri: '',
         ocr: {
-          text: 'NOTICE OF ACTION\nSSN: 123-45-6789\nAlso 987 65 4321 on file\nDue September 5, 2026',
+          // Every format the matcher knows, each with its own last four, so a
+          // single survivor names itself in the failure.
+          text: [
+            'NOTICE OF ACTION',
+            '123-45-6781',
+            '123 45 6782',
+            '123456783',
+            'SSN: 123-45-6784',
+            'Social Security Number: 123-45-6785',
+            'SSN 123\u201145\u20116786',
+            'XXX-XX-6787',
+            'Numero de Seguro Social: 123-45-6788',
+            'Due September 5, 2026',
+          ].join('\n'),
           lines: [],
           width: 1,
           height: 1,
@@ -328,13 +346,19 @@ describe('Review', () => {
       } as never,
     });
     await render(<ReviewScreen />);
-    fireEvent.press(screen.getByLabelText('Save and set reminders'));
-    await waitFor(() => expect(saveNotice).toHaveBeenCalled());
+    // Inside act, and drained, so the whole save (and every state update it
+    // makes on the way out) finishes before the assertions run.
+    await act(async () => {
+      fireEvent.press(screen.getByLabelText('Save and set reminders'));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(saveNotice).toHaveBeenCalled();
     const input = saveNotice.mock.calls[0]?.[0] as { ocrText?: string; containedSsn?: boolean };
     expect(input.ocrText).toBeDefined();
-    expect(input.ocrText).not.toMatch(/123-45-6789|987 65 4321/);
+    expect(input.ocrText).not.toMatch(/678[1-8]/);
     expect(input.ocrText).toContain('[SSN REMOVED]');
     expect(input.containedSsn).toBe(true);
+    expect(mockReplace).toHaveBeenCalledWith('/');
   });
 
   it('offers a helper the way to send the letter on instead of keeping it', async () => {

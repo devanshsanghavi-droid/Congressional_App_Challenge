@@ -1,5 +1,5 @@
 {
-  "extractor": "src/extraction/index.ts",
+  "extractor": "null",
   "ocr": {
     "engine": "apple-vision",
     "revision": 3,
@@ -25,11 +25,11 @@
         "form_id": {
           "evidence": "printed",
           "critical": true,
-          "tp": 20,
+          "tp": 0,
           "fp": 0,
-          "fn": 3,
-          "precision": 1,
-          "recall": 0.8695652173913043,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.9565217391304348,
           "ceilingCounts": {
             "hits": 22,
@@ -39,11 +39,11 @@
         "program": {
           "evidence": "printed",
           "critical": false,
-          "tp": 21,
+          "tp": 0,
           "fp": 0,
-          "fn": 2,
-          "precision": 1,
-          "recall": 0.9130434782608695,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
           "ceiling": 1,
           "ceilingCounts": {
             "hits": 23,
@@ -53,11 +53,11 @@
         "agency": {
           "evidence": "semantic",
           "critical": false,
-          "tp": 20,
+          "tp": 0,
           "fp": 0,
-          "fn": 3,
-          "precision": 1,
-          "recall": 0.8695652173913043,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -81,11 +81,11 @@
         "action_type": {
           "evidence": "semantic",
           "critical": true,
-          "tp": 22,
+          "tp": 0,
           "fp": 0,
-          "fn": 1,
-          "precision": 1,
-          "recall": 0.9565217391304348,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -95,11 +95,11 @@
         "recipient_name": {
           "evidence": "printed",
           "critical": false,
-          "tp": 19,
-          "fp": 2,
-          "fn": 4,
-          "precision": 0.9047619047619048,
-          "recall": 0.8260869565217391,
+          "tp": 0,
+          "fp": 0,
+          "fn": 23,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.9130434782608695,
           "ceilingCounts": {
             "hits": 21,
@@ -109,11 +109,11 @@
         "case_number": {
           "evidence": "printed",
           "critical": true,
-          "tp": 21,
-          "fp": 2,
-          "fn": 1,
-          "precision": 0.9130434782608695,
-          "recall": 0.9545454545454546,
+          "tp": 0,
+          "fp": 0,
+          "fn": 22,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.9545454545454546,
           "ceilingCounts": {
             "hits": 21,
@@ -123,11 +123,11 @@
         "deadline_date": {
           "evidence": "printed",
           "critical": true,
-          "tp": 14,
+          "tp": 0,
           "fp": 0,
-          "fn": 4,
-          "precision": 1,
-          "recall": 0.7777777777777778,
+          "fn": 18,
+          "precision": null,
+          "recall": 0,
           "ceiling": 1,
           "ceilingCounts": {
             "hits": 18,
@@ -207,11 +207,11 @@
         "required_docs": {
           "evidence": "semantic",
           "critical": false,
-          "tp": 42,
-          "fp": 8,
-          "fn": 3,
-          "precision": 0.84,
-          "recall": 0.9333333333333333,
+          "tp": 0,
+          "fp": 0,
+          "fn": 45,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -221,11 +221,11 @@
         "notice_date": {
           "evidence": "printed",
           "critical": true,
-          "tp": 12,
+          "tp": 0,
           "fp": 0,
-          "fn": 4,
-          "precision": 1,
-          "recall": 0.75,
+          "fn": 16,
+          "precision": null,
+          "recall": 0,
           "ceiling": 1,
           "ceilingCounts": {
             "hits": 16,
@@ -235,11 +235,11 @@
         "effective_date": {
           "evidence": "printed",
           "critical": true,
-          "tp": 6,
-          "fp": 1,
-          "fn": 6,
-          "precision": 0.8571428571428571,
-          "recall": 0.5,
+          "tp": 0,
+          "fp": 0,
+          "fn": 12,
+          "precision": null,
+          "recall": 0,
           "ceiling": 1,
           "ceilingCounts": {
             "hits": 12,
@@ -249,11 +249,11 @@
         "appeal_deadline": {
           "evidence": "derived",
           "critical": false,
-          "tp": 7,
+          "tp": 0,
           "fp": 0,
-          "fn": 1,
-          "precision": 1,
-          "recall": 0.875,
+          "fn": 8,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -263,11 +263,11 @@
         "aid_paid_pending_deadline": {
           "evidence": "printed",
           "critical": true,
-          "tp": 8,
+          "tp": 0,
           "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
+          "fn": 8,
+          "precision": null,
+          "recall": 0,
           "ceiling": 1,
           "ceilingCounts": {
             "hits": 8,
@@ -404,65 +404,65 @@
       "byFieldCondition": {
         "form_id": {
           "flat": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.5,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "creased": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 5
           },
           "shadow": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "inverted": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
@@ -476,159 +476,159 @@
             "images": 1
           },
           "dim-angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           }
         },
         "program": {
           "flat": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.5,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "creased": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 5
           },
           "shadow": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "inverted": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "blur-attempt": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "dim-angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           }
         },
         "agency": {
           "flat": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.5,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "creased": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "shadow": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "inverted": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
@@ -642,11 +642,11 @@
             "images": 1
           },
           "dim-angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           }
@@ -736,139 +736,139 @@
         },
         "action_type": {
           "flat": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "angled": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "creased": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "shadow": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "inverted": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "blur-attempt": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "dim-angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           }
         },
         "recipient_name": {
           "flat": {
-            "tp": 8,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "angled": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "creased": {
-            "tp": 4,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.8,
-            "recall": 0.8,
+            "tp": 0,
+            "fp": 0,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.8,
             "images": 5
           },
           "shadow": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
@@ -892,9 +892,9 @@
           },
           "dim-angled": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 1,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 1
@@ -902,130 +902,130 @@
         },
         "case_number": {
           "flat": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 0,
-            "precision": 0.875,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
-            "images": 8
+            "images": 7
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "angled": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "creased": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 5
           },
           "shadow": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "inverted": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "blur-attempt": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 1,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 1
           },
           "dim-angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           }
         },
         "deadline_date": {
           "flat": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.8333333333333334,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 6
           },
           "dim": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.5,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           },
           "creased": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 3
           },
           "shadow": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
@@ -1048,20 +1048,20 @@
             "images": 1
           },
           "blur-attempt": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "dim-angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           }
@@ -1303,85 +1303,85 @@
         },
         "required_docs": {
           "flat": {
-            "tp": 12,
-            "fp": 3,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.8571428571428571,
+            "tp": 0,
+            "fp": 0,
+            "fn": 14,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "dim": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 5,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "angled": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.875,
-            "recall": 0.875,
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           },
           "creased": {
-            "tp": 9,
-            "fp": 2,
-            "fn": 0,
-            "precision": 0.8181818181818182,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 9,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 3
           },
           "shadow": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "blur-attempt": {
-            "tp": 4,
-            "fp": 2,
-            "fn": 0,
-            "precision": 0.6666666666666666,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "dim-angled": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           }
         },
         "notice_date": {
           "flat": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.8333333333333334,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 6
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
@@ -1404,11 +1404,11 @@
             "images": 1
           },
           "creased": {
-            "tp": 4,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 4
           },
@@ -1422,40 +1422,40 @@
             "images": 1
           },
           "shadow": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "angled": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           }
         },
         "effective_date": {
           "flat": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.75,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 4
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
@@ -1470,28 +1470,28 @@
           },
           "dim-angled": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 1,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "creased": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 2,
-            "precision": 1,
-            "recall": 0.3333333333333333,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 3
           },
           "shadow": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
@@ -1507,20 +1507,20 @@
         },
         "appeal_deadline": {
           "flat": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 3
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
@@ -1534,67 +1534,67 @@
             "images": 1
           },
           "shadow": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 1
           },
           "creased": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 2
           }
         },
         "aid_paid_pending_deadline": {
           "flat": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 3
           },
           "colour-cast": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "inverted": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "shadow": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 1,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 1
           },
           "creased": {
-            "tp": 2,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 2,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 2
           }
@@ -1814,11 +1814,11 @@
         "form_id": {
           "evidence": "printed",
           "critical": true,
-          "tp": 28,
-          "fp": 3,
-          "fn": 28,
-          "precision": 0.9032258064516129,
-          "recall": 0.5,
+          "tp": 0,
+          "fp": 0,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.5714285714285714,
           "ceilingCounts": {
             "hits": 32,
@@ -1828,11 +1828,11 @@
         "program": {
           "evidence": "printed",
           "critical": false,
-          "tp": 38,
-          "fp": 1,
-          "fn": 18,
-          "precision": 0.9743589743589743,
-          "recall": 0.6785714285714286,
+          "tp": 0,
+          "fp": 0,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.7857142857142857,
           "ceilingCounts": {
             "hits": 44,
@@ -1842,11 +1842,11 @@
         "agency": {
           "evidence": "semantic",
           "critical": false,
-          "tp": 31,
+          "tp": 0,
           "fp": 0,
-          "fn": 25,
-          "precision": 1,
-          "recall": 0.5535714285714286,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -1870,11 +1870,11 @@
         "action_type": {
           "evidence": "semantic",
           "critical": true,
-          "tp": 35,
+          "tp": 0,
           "fp": 0,
-          "fn": 21,
-          "precision": 1,
-          "recall": 0.625,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -1884,11 +1884,11 @@
         "recipient_name": {
           "evidence": "printed",
           "critical": false,
-          "tp": 34,
-          "fp": 3,
-          "fn": 22,
-          "precision": 0.918918918918919,
-          "recall": 0.6071428571428571,
+          "tp": 0,
+          "fp": 0,
+          "fn": 56,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.6071428571428571,
           "ceilingCounts": {
             "hits": 34,
@@ -1898,11 +1898,11 @@
         "case_number": {
           "evidence": "printed",
           "critical": true,
-          "tp": 29,
-          "fp": 7,
-          "fn": 20,
-          "precision": 0.8055555555555556,
-          "recall": 0.5918367346938775,
+          "tp": 0,
+          "fp": 0,
+          "fn": 49,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.5918367346938775,
           "ceilingCounts": {
             "hits": 29,
@@ -1912,11 +1912,11 @@
         "deadline_date": {
           "evidence": "printed",
           "critical": true,
-          "tp": 24,
+          "tp": 0,
           "fp": 0,
-          "fn": 18,
-          "precision": 1,
-          "recall": 0.5714285714285714,
+          "fn": 42,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.7142857142857143,
           "ceilingCounts": {
             "hits": 30,
@@ -1996,11 +1996,11 @@
         "required_docs": {
           "evidence": "semantic",
           "critical": false,
-          "tp": 47,
-          "fp": 14,
-          "fn": 51,
-          "precision": 0.7704918032786885,
-          "recall": 0.47959183673469385,
+          "tp": 0,
+          "fp": 0,
+          "fn": 98,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -2010,11 +2010,11 @@
         "notice_date": {
           "evidence": "printed",
           "critical": true,
-          "tp": 16,
-          "fp": 5,
-          "fn": 26,
-          "precision": 0.7619047619047619,
-          "recall": 0.38095238095238093,
+          "tp": 0,
+          "fp": 0,
+          "fn": 42,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.47619047619047616,
           "ceilingCounts": {
             "hits": 20,
@@ -2024,11 +2024,11 @@
         "effective_date": {
           "evidence": "printed",
           "critical": true,
-          "tp": 12,
+          "tp": 0,
           "fp": 0,
-          "fn": 16,
-          "precision": 1,
-          "recall": 0.42857142857142855,
+          "fn": 28,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.6785714285714286,
           "ceilingCounts": {
             "hits": 19,
@@ -2038,11 +2038,11 @@
         "appeal_deadline": {
           "evidence": "derived",
           "critical": false,
-          "tp": 8,
-          "fp": 4,
-          "fn": 13,
-          "precision": 0.6666666666666666,
-          "recall": 0.38095238095238093,
+          "tp": 0,
+          "fp": 0,
+          "fn": 21,
+          "precision": null,
+          "recall": 0,
           "ceiling": null,
           "ceilingCounts": {
             "hits": 0,
@@ -2052,11 +2052,11 @@
         "aid_paid_pending_deadline": {
           "evidence": "printed",
           "critical": true,
-          "tp": 8,
-          "fp": 4,
-          "fn": 13,
-          "precision": 0.6666666666666666,
-          "recall": 0.38095238095238093,
+          "tp": 0,
+          "fp": 0,
+          "fn": 21,
+          "precision": null,
+          "recall": 0,
           "ceiling": 0.38095238095238093,
           "ceilingCounts": {
             "hits": 8,
@@ -2166,9 +2166,9 @@
         "form_id": {
           "motionblur": {
             "tp": 0,
-            "fp": 2,
+            "fp": 0,
             "fn": 8,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 8
@@ -2183,112 +2183,112 @@
             "images": 8
           },
           "defocus": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "defocus-heavy": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 8,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 8
           },
           "noise": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "underexposed": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "jpeg": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           }
         },
         "program": {
           "motionblur": {
-            "tp": 4,
-            "fp": 1,
-            "fn": 4,
-            "precision": 0.8,
-            "recall": 0.5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.5,
             "images": 8
           },
           "motionblur-diag": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 7,
-            "precision": 1,
-            "recall": 0.125,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.25,
             "images": 8
           },
           "defocus": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "defocus-heavy": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 3,
-            "precision": 1,
-            "recall": 0.625,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.75,
             "images": 8
           },
           "noise": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "underexposed": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "jpeg": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           }
@@ -2313,47 +2313,47 @@
             "images": 8
           },
           "defocus": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "defocus-heavy": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 5,
-            "precision": 1,
-            "recall": 0.375,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "noise": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "underexposed": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "jpeg": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           }
@@ -2425,65 +2425,65 @@
         },
         "action_type": {
           "motionblur": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 7,
-            "precision": 1,
-            "recall": 0.125,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "motionblur-diag": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 7,
-            "precision": 1,
-            "recall": 0.125,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "defocus": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "defocus-heavy": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 3,
-            "precision": 1,
-            "recall": 0.625,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "noise": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "underexposed": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           },
           "jpeg": {
-            "tp": 7,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.875,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 8
           }
@@ -2491,9 +2491,9 @@
         "recipient_name": {
           "motionblur": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 8,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 8
@@ -2508,47 +2508,47 @@
             "images": 8
           },
           "defocus": {
-            "tp": 8,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "defocus-heavy": {
-            "tp": 3,
-            "fp": 1,
-            "fn": 5,
-            "precision": 0.75,
-            "recall": 0.375,
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.375,
             "images": 8
           },
           "noise": {
-            "tp": 8,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "underexposed": {
-            "tp": 8,
+            "tp": 0,
             "fp": 0,
-            "fn": 0,
-            "precision": 1,
-            "recall": 1,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 8
           },
           "jpeg": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.875,
-            "recall": 0.875,
+            "tp": 0,
+            "fp": 0,
+            "fn": 8,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.875,
             "images": 8
           }
@@ -2556,9 +2556,9 @@
         "case_number": {
           "motionblur": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 7,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 7
@@ -2573,49 +2573,49 @@
             "images": 7
           },
           "defocus": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 0,
-            "precision": 0.875,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
-            "images": 8
+            "images": 7
           },
           "defocus-heavy": {
-            "tp": 1,
-            "fp": 2,
-            "fn": 6,
-            "precision": 0.3333333333333333,
-            "recall": 0.14285714285714285,
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.14285714285714285,
-            "images": 8
+            "images": 7
           },
           "noise": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 0,
-            "precision": 0.875,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
-            "images": 8
+            "images": 7
           },
           "underexposed": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 0,
-            "precision": 0.875,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
-            "images": 8
+            "images": 7
           },
           "jpeg": {
-            "tp": 7,
-            "fp": 1,
-            "fn": 0,
-            "precision": 0.875,
-            "recall": 1,
+            "tp": 0,
+            "fp": 0,
+            "fn": 7,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
-            "images": 8
+            "images": 7
           }
         },
         "deadline_date": {
@@ -2629,56 +2629,56 @@
             "images": 6
           },
           "motionblur-diag": {
-            "tp": 1,
+            "tp": 0,
             "fp": 0,
-            "fn": 5,
-            "precision": 1,
-            "recall": 0.16666666666666666,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.3333333333333333,
             "images": 6
           },
           "defocus": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.8333333333333334,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 6
           },
           "defocus-heavy": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 3,
-            "precision": 1,
-            "recall": 0.5,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.6666666666666666,
             "images": 6
           },
           "noise": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.8333333333333334,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 6
           },
           "underexposed": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.8333333333333334,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 6
           },
           "jpeg": {
-            "tp": 5,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.8333333333333334,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 6
           }
@@ -3011,9 +3011,9 @@
         "required_docs": {
           "motionblur": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 14,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": null,
             "images": 5
@@ -3028,47 +3028,47 @@
             "images": 5
           },
           "defocus": {
-            "tp": 11,
-            "fp": 3,
-            "fn": 3,
-            "precision": 0.7857142857142857,
-            "recall": 0.7857142857142857,
+            "tp": 0,
+            "fp": 0,
+            "fn": 14,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "defocus-heavy": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 14,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "noise": {
-            "tp": 12,
-            "fp": 3,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.8571428571428571,
+            "tp": 0,
+            "fp": 0,
+            "fn": 14,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "underexposed": {
-            "tp": 12,
-            "fp": 3,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.8571428571428571,
+            "tp": 0,
+            "fp": 0,
+            "fn": 14,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           },
           "jpeg": {
-            "tp": 12,
-            "fp": 3,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.8571428571428571,
+            "tp": 0,
+            "fp": 0,
+            "fn": 14,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 5
           }
@@ -3093,47 +3093,47 @@
             "images": 6
           },
           "defocus": {
-            "tp": 4,
-            "fp": 1,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.8333333333333334,
             "images": 6
           },
           "defocus-heavy": {
             "tp": 0,
-            "fp": 1,
+            "fp": 0,
             "fn": 6,
-            "precision": 0,
+            "precision": null,
             "recall": 0,
             "ceiling": 0,
             "images": 6
           },
           "noise": {
-            "tp": 4,
-            "fp": 1,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.8333333333333334,
             "images": 6
           },
           "underexposed": {
-            "tp": 4,
-            "fp": 1,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.8333333333333334,
             "images": 6
           },
           "jpeg": {
-            "tp": 4,
-            "fp": 1,
-            "fn": 2,
-            "precision": 0.8,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 6,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.8333333333333334,
             "images": 6
           }
@@ -3158,11 +3158,11 @@
             "images": 4
           },
           "defocus": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.75,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 4
           },
@@ -3176,29 +3176,29 @@
             "images": 4
           },
           "noise": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.75,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 4
           },
           "underexposed": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.75,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 4
           },
           "jpeg": {
-            "tp": 3,
+            "tp": 0,
             "fp": 0,
-            "fn": 1,
-            "precision": 1,
-            "recall": 0.75,
+            "fn": 4,
+            "precision": null,
+            "recall": 0,
             "ceiling": 1,
             "images": 4
           }
@@ -3223,11 +3223,11 @@
             "images": 3
           },
           "defocus": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 3
           },
@@ -3241,29 +3241,29 @@
             "images": 3
           },
           "noise": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 3
           },
           "underexposed": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 3
           },
           "jpeg": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": null,
             "images": 3
           }
@@ -3288,11 +3288,11 @@
             "images": 3
           },
           "defocus": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.6666666666666666,
             "images": 3
           },
@@ -3306,29 +3306,29 @@
             "images": 3
           },
           "noise": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.6666666666666666,
             "images": 3
           },
           "underexposed": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.6666666666666666,
             "images": 3
           },
           "jpeg": {
-            "tp": 2,
-            "fp": 1,
-            "fn": 1,
-            "precision": 0.6666666666666666,
-            "recall": 0.6666666666666666,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "precision": null,
+            "recall": 0,
             "ceiling": 0.6666666666666666,
             "images": 3
           }
@@ -4244,9 +4244,7 @@
         "deadline_date": true,
         "appeal_window_days": true
       },
-      "spurious": [
-        "case_number"
-      ]
+      "spurious": []
     },
     "hcv-angled-20.jpg": {
       "notice": "09",
@@ -5156,9 +5154,7 @@
         "deadline_date": true,
         "appeal_window_days": true
       },
-      "spurious": [
-        "case_number"
-      ]
+      "spurious": []
     },
     "ssa-synth-defocus-heavy.jpg": {
       "notice": "08",
@@ -5173,9 +5169,7 @@
         "deadline_date": true,
         "appeal_window_days": false
       },
-      "spurious": [
-        "case_number"
-      ]
+      "spurious": []
     },
     "ssa-synth-noise.jpg": {
       "notice": "08",
@@ -5190,9 +5184,7 @@
         "deadline_date": true,
         "appeal_window_days": true
       },
-      "spurious": [
-        "case_number"
-      ]
+      "spurious": []
     },
     "ssa-synth-underexposed.jpg": {
       "notice": "08",
@@ -5207,9 +5199,7 @@
         "deadline_date": true,
         "appeal_window_days": true
       },
-      "spurious": [
-        "case_number"
-      ]
+      "spurious": []
     },
     "ssa-synth-jpeg.jpg": {
       "notice": "08",
@@ -5224,9 +5214,7 @@
         "deadline_date": true,
         "appeal_window_days": true
       },
-      "spurious": [
-        "case_number"
-      ]
+      "spurious": []
     }
   }
 }

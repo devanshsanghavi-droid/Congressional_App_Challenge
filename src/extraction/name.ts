@@ -17,7 +17,7 @@
  */
 
 import { compareKey, fold, tidy } from './text.ts';
-import { looksRedacted } from './redact.ts';
+import { looksRedacted, redact } from './redact.ts';
 import type { Found } from './geometry.ts';
 import type { OcrLine } from './types.ts';
 
@@ -145,6 +145,15 @@ export function findCaseNumber(lines: readonly OcrLine[]): Found<string> | undef
     const value = match?.[1];
     if (value === undefined) continue;
     if (!/\d/.test(value)) continue;
+    // Social Security letters print the number itself, masked, where a case
+    // number goes: "Case Number: XXX-XX-4821". This function reads the raw
+    // lines, not the redacted text, so without this check the masked SSN
+    // reached Review as a case number and its last four were stored beside the
+    // hash (CLAUDE.md §3 rule 5). Anything the SSN matcher recognises is not
+    // offered; the family types a real case number in if there is one.
+    // Found 2026-09-29 by an audit of corpus notice 08, whose ground truth has
+    // no case number at all.
+    if (redact(value).containedSsn) continue;
     return { value: fold(value).toUpperCase(), lines: [i] };
   }
   return undefined;

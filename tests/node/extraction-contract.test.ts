@@ -29,7 +29,7 @@
  * second failure mode, hard, and leaves the first to the metrics harness.
  */
 
-import { extractNotice } from '../../src/lib/extraction-port/adapter.ts';
+import { extractNotice, redactText } from '../../src/lib/extraction-port/adapter.ts';
 import type {
   ExtractionInput,
   ExtractionResult,
@@ -474,6 +474,34 @@ describe('redaction is claimed only when it happened', () => {
     if (result.redacted) expect(result.containedSsn).toBe(true);
   });
 
+  /**
+   * The flag above says the matcher ran. This says it worked: the digits are
+   * gone from the text that gets saved, in every format, and nothing else on
+   * the page was taken with them. Added 2026-09-29, when an audit of the claims
+   * made about this suite found the removal itself was asserted for only two
+   * formats (in screens.test.tsx), while all eight were checked for the flag.
+   */
+  it.each(SSN_FORMS)('removes %s from the saved text, not just flags it', (form) => {
+    const page = [
+      'COUNTY OF SANTA CLARA',
+      'MARIA REYES',
+      form,
+      'Case Number: 01-4472-9931',
+      'Phone: (408) 758-3401',
+      'SUBMIT BY: SEPTEMBER 5, 2026',
+    ].join('\n');
+    const { text, containedSsn } = redactText(page);
+    expect(containedSsn).toBe(true);
+    expect(text).toContain('[SSN REMOVED]');
+    expect(text).not.toMatch(/6789/);
+    expect(text).not.toContain(form.replace(/^[^:]*:\s*/, ''));
+    // Over-redaction would cost the person their case number or the county's
+    // phone number, both of which Review and Where to Go show back to them.
+    expect(text).toContain('01-4472-9931');
+    expect(text).toContain('(408) 758-3401');
+    expect(text).toContain('SEPTEMBER 5, 2026');
+  });
+
   it('never reports removing an SSN without also claiming redaction', () => {
     // containedSsn means "the matcher found one and took it out". There is no
     // way to know that without having run, so the two flags cannot disagree in
@@ -567,6 +595,33 @@ describe('an approval', () => {
  * your letter", and a plausible-looking wrong name is exactly the thing a tired
  * person taps past.
  */
+describe('a Social Security number is never offered as a case number', () => {
+  // Social Security letters print the number where a case number goes. The
+  // case-number reader works on the raw lines, so until 2026-09-29 the masked
+  // SSN on corpus notice 08 reached Review as the case number and its last four
+  // were stored. It was also the one wrong answer on the held-out letters.
+  it.each(['Case Number: XXX-XX-4821', 'Case Number: 123-45-6789', 'Case Number: 123456789'])(
+    'leaves the field empty for %s',
+    (line) => {
+      const result = extractNotice(synthetic(['SOCIAL SECURITY ADMINISTRATION', 'MARIA REYES', line]));
+      expect(result.fields.caseNumber?.value).toBeUndefined();
+    },
+  );
+
+  it('still reads an ordinary case number', () => {
+    const result = extractNotice(synthetic(['COUNTY OF SANTA CLARA', 'MARIA REYES', 'Case Number: 01-4472-9931']));
+    expect(result.fields.caseNumber?.value).toBe('01-4472-9931');
+  });
+
+  it('offers no SSN-shaped case number on any real photograph', () => {
+    expect(realCaptures.length).toBe(23);
+    for (const { file, record } of realCaptures) {
+      const value = extractNotice(inputFor(record)).fields.caseNumber?.value;
+      if (value !== undefined) expect(`${file}: ${value}`).not.toMatch(/[0-9Xx]{3}-[0-9Xx]{2}-\d{4}$/);
+    }
+  });
+});
+
 describe('the recipient name is never a different name', () => {
   it('has fixtures that still contain what they are testing', () => {
     // Guards the way this suite decays: someone tidies a fixture, the distractor
