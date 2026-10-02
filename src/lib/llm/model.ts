@@ -4,7 +4,9 @@ import { Directory, File, Paths } from 'expo-file-system';
  * Model catalogue and on-device file management.
  *
  * Downloading the model is the *only* network call in Carta (SPEC §0). It is
- * user-initiated from Settings, wifi-gated, shown with a clear size warning,
+ * user-initiated from Settings, shown with a clear size warning and a
+ * "use wifi" note (the spec asks for a wifi gate; the app does not check the
+ * network type yet),
  * and it touches no notice data — the notice pipeline itself never opens a
  * socket, which is what `no-network.test.ts` enforces. Keeping the download in
  * this module, well away from anything that handles notices, is what makes that

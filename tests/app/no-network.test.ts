@@ -7,7 +7,7 @@
  * ever reaches the network**. Not "we do not call an API", not "the data is
  * encrypted in transit" — the data never leaves the phone, so there is nothing
  * in transit. Exactly one network call exists in the whole app: the
- * user-initiated, wifi-gated model download in Settings, which touches no
+ * user-initiated model download in Settings, which touches no
  * notice data and lives outside this pipeline.
  *
  * A claim like that is worth nothing as prose. This is the test that makes it
@@ -264,7 +264,7 @@ describe('the notice-data path over the whole corpus', () => {
 describe('no module in the notice-data path names a networking API', () => {
   /**
    * All of src/. `src/lib/llm/model.ts` is the one documented exception in the
-   * whole app — the user-initiated, wifi-gated model download — and it is
+   * whole app — the user-initiated model download — and it is
    * excluded BY NAME below so that adding a second exception is a visible edit
    * to that list rather than a silent one.
    */

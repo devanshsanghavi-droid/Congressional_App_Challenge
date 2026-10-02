@@ -5628,3 +5628,32 @@ The Simulator had been left booted for four days with its render and Metal
 helpers, plus an `idb_companion` that sim-view spawned detached with `--udid
 booted`. Both were stopped. sim-view now resolves the real UDID (2026-09-24).
 Its companion still outlives the viewer, so stop it by hand after a session.
+
+## 2026-10-01 — The video gains its required elements and its engineering; three stale claims corrected
+
+**The script was missing two things the CAC rules require.** The 2026 rules
+require each participant's name and the tools and coding languages used. The
+2026-09-29 script had neither. Five subagents mined the repo for technical
+highlights; five more adversarially verified each one against the code and this
+log, re-running `npm run probe:llm` and the jest suites. The best of them were
+written into two variants. Eight blind, order-rotated judges, each told about the
+rules and about a chatbot-wrapper rival entry, preferred variant A 7–1.
+
+The decisive line was the AI-vs-rules measurement from 2026-08-20, re-run today
+with identical totals. On 5 test photos, Qwen2.5-1.5B got 4 dates wrong and
+invented 2; fixed rules got 0 and 0.
+
+VIDEO-SCRIPT.md is now the full recording plan plus the script, about 2:46.
+
+**Corrected along the way:**
+- **"Wifi-gated" was never true.** `settings.tsx` says "use wifi" but checks
+  nothing. README, the no-network test comment and `model.ts` no longer claim it.
+  CLAUDE.md §3 flags the gap, since the SPEC asks for a gate.
+- **CLAUDE.md said nothing had ever run on a physical iPhone, and that the
+  latency gate would never be measured.** Both were stale since 2026-08-26/28,
+  when the camera path and the model ran on an iPhone 16 Pro: load 9.1 s, first
+  token 0.7–1.3 s after loading, 29–41 tok/s.
+- **"First word in about a second" is false from the tap.** `explain()` loads the
+  model on every tap (about 9 s) and releases it afterwards. The video jump-cuts
+  through "Getting ready…" and the script never implies otherwise. Keeping the
+  model resident between taps would fix it properly; not done.

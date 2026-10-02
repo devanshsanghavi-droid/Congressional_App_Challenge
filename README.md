@@ -116,7 +116,7 @@ Three rules this shape encodes:
 
 ## Privacy
 
-Carta makes **exactly one network call**: the user-initiated, wifi-gated model
+Carta makes **exactly one network call**: the user-initiated model
 download in Settings. It touches no notice data. Everything else works in
 airplane mode, forever.
 

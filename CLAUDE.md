@@ -78,7 +78,9 @@ load-bearing. Never let the explanation take visual priority over the deadline.
    of any kind. All inference is local via `llama.rn` with a downloaded GGUF
    model.
 3. **Exactly one network call exists in the app:** the user-initiated,
-   wifi-gated model download in Settings. It touches no notice data and lives
+   model download in Settings (the spec says wifi-gated; **as of 2026-10-01 the
+   app only says "use wifi" and does not check the network type** — never call
+   it wifi-gated until it does). It touches no notice data and lives
    outside the pipeline. Everything else works in airplane mode, forever.
 4. **No backend, no accounts, no API keys, no paid services.** If a task seems
    to need a server, bundle static JSON instead.
@@ -594,6 +596,12 @@ Three things that came out of it and matter beyond the harness:
    that reported it is now inverted into a regression guard, because
    `make_corpus.py` was never updated and would reintroduce it.
 
+**SUPERSEDED 2026-08-28: the model was measured on a physical iPhone 16 Pro after
+all** — load 9.1 s, first token 0.7–1.3 s after loading, 29–41 tokens/s
+(docs/llm-device-probe*.json, NOTES.md 2026-08-28). Every "Explain" tap reloads
+the model, so time from the tap includes the load. The paragraph below is kept as
+the record of why it once looked unmeasurable.
+
 **ABANDONED, not closed — the week 1 latency gate will not be measured.** The
 benchmark was never run: it needed a physical iPhone with the
 `extended-virtual-addressing` entitlement, which a personal Apple team cannot
@@ -789,8 +797,10 @@ Devansh (an afternoon each).
   claims were wrong, including a NOTES heading reading *"Privacy changes verified
   on device"* over a body that says the files were read out of the *simulator
   container*, and a CLAUDE.md paragraph that said "verified in the Simulator" and
-  "measured on device" three lines apart. **Nothing in this project has ever run
-  on a physical iPhone.** The words are not interchangeable in a submission: a
+  "measured on device" three lines apart. **Until 2026-08-26 nothing had run on a physical iPhone.** Since then the camera
+  path and the on-device model have (iPhone 16 Pro, iOS 26.6; NOTES.md
+  2026-08-28); the form check, the second-chance dates, the letter forecast and
+  the hand-off still have not. The words are not interchangeable in a submission: a
   judge reading "verified on device" is being told something untrue. Write
   "Simulator" unless a phone was in your hand, and if you erase a Simulator say
   "erased Simulator", not "erased device".
