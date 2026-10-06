@@ -443,11 +443,14 @@ app — treat a11y regressions as build breaks.
   "N lines above X" is wrong. Anchor on a column x-position and walk within it.
   Third time this hazard has bitten; see NOTES.md 2026-08-20.
 - **Privacy model is field-level, not whole-database.** The full column-by-column
-  list is in NOTES.md (2026-08-20). Short version: the OCR text is AES-256-GCM
-  ciphertext, the case number is a salted hash plus last 4, and **the recipient
-  name, the dates, the programme and the photo file are plaintext**. Never say
-  "the database is encrypted" — say what is actually true, which is still
-  strong because none of it leaves the phone.
+  list is in NOTES.md (2026-08-20 (later)). Short version: the OCR text and the
+  recipient's name are AES-256-GCM ciphertext, the case number is a salted hash
+  plus last 4, the photo is deleted after reading (or kept encrypted if the user
+  turns that off), and **the dates, the programme and the form type are
+  plaintext**. Never say "the database is encrypted" — say what is actually
+  true, which is still strong because none of it leaves the phone. The exact
+  wording users see is `settings.privacyExact`; the README quotes it, so change
+  both together.
 - **The harness and the iOS app run the same engine family — Apple Vision.**
   Established from `Podfile.lock`, the podspec, the config plugin and the module
   source (§13). The harness's extra config — pinned revision 3, `en-US,es-ES`

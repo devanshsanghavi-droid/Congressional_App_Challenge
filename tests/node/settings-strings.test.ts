@@ -247,6 +247,26 @@ describe('the privacy statement is the one from NOTES.md', () => {
     }
   });
 
+  it('is quoted word for word in the README', () => {
+    // The README says its quote is "what the app itself shows in Settings".
+    // When the sentence above was corrected on 2026-08-26 the README kept the
+    // old one, still telling a judge the name and the photo were plaintext,
+    // until a review of the web version found it on 2026-10-06.
+    const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+    const section = readme.split('### What is actually stored')[1] ?? '';
+    // The first quote block in the section, and only that one.
+    const lines = section.split('\n');
+    const start = lines.findIndex((line) => line.startsWith('>'));
+    const end = lines.findIndex((line, i) => i > start && !line.startsWith('>'));
+    const quote = lines
+      .slice(start, end)
+      .map((line) => line.replace(/^>\s?/, ''))
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    expect(quote).toBe(strings('en').get('settings.privacyExact'));
+  });
+
   it('never claims the database is encrypted', () => {
     // The specific false sentence CLAUDE.md §11 names.
     const en = strings('en');

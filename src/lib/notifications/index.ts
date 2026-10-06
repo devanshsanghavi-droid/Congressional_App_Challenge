@@ -150,9 +150,16 @@ export async function scheduleForNotice(options: {
 
   const scheduled: ScheduledResult[] = [];
   for (const reminder of reminders) {
+    // Each reminder counts down to the date it was built from. A stop notice
+    // can carry both a form deadline and an earlier hearing deadline, and the
+    // hearing reminder used to count to the form deadline: notice 02's would
+    // have said "14 days left to ask for a hearing" two days before the date.
+    const countTo = reminder.urgent
+      ? (options.dates.aidPaidPendingDeadline ?? target)
+      : (options.dates.deadlineDate ?? target);
     const { title, body } = bodyFor(
       reminder,
-      target,
+      countTo,
       options.programName,
       options.actionType,
       options.documents ?? [],

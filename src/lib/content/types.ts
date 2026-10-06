@@ -184,6 +184,7 @@ export interface DocType {
 }
 
 export interface DocTypesPack {
+  /** Keyed by id and by every alias; `.id` on the result is the id to store. */
   readonly byId: ReadonlyMap<string, DocType>;
   /** In file order, which is the order the picker offers them. */
   readonly all: readonly DocType[];

@@ -13,9 +13,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { progressOf } from '../../src/lib/checklist.ts';
+import { letterDocTypes, progressOf } from '../../src/lib/checklist.ts';
 import type { Requirement } from '../../src/lib/checklist.ts';
 import { parseDocTypes } from '../../src/lib/content/parse.ts';
+import { DOC_LEXICON } from '../../src/extraction/identity.ts';
 import { REPO_ROOT } from '../../tools/metrics/corpus.ts';
 
 function req(state: Requirement['state'], origin: Requirement['origin'] = 'letter'): Requirement {
@@ -112,5 +113,67 @@ describe('the document vocabulary', () => {
       readFileSync(join(REPO_ROOT, 'content/doc_types.json'), 'utf8'),
     ) as Record<string, unknown>;
     expect(String(parsed['_not_a_rule'])).toMatch(/NOT REQUIREMENTS/);
+  });
+});
+
+/**
+ * Found 2026-10-06 by a review of the web version, which vendors this code.
+ * The cascade emitted `lease_or_rent_receipt` and `proof_of_residency`, neither
+ * of which the vocabulary had, so the Checklist printed the raw id where a label
+ * belonged, and a rent receipt filed from the picker (`rent_receipt`) never
+ * matched the letter's row. No test compared the two lists.
+ */
+describe('what the letter asks for, against the vocabulary', () => {
+  const pack = parseDocTypes(
+    JSON.parse(readFileSync(join(REPO_ROOT, 'content/doc_types.json'), 'utf8')) as unknown,
+  );
+
+  it.each(DOC_LEXICON.map(([, id]) => id))('has a label for "%s"', (id) => {
+    expect(pack.byId.get(id)?.label).toBeDefined();
+  });
+
+  it('stores a rent receipt under the id the picker uses', () => {
+    expect(letterDocTypes(['lease_or_rent_receipt', 'pay_stub'], pack.byId)).toEqual([
+      'rent_receipt',
+      'pay_stub',
+    ]);
+  });
+
+  it('labels a row saved under the old id', () => {
+    // Saved before this fix; the alias keeps it readable.
+    expect(pack.byId.get('lease_or_rent_receipt')?.label).toBe('Rent receipt or lease');
+  });
+
+  it('offers each document once in the picker', () => {
+    const ids = pack.all.map((type) => type.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids).not.toContain('lease_or_rent_receipt');
+  });
+
+  it('keeps an id it has no label for, rather than dropping it', () => {
+    expect(letterDocTypes(['not_in_the_list'], pack.byId)).toEqual(['not_in_the_list']);
+  });
+
+  it('does not list one document twice when the letter names it two ways', () => {
+    expect(letterDocTypes(['rent_receipt', 'lease_or_rent_receipt'], pack.byId)).toEqual([
+      'rent_receipt',
+    ]);
+  });
+
+  it('rejects an alias that is already some other id', () => {
+    const shadowing = {
+      doc_types: [
+        { id: 'pay_stub', label: 'a', label_es: 'a', what: 'a', what_es: 'a' },
+        {
+          id: 'rent_receipt',
+          aliases: ['pay_stub'],
+          label: 'b',
+          label_es: 'b',
+          what: 'b',
+          what_es: 'b',
+        },
+      ],
+    };
+    expect(() => parseDocTypes(shadowing)).toThrow(/duplicate id "pay_stub"/);
   });
 });

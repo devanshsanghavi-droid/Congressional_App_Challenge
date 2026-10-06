@@ -5657,3 +5657,44 @@ VIDEO-SCRIPT.md is now the full recording plan plus the script, about 2:46.
   model on every tap (about 9 s) and releases it afterwards. The video jump-cuts
   through "Getting ready…" and the script never implies otherwise. Keeping the
   model resident between taps would fix it properly; not done.
+
+## 2026-10-06 — Three defects found by building the web version
+
+The web version (`CongresionalWebsite`) vendors this repo's pure modules, and
+the agents reviewing it read them closely enough to find three things this
+repo's own tests had not. Each is fixed with a test that fails on the old code.
+
+**1. The hearing reminder stated the wrong number of days.** `remindersFor`
+builds the hearing tier (2 days and 1 day before) from `aidPaidPendingDeadline`,
+but `scheduleForNotice` counted every body to `deadlineDate ??
+aidPaidPendingDeadline`. On a stop notice carrying both, the hearing reminder
+counted to the later form deadline. Notice 02 is that notice: SAR 7 due 30 Sep,
+hearing by 18 Sep, and its 16 Sep reminder said **"14 days left to ask for a
+hearing"** when 2 were left. Of every defect in this log, this is among the
+most dangerous: it tells a family they have time they do not have, on the one
+date where acting late stops the money. The urgency tests checked *when* each
+reminder fires and nothing checked *what it says*.
+`tests/app/reminder-body.test.ts` now schedules notice 02's dates in English and
+Spanish; on the old code it gets 14 and 13 where 2 and 1 belong.
+
+**2. Two document ids had no label.** The cascade emits `lease_or_rent_receipt`
+and `proof_of_residency` (keyed to `ground_truth.json`, which is frozen), and
+`content/doc_types.json` had neither. The Checklist printed the raw id, and
+worse, a rent receipt the user filed from the picker (`rent_receipt`) never
+matched the letter's row, because rows and documents match on equal ids. Fixed
+without touching the cascade or the corpus: the vocabulary gains an `aliases`
+list and a "Proof of where you live" entry, Review stores the vocabulary's id
+(`letterDocTypes`), and the alias still labels any row saved under the old id. A
+test now walks every id in `DOC_LEXICON` and requires a label, so the two lists
+cannot drift apart silently again.
+
+**3. The README's privacy quote was a month stale.** It said the recipient's
+name and the photograph were plaintext and that this was "what the app itself
+shows in Settings". Settings was corrected on 2026-08-26 and the README was
+not, so the public document understated the app and misquoted it. CLAUDE.md
+§11 carried the same stale sentence. Both now match `settings.privacyExact`,
+and `settings-strings.test.ts` compares the README's quote to that string word
+for word.
+
+The shape is the same in all three: two things that must agree, each tested on
+its own and never against the other. 752 → 772 tests, 28 → 29 suites.

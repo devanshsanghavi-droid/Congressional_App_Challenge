@@ -33,6 +33,8 @@ import { FIELD_ORDER, effectiveRisk, fieldNeedingAttention } from '@/lib/extract
 import { redactText } from '@/lib/extraction-port/adapter';
 import { saveNotice, setImageRef } from '@/lib/db/notices';
 import { seedFromLetter } from '@/lib/db/checklist';
+import { letterDocTypes } from '@/lib/checklist';
+import { loadDocTypes } from '@/lib/content';
 import { discardCapture, storeCaptureEncrypted } from '@/lib/db/images';
 import { getBooleanSetting, SETTINGS } from '@/lib/db/settings';
 import { isoToLocalMs } from '@/lib/dates';
@@ -130,7 +132,15 @@ export default function ReviewScreen() {
       // behaviour, not a degraded one: Carta must never assert that a programme
       // requires a document it did not read (CLAUDE.md §16).
       await recorder.step('checklist', async () => {
-        const docs = pending.extraction.requiredDocs ?? [];
+        // Stored under the vocabulary's ids, so the row matches a document the
+        // user files from the picker. A malformed pack keeps the ids as read.
+        let types: ReadonlyMap<string, { readonly id: string }> = new Map();
+        try {
+          types = loadDocTypes().byId;
+        } catch {
+          // The row still saves; only its label degrades to the id.
+        }
+        const docs = letterDocTypes(pending.extraction.requiredDocs ?? [], types);
         await seedFromLetter(id, docs);
         return { value: docs.length, detail: { seeded: docs.length } };
       });

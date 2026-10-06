@@ -249,6 +249,22 @@ export function parseDocTypes(raw: unknown): DocTypesPack {
     byId.set(type.id, type);
   }
 
+  // Aliases are the ids the extraction cascade emits where they differ from the
+  // vocabulary's (see `_aliases` in the JSON). They resolve to the same entry,
+  // so `byId.get(alias).id` is the id to store. Registered after every real id,
+  // so an alias that shadows one is caught whichever comes first in the file.
+  arr(root['doc_types'], 'doc_types').forEach((entry, i) => {
+    const aliases = obj(entry, `doc_types[${i}]`)['aliases'];
+    if (aliases === undefined) return;
+    const type = all[i];
+    if (type === undefined) return;
+    for (const [j, alias] of arr(aliases, `doc_types[${i}].aliases`).entries()) {
+      const id = requireString(alias, `doc_types[${i}].aliases[${j}]`);
+      if (byId.has(id)) throw new ContentError('doc_types', `duplicate id "${id}"`);
+      byId.set(id, type);
+    }
+  });
+
   const translationTodo = optionalString(root['_translation_todo'], '_translation_todo');
   return { byId, all, ...(translationTodo === undefined ? {} : { translationTodo }) };
 }

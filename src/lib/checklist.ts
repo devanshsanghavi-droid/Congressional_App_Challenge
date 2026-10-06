@@ -57,6 +57,30 @@ export interface ChecklistProgress {
 }
 
 /**
+ * The ids to store for what a letter asked for.
+ *
+ * The cascade's ids are keyed to the corpus ground truth, and two differ from
+ * the vocabulary's: it says `lease_or_rent_receipt` where `content/doc_types.json`
+ * says `rent_receipt`. Stored as read, the Checklist showed the raw id, and a
+ * rent receipt filed from the picker never matched the letter's row, because
+ * rows and documents match on equal ids. `byId` resolves an alias to its entry,
+ * whose own id is the one to store. An unknown id passes through unchanged: a
+ * missing label is a gap to fill, never a reason to drop what the letter asked
+ * for.
+ */
+export function letterDocTypes(
+  ids: readonly string[],
+  byId: ReadonlyMap<string, { readonly id: string }>,
+): string[] {
+  const out: string[] = [];
+  for (const id of ids) {
+    const stored = byId.get(id)?.id ?? id;
+    if (!out.includes(stored)) out.push(stored);
+  }
+  return out;
+}
+
+/**
  * `ready` is false for an empty checklist, and that guard is the whole reason
  * this function exists rather than a `resolved === total` in the screen.
  *

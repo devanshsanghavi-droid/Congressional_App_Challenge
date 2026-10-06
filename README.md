@@ -133,11 +133,12 @@ The encryption is **field-level, not whole-database**. Saying "the database is
 encrypted" would be false, so this project does not say it. The precise claim,
 which is also what the app itself shows in Settings:
 
-> The text of the letter is encrypted with AES-256-GCM under a key that never
-> leaves the device; the case number is never stored, only a salted hash and the
-> last four digits; the deadline dates, the programme, and the recipient's name
-> are stored in plaintext so the app can sort, display and correct them, and the
-> photograph is a plain file inside the app sandbox.
+> The text of the letter and the recipient's name are encrypted with AES-256-GCM
+> under a key that never leaves the device; the case number is never stored, only
+> a salted hash and the last four digits; the photograph is deleted once the text
+> has been read, and kept encrypted under the same key if you turn that off; and
+> the dates, the programme and the form type are stored in plaintext so the app
+> can sort, display and correct them.
 
 That is a weaker claim than "everything is encrypted" and it is the true one. It
 is still meaningfully stronger than the alternatives, because **none of it leaves
